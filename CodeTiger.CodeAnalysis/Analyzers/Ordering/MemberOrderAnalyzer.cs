@@ -375,7 +375,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         private static void AnalyzeMethodOrderBasedOnStatic(TypeDeclarationSyntax node,
             SyntaxTreeAnalysisContext context)
         {
-            bool isInstanceMethodEncountered = false;
+            bool isStaticMethodEncountered = false;
 
             foreach (var method in node.Members.OfType<BaseMethodDeclarationSyntax>())
             {
@@ -389,9 +389,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                         continue;
                 }
 
-                if (method.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+                if (!method.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
                 {
-                    if (isInstanceMethodEncountered)
+                    if (isStaticMethodEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             InstanceMethodsShouldBeBeforeStaticMethodsDescriptor, method.GetLocation()));
@@ -399,7 +399,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 }
                 else
                 {
-                    isInstanceMethodEncountered = true;
+                    isStaticMethodEncountered = true;
                 }
             }
         }
