@@ -61,7 +61,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 "CodeTiger.Ordering", DiagnosticSeverity.Warning, true);
 
         /// <summary>
-        /// Returns a set of descriptors for the diagnostics that this analyzer is capable of producing.
+        /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
