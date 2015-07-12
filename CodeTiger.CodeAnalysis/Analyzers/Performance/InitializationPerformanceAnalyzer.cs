@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Performance
 {
@@ -53,56 +49,78 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             foreach (var variableDeclarator in root.DescendantNodes().OfType<VariableDeclaratorSyntax>()
                 .Where(x => x.Initializer != null))
             {
-                var variableSymbol = context.SemanticModel.GetSymbolInfo(variableDeclarator).Symbol;
-                var containingCodeElement = GetContainingCodeElement(variableDeclarator);
-                
-                var dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(
-                    containingCodeElement.DescendantNodes().SkipWhile(x => x != variableDeclarator).Skip(1).OfType<StatementSyntax>().First(),
-                    containingCodeElement.DescendantNodes().OfType<StatementSyntax>().Last());
-
-                // If the variable is not always assigned after the declaration, skip it to be safe.
-                if (!dataFlowAnalysis.AlwaysAssigned.Any(x => x == variableSymbol))
+                var variableSymbol = context.SemanticModel
+                    .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
+                var containingNode = GetContainingCodeBlockNode(context, variableSymbol);
+                if (containingNode != null)
                 {
-                    continue;
-                }
+                    // Get the statement that contains the declarator
+                    var statementContainingDeclarator = containingNode.ChildNodes()
+                        .OfType<StatementSyntax>()
+                        .Single(x => x.DescendantNodes().Contains(variableDeclarator));
 
+                    // Get the first statement after the declarator that include the variable
+                    var statementIncludingVariable = containingNode.ChildNodes()
+                        .OfType<StatementSyntax>()
+                        .SkipWhile(x => x != statementContainingDeclarator)
+                        .Skip(1)
+                        .Where(x => x.DescendantNodes()
+                            .OfType<IdentifierNameSyntax>()
+                            .Any(y => context.SemanticModel.GetSymbolInfo(y, context.CancellationToken)
+                                .Symbol == variableSymbol))
+                        .FirstOrDefault();
 
-                foreach (var assignment in containingCodeElement.DescendantNodes().OfType<AssignmentExpressionSyntax>()
-                    .Where(x => x.Left.Kind() == SyntaxKind.IdentifierName
-                        && context.SemanticModel.GetSymbolInfo(x.Left).Symbol == variableSymbol))
-                {
-                    if (assignment.Right.DescendantNodes().OfType<IdentifierNameSyntax>()
-                        .Any(x => context.SemanticModel.GetSymbolInfo(x).Symbol == variableSymbol))
+                    if (statementIncludingVariable != null)
                     {
-                        break;
+                        var currentStatementDataFlowAnalysis = context.SemanticModel
+                            .AnalyzeDataFlow(statementIncludingVariable);
+                        if (currentStatementDataFlowAnalysis.WrittenInside.Contains(variableSymbol)
+                            && !currentStatementDataFlowAnalysis.ReadInside.Contains(variableSymbol))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(
+                                DoubleInitializationShouldBeAvoidedDescriptor,
+                                variableDeclarator.Initializer.GetLocation()));
+                        }
                     }
-
-                    
                 }
             }
         }
 
-        private static SyntaxNode GetContainingCodeElement(SyntaxNode node)
+        private static SyntaxNode GetContainingCodeBlockNode(SemanticModelAnalysisContext context,
+            ISymbol variableSymbol)
         {
-            var parent = node.Parent;
-
-            while (parent != null)
+            var containingNode = variableSymbol?.ContainingSymbol?.DeclaringSyntaxReferences
+                .SingleOrDefault()?.GetSyntax(context.CancellationToken);
+            if (containingNode == null)
             {
-                switch (parent.Kind())
-                {
-                    case SyntaxKind.MethodDeclaration:
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.GetAccessorDeclaration:
-                    case SyntaxKind.SetAccessorDeclaration:
-                    case SyntaxKind.AddAccessorDeclaration:
-                    case SyntaxKind.RemoveAccessorDeclaration:
-                        return parent;
-                }
-
-                parent = parent.Parent;
+                return null;
             }
 
-            return null;
+            switch (containingNode.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                    containingNode = ((BaseMethodDeclarationSyntax)containingNode).Body;
+                    break;
+                case SyntaxKind.SimpleLambdaExpression:
+                    containingNode = ((SimpleLambdaExpressionSyntax)containingNode).Body;
+                    break;
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                    containingNode = ((ParenthesizedLambdaExpressionSyntax)containingNode).Body;
+                    break;
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    containingNode = ((AccessorDeclarationSyntax)containingNode).Body;
+                    break;
+            }
+
+            return containingNode;
         }
     }
 }
