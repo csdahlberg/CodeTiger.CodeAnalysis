@@ -33,9 +33,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         }
 
         /// <summary>
-		/// Registers actions in an analysis context.
-		/// </summary>
-		/// <param name="context">The context to register actions in.</param>
+        /// Registers actions in an analysis context.
+        /// </summary>
+        /// <param name="context">The context to register actions in.</param>
         /// <remarks>This method should only be called once, at the start of a session.</remarks>
         public override void Initialize(AnalysisContext context)
         {
