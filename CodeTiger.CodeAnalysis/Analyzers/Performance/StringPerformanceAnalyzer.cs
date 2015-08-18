@@ -94,7 +94,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             AssignmentExpressionSyntax assignmentExpression)
         {
             var typeInfo = context.SemanticModel.GetTypeInfo(assignmentExpression.Left);
-            if (typeInfo.Type.SpecialType != SpecialType.System_String)
+            if (typeInfo.Type?.SpecialType != SpecialType.System_String)
             {
                 return false;
             }
