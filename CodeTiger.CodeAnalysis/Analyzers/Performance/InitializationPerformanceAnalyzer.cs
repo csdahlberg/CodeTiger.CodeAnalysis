@@ -31,9 +31,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         }
 
         /// <summary>
-		/// Registers actions in an analysis context.
-		/// </summary>
-		/// <param name="context">The context to register actions in.</param>
+        /// Registers actions in an analysis context.
+        /// </summary>
+        /// <param name="context">The context to register actions in.</param>
         /// <remarks>This method should only be called once, at the start of a session.</remarks>
         public override void Initialize(AnalysisContext context)
         {
@@ -103,24 +103,23 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
                 case SyntaxKind.ConversionOperatorDeclaration:
                 case SyntaxKind.ConstructorDeclaration:
                 case SyntaxKind.DestructorDeclaration:
-                    containingNode = ((BaseMethodDeclarationSyntax)containingNode).Body;
-                    break;
+                    return ((BaseMethodDeclarationSyntax)containingNode).Body;
                 case SyntaxKind.SimpleLambdaExpression:
-                    containingNode = ((SimpleLambdaExpressionSyntax)containingNode).Body;
-                    break;
+                    return ((SimpleLambdaExpressionSyntax)containingNode).Body;
                 case SyntaxKind.ParenthesizedLambdaExpression:
-                    containingNode = ((ParenthesizedLambdaExpressionSyntax)containingNode).Body;
-                    break;
+                    return ((ParenthesizedLambdaExpressionSyntax)containingNode).Body;
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                 case SyntaxKind.UnknownAccessorDeclaration:
-                    containingNode = ((AccessorDeclarationSyntax)containingNode).Body;
-                    break;
+                    return ((AccessorDeclarationSyntax)containingNode).Body;
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                    return null;
+                default:
+                    return containingNode;
             }
-
-            return containingNode;
         }
     }
 }
