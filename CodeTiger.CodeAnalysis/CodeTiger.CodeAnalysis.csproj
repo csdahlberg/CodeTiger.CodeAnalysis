@@ -51,6 +51,7 @@
     <Compile Include="Analyzers\Performance\InitializationPerformanceAnalyzer.cs" />
     <Compile Include="Analyzers\Performance\StringPerformanceAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\EnumerationReliabilityAnalyzer.cs" />
+    <Compile Include="Analyzers\Reliability\ThreadingReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\UnmanagedReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\UnsafeReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\DebugUsageAnalyzer.cs" />
