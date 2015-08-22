@@ -62,7 +62,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
             var iDisposableType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IDisposable");
-            var disposeMethod = iDisposableType.GetMembers("Dispose").Single();
 
             foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
             {
@@ -71,7 +70,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
                 bool doesTypeImplementIDisposable
                     = DoesTypeImplementIDisposable(context, typeDeclaration, iDisposableType);
-                bool doesTypeHaveADestructor = DoesTypeHaveAFinalizer(context, typeDeclaration);
+                bool doesTypeHaveADestructor = DoesTypeHaveAFinalizer(typeDeclaration);
 
                 if (iDisposableType != null
                     && AreAnyTypesDisposable(context, instanceStateMemberTypes, iDisposableType)
@@ -132,7 +131,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private bool AreAnyTypesUnmanaged(SemanticModelAnalysisContext context,
+        private static bool AreAnyTypesUnmanaged(SemanticModelAnalysisContext context,
             IEnumerable<TypeSyntax> instanceStateMemberTypes)
         {
             if (instanceStateMemberTypes == null || !instanceStateMemberTypes.Any())
@@ -157,7 +156,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             return false;
         }
 
-        private bool AreAnyTypesDisposable(SemanticModelAnalysisContext context,
+        private static bool AreAnyTypesDisposable(SemanticModelAnalysisContext context,
             IEnumerable<TypeSyntax> instanceStateMemberTypes, INamedTypeSymbol iDisposableType)
         {
             if (instanceStateMemberTypes == null || !instanceStateMemberTypes.Any())
@@ -170,13 +169,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 .Any(iDisposableType.Equals);
         }
 
-        private bool DoesTypeHaveAFinalizer(SemanticModelAnalysisContext context,
-            TypeDeclarationSyntax classDeclaration)
+        private static bool DoesTypeHaveAFinalizer(TypeDeclarationSyntax classDeclaration)
         {
             return classDeclaration.Members.Any(x => x.Kind() == SyntaxKind.DestructorDeclaration);
         }
 
-        private bool DoesTypeImplementIDisposable(SemanticModelAnalysisContext context,
+        private static bool DoesTypeImplementIDisposable(SemanticModelAnalysisContext context,
             TypeDeclarationSyntax classDeclaration, INamedTypeSymbol iDisposableType)
         {
             return classDeclaration.BaseList != null
