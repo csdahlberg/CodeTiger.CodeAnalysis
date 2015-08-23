@@ -61,28 +61,25 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
-            var iDisposableType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IDisposable");
+            var disposableType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IDisposable");
 
             foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
             {
                 var instanceStateMembers = typeDeclaration.Members.Where(IsInstanceState);
                 var instanceStateMemberTypes = instanceStateMembers.Select(GetMemberType);
 
-                bool doesTypeImplementIDisposable
-                    = DoesTypeImplementIDisposable(context, typeDeclaration, iDisposableType);
-                bool doesTypeHaveADestructor = DoesTypeHaveAFinalizer(typeDeclaration);
+                bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
+                bool doesTypeHaveADestructor = DoesTypeHaveADestructor(typeDeclaration);
 
-                if (iDisposableType != null
-                    && AreAnyTypesDisposable(context, instanceStateMemberTypes, iDisposableType)
-                    && !doesTypeImplementIDisposable)
+                if (!isTypeDisposable && AreAnyTypesDisposable(context, instanceStateMemberTypes, disposableType))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TypesWithDisposableStateShouldImplementIDisposableDescriptor,
                         typeDeclaration.Identifier.GetLocation()));
                 }
 
-                if (AreAnyTypesUnmanaged(context, instanceStateMemberTypes)
-                    && (!doesTypeImplementIDisposable || !doesTypeHaveADestructor))
+                if ((!isTypeDisposable || !doesTypeHaveADestructor)
+                    && AreAnyTypesUnmanaged(context, instanceStateMemberTypes))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor,
@@ -157,7 +154,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         }
 
         private static bool AreAnyTypesDisposable(SemanticModelAnalysisContext context,
-            IEnumerable<TypeSyntax> instanceStateMemberTypes, INamedTypeSymbol iDisposableType)
+            IEnumerable<TypeSyntax> instanceStateMemberTypes, INamedTypeSymbol disposableType)
         {
             if (instanceStateMemberTypes == null || !instanceStateMemberTypes.Any())
             {
@@ -166,21 +163,26 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
             return instanceStateMemberTypes
                 .Select(x => context.SemanticModel.GetSymbolInfo(x, context.CancellationToken).Symbol)
-                .Any(iDisposableType.Equals);
+                .Any(disposableType.Equals);
         }
 
-        private static bool DoesTypeHaveAFinalizer(TypeDeclarationSyntax classDeclaration)
+        private static bool DoesTypeHaveADestructor(TypeDeclarationSyntax classDeclaration)
         {
             return classDeclaration.Members.Any(x => x.Kind() == SyntaxKind.DestructorDeclaration);
         }
 
-        private static bool DoesTypeImplementIDisposable(SemanticModelAnalysisContext context,
-            TypeDeclarationSyntax classDeclaration, INamedTypeSymbol iDisposableType)
+        private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
+            TypeDeclarationSyntax classDeclaration, INamedTypeSymbol disposableType)
         {
+            if (disposableType == null)
+            {
+                return false;
+            }
+            
             return classDeclaration.BaseList != null
                 && classDeclaration.BaseList.Types
                     .Select(x => context.SemanticModel.GetSymbolInfo(x.Type, context.CancellationToken).Symbol)
-                    .Any(iDisposableType.Equals);
+                    .Any(disposableType.Equals);
         }
     }
 }
