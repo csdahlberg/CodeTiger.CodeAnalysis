@@ -33,6 +33,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         /// <remarks>This method should only be called once, at the start of a session.</remarks>
         public override void Initialize(AnalysisContext context)
         {
+            Guard.ArgumentIsNotNull(nameof(context), context);
+
             context.RegisterSymbolAction(AnalyzeFieldAccessibility, SymbolKind.Field);
         }
 
