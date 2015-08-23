@@ -53,6 +53,7 @@
     <Compile Include="Analyzers\Reliability\AssignmentReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\EnumerationReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\ExceptionHandlingReliabilityAnalyzer.cs" />
+    <Compile Include="Analyzers\Reliability\FieldReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\ThreadingReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\UnmanagedReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\UnsafeReliabilityAnalyzer.cs" />
