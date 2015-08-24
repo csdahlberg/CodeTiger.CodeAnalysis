@@ -15,14 +15,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
     {
-        private static readonly string[] _unmanagedTypeMetadataNames = new string[]
-        {
-            "System.IntPtr",
-            "System.UIntPtr",
-            "System.Runtime.InteropServices.BINDPTR",
-            "System.Runtime.InteropServices.ComTypes.BindPtr",
-        };
-
         internal static readonly DiagnosticDescriptor TypesWithDisposableStateShouldImplementIDisposableDescriptor
             = new DiagnosticDescriptor("CT2001", "Types with disposable state should implement IDisposable",
                 "Types with disposable state should implement IDisposable", "CodeTiger.Reliability",
@@ -32,6 +24,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 "CT2002", "Types with unmanaged state should implement the full dispose pattern.",
                 "Types with unmanaged state should implement the full dispose pattern.", "CodeTiger.Reliability",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor DestructorsShouldNotAccessManagedObjectsDescriptor
+            = new DiagnosticDescriptor("CT2003", "Destructors should not access managed objects.",
+                "Destructors should not access managed objects.", "CodeTiger.Reliability",
+                DiagnosticSeverity.Warning, true);
+
+
+        private static readonly string[] _unmanagedTypeMetadataNames = new string[]
+            {
+                "System.IntPtr",
+                "System.UIntPtr",
+                "System.Runtime.InteropServices.BINDPTR",
+                "System.Runtime.InteropServices.ComTypes.BindPtr",
+            };
+        private static readonly string[] _metadataNamesOfDestructorSafeTypeNames = new string[]
+            {
+                "System.GC",
+                "System.Runtime.InteropServices.Marshal",
+            };
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -41,7 +51,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             get
             {
                 return ImmutableArray.Create(TypesWithDisposableStateShouldImplementIDisposableDescriptor,
-                    TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor);
+                    TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor,
+                    DestructorsShouldNotAccessManagedObjectsDescriptor);
             }
         }
 
@@ -57,7 +68,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterSemanticModelAction(AnalyzeUnmanagedState);
         }
 
-        private void AnalyzeUnmanagedState(SemanticModelAnalysisContext context)
+        private static void AnalyzeUnmanagedState(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
@@ -69,7 +80,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 var instanceStateMemberTypes = instanceStateMembers.Select(GetMemberType);
 
                 bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
-                bool doesTypeHaveADestructor = DoesTypeHaveADestructor(typeDeclaration);
 
                 if (!isTypeDisposable && AreAnyTypesDisposable(context, instanceStateMemberTypes, disposableType))
                 {
@@ -78,17 +88,72 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                         typeDeclaration.Identifier.GetLocation()));
                 }
 
-                if ((!isTypeDisposable || !doesTypeHaveADestructor)
+                var destructor = typeDeclaration.Members
+                    .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration);
+
+                if ((!isTypeDisposable || destructor == null)
                     && AreAnyTypesUnmanaged(context, instanceStateMemberTypes))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor,
                         typeDeclaration.Identifier.GetLocation()));
                 }
+
+                if (destructor != null)
+                {
+                    AnalyzeDestructorForManagedObjects(context, destructor);
+                }
             }
         }
 
-        private bool IsInstanceState(MemberDeclarationSyntax memberDeclaration)
+        private static void AnalyzeDestructorForManagedObjects(SemanticModelAnalysisContext context,
+            MemberDeclarationSyntax destructorDeclaration)
+        {
+            var destructorSymbol = context.SemanticModel
+                .GetDeclaredSymbol(destructorDeclaration, context.CancellationToken);
+            if (destructorSymbol == null)
+            {
+                return;
+            }
+
+            foreach (var node in destructorDeclaration.DescendantNodes())
+            {
+                SyntaxNode accessedNode;
+                ISymbol accessedSymbol;
+
+                switch (node.Kind())
+                {
+                    case SyntaxKind.PointerMemberAccessExpression:
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        accessedNode = node;
+                        accessedSymbol = context.SemanticModel
+                            .GetSymbolInfo(accessedNode, context.CancellationToken).Symbol;
+                        break;
+                    case SyntaxKind.InvocationExpression:
+                        accessedNode = ((InvocationExpressionSyntax)node).Expression;
+                        accessedSymbol = context.SemanticModel
+                            .GetSymbolInfo(accessedNode, context.CancellationToken).Symbol?.ContainingSymbol;
+                        break;
+                    default:
+                        accessedNode = null;
+                        accessedSymbol = null;
+                        break;
+                }
+
+                ITypeSymbol accessedTypeSymbol = accessedSymbol as ITypeSymbol;
+
+                if (accessedNode != null
+                    && accessedTypeSymbol != null
+                    && accessedTypeSymbol != destructorSymbol.ContainingType
+                    && IsTypeProbablyUnsafeToAccessFromDestructor(context, accessedTypeSymbol))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        DestructorsShouldNotAccessManagedObjectsDescriptor, accessedNode.GetLocation()));
+                }
+            }
+        }
+
+        private static bool IsInstanceState(MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration.Kind())
             {
@@ -108,7 +173,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private TypeSyntax GetMemberType(MemberDeclarationSyntax memberDeclaration)
+        private static TypeSyntax GetMemberType(MemberDeclarationSyntax memberDeclaration)
         {
             switch (memberDeclaration.Kind())
             {
@@ -166,11 +231,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 .Any(disposableType.Equals);
         }
 
-        private static bool DoesTypeHaveADestructor(TypeDeclarationSyntax classDeclaration)
-        {
-            return classDeclaration.Members.Any(x => x.Kind() == SyntaxKind.DestructorDeclaration);
-        }
-
         private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
             TypeDeclarationSyntax classDeclaration, INamedTypeSymbol disposableType)
         {
@@ -183,6 +243,27 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 && classDeclaration.BaseList.Types
                     .Select(x => context.SemanticModel.GetSymbolInfo(x.Type, context.CancellationToken).Symbol)
                     .Any(disposableType.Equals);
+        }
+
+        private static bool IsTypeProbablyUnsafeToAccessFromDestructor(SemanticModelAnalysisContext context,
+            ITypeSymbol accessedTypeSymbol)
+        {
+            if (accessedTypeSymbol.IsValueType)
+            {
+                return false;
+            }
+
+            foreach (var destructorSafeTypeName in _metadataNamesOfDestructorSafeTypeNames)
+            {
+                var destructorSafeType = context.SemanticModel.Compilation
+                    .GetTypeByMetadataName(destructorSafeTypeName);
+                if (destructorSafeType != null && destructorSafeType.Equals(accessedTypeSymbol))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
