@@ -227,8 +227,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
 
             return instanceStateMemberTypes
-                .Select(x => context.SemanticModel.GetSymbolInfo(x, context.CancellationToken).Symbol)
-                .Any(disposableType.Equals);
+                .Select(x => context.SemanticModel.GetTypeInfo(x, context.CancellationToken).Type)
+                .Any(x => x.Equals(disposableType) || x.AllInterfaces.Any(disposableType.Equals));
         }
 
         private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
