@@ -9,15 +9,13 @@
     <licenseUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis/wiki/License</licenseUrl>
     <projectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Roslyn-based static code analysis for C# projects.
+    <description>General purpose Roslyn-based static code analysis rules for C#.
 
-While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.
-
-Currently, rules similar to the StyleCop rules in the Ordering Rules category have been implemented. More will be added in future versions.</description>
+While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.</description>
     <summary>Roslyn-based static code analysis for C# projects.</summary>
     <copyright>Copyright 2015 © Chris Dahlberg</copyright>
     <language>en-US</language>
-    <tags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop</tags>
+    <tags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</tags>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System" targetFramework="" />
     </frameworkAssemblies>
