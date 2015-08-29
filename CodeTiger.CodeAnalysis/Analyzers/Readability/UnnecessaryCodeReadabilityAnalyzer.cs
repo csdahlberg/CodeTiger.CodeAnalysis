@@ -19,6 +19,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             = new DiagnosticDescriptor("CT3106", "Statements should not use unnecessary parenthesis.",
                 "Statements should not use unnecessary parenthesis.", "CodeTiger.Readability",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            AnonymousMethodsWithoutParametersShouldNotIncludeParenthesisDescriptor = new DiagnosticDescriptor(
+                "CT3107", "Anonymous methods without parameters should not include parenthesis.",
+                "Anonymous methods without parameters should not include parenthesis.", "CodeTiger.Readability",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -28,7 +33,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             get
             {
                 return ImmutableArray.Create(PositiveSignsShouldNotBeUsedDescriptor,
-                    StatementsShouldNotUseUnnecessaryParenthesisDescriptor);
+                    StatementsShouldNotUseUnnecessaryParenthesisDescriptor,
+                    AnonymousMethodsWithoutParametersShouldNotIncludeParenthesisDescriptor);
             }
         }
 
@@ -44,6 +50,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             context.RegisterSyntaxNodeAction(AnalyzeUnaryPlusUsage, SyntaxKind.UnaryPlusExpression);
             context.RegisterSyntaxNodeAction(AnalyzeUnnecessaryParenthesisUsage,
                 SyntaxKind.ParenthesizedExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeAnonymousMethods, SyntaxKind.AnonymousMethodExpression);
         }
 
         private void AnalyzeUnaryPlusUsage(SyntaxNodeAnalysisContext context)
@@ -65,6 +72,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             {
                 context.ReportDiagnostic(Diagnostic.Create(StatementsShouldNotUseUnnecessaryParenthesisDescriptor,
                     node.OpenParenToken.GetLocation()));
+            }
+        }
+
+        private void AnalyzeAnonymousMethods(SyntaxNodeAnalysisContext context)
+        {
+            var node = (AnonymousMethodExpressionSyntax)context.Node;
+
+            if (node.ParameterList != null && !node.ParameterList.Parameters.Any())
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    AnonymousMethodsWithoutParametersShouldNotIncludeParenthesisDescriptor,
+                    node.ParameterList.GetLocation()));
             }
         }
     }
