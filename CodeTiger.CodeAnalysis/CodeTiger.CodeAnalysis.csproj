@@ -52,6 +52,7 @@
     <Compile Include="Analyzers\Performance\StringPerformanceAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\AccessibilityReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\GeneralReadabilityAnalyzer.cs" />
+    <Compile Include="Analyzers\Readability\RegionReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\TypeAliasReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\UnnecessaryCodeReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\AssignmentReliabilityAnalyzer.cs" />
