@@ -1,6 +1,7 @@
 ﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Readability
@@ -14,6 +15,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         internal static readonly DiagnosticDescriptor BuiltInTypeAliasesShouldBeUsedDescriptor
             = new DiagnosticDescriptor("CT3101", "Built-in type aliases should be used.",
                 "Built-in type alises should be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ShorthandShouldBeUsedForNullableTypesDescriptor
+            = new DiagnosticDescriptor("CT3102", "Shorthand should be used for nullable types.",
+                "Shorthand should be used for nullable types.", "CodeTiger.Readability",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -22,7 +27,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             get
             {
-                return ImmutableArray.Create(BuiltInTypeAliasesShouldBeUsedDescriptor);
+                return ImmutableArray.Create(BuiltInTypeAliasesShouldBeUsedDescriptor,
+                    ShorthandShouldBeUsedForNullableTypesDescriptor);
             }
         }
 
@@ -36,6 +42,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             Guard.ArgumentIsNotNull(nameof(context), context);
 
             context.RegisterSyntaxNodeAction(AnalyzeSyntaxNode, SyntaxKind.IdentifierName);
+            context.RegisterSyntaxNodeAction(AnalyzeNullableShorthand, SyntaxKind.GenericName);
         }
 
         private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
@@ -67,6 +74,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                     context.ReportDiagnostic(Diagnostic.Create(BuiltInTypeAliasesShouldBeUsedDescriptor,
                         context.Node.GetLocation()));
                     break;
+            }
+        }
+
+        private void AnalyzeNullableShorthand(SyntaxNodeAnalysisContext context)
+        {
+            var genericName = (GenericNameSyntax)context.Node;
+            
+            var symbol = context.SemanticModel.GetSymbolInfo(genericName, context.CancellationToken).Symbol;
+            if (symbol?.Kind != SymbolKind.NamedType)
+            {
+                return;
+            }
+
+            var namedTypeSymbol = (INamedTypeSymbol)symbol;
+            if (namedTypeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ShorthandShouldBeUsedForNullableTypesDescriptor,
+                    context.Node.GetLocation()));
             }
         }
     }
