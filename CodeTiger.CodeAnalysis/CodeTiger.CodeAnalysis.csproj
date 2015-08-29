@@ -50,6 +50,7 @@
     <Compile Include="Analyzers\Ordering\UsingDirectiveOrderAnalyzer.cs" />
     <Compile Include="Analyzers\Performance\InitializationPerformanceAnalyzer.cs" />
     <Compile Include="Analyzers\Performance\StringPerformanceAnalyzer.cs" />
+    <Compile Include="Analyzers\Readability\AccessibilityReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\GeneralReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Readability\TypeAliasReadabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\AssignmentReliabilityAnalyzer.cs" />
