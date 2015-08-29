@@ -15,6 +15,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         internal static readonly DiagnosticDescriptor PositiveSignsShouldNotBeUsedDescriptor
             = new DiagnosticDescriptor("CT3105", "Positive signs should not be used.",
                 "Positive signs should not be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor StatementsShouldNotUseUnnecessaryParenthesisDescriptor
+            = new DiagnosticDescriptor("CT3106", "Statements should not use unnecessary parenthesis.",
+                "Statements should not use unnecessary parenthesis.", "CodeTiger.Readability",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -23,7 +27,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             get
             {
-                return ImmutableArray.Create(PositiveSignsShouldNotBeUsedDescriptor);
+                return ImmutableArray.Create(PositiveSignsShouldNotBeUsedDescriptor,
+                    StatementsShouldNotUseUnnecessaryParenthesisDescriptor);
             }
         }
 
@@ -37,6 +42,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             Guard.ArgumentIsNotNull(nameof(context), context);
 
             context.RegisterSyntaxNodeAction(AnalyzeUnaryPlusUsage, SyntaxKind.UnaryPlusExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeUnnecessaryParenthesisUsage,
+                SyntaxKind.ParenthesizedExpression);
         }
 
         private void AnalyzeUnaryPlusUsage(SyntaxNodeAnalysisContext context)
@@ -45,6 +52,20 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
             context.ReportDiagnostic(Diagnostic.Create(PositiveSignsShouldNotBeUsedDescriptor,
                 node.OperatorToken.GetLocation()));
+        }
+
+        private void AnalyzeUnnecessaryParenthesisUsage(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ParenthesizedExpressionSyntax)context.Node;
+
+            // TODO: Expand to include cases where parenthesized expressions are used in other types of expressions
+            // unnecessarily (for example, as the right side of assignments).
+
+            if (node.Expression.Kind() == SyntaxKind.ParenthesizedExpression)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(StatementsShouldNotUseUnnecessaryParenthesisDescriptor,
+                    node.OpenParenToken.GetLocation()));
+            }
         }
     }
 }
