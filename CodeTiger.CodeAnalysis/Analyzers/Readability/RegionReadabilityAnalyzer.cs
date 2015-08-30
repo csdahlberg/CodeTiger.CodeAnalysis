@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 {
     /// <summary>
-    /// Analyzes general readability issues.
+    /// Analyzes readability issues caused by the use of regions.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class RegionReadabilityAnalyzer : DiagnosticAnalyzer

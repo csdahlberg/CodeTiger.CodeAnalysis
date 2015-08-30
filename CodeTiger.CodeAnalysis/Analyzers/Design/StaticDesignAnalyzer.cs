@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Design
 {
     /// <summary>
-    /// Analyzes general readability issues.
+    /// Analyzes use of the static modifier.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class StaticDesignAnalyzer : DiagnosticAnalyzer
