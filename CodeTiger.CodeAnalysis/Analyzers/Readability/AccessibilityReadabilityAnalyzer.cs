@@ -70,7 +70,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             var modifiers = GetModifiers(context.Node);
 
             if (!modifiers.Any(x => SyntaxFacts.IsAccessibilityModifier(x.Kind()))
-                && !IsExplicitInterfaceImplementation(context.Node))
+                && !IsExplicitInterfaceImplementation(context.Node)
+                && !IsStaticConstructor(context.Node, modifiers))
             {
                 var identifierLocation = GetIdentifierLocation(context.Node);
 
@@ -158,6 +159,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 default:
                     return false;
             }
+        }
+
+        private bool IsStaticConstructor(SyntaxNode node, SyntaxTokenList modifiers)
+        {
+            return node.Kind() == SyntaxKind.ConstructorDeclaration
+                && modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword);
         }
     }
 }
