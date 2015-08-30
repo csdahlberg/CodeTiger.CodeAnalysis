@@ -161,7 +161,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private bool IsStaticConstructor(SyntaxNode node, SyntaxTokenList modifiers)
+        private static bool IsStaticConstructor(SyntaxNode node, SyntaxTokenList modifiers)
         {
             return node.Kind() == SyntaxKind.ConstructorDeclaration
                 && modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword);
