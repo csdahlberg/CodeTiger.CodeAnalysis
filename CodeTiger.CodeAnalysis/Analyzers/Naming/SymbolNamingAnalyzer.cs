@@ -16,6 +16,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor TypeNamesShouldUsePascalCasingDescriptor
             = new DiagnosticDescriptor("CT1702", "Type names should use pascal casing.",
                 "Type names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ConstantFieldNamesShouldUsePascalCasingDescriptor
+            = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing.",
+                "Constant field names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -24,7 +28,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             get
             {
-                return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor);
+                return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor,
+                    ConstantFieldNamesShouldUsePascalCasingDescriptor);
             }
         }
 
@@ -39,6 +44,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeConstantFieldName, SyntaxKind.FieldDeclaration);
         }
 
         private void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
@@ -70,6 +76,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzeConstantFieldName(SyntaxNodeAnalysisContext context)
+        {
+            var fieldDeclarationNode = (FieldDeclarationSyntax)context.Node;
+            if (!fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.ConstKeyword))
+            {
+                return;
+            }
+
+            foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
+            {
+                if (!IsProbablyPascalCased(fieldDeclaration.Identifier.Text))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(ConstantFieldNamesShouldUsePascalCasingDescriptor,
+                        fieldDeclaration.Identifier.GetLocation()));
+                }
             }
         }
 
