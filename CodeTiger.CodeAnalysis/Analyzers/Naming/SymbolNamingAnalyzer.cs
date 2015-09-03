@@ -20,6 +20,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing.",
                 "Constant field names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
                 true);
+        internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamcelCasingDescriptor
+            = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
+                "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -29,7 +32,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             get
             {
                 return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor,
-                    ConstantFieldNamesShouldUsePascalCasingDescriptor);
+                    ConstantFieldNamesShouldUsePascalCasingDescriptor,
+                    ParameterNamesShouldUseCamcelCasingDescriptor);
             }
         }
 
@@ -45,6 +49,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeConstantFieldName, SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
         private void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
@@ -97,12 +102,33 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
+        private void AnalyzeParameterName(SyntaxNodeAnalysisContext context)
+        {
+            var parameterNode = (ParameterSyntax)context.Node;
+            
+            if (!IsProbablyCamelCased(parameterNode.Identifier.Text))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamcelCasingDescriptor,
+                    parameterNode.Identifier.GetLocation()));
+            }
+        }
+
         private bool IsProbablyPascalCased(string value)
         {
             char[] valueCharacters = value.ToCharArray();
 
             return valueCharacters.Length > 1
                 && char.IsUpper(value[0])
+                && valueCharacters.All(char.IsLetterOrDigit)
+                && valueCharacters.Any(char.IsLower);
+        }
+
+        private bool IsProbablyCamelCased(string value)
+        {
+            char[] valueCharacters = value.ToCharArray();
+
+            return valueCharacters.Length > 1
+                && char.IsLower(value[0])
                 && valueCharacters.All(char.IsLetterOrDigit)
                 && valueCharacters.Any(char.IsLower);
         }
