@@ -76,7 +76,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             if (!IsProbablyPascalCased(typeIdentifier.Text)
                 && !(context.Node.Kind() == SyntaxKind.InterfaceDeclaration
-                    && typeIdentifier.Text.StartsWith("I")
+                    && typeIdentifier.Text[0] == 'I'
                     && IsProbablyPascalCased(typeIdentifier.Text.Substring(1))))
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
@@ -113,7 +113,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private bool IsProbablyPascalCased(string value)
+        private static bool IsProbablyPascalCased(string value)
         {
             char[] valueCharacters = value.ToCharArray();
 
@@ -122,7 +122,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 && (value.Length == 1 || valueCharacters.Any(char.IsLower));
         }
 
-        private bool IsProbablyCamelCased(string value)
+        private static bool IsProbablyCamelCased(string value)
         {
             char[] valueCharacters = value.ToCharArray();
 
