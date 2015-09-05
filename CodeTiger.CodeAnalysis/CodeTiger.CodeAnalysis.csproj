@@ -44,6 +44,7 @@
     <AssemblyOriginatorKeyFile>..\CodeTiger.CodeAnalysis.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\Design\CopyConstructorDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\ParameterDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\StaticDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\UntypedCollectionDesignAnalyzer.cs" />
