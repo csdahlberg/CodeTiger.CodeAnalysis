@@ -8,17 +8,17 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Design
 {
     /// <summary>
-    /// Analyzes the use of untyped collections.
+    /// Analyzes the use of non-generic collections.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class UntypedCollectionDesignAnalyzer : DiagnosticAnalyzer
+    public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor UntypedCollectionsShouldNotBeHeldAsStateDescriptor
-            = new DiagnosticDescriptor("CT1004", "Untyped collections should not be held as state.",
-                "Untyped collections should not be held as state.", "CodeTiger.Design", DiagnosticSeverity.Warning,
-                true);
+        internal static readonly DiagnosticDescriptor NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor
+            = new DiagnosticDescriptor("CT1004", "Non-generic collections should not be held as state.",
+                "Non-generic collections should not be held as state.", "CodeTiger.Design",
+                DiagnosticSeverity.Warning, true);
 
-        private static readonly string[] _untypedCollectionMetadataNames = new string[]
+        private static readonly string[] _nonGenericCollectionMetadataNames = new string[]
             {
                 "System.Collections.ArrayList",
                 "System.Collections.CollectionBase",
@@ -43,7 +43,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             get
             {
-                return ImmutableArray.Create(UntypedCollectionsShouldNotBeHeldAsStateDescriptor);
+                return ImmutableArray.Create(NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor);
             }
         }
 
@@ -56,11 +56,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeTypeForUntypedCollectionState, SyntaxKind.ClassDeclaration,
+            context.RegisterSyntaxNodeAction(AnalyzeTypeForNonGenericCollectionState, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration);
         }
 
-        private static void AnalyzeTypeForUntypedCollectionState(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeForNonGenericCollectionState(SyntaxNodeAnalysisContext context)
         {
             SyntaxList<MemberDeclarationSyntax> members;
 
@@ -76,14 +76,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     return;
             }
 
-            foreach (var untypedCollectionMember in members.Where(x => IsUntypedCollection(context, x)))
+            foreach (var nonGenericCollectionMember in members.Where(x => IsNonGenericCollection(context, x)))
             {
-                context.ReportDiagnostic(Diagnostic.Create(UntypedCollectionsShouldNotBeHeldAsStateDescriptor,
-                    GetIdentifierLocation(untypedCollectionMember)));
+                context.ReportDiagnostic(Diagnostic.Create(NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor,
+                    GetIdentifierLocation(nonGenericCollectionMember)));
             }
         }
 
-        private static bool IsUntypedCollection(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax member)
+        private static bool IsNonGenericCollection(SyntaxNodeAnalysisContext context,
+            MemberDeclarationSyntax member)
         {
             ITypeSymbol memberType;
 
@@ -110,10 +111,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     return false;
             }
 
-            foreach (string untypedCollectionName in _untypedCollectionMetadataNames)
+            foreach (string nonGenericCollectionName in _nonGenericCollectionMetadataNames)
             {
-                var untypedSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(untypedCollectionName);
-                if (untypedSymbol != null && untypedSymbol.Equals(memberType))
+                var nonGenericSymbol = context.SemanticModel.Compilation
+                    .GetTypeByMetadataName(nonGenericCollectionName);
+                if (nonGenericSymbol != null && nonGenericSymbol.Equals(memberType))
                 {
                     return true;
                 }
