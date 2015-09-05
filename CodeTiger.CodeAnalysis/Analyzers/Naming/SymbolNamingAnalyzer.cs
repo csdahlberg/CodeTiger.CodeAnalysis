@@ -117,20 +117,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             char[] valueCharacters = value.ToCharArray();
 
-            return valueCharacters.Length > 1
-                && char.IsUpper(value[0])
+            return char.IsUpper(value[0])
                 && valueCharacters.All(char.IsLetterOrDigit)
-                && valueCharacters.Any(char.IsLower);
+                && (value.Length == 1 || valueCharacters.Any(char.IsLower));
         }
 
         private bool IsProbablyCamelCased(string value)
         {
             char[] valueCharacters = value.ToCharArray();
 
-            return valueCharacters.Length > 1
-                && char.IsLower(value[0])
-                && valueCharacters.All(char.IsLetterOrDigit)
-                && valueCharacters.Any(char.IsLower);
+            return char.IsLower(value[0])
+                && valueCharacters.All(char.IsLetterOrDigit);
         }
     }
 }
