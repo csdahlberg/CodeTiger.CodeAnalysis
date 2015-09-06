@@ -81,7 +81,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
                 bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
 
-                if (!isTypeDisposable && AreAnyTypesDisposable(context, instanceStateMemberTypes, disposableType))
+                if (!isTypeDisposable
+                    && instanceStateMemberTypes.Any(x => IsTypeDisposable(context, x, disposableType)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TypesWithDisposableStateShouldImplementIDisposableDescriptor,
@@ -232,17 +233,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         }
 
         private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
-            TypeDeclarationSyntax classDeclaration, INamedTypeSymbol disposableType)
+            TypeSyntax type, INamedTypeSymbol disposableType)
+        {
+            var typeSymbol = context.SemanticModel.GetTypeInfo(type, context.CancellationToken).Type;
+
+            return IsTypeDisposable(disposableType, typeSymbol);
+        }
+
+        private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
+            TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol disposableType)
+        {
+            var typeSymbol = context.SemanticModel
+                .GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
+
+            return IsTypeDisposable(disposableType, typeSymbol);
+        }
+
+        private static bool IsTypeDisposable(INamedTypeSymbol disposableType, ITypeSymbol typeSymbol)
         {
             if (disposableType == null)
             {
                 return false;
             }
-            
-            return classDeclaration.BaseList != null
-                && classDeclaration.BaseList.Types
-                    .Select(x => context.SemanticModel.GetSymbolInfo(x.Type, context.CancellationToken).Symbol)
-                    .Any(disposableType.Equals);
+
+            return disposableType.Equals(typeSymbol) || typeSymbol.AllInterfaces.Any(disposableType.Equals);
         }
 
         private static bool IsTypeProbablyUnsafeToAccessFromDestructor(SemanticModelAnalysisContext context,
