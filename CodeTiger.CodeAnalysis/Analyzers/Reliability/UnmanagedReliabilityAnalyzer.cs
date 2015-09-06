@@ -219,19 +219,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             return false;
         }
 
-        private static bool AreAnyTypesDisposable(SemanticModelAnalysisContext context,
-            IEnumerable<TypeSyntax> instanceStateMemberTypes, INamedTypeSymbol disposableType)
-        {
-            if (instanceStateMemberTypes == null || !instanceStateMemberTypes.Any())
-            {
-                return false;
-            }
-
-            return instanceStateMemberTypes
-                .Select(x => context.SemanticModel.GetTypeInfo(x, context.CancellationToken).Type)
-                .Any(x => x.Equals(disposableType) || x.AllInterfaces.Any(disposableType.Equals));
-        }
-
         private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
             TypeSyntax type, INamedTypeSymbol disposableType)
         {
