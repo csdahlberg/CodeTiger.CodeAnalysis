@@ -42,7 +42,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         {
             var fieldSymbol = (IFieldSymbol)context.Symbol;
 
-            if (!fieldSymbol.IsReadOnly)
+            if (!fieldSymbol.IsReadOnly && !fieldSymbol.HasConstantValue)
             {
                 switch (context.Symbol.DeclaredAccessibility)
                 {
