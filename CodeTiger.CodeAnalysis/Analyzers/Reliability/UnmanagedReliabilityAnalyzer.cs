@@ -29,8 +29,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 "Destructors should not access managed objects.", "CodeTiger.Reliability",
                 DiagnosticSeverity.Warning, true);
 
-
-        private static readonly string[] _unmanagedTypeMetadataNames = new string[]
+        private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]
             {
                 "System.IntPtr",
                 "System.UIntPtr",
@@ -41,6 +40,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             {
                 "System.GC",
                 "System.Runtime.InteropServices.Marshal",
+            };
+        private static readonly string[] _metadataNamesOfDisposableTypesWhichDoNotNeedToBeDisposed = new string[]
+            {
+                "System.Task",
             };
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
 
                 if (!isTypeDisposable
-                    && instanceStateMemberTypes.Any(x => IsTypeDisposable(context, x, disposableType)))
+                    && instanceStateMemberTypes.Any(x => DoesTypeNeedToBeDisposed(context, x, disposableType)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TypesWithDisposableStateShouldImplementIDisposableDescriptor,
@@ -202,7 +205,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 return false;
             }
 
-            var unmanagedTypes = _unmanagedTypeMetadataNames
+            var unmanagedTypes = _metadataNamesOfUnmanagedTypes
                 .Select(context.SemanticModel.Compilation.GetTypeByMetadataName)
                 .Where(x => x != null)
                 .ToList();
@@ -219,12 +222,32 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             return false;
         }
 
-        private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
+        private static bool DoesTypeNeedToBeDisposed(SemanticModelAnalysisContext context,
             TypeSyntax type, INamedTypeSymbol disposableType)
         {
             var typeSymbol = context.SemanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
-            return IsTypeDisposable(disposableType, typeSymbol);
+            if (!IsTypeDisposable(disposableType, typeSymbol))
+            {
+                return false;
+            }
+
+            var disposableTypesWhichDoNotNeedToBeDisposed
+                = _metadataNamesOfDisposableTypesWhichDoNotNeedToBeDisposed
+                    .Select(x => context.SemanticModel.Compilation.GetTypeByMetadataName(x));
+
+            var baseType = typeSymbol.BaseType;
+            while (baseType != null)
+            {
+                if (disposableTypesWhichDoNotNeedToBeDisposed.Any(x => x.Equals(baseType)))
+                {
+                    return false;
+                }
+
+                baseType = baseType.BaseType;
+            }
+
+            return true;
         }
 
         private static bool IsTypeDisposable(SemanticModelAnalysisContext context,
