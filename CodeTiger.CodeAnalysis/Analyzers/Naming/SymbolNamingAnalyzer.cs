@@ -20,7 +20,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing.",
                 "Constant field names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
                 true);
-        internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamcelCasingDescriptor
+        internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
 
@@ -33,7 +33,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     ConstantFieldNamesShouldUsePascalCasingDescriptor,
-                    ParameterNamesShouldUseCamcelCasingDescriptor);
+                    ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
 
@@ -65,19 +65,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     typeIdentifier = ((StructDeclarationSyntax)context.Node).Identifier;
                     break;
                 case SyntaxKind.InterfaceDeclaration:
-                    typeIdentifier = ((StructDeclarationSyntax)context.Node).Identifier;
+                    typeIdentifier = ((InterfaceDeclarationSyntax)context.Node).Identifier;
                     break;
                 case SyntaxKind.EnumDeclaration:
-                    typeIdentifier = ((StructDeclarationSyntax)context.Node).Identifier;
+                    typeIdentifier = ((EnumDeclarationSyntax)context.Node).Identifier;
                     break;
                 default:
                     return;
             }
 
-            if (!IsProbablyPascalCased(typeIdentifier.Text)
+            if ((IsProbablyPascalCased(typeIdentifier.Text) == false)
                 && !(context.Node.Kind() == SyntaxKind.InterfaceDeclaration
                     && typeIdentifier.Text[0] == 'I'
-                    && IsProbablyPascalCased(typeIdentifier.Text.Substring(1))))
+                    && (IsProbablyPascalCased(typeIdentifier.Text.Substring(1)) == true)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
@@ -94,7 +94,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
             {
-                if (!IsProbablyPascalCased(fieldDeclaration.Identifier.Text))
+                if (IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(ConstantFieldNamesShouldUsePascalCasingDescriptor,
                         fieldDeclaration.Identifier.GetLocation()));
@@ -106,15 +106,20 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var parameterNode = (ParameterSyntax)context.Node;
             
-            if (!IsProbablyCamelCased(parameterNode.Identifier.Text))
+            if (IsProbablyCamelCased(parameterNode.Identifier.Text) == false)
             {
-                context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamcelCasingDescriptor,
+                context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
                     parameterNode.Identifier.GetLocation()));
             }
         }
 
-        private static bool IsProbablyPascalCased(string value)
+        private static bool? IsProbablyPascalCased(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
             char[] valueCharacters = value.ToCharArray();
 
             return char.IsUpper(value[0])
@@ -122,8 +127,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 && (value.Length == 1 || valueCharacters.Any(char.IsLower));
         }
 
-        private static bool IsProbablyCamelCased(string value)
+        private static bool? IsProbablyCamelCased(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
             char[] valueCharacters = value.ToCharArray();
 
             return char.IsLower(value[0])
