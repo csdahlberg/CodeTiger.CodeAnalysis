@@ -1,5 +1,7 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,9 +15,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor
+        internal static readonly DiagnosticDescriptor NonGenericCollectionsShouldNotBeHeldAsStateDescriptor
             = new DiagnosticDescriptor("CT1004", "Non-generic collections should not be held as state.",
                 "Non-generic collections should not be held as state.", "CodeTiger.Design",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor NonGenericCollectionsShouldNotBeExposedDescriptor
+            = new DiagnosticDescriptor("CT1005", "Non-generic collections should not be exposed.",
+                "Non-generic collections should not be exposed.", "CodeTiger.Design",
                 DiagnosticSeverity.Warning, true);
 
         private static readonly string[] _nonGenericCollectionMetadataNames = new string[]
@@ -43,7 +49,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             get
             {
-                return ImmutableArray.Create(NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor);
+                return ImmutableArray.Create(NonGenericCollectionsShouldNotBeHeldAsStateDescriptor,
+                    NonGenericCollectionsShouldNotBeExposedDescriptor);
             }
         }
 
@@ -58,6 +65,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
 
             context.RegisterSyntaxNodeAction(AnalyzeTypeForNonGenericCollectionState, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzePropertyForNonGenericCollectionExposure,
+                SyntaxKind.PropertyDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeMethodForNonGenericCollectionExposure,
+                SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeConstructorForNonGenericCollectionExposure,
+                SyntaxKind.ConstructorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeFieldForNonGenericCollectionExposure,
+                SyntaxKind.FieldDeclaration);
         }
 
         private static void AnalyzeTypeForNonGenericCollectionState(SyntaxNodeAnalysisContext context)
@@ -76,24 +91,107 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     return;
             }
 
-            foreach (var nonGenericCollectionMember in members.Where(x => IsNonGenericCollection(context, x)))
+            foreach (var nonGenericCollectionMember in members
+                .Where(x => IsOrIncludesNonGenericCollection(context, x)))
             {
-                context.ReportDiagnostic(Diagnostic.Create(NonGenericdCollectionsShouldNotBeHeldAsStateDescriptor,
+                context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeHeldAsStateDescriptor,
                     GetIdentifierLocation(nonGenericCollectionMember)));
             }
         }
 
-        private static bool IsNonGenericCollection(SyntaxNodeAnalysisContext context,
+        private static void AnalyzePropertyForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
+        {
+            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
+            var propertySymbol = context.SemanticModel
+                .GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+
+            if (!propertySymbol.IsExternallyAccessible())
+            {
+                return;
+            }
+
+            if (IsOrIncludesNonGenericCollection(context, propertyDeclaration.Type))
+
+            context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                propertyDeclaration.Type.GetLocation()));
+        }
+
+        private static void AnalyzeMethodForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
+        {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            var methodSymbol = context.SemanticModel
+                .GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+            if (!methodSymbol.IsExternallyAccessible())
+            {
+                return;
+            }
+            
+            if (IsOrIncludesNonGenericCollection(context, methodDeclaration.ReturnType))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                    methodDeclaration.ReturnType.GetLocation()));
+            }
+
+            foreach (var parameter in methodDeclaration.ParameterList.Parameters)
+            {
+                if (IsOrIncludesNonGenericCollection(context, parameter.Type))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                        parameter.Type.GetLocation()));
+                }
+            }
+        }
+
+        private static void AnalyzeConstructorForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
+        {
+            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+            var constructorSymbol = context.SemanticModel
+                .GetDeclaredSymbol(constructorDeclaration, context.CancellationToken);
+
+            if (!constructorSymbol.IsExternallyAccessible())
+            {
+                return;
+            }
+
+            foreach (var parameter in constructorDeclaration.ParameterList.Parameters)
+            {
+                if (IsOrIncludesNonGenericCollection(context, parameter.Type))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                        parameter.Type.GetLocation()));
+                }
+            }
+        }
+
+        private static void AnalyzeFieldForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
+        {
+            var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
+            var variableDeclarator = fieldDeclaration.Declaration.Variables.Single();
+            var fieldSymbol = context.SemanticModel
+                .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
+
+            if (!fieldSymbol.IsExternallyAccessible())
+            {
+                return;
+            }
+
+            if (IsOrIncludesNonGenericCollection(context, fieldDeclaration.Declaration.Type))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                    fieldDeclaration.Declaration.Type.GetLocation()));
+            }
+        }
+
+        private static bool IsOrIncludesNonGenericCollection(SyntaxNodeAnalysisContext context,
             MemberDeclarationSyntax member)
         {
-            ITypeSymbol memberType;
+            TypeSyntax memberTypeSyntax;
 
             switch (member.Kind())
             {
                 case SyntaxKind.FieldDeclaration:
-                    memberType = context.SemanticModel
-                        .GetTypeInfo(((FieldDeclarationSyntax)member).Declaration.Type, context.CancellationToken)
-                        .Type;
+                    memberTypeSyntax = ((FieldDeclarationSyntax)member).Declaration.Type;
                     break;
                 case SyntaxKind.PropertyDeclaration:
                     {
@@ -103,19 +201,40 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                             return false;
                         }
 
-                        memberType = context.SemanticModel
-                            .GetTypeInfo(propertyNode.Type, context.CancellationToken).Type;
+                        memberTypeSyntax = propertyNode.Type;
                     }
                     break;
                 default:
                     return false;
             }
 
+            return IsOrIncludesNonGenericCollection(context, memberTypeSyntax);
+        }
+
+        private static bool IsOrIncludesNonGenericCollection(SyntaxNodeAnalysisContext context,
+            TypeSyntax typeSyntax)
+        {
+            if (typeSyntax.Kind() == SyntaxKind.ArrayType)
+            {
+                return IsOrIncludesNonGenericCollection(context, ((ArrayTypeSyntax)typeSyntax).ElementType);
+            }
+
+            var genericArguments = typeSyntax.DescendantNodes().OfType<GenericNameSyntax>().FirstOrDefault();
+            if (genericArguments != null)
+            {
+                return genericArguments.TypeArgumentList.Arguments
+                    .Any(x => IsOrIncludesNonGenericCollection(context, x));
+            }
+
+            var typeSymbol = context.SemanticModel
+                .GetTypeInfo(typeSyntax, context.CancellationToken)
+                .Type;
+
             foreach (string nonGenericCollectionName in _nonGenericCollectionMetadataNames)
             {
                 var nonGenericSymbol = context.SemanticModel.Compilation
                     .GetTypeByMetadataName(nonGenericCollectionName);
-                if (nonGenericSymbol != null && nonGenericSymbol.Equals(memberType))
+                if (nonGenericSymbol != null && nonGenericSymbol.Equals(typeSymbol))
                 {
                     return true;
                 }
