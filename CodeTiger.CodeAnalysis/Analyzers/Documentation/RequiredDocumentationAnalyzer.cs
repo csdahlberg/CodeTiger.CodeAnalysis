@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -86,29 +87,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
         {
             var symbol = context.SemanticModel.GetDeclaredSymbol(context.Node, context.CancellationToken);
 
-            return IsExternallyAccessible(symbol);
-        }
-
-        private static bool IsExternallyAccessible(ISymbol symbol)
-        {
-            if (symbol.ContainingType?.ContainingType != null
-                && !IsExternallyAccessible(symbol.ContainingType?.ContainingType))
-            {
-                return false;
-            }
-
-            switch (symbol.DeclaredAccessibility)
-            {
-                case Accessibility.Public:
-                case Accessibility.Protected:
-                case Accessibility.ProtectedAndInternal:
-                case Accessibility.ProtectedOrInternal:
-                    return true;
-                case Accessibility.Internal:
-                case Accessibility.Private:
-                    default:
-                    return false;
-            }
+            return symbol.IsExternallyAccessible();
         }
 
         private static bool HasParameters(SyntaxNode node)
