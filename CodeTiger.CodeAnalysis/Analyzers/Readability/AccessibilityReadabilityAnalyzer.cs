@@ -67,6 +67,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
         private void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var parentKind = context.Node.Parent?.Kind();
+            if (parentKind == SyntaxKind.InterfaceDeclaration || parentKind == SyntaxKind.EnumDeclaration)
+            {
+                return;
+            }
+
             var modifiers = GetModifiers(context.Node);
 
             if (!modifiers.Any(x => SyntaxFacts.IsAccessibilityModifier(x.Kind()))
