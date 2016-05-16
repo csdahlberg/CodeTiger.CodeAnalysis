@@ -47,6 +47,7 @@
     <Compile Include="Analyzers\Design\CopyConstructorDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\InheritedMemberDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\ParameterDesignAnalyzer.cs" />
+    <Compile Include="Analyzers\Design\PropertySetterDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\StaticDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\NonGenericCollectionDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Documentation\RequiredDocumentationAnalyzer.cs" />
