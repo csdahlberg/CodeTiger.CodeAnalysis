@@ -45,6 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Analyzers\Design\CopyConstructorDesignAnalyzer.cs" />
+    <Compile Include="Analyzers\Design\InheritedMemberDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\ParameterDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\StaticDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\NonGenericCollectionDesignAnalyzer.cs" />
@@ -72,7 +73,9 @@
     <Compile Include="Analyzers\Usage\DebugUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\ExceptionUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\SuppressMessageAttributeUsageAnalyzer.cs" />
+    <Compile Include="CSharp\SymbolExtensions.cs" />
     <Compile Include="CSharp\SyntaxKindExtensions.cs" />
+    <Compile Include="CSharp\TypeSymbolExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
