@@ -21,7 +21,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="..\Build\Release\*.dll" target="analyzers\dotnet\cs" exclude="..\Build\Release\Microsoft.CodeAnalysis.*;..\Build\Release\System.Collections.Immutable.*;..\Build\Release\System.Reflection.Metadata.*;..\Build\Release\UnitTests.*" />
+    <file src="*.dll" target="analyzers\dotnet\cs" exclude="Microsoft.CodeAnalysis.*;System.Collections.Immutable.*;System.Reflection.Metadata.*;UnitTests.*" />
     <file src="tools\*.ps1" target="tools\" />
   </files>
 </package>
