@@ -51,10 +51,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
         private void AnalyzeThreadResetAbortUsage(SemanticModelAnalysisContext context)
         {
-            var threadType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Threading.Thread");
+            var threadType = context.SemanticModel.Compilation?.GetTypeByMetadataName("System.Threading.Thread");
+
+            if (threadType == null)
+            {
+                return;
+            }
+
             var resetAbortSymbols = threadType.GetMembers("ResetAbort");
 
-            if (threadType == null || resetAbortSymbols.IsDefaultOrEmpty)
+            if (resetAbortSymbols.IsDefaultOrEmpty)
             {
                 return;
             }
@@ -63,7 +69,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
             foreach (var invocation in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
-                var invokedSymbol = context.SemanticModel.GetSymbolInfo(invocation.Expression).Symbol;
+                var invokedSymbol = context.SemanticModel.GetSymbolInfo(invocation.Expression, context.CancellationToken).Symbol
+                    ?? context.SemanticModel.GetDeclaredSymbol(invocation.Expression, context.CancellationToken);
 
                 if (resetAbortSymbols.Any(x => x.Equals(invokedSymbol)))
                 {
