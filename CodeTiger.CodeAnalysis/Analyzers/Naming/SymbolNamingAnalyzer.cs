@@ -122,9 +122,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             char[] valueCharacters = value.ToCharArray();
 
-            return char.IsUpper(value[0])
+            return char.IsUpper(valueCharacters[0])
                 && valueCharacters.All(char.IsLetterOrDigit)
-                && (value.Length == 1 || valueCharacters.Any(char.IsLower));
+                && (valueCharacters.Length == 1 || valueCharacters.Any(char.IsLower));
         }
 
         private static bool? IsProbablyCamelCased(string value)
@@ -136,7 +136,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             char[] valueCharacters = value.ToCharArray();
 
-            return char.IsLower(value[0])
+            return char.IsLower(valueCharacters[0])
                 && valueCharacters.All(char.IsLetterOrDigit);
         }
     }
