@@ -43,7 +43,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             };
         private static readonly string[] _metadataNamesOfDisposableTypesWhichDoNotNeedToBeDisposed = new string[]
             {
-                "System.Task",
+                "System.Threading.Tasks.Task",
             };
 
         /// <summary>
@@ -79,8 +79,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
             foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
             {
-                var instanceStateMembers = typeDeclaration.Members.Where(IsInstanceState);
-                var instanceStateMemberTypes = instanceStateMembers.Select(GetMemberType);
+                var instanceStateMemberTypes = typeDeclaration.Members.Where(IsInstanceState)
+                    .Select(GetMemberType)
+                    .ToList();
 
                 bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
 
@@ -234,7 +235,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
             var disposableTypesWhichDoNotNeedToBeDisposed
                 = _metadataNamesOfDisposableTypesWhichDoNotNeedToBeDisposed
-                    .Select(x => context.SemanticModel.Compilation.GetTypeByMetadataName(x));
+                    .Select(context.SemanticModel.Compilation.GetTypeByMetadataName)
+                    .Where(x => x != null)
+                    .ToList();
 
             var baseType = typeSymbol.BaseType;
             while (baseType != null)
