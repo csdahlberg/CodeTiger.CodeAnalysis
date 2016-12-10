@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -44,26 +45,32 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         private void AnalyzeClassForAllStaticMembers(SyntaxNodeAnalysisContext context)
         {
             var node = (ClassDeclarationSyntax)context.Node;
-
-            if (!node.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword))
+            if (node.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword))
             {
-                var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+                // The class is already static
+                return;
+            }
 
-                // The implicit default constructor is returned by GetMembers(). To ignore such constructors, any
-                // implicitly declared methods will not be considered instance methods.
-                if (classTypeSymbol.Interfaces.Any()
-                    || classTypeSymbol.GetMembers()
-                        .Any(x => !x.IsStatic && (x.Kind != SymbolKind.Method || !x.IsImplicitlyDeclared)))
-                {
-                    return;
-                }
+            var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+            if (classTypeSymbol.Interfaces.Any())
+            {
+                // The class implements an interface, and so cannot be made static
+                return;
+            }
 
-                var objectTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Object");
-                if (classTypeSymbol.BaseType.Equals(objectTypeSymbol))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(ClassesWithAllStaticMembersShouldBeStaticDescriptor,
-                        node.Identifier.GetLocation()));
-                }
+            var classMembers = classTypeSymbol.GetMembers();
+            if (classMembers.None(x => x.IsStatic))
+            {
+                // The class does not have any static members
+                return;
+            }
+
+            // 
+            var objectTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Object");
+            if (classTypeSymbol.BaseType.Equals(objectTypeSymbol))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ClassesWithAllStaticMembersShouldBeStaticDescriptor,
+                    node.Identifier.GetLocation()));
             }
         }
     }
