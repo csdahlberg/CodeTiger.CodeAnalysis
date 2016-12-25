@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.22609.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26014.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeTiger.CodeAnalysis", "CodeTiger.CodeAnalysis\CodeTiger.CodeAnalysis.csproj", "{493936FB-E4BE-49F4-84AC-3EA84D8C2155}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{E2D4450A-0F0A-41EC-A45E-D113BF65BE60}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeTiger.CodeAnalysis", "CodeTiger.CodeAnalysis\CodeTiger.CodeAnalysis.csproj", "{493936FB-E4BE-49F4-84AC-3EA84D8C2155}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.CodeTiger.CodeAnalysis", "UnitTests\UnitTests.CodeTiger.CodeAnalysis\UnitTests.CodeTiger.CodeAnalysis.csproj", "{A9A0557F-9344-4C8F-821D-9AE708BD062D}"
 EndProject
