@@ -102,7 +102,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)NuGet.exe" pack "$(ProjectDir)$(ProjectName).nuspec" -BasePath "$(TargetDir) " -OutputDirectory "$(TargetDir) " -Properties Configuration=$(Configuration)</PostBuildEvent>
+    <PostBuildEvent>"$(SolutionDir)NuGet.exe" pack "$(TargetDir)$(ProjectName).nuspec" -BasePath "$(TargetDir) " -OutputDirectory "$(TargetDir) "</PostBuildEvent>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
