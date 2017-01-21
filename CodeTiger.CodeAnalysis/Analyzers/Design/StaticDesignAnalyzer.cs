@@ -1,6 +1,5 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using CodeTiger.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -45,13 +44,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         private void AnalyzeClassForAllStaticMembers(SyntaxNodeAnalysisContext context)
         {
             var node = (ClassDeclarationSyntax)context.Node;
-            if (node.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword))
+            var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+
+            if (classTypeSymbol.IsAbstract || classTypeSymbol.IsStatic)
             {
-                // The class is already static
+                // The class is abstract or already static, and so cannot be made static
                 return;
             }
 
-            var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
             if (classTypeSymbol.Interfaces.Any())
             {
                 // The class implements an interface, and so cannot be made static
@@ -59,19 +59,23 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
 
             var classMembers = classTypeSymbol.GetMembers();
-            if (classMembers.None(x => x.IsStatic))
+            if (!classMembers.Any(x => !x.IsImplicitlyDeclared)
+                || classMembers.Any(x => !x.IsStatic && !x.IsImplicitlyDeclared))
             {
-                // The class does not have any static members
+                // The class either does not have any members (and so should not be made static) or has some
+                // non-static members (and so cannot be made static).
                 return;
             }
 
-            // 
             var objectTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Object");
-            if (classTypeSymbol.BaseType.Equals(objectTypeSymbol))
+            if (!classTypeSymbol.BaseType.Equals(objectTypeSymbol))
             {
-                context.ReportDiagnostic(Diagnostic.Create(ClassesWithAllStaticMembersShouldBeStaticDescriptor,
-                    node.Identifier.GetLocation()));
+                // The class inherits from a class other than System.Object, and so cannot be made static
+                return;
             }
+
+            context.ReportDiagnostic(Diagnostic.Create(ClassesWithAllStaticMembersShouldBeStaticDescriptor,
+                node.Identifier.GetLocation()));
         }
     }
 }
