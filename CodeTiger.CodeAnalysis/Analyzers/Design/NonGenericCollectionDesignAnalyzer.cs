@@ -196,7 +196,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 case SyntaxKind.PropertyDeclaration:
                     {
                         var propertyNode = (PropertyDeclarationSyntax)member;
-                        if (propertyNode.AccessorList.Accessors.Any(x => x.Body != null))
+                        if (propertyNode.AccessorList?.Accessors.Any(x => x.Body != null) == true)
                         {
                             return false;
                         }

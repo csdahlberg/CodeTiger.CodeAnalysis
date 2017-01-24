@@ -169,9 +169,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        var propertyDeclaration = (BasePropertyDeclarationSyntax)memberDeclaration;
+                        var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
                         return !propertyDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword)
-                            && propertyDeclaration.AccessorList.Accessors.All(x => x.Body == null);
+                            && propertyDeclaration.ExpressionBody == null
+                            && propertyDeclaration.AccessorList?.Accessors.All(x => x.Body == null) == true;
                     }
                 default:
                     return false;
