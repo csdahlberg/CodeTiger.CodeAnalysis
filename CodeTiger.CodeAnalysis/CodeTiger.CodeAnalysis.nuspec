@@ -8,6 +8,7 @@
     <owners>Chris Dahlberg</owners>
     <licenseUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis/wiki/License</licenseUrl>
     <projectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</projectUrl>
+    <iconUrl>http://www.codetiger.net/images/tigerpaw64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>General purpose Roslyn-based static code analysis rules for C#.
 
