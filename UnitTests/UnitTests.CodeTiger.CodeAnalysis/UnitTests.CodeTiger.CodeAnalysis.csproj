@@ -190,6 +190,7 @@
     <Compile Include="Analyzers\DiagnosticResult.cs" />
     <Compile Include="Analyzers\DiagnosticResultLocation.cs" />
     <Compile Include="Analyzers\DiagnosticVerifier.cs" />
+    <Compile Include="Analyzers\Naming\SymbolNamingAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

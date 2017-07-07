@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -20,6 +21,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing.",
                 "Constant field names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
                 true);
+        internal static readonly DiagnosticDescriptor PrivateFieldNamesShouldUseCamelCasingDescriptor
+            = new DiagnosticDescriptor("CT1704",
+                "Private field names should use camel casing with a leading underscore.",
+                "Private field names should use camel casing with a leading underscore.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -33,6 +39,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     ConstantFieldNamesShouldUsePascalCasingDescriptor,
+                    PrivateFieldNamesShouldUseCamelCasingDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -48,7 +55,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeConstantFieldName, SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -84,20 +91,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeConstantFieldName(SyntaxNodeAnalysisContext context)
+        private void AnalyzeFieldName(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclarationNode = (FieldDeclarationSyntax)context.Node;
-            if (!fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.ConstKeyword))
+            if (fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.ConstKeyword))
             {
-                return;
-            }
-
-            foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
-            {
-                if (NamingUtility.IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
+                foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(ConstantFieldNamesShouldUsePascalCasingDescriptor,
-                        fieldDeclaration.Identifier.GetLocation()));
+                    if (NamingUtility.IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            ConstantFieldNamesShouldUsePascalCasingDescriptor,
+                            fieldDeclaration.Identifier.GetLocation()));
+                    }
+                }
+            }
+            else if (fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.PrivateKeyword))
+            {
+                foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
+                {
+                    if (NamingUtility.IsProbablyCamelCased(fieldDeclaration.Identifier.Text, '_') == false)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(PrivateFieldNamesShouldUseCamelCasingDescriptor,
+                            fieldDeclaration.Identifier.GetLocation()));
+                    }
                 }
             }
         }
