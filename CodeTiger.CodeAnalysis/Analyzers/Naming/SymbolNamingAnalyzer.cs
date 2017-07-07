@@ -74,10 +74,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     return;
             }
 
-            if ((IsProbablyPascalCased(typeIdentifier.Text) == false)
+            if ((NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false)
                 && !(context.Node.Kind() == SyntaxKind.InterfaceDeclaration
                     && typeIdentifier.Text[0] == 'I'
-                    && (IsProbablyPascalCased(typeIdentifier.Text.Substring(1)) == true)))
+                    && (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text.Substring(1)) == true)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
@@ -94,7 +94,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
             {
-                if (IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
+                if (NamingUtility.IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(ConstantFieldNamesShouldUsePascalCasingDescriptor,
                         fieldDeclaration.Identifier.GetLocation()));
@@ -106,38 +106,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var parameterNode = (ParameterSyntax)context.Node;
             
-            if (IsProbablyCamelCased(parameterNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.Text) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
                     parameterNode.Identifier.GetLocation()));
             }
-        }
-
-        private static bool? IsProbablyPascalCased(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return null;
-            }
-
-            char[] valueCharacters = value.ToCharArray();
-
-            return char.IsUpper(valueCharacters[0])
-                && valueCharacters.All(char.IsLetterOrDigit)
-                && (valueCharacters.Length == 1 || valueCharacters.Any(char.IsLower));
-        }
-
-        private static bool? IsProbablyCamelCased(string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                return null;
-            }
-
-            char[] valueCharacters = value.ToCharArray();
-
-            return char.IsLower(valueCharacters[0])
-                && valueCharacters.All(char.IsLetterOrDigit);
         }
     }
 }
