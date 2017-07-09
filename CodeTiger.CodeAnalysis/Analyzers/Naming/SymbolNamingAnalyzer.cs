@@ -32,6 +32,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor DelegateNamesShouldUsePascalCasingDescriptor
             = new DiagnosticDescriptor("CT1706", "Delegate names should use pascal casing.",
                 "Delegate names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor PropertyNamesShouldUsePascalCasingDescriptor
+            = new DiagnosticDescriptor("CT1707", "Property names should use pacal casing.",
+                "Property names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -48,6 +51,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     PrivateFieldNamesShouldUseCamelCasingDescriptor,
                     EventNamesShouldUsePascalCasingDescriptor,
                     DelegateNamesShouldUsePascalCasingDescriptor,
+                    PropertyNamesShouldUsePascalCasingDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -66,6 +70,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEventFieldName, SyntaxKind.EventFieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeDelegateName, SyntaxKind.DelegateDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzePropertyName, SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -150,6 +155,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(DelegateNamesShouldUsePascalCasingDescriptor,
                     delegateDeclarationNode.Identifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzePropertyName(SyntaxNodeAnalysisContext context)
+        {
+            var propertyDeclarationNode = (PropertyDeclarationSyntax)context.Node;
+
+            if (NamingUtility.IsProbablyPascalCased(propertyDeclarationNode.Identifier.Text) == false)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
+                    propertyDeclarationNode.Identifier.GetLocation()));
             }
         }
 

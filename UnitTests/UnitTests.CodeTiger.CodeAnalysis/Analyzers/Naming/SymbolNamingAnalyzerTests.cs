@@ -279,6 +279,91 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void PropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public object One { get; set; }
+        protected bool Two => true;
+        internal int Three
+        {
+            get { return 3; }
+            set { }
+        }
+        private object Four => One;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void PropertiesWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public object one { get; set; }
+        protected bool _two => true;
+        internal int _Three
+        {
+            get { return 3; }
+            set { }
+        }
+        private object FOUR => one;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1707",
+                    Message = "Property names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1707",
+                    Message = "Property names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 24)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1707",
+                    Message = "Property names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1707",
+                    Message = "Property names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 24)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
