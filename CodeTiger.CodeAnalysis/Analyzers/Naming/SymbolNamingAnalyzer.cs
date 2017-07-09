@@ -38,6 +38,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor MethodNamesShouldUsePascalCasingDescriptor
             = new DiagnosticDescriptor("CT1708", "Method names should use pascal casing.",
                 "Method names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor EnumerationMemberNamesShouldUsePascalCasingDescriptor
+            = new DiagnosticDescriptor("CT1709", "Enumeration member names should use pascal casing.",
+                "Enumeration member names should use pascal casing.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -56,6 +60,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     DelegateNamesShouldUsePascalCasingDescriptor,
                     PropertyNamesShouldUsePascalCasingDescriptor,
                     MethodNamesShouldUsePascalCasingDescriptor,
+                    EnumerationMemberNamesShouldUsePascalCasingDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -76,6 +81,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeDelegateName, SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzePropertyName, SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeMethodName, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeEnumerationMemberName, SyntaxKind.EnumMemberDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -182,6 +188,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodNamesShouldUsePascalCasingDescriptor,
                     methodDeclarationNode.Identifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzeEnumerationMemberName(SyntaxNodeAnalysisContext context)
+        {
+            var enumMemberDeclarationNode = (EnumMemberDeclarationSyntax)context.Node;
+
+            if (NamingUtility.IsProbablyPascalCased(enumMemberDeclarationNode.Identifier.Text) == false)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(EnumerationMemberNamesShouldUsePascalCasingDescriptor,
+                    enumMemberDeclarationNode.Identifier.GetLocation()));
             }
         }
 

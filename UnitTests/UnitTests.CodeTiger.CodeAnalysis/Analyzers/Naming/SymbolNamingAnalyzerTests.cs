@@ -441,6 +441,71 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void EnumerationMembersWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public enum Enum1
+    {
+        One,
+        Two = 2,
+        Three = 1 + 2,
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void EnumerationMembersWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public enum Enum1
+    {
+        one,
+        _two = 2,
+        THREE = 1 + 2,
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1709",
+                    Message = "Enumeration member names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 9)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1709",
+                    Message = "Enumeration member names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 9)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1709",
+                    Message = "Enumeration member names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 9)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
