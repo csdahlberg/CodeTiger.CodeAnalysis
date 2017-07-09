@@ -26,6 +26,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "Private field names should use camel casing with a leading underscore.",
                 "Private field names should use camel casing with a leading underscore.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor EventNamesShouldUsePascalCasingDescriptor
+            = new DiagnosticDescriptor("CT1705", "Event names should use pascal casing.",
+                "Event names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -40,6 +43,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 return ImmutableArray.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     ConstantFieldNamesShouldUsePascalCasingDescriptor,
                     PrivateFieldNamesShouldUseCamelCasingDescriptor,
+                    EventNamesShouldUsePascalCasingDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -56,6 +60,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeEventFieldName, SyntaxKind.EventFieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -115,6 +120,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         context.ReportDiagnostic(Diagnostic.Create(PrivateFieldNamesShouldUseCamelCasingDescriptor,
                             fieldDeclaration.Identifier.GetLocation()));
                     }
+                }
+            }
+        }
+
+        private void AnalyzeEventFieldName(SyntaxNodeAnalysisContext context)
+        {
+            var eventFieldDeclarationNode = (EventFieldDeclarationSyntax)context.Node;
+            foreach (var eventFieldDeclaration in eventFieldDeclarationNode.Declaration.Variables)
+            {
+                if (NamingUtility.IsProbablyPascalCased(eventFieldDeclaration.Identifier.Text) == false)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(EventNamesShouldUsePascalCasingDescriptor,
+                        eventFieldDeclaration.Identifier.GetLocation()));
                 }
             }
         }

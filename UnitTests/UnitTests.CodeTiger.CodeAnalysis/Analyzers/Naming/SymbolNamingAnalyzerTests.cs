@@ -136,6 +136,72 @@ namespace ClassLibrary1
                 });
         }
 
+        [Fact]
+        public void EventFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public event Action One();
+        protected event Action Two;
+        internal event Action Three;
+        private event Action Four;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void EventFieldsWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public event Action one;
+        protected event Action _two;
+        private event Action THREE;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1705",
+                    Message = "Event names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 29)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1705",
+                    Message = "Event names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 32)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1705",
+                    Message = "Event names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 30)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
