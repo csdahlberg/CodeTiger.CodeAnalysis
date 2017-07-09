@@ -364,6 +364,83 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void MethodsWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void One() { }
+        protected bool Two() => true;
+        internal int Three() { return 3; }
+        private object Four(int a) { return a; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void MethodsWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void one() { }
+        protected bool _two() => true;
+        internal int _Three() { return 3; }
+        private object FOUR(int a) { return a; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1708",
+                    Message = "Method names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 21)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1708",
+                    Message = "Method names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 24)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1708",
+                    Message = "Method names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1708",
+                    Message = "Method names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 24)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
