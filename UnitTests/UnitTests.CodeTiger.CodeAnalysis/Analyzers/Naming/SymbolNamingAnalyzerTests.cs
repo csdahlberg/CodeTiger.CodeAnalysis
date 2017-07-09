@@ -202,6 +202,83 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void DelegatesWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public delegate void One();
+        protected delegate int Two(string x);
+        internal delegate string Three(int x);
+        private delegate object Four();
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void DelegatesWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public delegate void one();
+        protected delegate int TWO(string x);
+        internal delegate string _three(int x);
+        private delegate object _FOUR();
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1706",
+                    Message = "Delegate names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 30)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1706",
+                    Message = "Delegate names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 32)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1706",
+                    Message = "Delegate names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 34)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1706",
+                    Message = "Delegate names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 33)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
