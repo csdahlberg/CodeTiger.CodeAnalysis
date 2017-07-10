@@ -42,6 +42,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1709", "Enumeration member names should use pascal casing.",
                 "Enumeration member names should use pascal casing.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor VariableNamesShouldUseCamelCasingDescriptor
+            = new DiagnosticDescriptor("CT1710", "Variable names should use camel casing.",
+                "Variable names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -61,6 +64,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     PropertyNamesShouldUsePascalCasingDescriptor,
                     MethodNamesShouldUsePascalCasingDescriptor,
                     EnumerationMemberNamesShouldUsePascalCasingDescriptor,
+                    VariableNamesShouldUseCamelCasingDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -82,6 +86,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzePropertyName, SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeMethodName, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEnumerationMemberName, SyntaxKind.EnumMemberDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeLocalVariableNames, SyntaxKind.LocalDeclarationStatement);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -199,6 +204,20 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(EnumerationMemberNamesShouldUsePascalCasingDescriptor,
                     enumMemberDeclarationNode.Identifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzeLocalVariableNames(SyntaxNodeAnalysisContext context)
+        {
+            var localDeclarationSyntax = (LocalDeclarationStatementSyntax)context.Node;
+            
+            foreach (var variableDeclaratorSyntax in localDeclarationSyntax.Declaration.Variables)
+            {
+                if (NamingUtility.IsProbablyCamelCased(variableDeclaratorSyntax.Identifier.Text) == false)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(VariableNamesShouldUseCamelCasingDescriptor,
+                        variableDeclaratorSyntax.Identifier.GetLocation()));
+                }
             }
         }
 

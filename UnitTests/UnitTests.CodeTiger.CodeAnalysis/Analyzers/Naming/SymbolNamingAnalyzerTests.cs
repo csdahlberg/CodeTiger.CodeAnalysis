@@ -506,6 +506,142 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void VariablesWithCamelCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var objectVariable = new object();
+            int intVariable1 = 13, intVariable2 = 36;
+            intVariable1 = objectVariable == null ? 12 : intVariable2;
+        }
+        
+        public static string GetString(int number)
+        {
+            return number.ToString();
+        }
+    }
+    
+    public static class Class2
+    {
+        public static void DoSomething()
+        {
+            var objectVariable = new object();
+            int intVariable1 = 13, intVariable2 = 26;
+            intVariable1 = objectVariable == null ? 12 : 14;
+        }
+        
+        public static string GetString(int number)
+        {
+            return number.ToString();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void VariablesWithNonCamellCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var _objectVariable = new object();
+            int IntVariable1 = 13, _intVariable2 = 36;
+            IntVariable1 = _objectVariable == null ? 12 : _intVariable2;
+        }
+    }
+    
+    public static class Class2
+    {
+        public static void DoSomething()
+        {
+            var _objectVariable = new object();
+            int IntVariable1 = 13, _IntVariable2 = 26;
+            IntVariable1 = _objectVariable == null ? 12 : 14;
+        }
+        
+        public static string GetString(int number)
+        {
+            return number.ToString();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 36)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 18, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 19, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1710",
+                    Message = "Variable names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 19, 36)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
