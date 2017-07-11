@@ -1273,6 +1273,116 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void EventArgsTypesWithNamesSuffixedWithEventArgsDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstEventArgs : EventArgs
+    {
+    }
+    public class SecondEventArgs : FirstEventArgs
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void EventArgsTypesWithNamesNotSuffixedWithEventArgsProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstArgs : EventArgs
+    {
+    }
+    public class SecondArgs : FirstArgs
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1725",
+                    Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1725",
+                    Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NonEventArgsTypesWithNamesNotSuffixedWithEventArgsDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstThing
+    {
+    }
+    public class SecondThing : FirstThing
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonEventArgsTypesWithNamesSuffixedWithEventArgsProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstEventArgs
+    {
+    }
+    public class SecondEventArgs : FirstEventArgs
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1726",
+                    Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1726",
+                    Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
