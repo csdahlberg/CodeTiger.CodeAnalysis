@@ -642,6 +642,84 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void InterfaceWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public interface IInterface1
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void InterfacesWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public interface interface1
+    {
+    }
+    public interface _Interface2
+    {
+    }
+    public interface INTERFACE3
+    {
+    }
+    public interface Interface4
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1711",
+                    Message = "Interface names should use pascal casing prefixed with 'I'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1711",
+                    Message = "Interface names should use pascal casing prefixed with 'I'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1711",
+                    Message = "Interface names should use pascal casing prefixed with 'I'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1711",
+                    Message = "Interface names should use pascal casing prefixed with 'I'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 22)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();

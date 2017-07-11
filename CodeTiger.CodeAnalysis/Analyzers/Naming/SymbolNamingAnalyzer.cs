@@ -45,6 +45,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor VariableNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1710", "Variable names should use camel casing.",
                 "Variable names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor
+            = new DiagnosticDescriptor("CT1711", "Interface names should use pascal casing prefixed with 'I'.",
+                "Interface names should use pascal casing prefixed with 'I'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
@@ -65,6 +69,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     MethodNamesShouldUsePascalCasingDescriptor,
                     EnumerationMemberNamesShouldUsePascalCasingDescriptor,
                     VariableNamesShouldUseCamelCasingDescriptor,
+                    InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor);
             }
         }
@@ -79,7 +84,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             Guard.ArgumentIsNotNull(nameof(context), context);
 
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
-                SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
+                SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEventFieldName, SyntaxKind.EventFieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeDelegateName, SyntaxKind.DelegateDeclaration);
@@ -87,6 +92,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeMethodName, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEnumerationMemberName, SyntaxKind.EnumMemberDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeLocalVariableNames, SyntaxKind.LocalDeclarationStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeInterfaceName, SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
         }
 
@@ -102,9 +108,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 case SyntaxKind.StructDeclaration:
                     typeIdentifier = ((StructDeclarationSyntax)context.Node).Identifier;
                     break;
-                case SyntaxKind.InterfaceDeclaration:
-                    typeIdentifier = ((InterfaceDeclarationSyntax)context.Node).Identifier;
-                    break;
                 case SyntaxKind.EnumDeclaration:
                     typeIdentifier = ((EnumDeclarationSyntax)context.Node).Identifier;
                     break;
@@ -112,10 +115,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     return;
             }
 
-            if ((NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false)
-                && !(context.Node.Kind() == SyntaxKind.InterfaceDeclaration
-                    && typeIdentifier.Text[0] == 'I'
-                    && (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text.Substring(1)) == true)))
+            if (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
@@ -218,6 +218,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     context.ReportDiagnostic(Diagnostic.Create(VariableNamesShouldUseCamelCasingDescriptor,
                         variableDeclaratorSyntax.Identifier.GetLocation()));
                 }
+            }
+        }
+
+        private void AnalyzeInterfaceName(SyntaxNodeAnalysisContext context)
+        {
+            var interfaceDeclarationNode = (InterfaceDeclarationSyntax)context.Node;
+
+            if (NamingUtility.IsProbablyPascalCased(interfaceDeclarationNode.Identifier.Text, 'I') == false)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
+                    interfaceDeclarationNode.Identifier.GetLocation()));
             }
         }
 

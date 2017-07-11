@@ -18,6 +18,26 @@ namespace CodeTiger.CodeAnalysis
                 && (valueCharacters.Length == 1 || valueCharacters.Any(char.IsLower));
         }
 
+        public static bool? IsProbablyPascalCased(string value, char leadingCharacter)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            if (value.Length < 2)
+            {
+                return false;
+            }
+
+            char[] valueCharacters = value.ToCharArray();
+
+            return valueCharacters[0] == leadingCharacter
+                && char.IsUpper(valueCharacters[1])
+                && valueCharacters.Skip(1).All(char.IsLetterOrDigit)
+                && (valueCharacters.Length == 2 || valueCharacters.Skip(1).Any(char.IsLower));
+        }
+
         public static bool? IsProbablyCamelCased(string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -33,9 +53,14 @@ namespace CodeTiger.CodeAnalysis
 
         public static bool? IsProbablyCamelCased(string value, char leadingCharacter)
         {
-            if (string.IsNullOrEmpty(value) || value.Length < 2)
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
+            }
+
+            if (value.Length < 2)
+            {
+                return false;
             }
 
             char[] valueCharacters = value.ToCharArray();
