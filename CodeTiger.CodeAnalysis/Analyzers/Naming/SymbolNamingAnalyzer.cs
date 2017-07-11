@@ -57,6 +57,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "CT1714", "Property names should not begin with the name of the containing type.",
                 "Property names should not begin with the name of the containing type.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor
+            = new DiagnosticDescriptor("CT1715",
+                "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                "Generic type parameter names should use pascal casing prefixed with 'T'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor GenericTypeParameterNamesShouldBeDescriptiveDescriptor
+            = new DiagnosticDescriptor("CT1716", "Generic type parameter names should be descriptive.",
+                "Generic type parameter names should be descriptive.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor = new DiagnosticDescriptor(
+                "CT1717", "Generic type parameter names should not be suffixed with 'Type'.",
+                "Generic type parameter names should not be suffixed with 'Type'.", "CodeTiger.Name",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -76,7 +91,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     VariableNamesShouldUseCamelCasingDescriptor,
                     InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor,
-                    PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor);
+                    PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
+                    GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
+                    GenericTypeParameterNamesShouldBeDescriptiveDescriptor,
+                    GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor);
             }
         }
 
@@ -100,6 +118,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeLocalVariableNames, SyntaxKind.LocalDeclarationStatement);
             context.RegisterSyntaxNodeAction(AnalyzeInterfaceName, SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
+            context.RegisterSyntaxNodeAction(AnalyzeGenericTypeParameterName, SyntaxKind.TypeParameter);
         }
 
         private void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
@@ -268,6 +287,58 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
                     parameterNode.Identifier.GetLocation()));
             }
+        }
+
+        private void AnalyzeGenericTypeParameterName(SyntaxNodeAnalysisContext context)
+        {
+            var typeParameterNode = (TypeParameterSyntax)context.Node;
+
+            if (typeParameterNode.Identifier.Text == "T")
+            {
+                return;
+            }
+
+            if (NamingUtility.IsProbablyPascalCased(typeParameterNode.Identifier.Text, 'T') == false)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
+                    typeParameterNode.Identifier.GetLocation()));
+            }
+            else
+            {
+                if (!IsNameProbablyDescriptive(typeParameterNode))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        GenericTypeParameterNamesShouldBeDescriptiveDescriptor,
+                        typeParameterNode.Identifier.GetLocation()));
+                }
+
+                if (typeParameterNode.Identifier.Text.EndsWith("Type"))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
+                        typeParameterNode.Identifier.GetLocation()));
+                }
+            }
+        }
+
+        private static bool IsNameProbablyDescriptive(TypeParameterSyntax typeParameterNode)
+        {
+            if (typeParameterNode.Identifier.Text.Length >= 5)
+            {
+                return true;
+            }
+
+            switch (typeParameterNode.Identifier.Text)
+            {
+                case "TIn":
+                case "TOut":
+                case "TId":
+                case "TKey":
+                    return true;
+            }
+
+            return false;
         }
     }
 }

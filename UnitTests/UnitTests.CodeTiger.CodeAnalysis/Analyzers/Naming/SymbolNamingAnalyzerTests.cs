@@ -876,6 +876,83 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void GenericTypeParametersWithValidNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1<T, TFactory>
+    {
+        public TOut DoSomething<TIn, TOut>(TIn in)
+        {
+            return default(TOut);
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void GenericTypeParametersWithInvalidNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1<t, TFac>
+    {
+        public Tout DoSomething<TInType, Tout>(TInType in)
+        {
+            return default(Tout);
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1715",
+                    Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 25)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1716",
+                    Message = "Generic type parameter names should be descriptive.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 28)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1717",
+                    Message = "Generic type parameter names should not be suffixed with 'Type'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 33)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1715",
+                    Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
