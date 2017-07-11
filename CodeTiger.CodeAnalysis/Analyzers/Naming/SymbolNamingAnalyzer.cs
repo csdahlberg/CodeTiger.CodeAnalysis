@@ -115,7 +115,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     return;
             }
 
-            if (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false)
+            if (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false
+                || NamingUtility.IsProbablyPascalCased(typeIdentifier.Text, 'I') == true)
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));

@@ -8,6 +8,77 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Naming
     public class SymbolNamingAnalyzerTests : DiagnosticVerifier
     {
         [Fact]
+        public void TypesWithPascalCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class ClassType
+    {
+    }
+    public struct StructType
+    {
+    }
+    public enum EnumType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void TypesWithNonPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class classType
+    {
+    }
+    public struct IStructType
+    {
+    }
+    public enum ENUMTYPE
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1702",
+                    Message = "Type names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1702",
+                    Message = "Type names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 19)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1702",
+                    Message = "Type names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
         public void ConstFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
         {
             string code = @"using System;

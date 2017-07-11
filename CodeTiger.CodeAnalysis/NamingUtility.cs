@@ -11,11 +11,20 @@ namespace CodeTiger.CodeAnalysis
                 return null;
             }
 
+            if (!char.IsUpper(value[0]))
+            {
+                return false;
+            }
+
+            if (value.Length == 1)
+            {
+                return null;
+            }
+
             char[] valueCharacters = value.ToCharArray();
 
-            return char.IsUpper(valueCharacters[0])
-                && valueCharacters.All(char.IsLetterOrDigit)
-                && (valueCharacters.Length == 1 || valueCharacters.Any(char.IsLower));
+            return valueCharacters.All(char.IsLetterOrDigit)
+                && valueCharacters.Any(char.IsLower);
         }
 
         public static bool? IsProbablyPascalCased(string value, char leadingCharacter)
@@ -43,6 +52,11 @@ namespace CodeTiger.CodeAnalysis
             if (string.IsNullOrEmpty(value))
             {
                 return null;
+            }
+
+            if (!char.IsLower(value[0]))
+            {
+                return false;
             }
 
             char[] valueCharacters = value.ToCharArray();
