@@ -436,6 +436,43 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void PropertiesWithNamesPrefixedWithGetOrSetProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string GetName { get; }
+        private string SetName { set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1718",
+                    Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1718",
+                    Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 24)
+                    }
+                }
+            );
+        }
+
+        [Fact]
         public void MethodsWithPascalCasedNamesDoNotProduceDiagnostics()
         {
             string code = @"using System;

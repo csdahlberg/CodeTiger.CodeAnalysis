@@ -72,6 +72,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "CT1717", "Generic type parameter names should not be suffixed with 'Type'.",
                 "Generic type parameter names should not be suffixed with 'Type'.", "CodeTiger.Name",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor
+            = new DiagnosticDescriptor("CT1718", "Property names should not be prefixed with 'Get' or 'Set'.",
+                "Property names should not be prefixed with 'Get' or 'Set'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -94,7 +98,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
                     GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
                     GenericTypeParameterNamesShouldBeDescriptiveDescriptor,
-                    GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor);
+                    GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
+                    PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor);
             }
         }
 
@@ -208,6 +213,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
                     propertyDeclarationNode.Identifier.GetLocation()));
+            }
+
+            if (propertyDeclarationNode.Identifier.Text.StartsWith("Get")
+                || propertyDeclarationNode.Identifier.Text.StartsWith("Set"))
+            {
+                string propertyNameWithoutPrefix = propertyDeclarationNode.Identifier.Text.Substring(3);
+                if (NamingUtility.IsProbablyPascalCased(propertyNameWithoutPrefix) == true)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor,
+                        propertyDeclarationNode.Identifier.GetLocation()));
+                }
             }
 
             switch (propertyDeclarationNode.Parent.Kind())
