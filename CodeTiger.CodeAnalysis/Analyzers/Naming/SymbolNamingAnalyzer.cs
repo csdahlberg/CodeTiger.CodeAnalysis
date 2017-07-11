@@ -76,6 +76,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1718", "Property names should not be prefixed with 'Get' or 'Set'.",
                 "Property names should not be prefixed with 'Get' or 'Set'.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor TypeNamesShouldNotBePrefixedWithAbstractDescriptor
+            = new DiagnosticDescriptor("CT1719", "Type names should not be prefixed with 'Abstract'.",
+                "Type names should not be prefixed with 'Abstract'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor
+            = new DiagnosticDescriptor("CT1720", "Type names should not be prefixed or suffixed with 'Base'.",
+                "Type names should not be prefixed or suffixed with 'Base'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -99,7 +107,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
                     GenericTypeParameterNamesShouldBeDescriptiveDescriptor,
                     GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
-                    PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor);
+                    PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor,
+                    TypeNamesShouldNotBePrefixedWithAbstractDescriptor,
+                    TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor);
             }
         }
 
@@ -124,6 +134,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeInterfaceName, SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeParameterName, SyntaxKind.Parameter);
             context.RegisterSyntaxNodeAction(AnalyzeGenericTypeParameterName, SyntaxKind.TypeParameter);
+            context.RegisterSyntaxNodeAction(AnalyzeClassNamePrefixesAndSuffixes, SyntaxKind.ClassDeclaration);
         }
 
         private void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
@@ -336,6 +347,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
                         typeParameterNode.Identifier.GetLocation()));
                 }
+            }
+        }
+
+        private void AnalyzeClassNamePrefixesAndSuffixes(SyntaxNodeAnalysisContext context)
+        {
+            var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
+            string className = classDeclarationNode.Identifier.Text;
+
+            const string abstractText = "Abstract";
+            if (className.StartsWith(abstractText)
+                && NamingUtility.IsProbablyPascalCased(className.Substring(abstractText.Length)) == true)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldNotBePrefixedWithAbstractDescriptor,
+                    classDeclarationNode.Identifier.GetLocation()));
+            }
+
+            const string baseText = "Base";
+            if (className.EndsWith(baseText)
+                || (className.StartsWith(baseText)
+                    && NamingUtility.IsProbablyPascalCased(className.Substring(baseText.Length)) == true))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor,
+                    classDeclarationNode.Identifier.GetLocation()));
             }
         }
 

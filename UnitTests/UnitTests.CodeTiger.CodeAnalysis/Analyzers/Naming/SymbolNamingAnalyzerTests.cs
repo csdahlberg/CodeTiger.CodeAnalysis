@@ -990,6 +990,69 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void TypesWithNamesPrefixedWithAbstractProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class AbstractClass1
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1719",
+                    Message = "Type names should not be prefixed with 'Abstract'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void TypesWithNamesPrefixedOrSuffixedWithBaseProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class BaseClass1
+    {
+    }
+    public class Class1Base
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1720",
+                    Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1720",
+                    Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
