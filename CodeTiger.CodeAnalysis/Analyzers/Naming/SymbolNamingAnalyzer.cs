@@ -52,6 +52,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor = new DiagnosticDescriptor(
+                "CT1714", "Property names should not begin with the name of the containing type.",
+                "Property names should not begin with the name of the containing type.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -70,7 +75,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     EnumerationMemberNamesShouldUsePascalCasingDescriptor,
                     VariableNamesShouldUseCamelCasingDescriptor,
                     InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
-                    ParameterNamesShouldUseCamelCasingDescriptor);
+                    ParameterNamesShouldUseCamelCasingDescriptor,
+                    PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor);
             }
         }
 
@@ -183,6 +189,25 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
                     propertyDeclarationNode.Identifier.GetLocation()));
+            }
+
+            switch (propertyDeclarationNode.Parent.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.EnumDeclaration:
+                    {
+                        var parentIdentifier = ((BaseTypeDeclarationSyntax)propertyDeclarationNode.Parent)
+                            .Identifier;
+                        if (propertyDeclarationNode.Identifier.Text.StartsWith(parentIdentifier.Text))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(
+                                PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
+                                propertyDeclarationNode.Identifier.GetLocation()));
+                        }
+                    }
+                    break;
             }
         }
 

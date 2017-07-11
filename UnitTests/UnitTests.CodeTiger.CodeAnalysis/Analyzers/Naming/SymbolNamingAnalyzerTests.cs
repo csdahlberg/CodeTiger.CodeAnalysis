@@ -791,6 +791,91 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void PropertiesWithNamesNotPrefixedWithContainingTypeNameDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public object One { get; set; }
+        protected bool Two => true;
+        internal int Three
+        {
+            get { return 3; }
+            set { }
+        }
+        private object Four => One;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void PropertiesWithNamesPrefixedWithContainingTypeNameProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public object Class1one { get; set; }
+        protected bool Class1two => true;
+        internal int Class1Three
+        {
+            get { return 3; }
+            set { }
+        }
+        private object Class1FOUR => one;
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1714",
+                    Message = "Property names should not begin with the name of the containing type.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1714",
+                    Message = "Property names should not begin with the name of the containing type.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 24)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1714",
+                    Message = "Property names should not begin with the name of the containing type.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 22)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1714",
+                    Message = "Property names should not begin with the name of the containing type.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 24)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
