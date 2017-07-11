@@ -93,6 +93,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "Non-attribute type names should not be suffixed with 'Attribute'.",
                 "Non-attribute type names should not be suffixed with 'Attribute'.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ExceptionTypeNamesShouldBeSuffixedWithExceptionDescriptor
+            = new DiagnosticDescriptor("CT1723", "Exception type names should be suffixed with 'Exception'.",
+                "Exception type names should be suffixed with 'Exception'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            NonExceptionTypeNamesShouldNotBeSuffixedWithExceptionDescriptor = new DiagnosticDescriptor("CT1724",
+                "Non-exception type names should not be suffixed with 'Exception'.",
+                "Non-exception type names should not be suffixed with 'Exception'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -120,7 +129,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     TypeNamesShouldNotBePrefixedWithAbstractDescriptor,
                     TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor,
                     AttributeTypeNamesShouldBeSuffixedWithAttributeDescriptor,
-                    NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor);
+                    NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor,
+                    ExceptionTypeNamesShouldBeSuffixedWithExceptionDescriptor,
+                    NonExceptionTypeNamesShouldNotBeSuffixedWithExceptionDescriptor);
             }
         }
 
@@ -386,6 +397,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
 
             AnalyzeClassNameForAttributeSuffix(context, classDeclarationNode, classDeclaration);
+            AnalyzeClassNameForExceptionSuffix(context, classDeclarationNode, classDeclaration);
         }
 
         private static void AnalyzeClassNameForAttributeSuffix(SyntaxNodeAnalysisContext context,
@@ -408,6 +420,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor,
+                    classDeclarationNode.Identifier.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeClassNameForExceptionSuffix(SyntaxNodeAnalysisContext context,
+            ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
+        {
+            const string exceptionText = "Exception";
+            var exceptionType = context.Compilation.GetTypeByMetadataName("System.Exception");
+            bool isExceptionType = context.Compilation.ClassifyConversion(classDeclaration, exceptionType).Exists;
+            bool hasExceptionSuffix = classDeclaration.Name.EndsWith(exceptionText);
+            if (isExceptionType)
+            {
+                if (!hasExceptionSuffix)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        ExceptionTypeNamesShouldBeSuffixedWithExceptionDescriptor,
+                        classDeclarationNode.Identifier.GetLocation()));
+                }
+            }
+            else if (hasExceptionSuffix)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    NonExceptionTypeNamesShouldNotBeSuffixedWithExceptionDescriptor,
                     classDeclarationNode.Identifier.GetLocation()));
             }
         }

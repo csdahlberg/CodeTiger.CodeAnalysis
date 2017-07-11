@@ -1163,6 +1163,116 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void ExceptionTypesWithNamesSuffixedWithExceptionDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstException : Exception
+    {
+    }
+    public class SecondException : FirstException
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ExceptionTypesWithNamesNotSuffixedWithExceptionProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstAttr : Exception
+    {
+    }
+    public class SecondAttr : FirstAttr
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1723",
+                    Message = "Exception type names should be suffixed with 'Exception'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1723",
+                    Message = "Exception type names should be suffixed with 'Exception'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NonExceptionTypesWithNamesNotSuffixedWithExceptionDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstThing
+    {
+    }
+    public class SecondThing : FirstThing
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonExceptionTypesWithNamesSuffixedWithExceptionProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstException
+    {
+    }
+    public class SecondException : FirstException
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1724",
+                    Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1724",
+                    Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
