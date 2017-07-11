@@ -1053,6 +1053,116 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void AttributeTypesWithNamesSuffixedWithAttributeDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstAttribute : Attribute
+    {
+    }
+    public class SecondAttribute : FirstAttribute
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void AttributeTypesWithNamesNotSuffixedWithAttributeProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstAttr : Attribute
+    {
+    }
+    public class SecondAttr : FirstAttr
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1721",
+                    Message = "Attribute type names should be suffixed with 'Attribute'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1721",
+                    Message = "Attribute type names should be suffixed with 'Attribute'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NonAttributeTypesWithNamesNotSuffixedWithAttributeDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstThing
+    {
+    }
+    public class SecondThing : FirstThing
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonAttributeTypesWithNamesSuffixedWithAttributeProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class FirstAttribute
+    {
+    }
+    public class SecondAttribute : FirstAttribute
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1722",
+                    Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1722",
+                    Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 18)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();

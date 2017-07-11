@@ -84,6 +84,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1720", "Type names should not be prefixed or suffixed with 'Base'.",
                 "Type names should not be prefixed or suffixed with 'Base'.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor AttributeTypeNamesShouldBeSuffixedWithAttributeDescriptor
+            = new DiagnosticDescriptor("CT1721", "Attribute type names should be suffixed with 'Attribute'.",
+                "Attribute type names should be suffixed with 'Attribute'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor = new DiagnosticDescriptor("CT1722",
+                "Non-attribute type names should not be suffixed with 'Attribute'.",
+                "Non-attribute type names should not be suffixed with 'Attribute'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -109,7 +118,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
                     PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor,
                     TypeNamesShouldNotBePrefixedWithAbstractDescriptor,
-                    TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor);
+                    TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor,
+                    AttributeTypeNamesShouldBeSuffixedWithAttributeDescriptor,
+                    NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor);
             }
         }
 
@@ -353,6 +364,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private void AnalyzeClassNamePrefixesAndSuffixes(SyntaxNodeAnalysisContext context)
         {
             var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
+            var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode);
             string className = classDeclarationNode.Identifier.Text;
 
             const string abstractText = "Abstract";
@@ -370,6 +382,32 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor,
+                    classDeclarationNode.Identifier.GetLocation()));
+            }
+
+            AnalyzeClassNameForAttributeSuffix(context, classDeclarationNode, classDeclaration);
+        }
+
+        private static void AnalyzeClassNameForAttributeSuffix(SyntaxNodeAnalysisContext context,
+            ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
+        {
+            const string attributeText = "Attribute";
+            var attributeType = context.Compilation.GetTypeByMetadataName("System.Attribute");
+            bool isAttributeType = context.Compilation.ClassifyConversion(classDeclaration, attributeType).Exists;
+            bool hasAttributeSuffix = classDeclaration.Name.EndsWith(attributeText);
+            if (isAttributeType)
+            {
+                if (!hasAttributeSuffix)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        AttributeTypeNamesShouldBeSuffixedWithAttributeDescriptor,
+                        classDeclarationNode.Identifier.GetLocation()));
+                }
+            }
+            else if (hasAttributeSuffix)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor,
                     classDeclarationNode.Identifier.GetLocation()));
             }
         }
