@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -111,6 +112,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
                 "Non-EventArgs type names should not be suffixed with 'EventArgs'.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor MethodsReturningATaskShouldBeSuffixedWithAsyncDescriptor
+            = new DiagnosticDescriptor("CT1727", "Methods returning a Task should be suffixed with 'Async'.",
+                "Methods returning a Task should be suffixed with 'Async'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor = new DiagnosticDescriptor(
+                "CT1728", "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                "Methods not returning a Task or void should not be suffixed with 'Async'.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -142,7 +152,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     ExceptionTypeNamesShouldBeSuffixedWithExceptionDescriptor,
                     NonExceptionTypeNamesShouldNotBeSuffixedWithExceptionDescriptor,
                     EventArgsTypeNamesShouldBeSuffixedWithEventArgsDescriptor,
-                    NonEventArgsTypeNamesShouldNotBeSuffixedWithEventArgsDescriptor);
+                    NonEventArgsTypeNamesShouldNotBeSuffixedWithEventArgsDescriptor,
+                    MethodsReturningATaskShouldBeSuffixedWithAsyncDescriptor,
+                    MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor);
             }
         }
 
@@ -294,10 +306,37 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
         {
             var methodDeclarationNode = (MethodDeclarationSyntax)context.Node;
+            var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode);
 
             if (NamingUtility.IsProbablyPascalCased(methodDeclarationNode.Identifier.Text) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodNamesShouldUsePascalCasingDescriptor,
+                    methodDeclarationNode.Identifier.GetLocation()));
+            }
+
+            AnalyzeMethodNameForAsyncSuffix(context, methodDeclarationNode, methodDeclaration);
+        }
+
+        private static void AnalyzeMethodNameForAsyncSuffix(SyntaxNodeAnalysisContext context,
+            MethodDeclarationSyntax methodDeclarationNode, IMethodSymbol methodDeclaration)
+        {
+            const string asyncText = "Async";
+            var taskType = context.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+            bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType);
+            bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText);
+            if (returnsTaskType)
+            {
+                if (!hasAsyncSuffix)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        MethodsReturningATaskShouldBeSuffixedWithAsyncDescriptor,
+                        methodDeclarationNode.Identifier.GetLocation()));
+                }
+            }
+            else if (!methodDeclaration.ReturnsVoid && hasAsyncSuffix)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor,
                     methodDeclarationNode.Identifier.GetLocation()));
             }
         }
@@ -417,7 +456,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             const string attributeText = "Attribute";
             var attributeType = context.Compilation.GetTypeByMetadataName("System.Attribute");
-            bool isAttributeType = context.Compilation.ClassifyConversion(classDeclaration, attributeType).Exists;
+            bool isAttributeType = classDeclaration.IsSubclassOf(attributeType);
             bool hasAttributeSuffix = classDeclaration.Name.EndsWith(attributeText);
             if (isAttributeType)
             {
@@ -441,7 +480,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             const string exceptionText = "Exception";
             var exceptionType = context.Compilation.GetTypeByMetadataName("System.Exception");
-            bool isExceptionType = context.Compilation.ClassifyConversion(classDeclaration, exceptionType).Exists;
+            bool isExceptionType = classDeclaration.IsSubclassOf(exceptionType);
             bool hasExceptionSuffix = classDeclaration.Name.EndsWith(exceptionText);
             if (isExceptionType)
             {
@@ -465,7 +504,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             const string eventArgsText = "EventArgs";
             var exceptionType = context.Compilation.GetTypeByMetadataName("System.EventArgs");
-            bool isEventArgsType = context.Compilation.ClassifyConversion(classDeclaration, exceptionType).Exists;
+            bool isEventArgsType = classDeclaration.IsSubclassOf(exceptionType);
             bool hasEventArgsSuffix = classDeclaration.Name.EndsWith(eventArgsText);
             if (isEventArgsType)
             {

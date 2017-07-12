@@ -6,16 +6,19 @@ namespace CodeTiger.CodeAnalysis.CSharp
     {
         public static bool IsSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
         {
-            var baseType = otherType.BaseType;
+            return IsSameOrSubclassOf(type.BaseType, otherType);
+        }
 
-            while (baseType != null)
+        public static bool IsSameOrSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
+        {
+            while (type != null)
             {
-                if (type == baseType)
+                if (type.Equals(otherType))
                 {
                     return true;
                 }
 
-                baseType = baseType.BaseType;
+                type = type.BaseType;
             }
 
             return false;

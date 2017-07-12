@@ -1383,6 +1383,120 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void MethodsReturningATaskWithNamesSuffixedWithAsyncDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Threading.Tasks;
+namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public Task DoSomethingAsync() { return Task.FromResult(true); }
+        protected async Task DoSomething2Async() { }
+        private async void DoSomething3Async() { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void MethodsReturningATaskWithNamesNotSuffixedWithAsyncProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Threading.Tasks;
+namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public Task DoSomething() { return Task.FromResult(true); }
+        protected async Task DoSomething2() { }
+        private async void DoSomething3() { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1727",
+                    Message = "Methods returning a Task should be suffixed with 'Async'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 21)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1727",
+                    Message = "Methods returning a Task should be suffixed with 'Async'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 30)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void MethodsNotReturningATaskWithNamesNotSuffixedWithAsyncDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Threading.Tasks;
+namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public bool DoSomething() { return true; }
+        protected bool DoSomething2() { }
+        private void DoSomething3() { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void MethodsNotReturningATaskWithNamesSuffixedWithAsyncProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Threading.Tasks;
+namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public bool DoSomethingAsync() { return true; }
+        protected bool DoSomething2Async() { }
+        private void DoSomething3Async() { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1728",
+                    Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 21)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1728",
+                    Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 24)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();
