@@ -22,7 +22,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void ClassImplmementingInterfaceAndWithStaticMethodDoesNotProduceDiagnostics()
+        public void ClassImplementingInterfaceAndWithStaticMethodDoesNotProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1

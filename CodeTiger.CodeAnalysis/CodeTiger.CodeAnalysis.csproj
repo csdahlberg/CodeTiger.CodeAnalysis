@@ -50,6 +50,7 @@
     <Compile Include="Analyzers\Design\PropertySetterDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\StaticDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\NonGenericCollectionDesignAnalyzer.cs" />
+    <Compile Include="Analyzers\Design\UnmanagedDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Documentation\RequiredDocumentationAnalyzer.cs" />
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzer.cs" />
     <Compile Include="Analyzers\Ordering\AccessorOrderAnalyzer.cs" />

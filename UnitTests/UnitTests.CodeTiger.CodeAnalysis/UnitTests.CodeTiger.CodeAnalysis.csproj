@@ -187,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analyzers\Design\StaticDesignAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Design\UnmanagedDesignAnalyzerTests.cs" />
     <Compile Include="Analyzers\DiagnosticResult.cs" />
     <Compile Include="Analyzers\DiagnosticResultLocation.cs" />
     <Compile Include="Analyzers\DiagnosticVerifier.cs" />
