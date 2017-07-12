@@ -71,6 +71,35 @@ namespace ClassLibrary1
                 });
         }
 
+        [Fact]
+        public void ClassWithEmptyFinalizerProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private IntPtr _unmanagedState;
+
+        ~Class1()
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1008",
+                    Message = "Empty finalizers should not exist.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 10)
+                    }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new UnmanagedDesignAnalyzer();

@@ -19,6 +19,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             = new DiagnosticDescriptor("CT1007", "Types without unmanaged state should not have a finalizer.",
                 "Types without unmanaged state should not have a finalizer.", "CodeTiger.Design",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor EmptyFinalizersShouldNotExistDescriptor
+            = new DiagnosticDescriptor("CT1008", "Empty finalizers should not exist.",
+                "Empty finalizers should not exist.", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
 
         private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]
             {
@@ -35,7 +38,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             get
             {
-                return ImmutableArray.Create(TypesWithoutUnmanagedStateShouldNotHaveAFinalizerDescriptor);
+                return ImmutableArray.Create(TypesWithoutUnmanagedStateShouldNotHaveAFinalizerDescriptor,
+                    EmptyFinalizersShouldNotExistDescriptor);
             }
         }
 
@@ -67,11 +71,20 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration)
                     as DestructorDeclarationSyntax;
 
-                if (destructor != null && !AreAnyTypesUnmanaged(context, instanceStateMemberTypes))
+                if (destructor != null)
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(
-                        TypesWithoutUnmanagedStateShouldNotHaveAFinalizerDescriptor,
-                        destructor.Identifier.GetLocation()));
+                    if (!destructor.Body.ChildNodes().OfType<StatementSyntax>().Any())
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(EmptyFinalizersShouldNotExistDescriptor,
+                            destructor.Identifier.GetLocation()));
+                    }
+
+                    if (!AreAnyTypesUnmanaged(context, instanceStateMemberTypes))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            TypesWithoutUnmanagedStateShouldNotHaveAFinalizerDescriptor,
+                            destructor.Identifier.GetLocation()));
+                    }
                 }
             }
         }
