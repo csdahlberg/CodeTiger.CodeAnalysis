@@ -59,8 +59,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
-            var disposableType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IDisposable");
-
             foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
             {
                 var instanceStateMemberTypes = typeDeclaration.Members.Where(IsInstanceState)
