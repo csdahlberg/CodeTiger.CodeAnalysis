@@ -271,8 +271,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     propertyDeclarationNode.Identifier.GetLocation()));
             }
 
-            if (propertyDeclarationNode.Identifier.Text.StartsWith("Get")
-                || propertyDeclarationNode.Identifier.Text.StartsWith("Set"))
+            if (propertyDeclarationNode.Identifier.Text.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
+                || propertyDeclarationNode.Identifier.Text.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
             {
                 string propertyNameWithoutPrefix = propertyDeclarationNode.Identifier.Text.Substring(3);
                 if (NamingUtility.IsProbablyPascalCased(propertyNameWithoutPrefix) == true)
@@ -292,7 +292,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     {
                         var parentIdentifier = ((BaseTypeDeclarationSyntax)propertyDeclarationNode.Parent)
                             .Identifier;
-                        if (propertyDeclarationNode.Identifier.Text.StartsWith(parentIdentifier.Text))
+                        if (propertyDeclarationNode.Identifier.Text
+                            .StartsWith(parentIdentifier.Text, StringComparison.OrdinalIgnoreCase))
                         {
                             context.ReportDiagnostic(Diagnostic.Create(
                                 PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
@@ -323,7 +324,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             const string asyncText = "Async";
             var taskType = context.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
             bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType);
-            bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText);
+            bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText, StringComparison.OrdinalIgnoreCase);
             if (returnsTaskType)
             {
                 if (!hasAsyncSuffix)
@@ -413,7 +414,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         typeParameterNode.Identifier.GetLocation()));
                 }
 
-                if (typeParameterNode.Identifier.Text.EndsWith("Type"))
+                if (typeParameterNode.Identifier.Text.EndsWith("Type", StringComparison.OrdinalIgnoreCase))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
@@ -429,7 +430,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             string className = classDeclarationNode.Identifier.Text;
 
             const string abstractText = "Abstract";
-            if (className.StartsWith(abstractText)
+            if (className.StartsWith(abstractText, StringComparison.OrdinalIgnoreCase)
                 && NamingUtility.IsProbablyPascalCased(className.Substring(abstractText.Length)) == true)
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldNotBePrefixedWithAbstractDescriptor,
@@ -437,8 +438,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
 
             const string baseText = "Base";
-            if (className.EndsWith(baseText)
-                || (className.StartsWith(baseText)
+            if (className.EndsWith(baseText, StringComparison.OrdinalIgnoreCase)
+                || (className.StartsWith(baseText, StringComparison.OrdinalIgnoreCase)
                     && NamingUtility.IsProbablyPascalCased(className.Substring(baseText.Length)) == true))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -457,7 +458,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             const string attributeText = "Attribute";
             var attributeType = context.Compilation.GetTypeByMetadataName("System.Attribute");
             bool isAttributeType = classDeclaration.IsSubclassOf(attributeType);
-            bool hasAttributeSuffix = classDeclaration.Name.EndsWith(attributeText);
+            bool hasAttributeSuffix = classDeclaration.Name
+                .EndsWith(attributeText, StringComparison.OrdinalIgnoreCase);
             if (isAttributeType)
             {
                 if (!hasAttributeSuffix)
@@ -481,7 +483,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             const string exceptionText = "Exception";
             var exceptionType = context.Compilation.GetTypeByMetadataName("System.Exception");
             bool isExceptionType = classDeclaration.IsSubclassOf(exceptionType);
-            bool hasExceptionSuffix = classDeclaration.Name.EndsWith(exceptionText);
+            bool hasExceptionSuffix = classDeclaration.Name
+                .EndsWith(exceptionText, StringComparison.OrdinalIgnoreCase);
             if (isExceptionType)
             {
                 if (!hasExceptionSuffix)
@@ -505,7 +508,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             const string eventArgsText = "EventArgs";
             var exceptionType = context.Compilation.GetTypeByMetadataName("System.EventArgs");
             bool isEventArgsType = classDeclaration.IsSubclassOf(exceptionType);
-            bool hasEventArgsSuffix = classDeclaration.Name.EndsWith(eventArgsText);
+            bool hasEventArgsSuffix = classDeclaration.Name
+                .EndsWith(eventArgsText, StringComparison.OrdinalIgnoreCase);
             if (isEventArgsType)
             {
                 if (!hasEventArgsSuffix)
