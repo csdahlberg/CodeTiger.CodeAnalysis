@@ -138,7 +138,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 if (encounteredMemberKinds.Values.Any(x => x > memberOrder))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
-                        MembersShouldBeCorrectlyOrderedBasedOnMemberKindDescriptor, member.GetLocation(),
+                        MembersShouldBeCorrectlyOrderedBasedOnMemberKindDescriptor, member.GetIdentifierLocation(),
                         member.Kind().GetDeclarationName(),
                         GetDisplayNamesOfHigherOrderedKinds(encounteredMemberKinds, memberOrder)));
                 }
@@ -160,11 +160,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 var fieldMember = member as BaseFieldDeclarationSyntax;
                 if (fieldMember != null)
                 {
-                    foreach (var fieldMemberVariable in fieldMember.Declaration.Variables)
+                    var fieldMemberVariable = fieldMember.Declaration.Variables.FirstOrDefault();
+                    if (fieldMemberVariable != null)
                     {
                         var symbolInfo = context.SemanticModel.GetDeclaredSymbol(fieldMemberVariable,
                             context.CancellationToken);
-                        AnalyzeSymbolOrderBasedOnAccessibility(fieldMemberVariable, symbolInfo, context,
+
+                        AnalyzeSymbolOrderBasedOnAccessibility(fieldMember, symbolInfo, context,
                             encounteredKinds);
                     }
                 }
@@ -176,8 +178,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             }
         }
 
-        private static void AnalyzeSymbolOrderBasedOnAccessibility(SyntaxNode member, ISymbol memberSymbol,
-            SemanticModelAnalysisContext context, Dictionary<long, List<Accessibility>> encounteredKinds)
+        private static void AnalyzeSymbolOrderBasedOnAccessibility(MemberDeclarationSyntax member,
+            ISymbol memberSymbol, SemanticModelAnalysisContext context,
+            Dictionary<long, List<Accessibility>> encounteredKinds)
         {
             var symbolAccessibility = memberSymbol.DeclaredAccessibility;
             var order = GetOrderForAccessibility(symbolAccessibility);
@@ -188,7 +191,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 if (encounteredKinds[kindDescriptor].Any(x => GetOrderForAccessibility(x) > order))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
-                        MembersOfLikeKindShouldBeOrderedByDecreasingAccessibility, member.GetLocation(),
+                        MembersOfLikeKindShouldBeOrderedByDecreasingAccessibility, member.GetIdentifierLocation(),
                         symbolAccessibility,
                         GetDisplayNamesOfHigherOrderedAccessibilities(encounteredKinds[kindDescriptor],
                         symbolAccessibility)));
@@ -217,7 +220,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (wasNonConstFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            ConstantFieldsShouldBeBeforeNonConstantFieldsDescriptor, field.GetLocation()));
+                            ConstantFieldsShouldBeBeforeNonConstantFieldsDescriptor,
+                            field.GetIdentifierLocation()));
                     }
                 }
                 else
@@ -239,7 +243,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (wasInstanceFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            StaticFieldsShouldBeBeforeInstanceFieldsDescriptor, field.GetLocation()));
+                            StaticFieldsShouldBeBeforeInstanceFieldsDescriptor, field.GetIdentifierLocation()));
                     }
                 }
                 else if (!field.Modifiers.Any(t => t.Kind() == SyntaxKind.ConstKeyword))
@@ -264,13 +268,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (isFieldStatic && wasStaticMutableFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            ReadOnlyFieldsShouldBeBeforeMutableFieldsDescriptor, field.GetLocation(),
+                            ReadOnlyFieldsShouldBeBeforeMutableFieldsDescriptor, field.GetIdentifierLocation(),
                             "static"));
                     }
                     else if (!isFieldStatic && wasInstanceMutableFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            ReadOnlyFieldsShouldBeBeforeMutableFieldsDescriptor, field.GetLocation(),
+                            ReadOnlyFieldsShouldBeBeforeMutableFieldsDescriptor, field.GetIdentifierLocation(),
                             "instance"));
                     }
                 }
@@ -303,13 +307,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (isFieldStatic && wasStaticVolatileFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            NonVolatileFieldsShouldBeBeforeVolatileFieldsDescriptor, field.GetLocation(),
+                            NonVolatileFieldsShouldBeBeforeVolatileFieldsDescriptor, field.GetIdentifierLocation(),
                             "static"));
                     }
                     else if (!isFieldStatic && wasInstanceVolatileFieldEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            NonVolatileFieldsShouldBeBeforeVolatileFieldsDescriptor, field.GetLocation(),
+                            NonVolatileFieldsShouldBeBeforeVolatileFieldsDescriptor, field.GetIdentifierLocation(),
                             "instance"));
                     }
                 }
@@ -339,7 +343,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (isInstancePropertyEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            StaticPropertiesShouldBeBeforeInstancePropertiesDescriptor, property.GetLocation()));
+                            StaticPropertiesShouldBeBeforeInstancePropertiesDescriptor,
+                            property.GetIdentifierLocation()));
                     }
                 }
                 else
@@ -362,7 +367,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             StaticConstructorsShouldBeBeforeInstanceConstructorsDescriptor,
-                            constructor.GetLocation()));
+                            constructor.GetIdentifierLocation()));
                     }
                 }
                 else
@@ -394,7 +399,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (isStaticMethodEncountered)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
-                            InstanceMethodsShouldBeBeforeStaticMethodsDescriptor, method.GetLocation()));
+                            InstanceMethodsShouldBeBeforeStaticMethodsDescriptor, method.GetIdentifierLocation()));
                     }
                 }
                 else
@@ -417,7 +422,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             NestedStaticClassesShouldShouldBeBeforeNestedInstanceClassesDescriptor,
-                            classDeclaration.GetLocation()));
+                            classDeclaration.GetIdentifierLocation()));
                     }
                 }
                 else
