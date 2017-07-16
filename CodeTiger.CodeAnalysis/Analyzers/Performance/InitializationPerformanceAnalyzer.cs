@@ -89,37 +89,70 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         private static SyntaxNode GetContainingCodeBlockNode(SemanticModelAnalysisContext context,
             ISymbol variableSymbol)
         {
-            var containingNode = variableSymbol?.ContainingSymbol?.DeclaringSyntaxReferences
-                .SingleOrDefault()?.GetSyntax(context.CancellationToken);
-            if (containingNode == null)
+            var containingNodes = variableSymbol?.ContainingSymbol?.DeclaringSyntaxReferences
+                .Select(x => x.GetSyntax(context.CancellationToken));
+
+            foreach (var containingNode in containingNodes)
             {
-                return null;
+                if (containingNode == null)
+                {
+                    continue;
+                }
+
+                switch (containingNode.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                    case SyntaxKind.OperatorDeclaration:
+                    case SyntaxKind.ConversionOperatorDeclaration:
+                    case SyntaxKind.ConstructorDeclaration:
+                    case SyntaxKind.DestructorDeclaration:
+                        {
+                            var baseMethodDeclarationNode = (BaseMethodDeclarationSyntax)containingNode;
+                            if (baseMethodDeclarationNode.Body != null)
+                            {
+                                return baseMethodDeclarationNode.Body;
+                            }
+                        }
+                        break;
+                    case SyntaxKind.SimpleLambdaExpression:
+                        {
+                            var simpleLambdaExpressionNode = (SimpleLambdaExpressionSyntax)containingNode;
+                            if (simpleLambdaExpressionNode != null)
+                            {
+                                return simpleLambdaExpressionNode.Body;
+                            }
+                        }
+                        break;
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                        {
+                            var parenthesizedLambdaExpressionNode
+                                = (ParenthesizedLambdaExpressionSyntax)containingNode;
+                            if (parenthesizedLambdaExpressionNode != null)
+                            {
+                                return parenthesizedLambdaExpressionNode.Body;
+                            }
+                        }
+                        break;
+                    case SyntaxKind.GetAccessorDeclaration:
+                    case SyntaxKind.SetAccessorDeclaration:
+                    case SyntaxKind.AddAccessorDeclaration:
+                    case SyntaxKind.RemoveAccessorDeclaration:
+                    case SyntaxKind.UnknownAccessorDeclaration:
+                        {
+                            var accessorDeclarationNode = (AccessorDeclarationSyntax)containingNode;
+                            if (accessorDeclarationNode != null)
+                            {
+                                return accessorDeclarationNode.Body;
+                            }
+                        }
+                        break;
+                    case SyntaxKind.ClassDeclaration:
+                    case SyntaxKind.StructDeclaration:
+                        return null;
+                }
             }
 
-            switch (containingNode.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                case SyntaxKind.ConstructorDeclaration:
-                case SyntaxKind.DestructorDeclaration:
-                    return ((BaseMethodDeclarationSyntax)containingNode).Body;
-                case SyntaxKind.SimpleLambdaExpression:
-                    return ((SimpleLambdaExpressionSyntax)containingNode).Body;
-                case SyntaxKind.ParenthesizedLambdaExpression:
-                    return ((ParenthesizedLambdaExpressionSyntax)containingNode).Body;
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                case SyntaxKind.UnknownAccessorDeclaration:
-                    return ((AccessorDeclarationSyntax)containingNode).Body;
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                    return null;
-                default:
-                    return containingNode;
-            }
+            return null;
         }
     }
 }
