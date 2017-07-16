@@ -120,7 +120,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             {
                 if (catchExpression.Kind() == SyntaxKind.CatchClause)
                 {
-                    return ((CatchClauseSyntax)catchExpression).Declaration.Identifier;
+                    return ((CatchClauseSyntax)catchExpression).Declaration?.Identifier;
                 }
 
                 catchExpression = catchExpression.Parent;
@@ -153,7 +153,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
                     }
 
                     var variableDeclarator = (VariableDeclaratorSyntax)declaringReferenceNode;
-                    if (IsIdentifierReadByExpression(context, identifier, variableDeclarator.Initializer.Value))
+                    if (IsIdentifierReadByExpression(context, identifier, variableDeclarator.Initializer?.Value))
                     {
                         return true;
                     }
