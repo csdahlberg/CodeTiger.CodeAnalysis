@@ -74,7 +74,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
                     {
                         var currentStatementDataFlowAnalysis = context.SemanticModel
                             .AnalyzeDataFlow(statementIncludingVariable);
-                        if (currentStatementDataFlowAnalysis.WrittenInside.Contains(variableSymbol)
+                        
+                        if (currentStatementDataFlowAnalysis.AlwaysAssigned.Contains(variableSymbol)
                             && !currentStatementDataFlowAnalysis.ReadInside.Contains(variableSymbol))
                         {
                             context.ReportDiagnostic(Diagnostic.Create(
