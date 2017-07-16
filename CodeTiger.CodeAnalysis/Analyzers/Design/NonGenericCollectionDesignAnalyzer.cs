@@ -63,6 +63,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeTypeForNonGenericCollectionState, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzePropertyForNonGenericCollectionExposure,

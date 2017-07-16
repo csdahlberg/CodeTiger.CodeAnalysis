@@ -52,6 +52,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeUnaryPlusUsage, SyntaxKind.UnaryPlusExpression);
             context.RegisterSyntaxNodeAction(AnalyzeUnnecessaryParenthesisUsage,
                 SyntaxKind.ParenthesizedExpression);

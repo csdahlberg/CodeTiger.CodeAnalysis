@@ -39,6 +39,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSemanticModelAction(AnalyzeSuppressMessageAttributeUsage);
         }
 

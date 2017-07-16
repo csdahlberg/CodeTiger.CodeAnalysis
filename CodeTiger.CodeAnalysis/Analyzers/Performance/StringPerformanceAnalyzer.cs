@@ -52,6 +52,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSemanticModelAction(AnalyzeStringComparisons);
             context.RegisterSemanticModelAction(AnalyzeStringConcatenation);
         }

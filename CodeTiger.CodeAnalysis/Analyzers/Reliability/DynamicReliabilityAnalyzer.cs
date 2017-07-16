@@ -36,6 +36,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeDynamicReliability, SyntaxKind.IdentifierName);
         }
 

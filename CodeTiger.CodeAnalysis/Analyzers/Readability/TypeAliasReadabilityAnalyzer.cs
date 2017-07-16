@@ -41,6 +41,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeSyntaxNode, SyntaxKind.IdentifierName);
             context.RegisterSyntaxNodeAction(AnalyzeNullableShorthand, SyntaxKind.GenericName);
         }

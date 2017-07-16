@@ -89,6 +89,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxTreeAction(AnalyzeSyntaxTreeForMemberOrder);
             context.RegisterSemanticModelAction(AnalyzeSemanticModelForMemberOrder);
         }

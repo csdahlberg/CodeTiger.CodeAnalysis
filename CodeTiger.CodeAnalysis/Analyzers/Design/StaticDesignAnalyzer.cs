@@ -38,6 +38,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeClassForAllStaticMembers, SyntaxKind.ClassDeclaration);
         }
 

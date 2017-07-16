@@ -44,6 +44,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         {
             Guard.ArgumentIsNotNull(nameof(context), context);
 
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzePropertyAccessorOrder, SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEventAccessorOrder, SyntaxKind.EventDeclaration);
         }
