@@ -31,7 +31,6 @@ namespace CodeTiger.CodeAnalysis.CSharp
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
                 case SyntaxKind.ConversionOperatorDeclaration:
                     return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
                 case SyntaxKind.ConstructorDeclaration:
