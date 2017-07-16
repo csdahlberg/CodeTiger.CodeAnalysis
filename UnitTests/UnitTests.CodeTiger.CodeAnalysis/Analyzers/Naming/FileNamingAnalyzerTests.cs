@@ -20,7 +20,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void FileWithMultiPartPascalCasedNameDoesNotProduceDiagnostics()
+        public void FileWithGeneratedMultiPartPascalCasedNameDoesNotProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -28,6 +28,17 @@ namespace ClassLibrary1
 }";
 
             VerifyCSharpDiagnostic(Tuple.Create("TestFile.designer.cs", code));
+        }
+
+        [Fact]
+        public void FileWithGeneratedMultiPartNonPascalCasedNameDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TESTFILE.designer.cs", code));
         }
 
         [Fact]
@@ -59,7 +70,7 @@ namespace ClassLibrary1
 {
 }";
 
-            VerifyCSharpDiagnostic(Tuple.Create("TESTFILE.Designer.cs", code),
+            VerifyCSharpDiagnostic(Tuple.Create("TESTFILE.SecondPart.cs", code),
                 new DiagnosticResult
                 {
                     Id = "CT1701",
@@ -67,7 +78,7 @@ namespace ClassLibrary1
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
-                        new DiagnosticResultLocation("TESTFILE.Designer.cs", 1, 1)
+                        new DiagnosticResultLocation("TESTFILE.SecondPart.cs", 1, 1)
                     }
                 });
         }
