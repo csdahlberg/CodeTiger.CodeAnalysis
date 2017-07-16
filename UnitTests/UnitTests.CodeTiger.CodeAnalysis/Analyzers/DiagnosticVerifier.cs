@@ -59,6 +59,18 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         }
 
         /// <summary>
+        /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source
+        /// Note: input a DiagnosticResult for each Diagnostic expected
+        /// </summary>
+        /// <param name="source">A class in the form of a string to run the analyzer on</param>
+        /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source
+        /// </param>
+        protected void VerifyCSharpDiagnostic(Tuple<string, string> source, params DiagnosticResult[] expected)
+        {
+            VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
+        }
+
+        /// <summary>
         /// Called to test a VB DiagnosticAnalyzer when applied on the single inputted string as a source
         /// Note: input a DiagnosticResult for each Diagnostic expected
         /// </summary>
@@ -107,6 +119,23 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
         /// </param>
         private void VerifyDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer,
+            params DiagnosticResult[] expected)
+        {
+            var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
+            VerifyDiagnosticResults(diagnostics, analyzer, expected);
+        }
+
+        /// <summary>
+        /// General method that gets a collection of actual diagnostics found in the source after the analyzer is
+        /// run, then verifies each of them.
+        /// </summary>
+        /// <param name="sources">An array of strings to create source documents from to run the analyzers on
+        /// </param>
+        /// <param name="language">The language of the classes represented by the source strings</param>
+        /// <param name="analyzer">The analyzer to be run on the source code</param>
+        /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
+        /// </param>
+        private void VerifyDiagnostics(Tuple<string, string>[] sources, string language, DiagnosticAnalyzer analyzer,
             params DiagnosticResult[] expected)
         {
             var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
@@ -169,7 +198,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <returns>A Document created from the source string</returns>
         protected static Document CreateDocument(string source, string language = LanguageNames.CSharp)
         {
-            return CreateProject(new[] { source }, language).Documents.First();
+            return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
         }
 
         /// <summary>
@@ -378,6 +407,20 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         }
 
         /// <summary>
+        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return
+        /// the diagnostics found in the string after converting it to a document.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source classes are in</param>
+        /// <param name="analyzer">The analyzer to be run on the sources</param>
+        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
+        private static Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
+            DiagnosticAnalyzer analyzer)
+        {
+            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+        }
+
+        /// <summary>
         /// Sort diagnostics by location in source document
         /// </summary>
         /// <param name="diagnostics">The list of Diagnostics to be sorted</param>
@@ -402,6 +445,34 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
                 throw new ArgumentException("Unsupported Language");
             }
 
+            var namedSources = CreateNamedSources(sources, language);
+
+            var project = CreateProject(namedSources, language);
+            var documents = project.Documents.ToArray();
+
+            if (sources.Length != documents.Length)
+            {
+                throw new SystemException("Amount of sources did not match amount of Documents created");
+            }
+
+            return documents;
+        }
+
+        /// <summary>
+        /// Given an array of strings as sources and a language, turn them into a project and return the documents
+        /// and spans of it.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source code is in</param>
+        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
+        /// </returns>
+        private static Document[] GetDocuments(Tuple<string, string>[] sources, string language)
+        {
+            if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
+            {
+                throw new ArgumentException("Unsupported Language");
+            }
+
             var project = CreateProject(sources, language);
             var documents = project.Documents.ToArray();
 
@@ -419,11 +490,9 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="sources">Classes in the form of strings</param>
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Project created out of the Documents created from the source strings</returns>
-        private static Project CreateProject(string[] sources, string language = LanguageNames.CSharp)
+        private static Project CreateProject(Tuple<string, string>[] sources,
+            string language = LanguageNames.CSharp)
         {
-            string fileNamePrefix = DefaultFilePathPrefix;
-            string fileExt = language == LanguageNames.CSharp ? CSharpDefaultFileExt : VisualBasicDefaultExt;
-
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
             var solution = new AdhocWorkspace()
@@ -434,15 +503,23 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
                 .AddMetadataReference(projectId, CodeAnalysisReference);
 
-            int count = 0;
             foreach (var source in sources)
             {
-                var newFileName = fileNamePrefix + count + "." + fileExt;
-                var documentId = DocumentId.CreateNewId(projectId, debugName: newFileName);
-                solution = solution.AddDocument(documentId, newFileName, SourceText.From(source));
-                count++;
+                var documentId = DocumentId.CreateNewId(projectId, debugName: source.Item1);
+                solution = solution.AddDocument(documentId, source.Item1, SourceText.From(source.Item2));
             }
             return solution.GetProject(projectId);
+        }
+
+        private static Tuple<string, string>[] CreateNamedSources(string[] sources, string language)
+        {
+            string fileNamePrefix = DefaultFilePathPrefix;
+            string fileExt = language == LanguageNames.CSharp ? CSharpDefaultFileExt : VisualBasicDefaultExt;
+
+            var namedSources = sources
+                .Select((source, index) => Tuple.Create($"{fileNamePrefix}{index}.{fileExt}", source))
+                .ToArray();
+            return namedSources;
         }
     }
 }
