@@ -69,7 +69,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     ParametersOfExternallyAccessibleMembersShouldBeDocumentedDescriptor,
-                    GetIdentifierLocation(context.Node)));
+                    context.Node.GetIdentifierLocation()));
             }
         }
 
@@ -82,7 +82,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     ReturnValuesOfExternallyAccessibleMembersShouldBeDocumentedDescriptor,
-                    GetIdentifierLocation(context.Node)));
+                    context.Node.GetIdentifierLocation()));
             }
         }
 
@@ -203,27 +203,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
             {
                 // If the documentation contains invalid XML, ignore it for this diagnostic.
                 return false;
-            }
-        }
-
-        private static Location GetIdentifierLocation(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).Type.GetLocation();
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).ThisKeyword.GetLocation();
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
-                default:
-                    return null;
             }
         }
     }

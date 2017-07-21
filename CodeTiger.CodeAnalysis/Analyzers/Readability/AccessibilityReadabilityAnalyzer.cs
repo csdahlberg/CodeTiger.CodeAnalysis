@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -59,7 +60,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             var modifiers = GetModifiers(context.Node);
 
-            var identifierLocation = GetIdentifierLocation(context.Node);
+            var identifierLocation = context.Node.GetIdentifierLocation();
 
             if (!modifiers.Any(x => SyntaxFacts.IsAccessibilityModifier(x.Kind())))
             {
@@ -82,7 +83,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 && !IsExplicitInterfaceImplementation(context.Node)
                 && !IsStaticConstructor(context.Node, modifiers))
             {
-                var identifierLocation = GetIdentifierLocation(context.Node);
+                var identifierLocation = context.Node.GetIdentifierLocation();
 
                 context.ReportDiagnostic(Diagnostic.Create(MembersShouldHaveAccessModifierSpecifiedDescriptor,
                     identifierLocation));
@@ -115,41 +116,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                     return ((BaseFieldDeclarationSyntax)node).Modifiers;
                 default:
                     return new SyntaxTokenList();
-            }
-        }
-
-        private static Location GetIdentifierLocation(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                case SyntaxKind.EnumDeclaration:
-                    return ((BaseTypeDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).Type.GetLocation();
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).ThisKeyword.GetLocation();
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)node).Declaration.Variables.First().Identifier
-                        .GetLocation();
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).Declaration.Variables.First().Identifier.GetLocation();
-                default:
-                    return null;
             }
         }
 

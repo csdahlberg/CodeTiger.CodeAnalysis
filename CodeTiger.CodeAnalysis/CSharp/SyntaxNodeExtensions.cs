@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeTiger.CodeAnalysis.CSharp
 {
-    internal static class MemberDeclarationSyntaxExtensions
+    internal static class SyntaxNodeExtensions
     {
-        public static Location GetIdentifierLocation(this MemberDeclarationSyntax node)
+        public static Location GetIdentifierLocation(this SyntaxNode node)
         {
             switch (node.Kind())
             {
@@ -17,22 +17,20 @@ namespace CodeTiger.CodeAnalysis.CSharp
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
-                    return ((TypeDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).Identifier.GetLocation();
+                    return ((BaseTypeDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.EnumMemberDeclaration:
                     return ((EnumMemberDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).Declaration.Variables.FirstOrDefault()?.GetLocation()
-                        ?? node.GetLocation();
                 case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)node).Declaration.Variables.FirstOrDefault()
-                        ?.GetLocation() ?? node.GetLocation();
+                    return ((BaseFieldDeclarationSyntax)node).Declaration.Variables.FirstOrDefault()
+                        ?.Identifier.GetLocation() ?? node.GetLocation();
                 case SyntaxKind.MethodDeclaration:
                     return ((MethodDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
                     return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)node).Type.GetLocation();
                 case SyntaxKind.ConstructorDeclaration:
                     return ((ConstructorDeclarationSyntax)node).Identifier.GetLocation();
                 case SyntaxKind.DestructorDeclaration:

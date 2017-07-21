@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,7 +52,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             if (GetParameterCount(context.Node) > 7)
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodsShouldNotExceedSevenParametersDescriptor,
-                    GetIdentifierLocation(context.Node)));
+                    context.Node.GetIdentifierLocation()));
             }
         }
 
@@ -84,27 +85,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
 
             return parameterList?.Parameters.Count ?? 0;
-        }
-
-        private static Location GetIdentifierLocation(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).Type.GetLocation();
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).ThisKeyword.GetLocation();
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).Identifier.GetLocation();
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).OperatorToken.GetLocation();
-                default:
-                    return null;
-            }
         }
     }
 }

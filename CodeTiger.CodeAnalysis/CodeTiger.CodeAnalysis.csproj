@@ -76,7 +76,7 @@
     <Compile Include="Analyzers\Usage\DebugUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\ExceptionUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\SuppressMessageAttributeUsageAnalyzer.cs" />
-    <Compile Include="CSharp\MemberDeclarationSyntaxExtensions.cs" />
+    <Compile Include="CSharp\SyntaxNodeExtensions.cs" />
     <Compile Include="CSharp\SymbolExtensions.cs" />
     <Compile Include="CSharp\SyntaxKindExtensions.cs" />
     <Compile Include="CSharp\TypeSymbolExtensions.cs" />

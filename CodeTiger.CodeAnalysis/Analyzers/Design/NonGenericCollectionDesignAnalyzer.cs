@@ -98,7 +98,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 .Where(x => IsOrIncludesNonGenericCollection(context, x)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeHeldAsStateDescriptor,
-                    GetIdentifierLocation(nonGenericCollectionMember)));
+                    nonGenericCollectionMember.GetIdentifierLocation()));
             }
         }
 
@@ -244,19 +244,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
 
             return false;
-        }
-
-        private static Location GetIdentifierLocation(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).Declaration.Variables.First().GetLocation();
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).Identifier.GetLocation();
-                default:
-                    return null;
-            }
         }
     }
 }
