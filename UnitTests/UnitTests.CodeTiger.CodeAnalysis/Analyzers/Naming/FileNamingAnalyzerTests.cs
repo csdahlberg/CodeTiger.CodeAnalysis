@@ -9,7 +9,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Naming
     public class FileNamingAnalyzerTests : DiagnosticVerifier
     {
         [Fact]
-        public void FileWithPascalCasedNameDoesNotProduceDiagnostics()
+        public void FileWithPascalCasedNameAndNoTypeDeclarationsDoesNotProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -57,7 +57,7 @@ namespace ClassLibrary1
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
-                        new DiagnosticResultLocation("TESTFILE.cs", 1, 1)
+                        new DiagnosticResultLocation("TESTFILE.cs", 0, 0)
                     }
                 });
         }
@@ -78,7 +78,59 @@ namespace ClassLibrary1
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
-                        new DiagnosticResultLocation("TESTFILE.SecondPart.cs", 1, 1)
+                        new DiagnosticResultLocation("TESTFILE.SecondPart.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
+        public void FileWithMatchingTypeDeclarationDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType.cs", code));
+        }
+
+        [Fact]
+        public void FileWithMatchingPartialTypeDeclarationDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType.PartOne.cs", code));
+        }
+
+        [Fact]
+        public void FileWithNonMatchingTypeDeclarationProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1729",
+                    Message = "Source file names should match the primary type name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("TestFile.cs", 0, 0)
                     }
                 });
         }
