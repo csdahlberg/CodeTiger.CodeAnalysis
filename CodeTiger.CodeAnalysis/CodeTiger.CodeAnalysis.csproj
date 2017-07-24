@@ -74,6 +74,7 @@
     <Compile Include="Analyzers\Reliability\UnmanagedReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Reliability\UnsafeReliabilityAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\DebugUsageAnalyzer.cs" />
+    <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\ExceptionUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\SuppressMessageAttributeUsageAnalyzer.cs" />
     <Compile Include="CSharp\SyntaxNodeExtensions.cs" />

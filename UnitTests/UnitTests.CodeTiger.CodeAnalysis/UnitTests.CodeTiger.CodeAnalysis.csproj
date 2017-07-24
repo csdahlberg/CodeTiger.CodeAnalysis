@@ -192,6 +192,7 @@
     <Compile Include="Analyzers\DiagnosticVerifier.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
