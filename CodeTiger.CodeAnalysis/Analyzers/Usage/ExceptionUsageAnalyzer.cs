@@ -54,9 +54,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
 
             var nestedThrows = root.DescendantNodes().OfType<CatchClauseSyntax>()
                 .SelectMany(catchDeclaration =>
-                    catchDeclaration.Block.DescendantNodes().OfType<ThrowStatementSyntax>())
+                    catchDeclaration.Block?.DescendantNodes().OfType<ThrowStatementSyntax>()
+                        ?? Enumerable.Empty<ThrowStatementSyntax>())
                 .Distinct();
-            foreach (var nestedThrow in nestedThrows.Where(x => x.Expression != null))
+            foreach (var nestedThrow in nestedThrows.Where(x => x?.Expression != null))
             {
                 AnalyzeThrowExpressionWithinCatchDeclaration(context, nestedThrow.Expression);
             }
@@ -156,7 +157,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
                     }
 
                     var variableDeclarator = (VariableDeclaratorSyntax)declaringReferenceNode;
-                    if (IsIdentifierReadByExpression(context, identifier, variableDeclarator.Initializer?.Value))
+                    if (variableDeclarator.Initializer?.Value != null
+                        && IsIdentifierReadByExpression(context, identifier, variableDeclarator.Initializer.Value))
                     {
                         return true;
                     }
