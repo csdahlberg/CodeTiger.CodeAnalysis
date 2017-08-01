@@ -65,6 +65,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             var method = context.SemanticModel
                 .GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
+            var objectType = context.Compilation.GetSpecialType(SpecialType.System_Object);
+
+            if (method.ReturnType == objectType)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                    methodDeclaration.Identifier.GetLocation()));
+                return;
+            }
+
             var baseType = method.ContainingType.BaseType;
 
             while (baseType != null)
@@ -81,7 +91,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                         break;
                     case 1:
                         var matchingBaseMethod = matchingBaseMethods.Single();
-                        if (!method.ReturnType.IsSubclassOf(matchingBaseMethod.ReturnType)
+                        if (method.ReturnType != objectType
+                            && !method.ReturnType.IsSubclassOf(matchingBaseMethod.ReturnType)
                             && !method.ReturnType.AllInterfaces.Contains(matchingBaseMethod.ReturnType))
                         {
                             context.ReportDiagnostic(Diagnostic.Create(
