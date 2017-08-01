@@ -17,6 +17,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 "Literals should not be on the left side of comparison operators.",
                 "Literals should not be on the left side of comparison operators.", "CodeTiger.Readability",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            ConstantsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor = new DiagnosticDescriptor("CT3114",
+                "Constants should not be on the left side of comparison operators.",
+                "Constants should not be on the left side of comparison operators.", "CodeTiger.Readability",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -26,7 +31,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             get
             {
                 return ImmutableArray.Create(
-                    LiteralsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor);
+                    LiteralsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor,
+                    ConstantsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor);
             }
         }
 
@@ -52,10 +58,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         {
             var node = (BinaryExpressionSyntax)context.Node;
 
-            if (IsLiteral(node.Left) && !IsLiteral(node.Right))
+            if (IsLiteral(node.Left))
             {
-                context.ReportDiagnostic(Diagnostic.Create(
-                    LiteralsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor, node.GetLocation()));
+                if (!IsLiteral(node.Right))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        LiteralsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor,
+                        node.Left.GetLocation()));
+                }
+            }
+            else if (context.SemanticModel.GetConstantValue(node.Left, context.CancellationToken).HasValue)
+            {
+                if (!IsLiteral(node.Right)
+                    && !context.SemanticModel.GetConstantValue(node.Right, context.CancellationToken).HasValue)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        ConstantsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor,
+                        node.Left.GetLocation()));
+                }
             }
         }
 
