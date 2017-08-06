@@ -12,18 +12,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class BraceLayoutAnalyzer : DiagnosticAnalyzer
     {
-        internal static readonly DiagnosticDescriptor NamespacesShouldNotBeDefinedOnASingleLineDescriptor
-            = new DiagnosticDescriptor("CT3500", "Namespaces should not be defined on a single line.",
-                "Namespaces should not be defined on a single line.", "CodeTiger.Layout",
-                DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor BracesForMultiLineElementsShouldBeOnANewLineDescriptor
             = new DiagnosticDescriptor("CT3501", "Braces for multi-line elements should be on a new line.",
                 "Braces for multi-line elements should be on a new line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor TypesShouldNotBeDefinedOnASingleLineDescriptor
-            = new DiagnosticDescriptor("CT3502", "Types should not be defined on a single line.",
-                "Types should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
-                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -32,9 +24,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             get
             {
-                return ImmutableArray.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
-                    BracesForMultiLineElementsShouldBeOnANewLineDescriptor,
-                    TypesShouldNotBeDefinedOnASingleLineDescriptor);
+                return ImmutableArray.Create(BracesForMultiLineElementsShouldBeOnANewLineDescriptor);
             }
         }
 
@@ -72,12 +62,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             var node = (NamespaceDeclarationSyntax)context.Node;
 
             var nodeLineSpan = node.GetLocation().GetLineSpan();
-            if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
-                    node.Name.GetLocation()));
-            }
-            else
+            if (nodeLineSpan.StartLinePosition.Line != nodeLineSpan.EndLinePosition.Line)
             {
                 AnalyzeBraces(nodeLineSpan, node.OpenBraceToken, node.CloseBraceToken, context);
             }
@@ -155,12 +140,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
             var nodeLineSpan = node.GetLocation().GetLineSpan();
-            if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(TypesShouldNotBeDefinedOnASingleLineDescriptor,
-                    node.Identifier.GetLocation()));
-            }
-            else
+            if (nodeLineSpan.StartLinePosition.Line != nodeLineSpan.EndLinePosition.Line)
             {
                 AnalyzeBraces(nodeLineSpan, node.OpenBraceToken, node.CloseBraceToken, context);
             }
