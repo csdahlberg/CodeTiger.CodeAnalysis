@@ -297,11 +297,32 @@ namespace ClassLibrary1
     public class Class1
     {
     }
-
-    public class Class2 { }
 }";
 
             VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ClassDeclarationOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1 { }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 18)
+                    }
+                }
+            );
         }
 
         [Fact]
@@ -360,11 +381,32 @@ namespace ClassLibrary1
     public struct Struct1
     {
     }
-
-    public struct Struct2 { }
 }";
 
             VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void StructDeclarationOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public struct Struct1 { }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 19)
+                    }
+                }
+            );
         }
 
         [Fact]
@@ -423,11 +465,32 @@ namespace ClassLibrary1
     public interface IInterface1
     {
     }
-
-    public interface IInterface2 { }
 }";
 
             VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void InterfaceDeclarationOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public interface IInterface1 { }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 22)
+                    }
+                }
+            );
         }
 
         [Fact]
@@ -486,11 +549,32 @@ namespace ClassLibrary1
     public enum Enum1
     {
     }
-
-    public enum Enum2 { }
 }";
 
             VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void EnumDeclarationOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public enum Enum1 { }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 17)
+                    }
+                }
+            );
         }
 
         [Fact]

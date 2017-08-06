@@ -20,6 +20,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3501", "Braces for multi-line elements should be on a new line.",
                 "Braces for multi-line elements should be on a new line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor TypesShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3502", "Types should not be defined on a single line.",
+                "Types should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -29,7 +33,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             get
             {
                 return ImmutableArray.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
-                    BracesForMultiLineElementsShouldBeOnANewLineDescriptor);
+                    BracesForMultiLineElementsShouldBeOnANewLineDescriptor,
+                    TypesShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -72,8 +77,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
                     node.Name.GetLocation()));
             }
-
-            AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
+            else
+            {
+                AnalyzeBraces(nodeLineSpan, node.OpenBraceToken, node.CloseBraceToken, context);
+            }
         }
 
         private void AnalyzeBracesForArrayCreationExpression(SyntaxNodeAnalysisContext context)
@@ -147,7 +154,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
-            AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(TypesShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.Identifier.GetLocation()));
+            }
+            else
+            {
+                AnalyzeBraces(nodeLineSpan, node.OpenBraceToken, node.CloseBraceToken, context);
+            }
         }
 
         private void AnalyzeBracesForAccessorList(SyntaxNodeAnalysisContext context)
