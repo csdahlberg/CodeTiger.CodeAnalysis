@@ -1,8 +1,9 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Immutable;
+using System.Linq;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System.Collections.Immutable;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 {
@@ -20,6 +21,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3502", "Types should not be defined on a single line.",
                 "Types should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
                 true);
+        internal static readonly DiagnosticDescriptor AutoPropertiesShouldBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3503", "Auto properties should be defined on a single line.",
+                "Auto properties should be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -29,7 +34,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             get
             {
                 return ImmutableArray.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
-                    TypesShouldNotBeDefinedOnASingleLineDescriptor);
+                    TypesShouldNotBeDefinedOnASingleLineDescriptor,
+                    AutoPropertiesShouldBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -48,6 +54,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeNamespaceDeclaration, SyntaxKind.NamespaceDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzePropertyDeclaration, SyntaxKind.PropertyDeclaration);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -71,6 +78,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypesShouldNotBeDefinedOnASingleLineDescriptor,
                     node.Identifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (PropertyDeclarationSyntax)context.Node;
+
+            if (node.AccessorList?.Accessors.All(x => x.Body == null) == true)
+            {
+                var nodeLineSpan = node.GetLocation().GetLineSpan();
+                if (nodeLineSpan.StartLinePosition.Line != nodeLineSpan.EndLinePosition.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        AutoPropertiesShouldBeDefinedOnASingleLineDescriptor, node.Identifier.GetLocation()));
+                }
             }
         }
     }

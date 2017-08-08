@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Diagnostics;
-using CodeTiger.CodeAnalysis.Analyzers.Layout;
-using Xunit;
+﻿using CodeTiger.CodeAnalysis.Analyzers.Layout;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Xunit;
 
 namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
 {
@@ -119,6 +114,65 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 4, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void AutoPropertyDeclarationOnSingleLineDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string Name { get; set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void AutoPropertyDeclarationsOnMultipleLinesProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string Name
+        {
+            get;
+            set;
+        }
+        public int Age
+        {
+            get; set;
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3503",
+                    Message = "Auto properties should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3503",
+                    Message = "Auto properties should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 20)
                     }
                 }
             );
