@@ -42,6 +42,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3507", "Methods should not be defined on a single line.",
                 "Methods should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
                 true);
+        internal static readonly DiagnosticDescriptor TryStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3508", "Try statements should not be defined on a single line.",
+                "Try statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -56,7 +60,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor,
                     TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor,
                     NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor,
-                    MethodsShouldNotBeDefinedOnASingleLineDescriptor);
+                    MethodsShouldNotBeDefinedOnASingleLineDescriptor,
+                    TryStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -80,6 +85,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 SyntaxKind.SetAccessorDeclaration, SyntaxKind.AddAccessorDeclaration,
                 SyntaxKind.RemoveAccessorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeTryStatement, SyntaxKind.TryStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -170,6 +176,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.Identifier.GetLocation()));
+            }
+        }
+
+        private void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (TryStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(TryStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.TryKeyword.GetLocation()));
             }
         }
 
