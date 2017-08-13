@@ -223,6 +223,111 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void TrivialAccessorsOnSingleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private string _name;
+        private EventHandler _testEvent;
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+        public event EventHandler TestEvent
+        {
+            add { _testEvent += value; }
+            remove { _testEvent -= value; }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void TrivialAccessorsOnMultipleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private string _name;
+        private EventHandler _testEvent;
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+        public event EventHandler TestEvent
+        {
+            add
+            {
+                _testEvent += value;
+            }
+            remove
+            {
+                _testEvent -= value;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3505",
+                    Message = "Trivial accessors should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3505",
+                    Message = "Trivial accessors should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 14, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3505",
+                    Message = "Trivial accessors should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 21, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3505",
+                    Message = "Trivial accessors should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 25, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
