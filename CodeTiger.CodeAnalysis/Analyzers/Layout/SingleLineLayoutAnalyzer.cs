@@ -58,6 +58,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3511", "Finally clauses should not be defined on a single line.",
                 "Finally clauses should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor FinallyClausesShouldBeginOnANewLineDescriptor
+            = new DiagnosticDescriptor("CT3512", "Finally clauses should begin on a new line.",
+                "Finally clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -76,7 +80,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     TryStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     CatchClausesShouldBeginOnANewLineDescriptor,
-                    FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor);
+                    FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    FinallyClausesShouldBeginOnANewLineDescriptor);
             }
         }
 
@@ -238,6 +243,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.FinallyKeyword.GetLocation()));
+            }
+
+            if (!IsOnNewLine(node))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(FinallyClausesShouldBeginOnANewLineDescriptor,
                     node.FinallyKeyword.GetLocation()));
             }
         }

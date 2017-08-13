@@ -783,6 +783,62 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void FinallyClauseBeginningOnNewLineDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            finally
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void FinallyClauseNotBeginningOnNewLineProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            } finally
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3512",
+                    Message = "Finally clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 15)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
