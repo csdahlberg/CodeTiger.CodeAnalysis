@@ -66,6 +66,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3513", "If statements should not be defined on a single line.",
                 "If statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ElseClausesShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3514", "Else clauses should not be defined on a single line.",
+                "Else clauses should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -86,7 +90,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     CatchClausesShouldBeginOnANewLineDescriptor,
                     FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     FinallyClausesShouldBeginOnANewLineDescriptor,
-                    IfStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    ElseClausesShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -114,6 +119,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
             context.RegisterSyntaxNodeAction(AnalyzeFinallyClause, SyntaxKind.FinallyClause);
             context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -268,6 +274,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.IfKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ElseClauseSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.ElseKeyword.GetLocation()));
             }
         }
 
