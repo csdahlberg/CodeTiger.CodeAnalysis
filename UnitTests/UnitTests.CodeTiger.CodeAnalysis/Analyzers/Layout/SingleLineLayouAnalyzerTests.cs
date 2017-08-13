@@ -328,6 +328,119 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void NonTrivialAccessorsOnMultipleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private string _name;
+        private EventHandler _testEvent;
+        public string Name
+        {
+            get
+            {
+                if (DateTime.Now > DateTime.MinValue)
+                    return _name;
+                else
+                    return """";
+            }
+            set
+            {
+                if (value == null)
+                {
+                    throw new Exception();
+                }
+
+                _name = value; }
+        }
+        public event EventHandler TestEvent
+        {
+            add
+            {
+                _name = """";
+                _testEvent += value;
+            }
+            remove
+            {
+                _testEvent -= value; ToString();
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonTrivialAccessorsOnSingleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private string _name;
+        private EventHandler _testEvent;
+        public string Name
+        {
+            get { if (DateTime.Now > DateTime.MinValue) return _name; else return """"; }
+            set { if (value == null) throw new Exception(); _name = value; }
+        }
+        public event EventHandler TestEvent
+        {
+            add { _name = """"; _testEvent += value; }
+            remove { _testEvent -= value; ToString(); }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3506",
+                    Message = "Non-trivial accessors should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3506",
+                    Message = "Non-trivial accessors should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3506",
+                    Message = "Non-trivial accessors should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3506",
+                    Message = "Non-trivial accessors should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();

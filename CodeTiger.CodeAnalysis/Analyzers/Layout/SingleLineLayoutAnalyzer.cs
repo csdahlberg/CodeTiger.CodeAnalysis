@@ -34,6 +34,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3505", "Trivial accessors should be defined on a single line.",
                 "Trivial accessors should be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3506", "Non-trivial accessors should not be defined on a single line.",
+                "Non-trivial accessors should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -46,7 +50,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     TypesShouldNotBeDefinedOnASingleLineDescriptor,
                     AutoPropertiesShouldBeDefinedOnASingleLineDescriptor,
                     NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor,
-                    TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor);
+                    TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor,
+                    NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -135,21 +140,68 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                         TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor, node.Keyword.GetLocation()));
                 }
             }
+            else if (IsAccessorNonTrivial(node.Body))
+            {
+                if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor, node.Keyword.GetLocation()));
+                }
+            }
         }
 
-        private bool IsAccessorTrivial(BlockSyntax body)
+        private static bool IsAccessorTrivial(BlockSyntax body)
         {
             if (body == null || body.Statements.Count == 0)
             {
                 return true;
             }
 
-            if (body.Statements.Count > 1)
+            if (body.Statements.Count != 1)
             {
                 return false;
             }
-            
-            return body.Statements[0].ToString().Length < 80;
+
+            var statement = body.Statements[0];
+
+            if (statement.Span.Length > 80)
+            {
+                return false;
+            }
+
+            switch (statement.Kind())
+            {
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.SimpleAssignmentExpression:
+                case SyntaxKind.AddAssignmentExpression:
+                case SyntaxKind.SubtractAssignmentExpression:
+                case SyntaxKind.ExpressionStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private static bool IsAccessorNonTrivial(BlockSyntax body)
+        {
+            if (body == null || body.Statements.Count == 0)
+            {
+                return false;
+            }
+
+            if (body?.Statements.Count > 1)
+            {
+                return true;
+            }
+
+            switch (body.Statements[0].Kind())
+            {
+                case SyntaxKind.IfStatement:
+                case SyntaxKind.SwitchStatement:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }
