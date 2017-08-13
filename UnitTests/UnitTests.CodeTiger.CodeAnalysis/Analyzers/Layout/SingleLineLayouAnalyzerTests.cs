@@ -534,6 +534,16 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 13)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3510",
+                    Message = "Catch clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 40)
+                    }
                 }
             );
         }
@@ -615,6 +625,79 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 15, 13)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void CatchClausesBeginningOnNewLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            catch (Exception) { }
+            try
+            {
+            }
+            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void CatchClausesNotBeginningOnNewLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            } catch (Exception) { }
+            try
+            {
+            } catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3510",
+                    Message = "Catch clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 15)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3510",
+                    Message = "Catch clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 15)
                     }
                 }
             );

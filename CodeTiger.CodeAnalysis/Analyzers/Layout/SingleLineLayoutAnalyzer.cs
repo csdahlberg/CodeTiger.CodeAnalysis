@@ -51,6 +51,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "Non-trivial catch clauses should not be defined on a single line.",
                 "Non-trivial catch clauses should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor CatchClausesShouldBeginOnANewLineDescriptor
+            = new DiagnosticDescriptor("CT3510", "Catch clauses should begin on a new line.",
+                "Catch clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -67,7 +70,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor,
                     MethodsShouldNotBeDefinedOnASingleLineDescriptor,
                     TryStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor);
+                    NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    CatchClausesShouldBeginOnANewLineDescriptor);
             }
         }
 
@@ -201,7 +205,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
         {
             var node = (CatchClauseSyntax)context.Node;
-
+            
             if (IsCatchClauseNonTrivial(node))
             {
                 var nodeLineSpan = node.GetLocation().GetLineSpan();
@@ -211,6 +215,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                         NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
                         node.CatchKeyword.GetLocation()));
                 }
+            }
+
+            if (!IsOnNewLine(node))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(CatchClausesShouldBeginOnANewLineDescriptor,
+                    node.CatchKeyword.GetLocation()));
             }
         }
 
@@ -294,6 +304,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 default:
                     return true;
             }
+        }
+
+        private bool IsOnNewLine(SyntaxNode node)
+        {
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+
+            var previousToken = node.ChildTokens().FirstOrDefault().GetPreviousToken();
+            while (previousToken != default(SyntaxToken))
+            {
+                var previousTokenLineSpan = previousToken.GetLocation().GetLineSpan();
+                if (previousTokenLineSpan.EndLinePosition.Line != nodeLineSpan.StartLinePosition.Line)
+                {
+                    break;
+                }
+
+                if (!SyntaxFacts.IsTrivia(previousToken.Kind()))
+                {
+                    return false;
+                }
+
+                previousToken = previousToken.GetPreviousToken();
+            }
+
+            return true;
         }
     }
 }
