@@ -54,6 +54,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         internal static readonly DiagnosticDescriptor CatchClausesShouldBeginOnANewLineDescriptor
             = new DiagnosticDescriptor("CT3510", "Catch clauses should begin on a new line.",
                 "Catch clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3511", "Finally clauses should not be defined on a single line.",
+                "Finally clauses should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -71,7 +75,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     MethodsShouldNotBeDefinedOnASingleLineDescriptor,
                     TryStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
-                    CatchClausesShouldBeginOnANewLineDescriptor);
+                    CatchClausesShouldBeginOnANewLineDescriptor,
+                    FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -97,6 +102,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeTryStatement, SyntaxKind.TryStatement);
             context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
+            context.RegisterSyntaxNodeAction(AnalyzeFinallyClause, SyntaxKind.FinallyClause);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -206,7 +212,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (CatchClauseSyntax)context.Node;
             
-            if (IsCatchClauseNonTrivial(node))
+            if (IsBlockNonTrivial(node.Block))
             {
                 var nodeLineSpan = node.GetLocation().GetLineSpan();
                 if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
@@ -221,6 +227,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(CatchClausesShouldBeginOnANewLineDescriptor,
                     node.CatchKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeFinallyClause(SyntaxNodeAnalysisContext context)
+        {
+            var node = (FinallyClauseSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.FinallyKeyword.GetLocation()));
             }
         }
 
@@ -278,19 +296,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private static bool IsCatchClauseNonTrivial(CatchClauseSyntax node)
+        private static bool IsBlockNonTrivial(BlockSyntax block)
         {
-            if (node.Block == null || node.Block.Statements.Count == 0)
+            if (block == null || block.Statements.Count == 0)
             {
                 return false;
             }
 
-            if (node.Block?.Statements.Count > 1)
+            if (block.Statements.Count > 1)
             {
                 return true;
             }
 
-            switch (node.Block.Statements[0].Kind())
+            switch (block.Statements[0].Kind())
             {
                 case SyntaxKind.ThrowStatement:
                 case SyntaxKind.ReturnStatement:
@@ -300,6 +318,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 case SyntaxKind.GotoStatement:
                 case SyntaxKind.GotoCaseStatement:
                 case SyntaxKind.GotoDefaultStatement:
+                case SyntaxKind.InvocationExpression:
                     return false;
                 default:
                     return true;

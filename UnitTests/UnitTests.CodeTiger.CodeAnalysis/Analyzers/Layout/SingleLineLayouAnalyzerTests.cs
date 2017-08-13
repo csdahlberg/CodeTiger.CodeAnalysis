@@ -703,6 +703,86 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void FinallyClausesOnMultipleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            finally
+            {
+            }
+            try
+            {
+            }
+            finally
+            {
+                if (DateTime.Now > DateTime.MinValue)
+                {
+                    throw new Exception();
+                }
+                return;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void FinallyClausesOnSingleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            finally { }
+            try
+            {
+            }
+            finally { if (DateTime.Now > DateTime.MinValue) { throw new Exception(); } return; }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3511",
+                    Message = "Finally clauses should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3511",
+                    Message = "Finally clauses should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
