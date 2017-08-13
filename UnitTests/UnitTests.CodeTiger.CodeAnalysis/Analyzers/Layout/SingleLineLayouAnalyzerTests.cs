@@ -538,6 +538,88 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void NonTrivialCatchClausesOnMultipleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            catch (Exception)
+            {
+                Console.WriteLine(""ERROR!"");
+                throw;
+            }
+            try
+            {
+            }
+            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
+            {
+                if (ex.HResult != 0)
+                {
+                    throw new Exception(""Blah"", ex);
+                }
+                throw;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonTrivialCatchClausesOnSingleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            try
+            {
+            }
+            catch (Exception) { Console.WriteLine(""ERROR!""); throw; }
+            try
+            {
+            }
+            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true) { if (ex.HResult != 0) { throw new Exception(""Blah"", ex); } return; }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3509",
+                    Message = "Non-trivial catch clauses should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3509",
+                    Message = "Non-trivial catch clauses should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();

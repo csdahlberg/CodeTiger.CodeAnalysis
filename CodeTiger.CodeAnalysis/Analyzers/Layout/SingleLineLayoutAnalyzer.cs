@@ -46,6 +46,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3508", "Try statements should not be defined on a single line.",
                 "Try statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor = new DiagnosticDescriptor("CT3509",
+                "Non-trivial catch clauses should not be defined on a single line.",
+                "Non-trivial catch clauses should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -61,7 +66,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor,
                     NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor,
                     MethodsShouldNotBeDefinedOnASingleLineDescriptor,
-                    TryStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    TryStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -86,6 +92,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 SyntaxKind.RemoveAccessorDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeTryStatement, SyntaxKind.TryStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -191,6 +198,22 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
+        private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        {
+            var node = (CatchClauseSyntax)context.Node;
+
+            if (IsCatchClauseNonTrivial(node))
+            {
+                var nodeLineSpan = node.GetLocation().GetLineSpan();
+                if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                        node.CatchKeyword.GetLocation()));
+                }
+            }
+        }
+
         private static bool IsAccessorTrivial(BlockSyntax body)
         {
             if (body == null || body.Statements.Count == 0)
@@ -242,6 +265,34 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     return true;
                 default:
                     return false;
+            }
+        }
+
+        private static bool IsCatchClauseNonTrivial(CatchClauseSyntax node)
+        {
+            if (node.Block == null || node.Block.Statements.Count == 0)
+            {
+                return false;
+            }
+
+            if (node.Block?.Statements.Count > 1)
+            {
+                return true;
+            }
+
+            switch (node.Block.Statements[0].Kind())
+            {
+                case SyntaxKind.ThrowStatement:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
+                case SyntaxKind.BreakStatement:
+                case SyntaxKind.YieldBreakStatement:
+                case SyntaxKind.GotoStatement:
+                case SyntaxKind.GotoCaseStatement:
+                case SyntaxKind.GotoDefaultStatement:
+                    return false;
+                default:
+                    return true;
             }
         }
     }
