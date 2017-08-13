@@ -25,6 +25,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3503", "Auto properties should be defined on a single line.",
                 "Auto properties should be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3504", "Non-auto properties should not be defined on a single line.",
+                "Non-auto properties should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -35,7 +39,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 return ImmutableArray.Create(NamespacesShouldNotBeDefinedOnASingleLineDescriptor,
                     TypesShouldNotBeDefinedOnASingleLineDescriptor,
-                    AutoPropertiesShouldBeDefinedOnASingleLineDescriptor);
+                    AutoPropertiesShouldBeDefinedOnASingleLineDescriptor,
+                    NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -84,15 +89,26 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (PropertyDeclarationSyntax)context.Node;
-
-            if (node.AccessorList?.Accessors.All(x => x.Body == null) == true)
+            
+            if (node.AccessorList?.Accessors == null)
             {
-                var nodeLineSpan = node.GetLocation().GetLineSpan();
-                if (nodeLineSpan.StartLinePosition.Line != nodeLineSpan.EndLinePosition.Line)
+                return;
+            }
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+
+            if (node.AccessorList.Accessors.All(x => x.Body == null))
+            {
+                if (nodeLineSpan.Span.Start.Line != nodeLineSpan.Span.End.Line)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         AutoPropertiesShouldBeDefinedOnASingleLineDescriptor, node.Identifier.GetLocation()));
                 }
+            }
+            else if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor, node.Identifier.GetLocation()));
             }
         }
     }
