@@ -386,8 +386,8 @@ namespace ClassLibrary1
         private EventHandler _testEvent;
         public string Name
         {
-            get { if (DateTime.Now > DateTime.MinValue) return _name; else return """"; }
-            set { if (value == null) throw new Exception(); _name = value; }
+            get { DateTime.Now.ToString(); return """"; }
+            set { DateTime.Now.ToString(); _name = value; }
         }
         public event EventHandler TestEvent
         {
@@ -601,7 +601,7 @@ namespace ClassLibrary1
             try
             {
             }
-            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true) { if (ex.HResult != 0) { throw new Exception(""Blah"", ex); } return; }
+            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true) { DateTime.Now.ToString(); return; }
         }
     }
 }";
@@ -754,7 +754,7 @@ namespace ClassLibrary1
             try
             {
             }
-            finally { if (DateTime.Now > DateTime.MinValue) { throw new Exception(); } return; }
+            finally { DateTime.Now.ToString(); return; }
         }
     }
 }";
@@ -834,6 +834,72 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 15)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void IfStatementsOnMultipleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (DateTime.Now > DateTime.MinValue)
+            {
+            }
+            if (DateTime.Now < DateTime.MaxValue)
+            {
+            }
+            else
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void IfStatementsOnSingleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (DateTime.Now > DateTime.MinValue) { }
+            if (DateTime.Now < DateTime.MaxValue) { } else { }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3513",
+                    Message = "If statements should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3513",
+                    Message = "If statements should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 13)
                     }
                 }
             );

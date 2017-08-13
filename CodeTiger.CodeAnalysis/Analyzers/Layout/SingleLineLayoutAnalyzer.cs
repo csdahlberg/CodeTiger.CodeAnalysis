@@ -62,6 +62,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3512", "Finally clauses should begin on a new line.",
                 "Finally clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
                 true);
+        internal static readonly DiagnosticDescriptor IfStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3513", "If statements should not be defined on a single line.",
+                "If statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -81,7 +85,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     CatchClausesShouldBeginOnANewLineDescriptor,
                     FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
-                    FinallyClausesShouldBeginOnANewLineDescriptor);
+                    FinallyClausesShouldBeginOnANewLineDescriptor,
+                    IfStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -108,6 +113,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeTryStatement, SyntaxKind.TryStatement);
             context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
             context.RegisterSyntaxNodeAction(AnalyzeFinallyClause, SyntaxKind.FinallyClause);
+            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -250,6 +256,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(FinallyClausesShouldBeginOnANewLineDescriptor,
                     node.FinallyKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (IfStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.IfKeyword.GetLocation()));
             }
         }
 
