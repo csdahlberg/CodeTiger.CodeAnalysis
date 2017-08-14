@@ -89,6 +89,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3519", "While statements should not be defined on a single line.",
                 "While statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor DoStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3520", "Do statements should not be defined on a single line.",
+                "Do statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -115,7 +119,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    DoStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -148,6 +153,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
             context.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
             context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeDoStatement, SyntaxKind.DoStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -369,6 +375,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.WhileKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (DoStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    DoStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.DoKeyword.GetLocation()));
             }
         }
 
