@@ -70,6 +70,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3514", "Else clauses should not be defined on a single line.",
                 "Else clauses should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ElseClausesShouldBeginOnANewLineDescriptor
+            = new DiagnosticDescriptor("CT3515", "Else clauses should begin on a new line.",
+                "Else clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -91,7 +94,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     FinallyClausesShouldBeginOnANewLineDescriptor,
                     IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    ElseClausesShouldNotBeDefinedOnASingleLineDescriptor);
+                    ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    ElseClausesShouldBeginOnANewLineDescriptor);
             }
         }
 
@@ -285,6 +289,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.ElseKeyword.GetLocation()));
+            }
+
+            if (!IsOnNewLine(node))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ElseClausesShouldBeginOnANewLineDescriptor,
                     node.ElseKeyword.GetLocation()));
             }
         }

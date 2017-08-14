@@ -911,6 +911,16 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 55)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3515",
+                    Message = "Else clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 55)
+                    }
                 }
             );
         }
@@ -965,6 +975,62 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void ElseClauseBeginningOnNewLineDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (DateTime.Now > DateTime.MinValue)
+            {
+            }
+            else
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ElseClauseNotBeginningOnNewLineProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (DateTime.Now > DateTime.MinValue)
+            {
+            } else
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3515",
+                    Message = "Else clauses should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 15)
                     }
                 }
             );
