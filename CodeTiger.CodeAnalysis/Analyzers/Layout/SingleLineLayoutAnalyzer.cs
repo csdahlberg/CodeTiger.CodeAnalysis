@@ -81,6 +81,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3517", "ForEach statements should not be defined on a single line.",
                 "ForEach statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3518", "Switch statements should not be defined on a single line.",
+                "Switch statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -105,7 +109,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     ElseClausesShouldBeginOnANewLineDescriptor,
                     ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -136,6 +141,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
             context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
             context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -333,6 +339,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(
                     ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.ForEachKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (SwitchStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.SwitchKeyword.GetLocation()));
             }
         }
 
