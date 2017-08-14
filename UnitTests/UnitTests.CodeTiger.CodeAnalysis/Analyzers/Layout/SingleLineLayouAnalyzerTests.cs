@@ -1085,6 +1085,55 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void ForEachStatementOnMultipleLinesDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            foreach (var thing in Enumerable.Empty<object>())
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ForEachStatementOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            foreach (var thing in Enumerable.Empty<object>()) { }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3517",
+                    Message = "ForEach statements should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();

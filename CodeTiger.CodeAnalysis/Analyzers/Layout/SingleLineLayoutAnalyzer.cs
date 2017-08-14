@@ -77,6 +77,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3516", "For statements should not be defined on a single line.",
                 "For statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3517", "ForEach statements should not be defined on a single line.",
+                "ForEach statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -100,7 +104,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
                     ElseClausesShouldBeginOnANewLineDescriptor,
-                    ForStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -130,6 +135,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
             context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -314,6 +320,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.ForKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ForEachStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.ForEachKeyword.GetLocation()));
             }
         }
 
