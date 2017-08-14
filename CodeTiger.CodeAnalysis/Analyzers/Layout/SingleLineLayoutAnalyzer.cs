@@ -73,6 +73,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         internal static readonly DiagnosticDescriptor ElseClausesShouldBeginOnANewLineDescriptor
             = new DiagnosticDescriptor("CT3515", "Else clauses should begin on a new line.",
                 "Else clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ForStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3516", "For statements should not be defined on a single line.",
+                "For statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -95,7 +99,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     FinallyClausesShouldBeginOnANewLineDescriptor,
                     IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     ElseClausesShouldNotBeDefinedOnASingleLineDescriptor,
-                    ElseClausesShouldBeginOnANewLineDescriptor);
+                    ElseClausesShouldBeginOnANewLineDescriptor,
+                    ForStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -124,6 +129,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeFinallyClause, SyntaxKind.FinallyClause);
             context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
+            context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -296,6 +302,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(ElseClausesShouldBeginOnANewLineDescriptor,
                     node.ElseKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ForStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    node.ForKeyword.GetLocation()));
             }
         }
 
