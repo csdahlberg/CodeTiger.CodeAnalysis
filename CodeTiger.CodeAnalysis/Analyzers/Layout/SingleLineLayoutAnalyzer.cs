@@ -85,6 +85,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3518", "Switch statements should not be defined on a single line.",
                 "Switch statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3519", "While statements should not be defined on a single line.",
+                "While statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -110,7 +114,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     ElseClausesShouldBeginOnANewLineDescriptor,
                     ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -142,6 +147,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
             context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
             context.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -351,6 +357,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.SwitchKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (WhileStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.WhileKeyword.GetLocation()));
             }
         }
 
