@@ -98,6 +98,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "Non-empty using statements should not be defined on a single line.",
                 "Non-empty using statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3522", "Fixed statements should not be defined on a single line.",
+                "Fixed statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -126,7 +130,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     DoStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -161,6 +166,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
             context.RegisterSyntaxNodeAction(AnalyzeDoStatement, SyntaxKind.DoStatement);
             context.RegisterSyntaxNodeAction(AnalyzeUsingStatement, SyntaxKind.UsingStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -421,6 +427,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(
                     NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.UsingKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (FixedStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.FixedKeyword.GetLocation()));
             }
         }
 

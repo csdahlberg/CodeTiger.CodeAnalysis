@@ -1332,6 +1332,55 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void FixedStatementOnMultipleLinesDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public unsafe void DoSomething()
+        {
+            fixed (char* text = ""Testing"")
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void FixedStatementOnSingleLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public unsafe void DoSomething()
+        {
+            fixed (char* text = ""Testing"") { }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3522",
+                    Message = "Fixed statements should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
