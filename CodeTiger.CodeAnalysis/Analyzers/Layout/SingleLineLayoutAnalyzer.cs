@@ -102,6 +102,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3522", "Fixed statements should not be defined on a single line.",
                 "Fixed statements should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor LockStatementsShouldNotBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3523", "Lock statements should not be defined on a single line.",
+                "Lock statements should not be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -131,7 +135,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     DoStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor);
+                    FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor,
+                    LockStatementsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -167,6 +172,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeDoStatement, SyntaxKind.DoStatement);
             context.RegisterSyntaxNodeAction(AnalyzeUsingStatement, SyntaxKind.UsingStatement);
             context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeLockStatement, SyntaxKind.LockStatement);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -439,6 +445,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.FixedKeyword.GetLocation()));
+            }
+        }
+
+        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (LockStatementSyntax)context.Node;
+
+            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    LockStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.LockKeyword.GetLocation()));
             }
         }
 
