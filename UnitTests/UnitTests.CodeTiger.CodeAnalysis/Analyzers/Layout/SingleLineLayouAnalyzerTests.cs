@@ -1430,6 +1430,90 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void NonTrivialCaseClausesOnMultipleLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            switch (DateTime.Now.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    break;
+                case DayOfWeek.Tuesday:
+                    {
+                        return;
+                    }
+                case DayOfWeek.Wednesday:
+                    {
+                        ToString();
+                        return;
+                    }
+                default:
+                    {
+                        if (ReferenceEquals(this, this))
+                        {
+                            ToString();
+                        }
+                    }
+                    break;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NonTrivialCaseClausesOnSingleLinesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            switch (DateTime.Now.DayOfWeek)
+            {
+                case DayOfWeek.Monday: break;
+                case DayOfWeek.Tuesday: { return; }
+                case DayOfWeek.Wednesday: { ToString(); return; }
+                default: { ToString(); } break;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3524",
+                    Message = "Non-trivial switch sections should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 12, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3524",
+                    Message = "Non-trivial switch sections should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 17)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
