@@ -40,6 +40,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         /// <remarks>This method should only be called once, at the start of a session.</remarks>
         public override void Initialize(AnalysisContext context)
         {
+            Guard.ArgumentIsNotNull(nameof(context), context);
+
+            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+            context.EnableConcurrentExecution();
+
             context.RegisterSyntaxNodeAction(AnalyzeAttributeList, SyntaxKind.AttributeList);
         }
 
