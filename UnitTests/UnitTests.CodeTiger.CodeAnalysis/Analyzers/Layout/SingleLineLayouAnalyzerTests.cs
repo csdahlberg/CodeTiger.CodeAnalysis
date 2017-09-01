@@ -343,9 +343,13 @@ namespace ClassLibrary1
             get
             {
                 if (DateTime.Now > DateTime.MinValue)
+                {
                     return _name;
+                }
                 else
+                {
                     return """";
+                }
             }
             set
             {
@@ -354,7 +358,8 @@ namespace ClassLibrary1
                     throw new Exception();
                 }
 
-                _name = value; }
+                _name = value;
+            }
         }
         public event EventHandler TestEvent
         {
@@ -1313,7 +1318,7 @@ namespace ClassLibrary1
     {
         public void DoSomething()
         {
-            using (var task in Task.FromResult(true)) { task.ToString(); }
+            using (var task = Task.FromResult(true)) { task.ToString(); }
         }
     }
 }";
@@ -1509,6 +1514,174 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void CodeBlocksWithBracesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Linq;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (false)
+            {
+            }
+            else if (true)
+            {
+            }
+            else
+            {
+            }
+
+            for (int i = 0; i < DateTime.Now.Day; i += 1)
+            {
+            }
+
+            foreach (int i in Enumerable.Empty<int>())
+            {
+            }
+
+            while (false)
+            {
+            }
+
+            do
+            {
+            } while (false);
+
+            using (var disposable = (IDisposable)null)
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void CodeBlocksWithoutBracesProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Linq;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            if (false)
+                ;
+            else if (true)
+                ;
+            else
+                ;
+
+            for (int i = 0; i < DateTime.Now.Day; i += 1)
+                ;
+
+            foreach (int i in Enumerable.Empty<int>())
+                ;
+
+            while (false)
+                ;
+
+            do
+                ;
+            while (false);
+
+            using (var disposable = (IDisposable)null)
+                ;
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 19, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 22, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 25, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3525",
+                    Message = "Braces should not be omitted from code blocks.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 29, 13)
                     }
                 }
             );
