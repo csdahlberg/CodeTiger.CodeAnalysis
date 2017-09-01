@@ -191,7 +191,7 @@
     <Compile Include="Analyzers\DiagnosticResultLocation.cs" />
     <Compile Include="Analyzers\DiagnosticVerifier.cs" />
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzerTests.cs" />
-    <Compile Include="Analyzers\Layout\SingleLineLayouAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzerTests.cs" />
     <Compile Include="Analyzers\Readability\ComparisonReadabilityAnalyzerTests.cs" />

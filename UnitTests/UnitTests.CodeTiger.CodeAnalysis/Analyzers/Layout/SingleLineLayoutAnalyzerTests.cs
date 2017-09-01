@@ -5,7 +5,7 @@ using Xunit;
 
 namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
 {
-    public class SingleLineLayouAnalyzerTests : DiagnosticVerifier
+    public class SingleLineLayoutAnalyzerTests : DiagnosticVerifier
     {
         [Fact]
         public void NamespaceDeclarationOnSingleLineProducesDiagnostic()
