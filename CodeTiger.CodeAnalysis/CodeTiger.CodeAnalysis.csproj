@@ -52,6 +52,7 @@
     <Compile Include="Analyzers\Design\NonGenericCollectionDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Design\UnmanagedDesignAnalyzer.cs" />
     <Compile Include="Analyzers\Documentation\RequiredDocumentationAnalyzer.cs" />
+    <Compile Include="Analyzers\Layout\AttributeLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzer.cs" />

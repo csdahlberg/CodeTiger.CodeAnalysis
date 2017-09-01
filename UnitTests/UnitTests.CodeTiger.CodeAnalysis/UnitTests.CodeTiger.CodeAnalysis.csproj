@@ -190,6 +190,7 @@
     <Compile Include="Analyzers\DiagnosticResult.cs" />
     <Compile Include="Analyzers\DiagnosticResultLocation.cs" />
     <Compile Include="Analyzers\DiagnosticVerifier.cs" />
+    <Compile Include="Analyzers\Layout\AttributeLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzerTests.cs" />
