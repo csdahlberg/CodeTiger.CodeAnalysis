@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 {
     /// <summary>
-    /// Analyzes braces for layout issues.
+    /// Analyzes elements for layout issues related to elements being defined on a single line.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
