@@ -70,6 +70,46 @@ namespace ClassLibrary1
                 });
         }
 
+        [Fact]
+        public void AttributesDeclaredOnSameLineProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    [Obsolete][CLSCompliant(false)]
+    public class Class1
+    {
+        [Obsolete][CLSCompliant(false)]
+        public void DoSomething()
+        {
+        }
+    }
+}
+";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3527",
+                    Message = "Attributes should be declared on separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 4, 15)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3527",
+                    Message = "Attributes should be declared on separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 19)
+                    }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new AttributeLayoutAnalyzer();

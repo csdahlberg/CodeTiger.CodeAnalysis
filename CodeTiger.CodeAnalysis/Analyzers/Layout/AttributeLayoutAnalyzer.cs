@@ -16,6 +16,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         internal static readonly DiagnosticDescriptor AttributesShouldBeDeclaredSeparatelyDescriptor
             = new DiagnosticDescriptor("CT3526", "Attributes should be declared separately.",
                 "Attributes should be declared separately.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor AttributesShouldBeDeclaredOnSeparateLinesDescriptor
+            = new DiagnosticDescriptor("CT3527", "Attributes should be declared on separate lines.",
+                "Attributes should be declared on separate lines.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -24,7 +28,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             get
             {
-                return ImmutableArray.Create<DiagnosticDescriptor>(AttributesShouldBeDeclaredSeparatelyDescriptor);
+                return ImmutableArray.Create<DiagnosticDescriptor>(AttributesShouldBeDeclaredSeparatelyDescriptor,
+                    AttributesShouldBeDeclaredOnSeparateLinesDescriptor);
             }
         }
 
@@ -46,6 +51,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(AttributesShouldBeDeclaredSeparatelyDescriptor,
                     node.Attributes[0].GetLocation(), node.Attributes.Skip(1).Select(x => x.GetLocation())));
+            }
+
+            var attributeListsForSameParent = node.Parent.ChildNodes().OfType<AttributeListSyntax>().ToList();
+            if (attributeListsForSameParent.Count > 1)
+            {
+                int nodeStartLine = node.GetLocation().GetLineSpan().StartLinePosition.Line;
+                if (attributeListsForSameParent.Any(x => x.SpanStart < node.SpanStart
+                    && nodeStartLine == x.GetLocation().GetLineSpan().StartLinePosition.Line))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(AttributesShouldBeDeclaredOnSeparateLinesDescriptor,
+                        node.OpenBracketToken.GetLocation()));
+                }
             }
         }
     }
