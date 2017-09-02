@@ -622,7 +622,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private bool IsOnNewLine(SyntaxNode node)
+        private static bool IsOnNewLine(SyntaxNode node)
         {
             var nodeLineSpan = node.GetLocation().GetLineSpan();
 

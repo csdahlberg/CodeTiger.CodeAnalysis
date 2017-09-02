@@ -79,7 +79,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private bool IsLiteral(ExpressionSyntax node)
+        private static bool IsLiteral(ExpressionSyntax node)
         {
             switch (node.Kind())
             {

@@ -57,7 +57,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeBracesForAccessorList, SyntaxKind.AccessorList);
         }
 
-        private void AnalyzeBracesForNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (NamespaceDeclarationSyntax)context.Node;
 
@@ -68,7 +68,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeBracesForArrayCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ArrayCreationExpressionSyntax)context.Node;
 
@@ -79,7 +79,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeBracesForObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ObjectCreationExpressionSyntax)context.Node;
 
@@ -90,21 +90,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeBracesForComplexElementInitializerExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForComplexElementInitializerExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (InitializerExpressionSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private void AnalyzeBracesForAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (AnonymousObjectCreationExpressionSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private void AnalyzeBracesForBlock(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForBlock(SyntaxNodeAnalysisContext context)
         {
             var node = (BlockSyntax)context.Node;
 
@@ -128,14 +128,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             AnalyzeBraces(nodeLinePositionSpan, node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private void AnalyzeBracesForSwitchStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForSwitchStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (SwitchStatementSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private void AnalyzeBracesForTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
@@ -146,14 +146,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeBracesForAccessorList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBracesForAccessorList(SyntaxNodeAnalysisContext context)
         {
             var node = (AccessorListSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private void AnalyzeBraces(FileLinePositionSpan nodeLineSpan, SyntaxToken openBraceToken,
+        private static void AnalyzeBraces(FileLinePositionSpan nodeLineSpan, SyntaxToken openBraceToken,
             SyntaxToken closeBraceToken, SyntaxNodeAnalysisContext context)
         {
             if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
@@ -174,7 +174,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private bool IsOnOwnLine(SyntaxToken braceToken)
+        private static bool IsOnOwnLine(SyntaxToken braceToken)
         {
             var braceTokenLineSpan = braceToken.GetLocation().GetLineSpan();
 
