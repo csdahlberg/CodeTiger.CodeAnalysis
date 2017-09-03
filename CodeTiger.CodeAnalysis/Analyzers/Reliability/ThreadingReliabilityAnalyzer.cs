@@ -119,17 +119,23 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
         private static bool IsPubliclyAccessible(SemanticModelAnalysisContext context, SyntaxNode node)
         {
-            switch (node.Kind())
+            if (node.Kind() == SyntaxKind.ThisExpression || node.Kind() == SyntaxKind.BaseExpression)
             {
-                case SyntaxKind.ThisExpression:
-                case SyntaxKind.BaseExpression:
-                    return true;
-                default:
-                    {
-                        return context.SemanticModel.GetSymbolInfo(node).Symbol
-                            ?.DeclaredAccessibility == Accessibility.Public;
-                    }
+                return true;
             }
+
+            if (node.Kind() == SyntaxKind.SimpleMemberAccessExpression
+                || node.Kind() == SyntaxKind.PointerMemberAccessExpression)
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)node;
+
+                if (!IsPubliclyAccessible(context, memberAccessExpression.Expression))
+                {
+                    return false;
+                }
+            }
+
+            return context.SemanticModel.GetSymbolInfo(node).Symbol?.DeclaredAccessibility == Accessibility.Public;
         }
     }
 }
