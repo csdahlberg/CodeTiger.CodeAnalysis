@@ -185,6 +185,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyzers\Design\InheritedMemberDesignAnalyzerTests.cs" />
     <Compile Include="Analyzers\Design\StaticDesignAnalyzerTests.cs" />
     <Compile Include="Analyzers\Design\UnmanagedDesignAnalyzerTests.cs" />
     <Compile Include="Analyzers\DiagnosticResult.cs" />
