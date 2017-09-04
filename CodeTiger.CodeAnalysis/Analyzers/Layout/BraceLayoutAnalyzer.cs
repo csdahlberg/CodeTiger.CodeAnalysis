@@ -125,7 +125,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     break;
             }
 
-            AnalyzeBraces(nodeLinePositionSpan, node.OpenBraceToken, node.CloseBraceToken, context);
+            bool isForDoStatement = node.Parent?.Kind() == SyntaxKind.DoStatement;
+
+            AnalyzeBraces(nodeLinePositionSpan, node.OpenBraceToken, node.CloseBraceToken, context,
+                isForDoStatement);
         }
 
         private static void AnalyzeBracesForSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -154,7 +157,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         }
 
         private static void AnalyzeBraces(FileLinePositionSpan nodeLineSpan, SyntaxToken openBraceToken,
-            SyntaxToken closeBraceToken, SyntaxNodeAnalysisContext context)
+            SyntaxToken closeBraceToken, SyntaxNodeAnalysisContext context, bool isForDoStatementBlock = false)
         {
             if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
             {
@@ -167,14 +170,30 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     openBraceToken.GetLocation()));
             }
 
-            if (!IsOnOwnLine(closeBraceToken))
+            if (isForDoStatementBlock)
             {
-                context.ReportDiagnostic(Diagnostic.Create(BracesForMultiLineElementsShouldBeOnANewLineDescriptor,
-                    closeBraceToken.GetLocation()));
+                if (!IsFirstTokenOnLine(closeBraceToken))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        BracesForMultiLineElementsShouldBeOnANewLineDescriptor, closeBraceToken.GetLocation()));
+                }
+            }
+            else
+            {
+                if (!IsOnOwnLine(closeBraceToken))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        BracesForMultiLineElementsShouldBeOnANewLineDescriptor, closeBraceToken.GetLocation()));
+                }
             }
         }
 
         private static bool IsOnOwnLine(SyntaxToken braceToken)
+        {
+            return IsFirstTokenOnLine(braceToken) && IsLastTokenOnLine(braceToken);
+        }
+
+        private static bool IsFirstTokenOnLine(SyntaxToken braceToken)
         {
             var braceTokenLineSpan = braceToken.GetLocation().GetLineSpan();
 
@@ -184,7 +203,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 var previousTokenLineSpan = previousToken.GetLocation().GetLineSpan();
                 if (previousTokenLineSpan.EndLinePosition.Line != braceTokenLineSpan.StartLinePosition.Line)
                 {
-                    break;
+                    return true;
                 }
 
                 if (!SyntaxFacts.IsTrivia(previousToken.Kind())
@@ -197,16 +216,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 previousToken = previousToken.GetPreviousToken();
             }
 
+            return true;
+        }
+
+        private static bool IsLastTokenOnLine(SyntaxToken braceToken)
+        {
+            var braceTokenLineSpan = braceToken.GetLocation().GetLineSpan();
+
             var nextToken = braceToken.GetNextToken();
             while (nextToken != default(SyntaxToken))
             {
                 var nextTokenLineSpan = nextToken.GetLocation().GetLineSpan();
                 if (nextTokenLineSpan.StartLinePosition.Line != braceTokenLineSpan.EndLinePosition.Line)
                 {
-                    break;
+                    return true;
                 }
 
-                if (!SyntaxFacts.IsTrivia(nextToken.Kind()) && nextToken.Kind() != SyntaxKind.SemicolonToken)
+                if (!SyntaxFacts.IsTrivia(nextToken.Kind()) && nextToken.Kind() != SyntaxKind.SemicolonToken
+                    && nextToken.Kind() != SyntaxKind.CommaToken && nextToken.Kind() != SyntaxKind.CloseParenToken)
                 {
                     return false;
                 }

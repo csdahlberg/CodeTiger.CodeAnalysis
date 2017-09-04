@@ -192,6 +192,10 @@ namespace ClassLibrary1
                     }
                 }
             }
+
+            do
+            {
+            } while (DateTime.Now < DateTime.MinValue);
         }
     }
 }";
