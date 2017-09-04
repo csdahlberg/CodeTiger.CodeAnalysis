@@ -198,6 +198,7 @@
     <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzerTests.cs" />
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Ordering\UsingDirectiveOrderAnalyzerTests.cs" />
     <Compile Include="Analyzers\Readability\ComparisonReadabilityAnalyzerTests.cs" />
     <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

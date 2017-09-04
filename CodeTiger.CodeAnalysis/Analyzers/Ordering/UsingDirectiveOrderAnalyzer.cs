@@ -1,9 +1,11 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
 {
@@ -119,15 +121,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             bool wasNonSystemNamespaceEncountered = false;
             bool wasAliasDirectiveEncountered = false;
 
-            UsingDirectiveSyntax previousNode = null;
+            UsingDirectiveSyntax previousUsingDirectiveNode = null;
 
             foreach (var node in root.ChildNodes().OfType<UsingDirectiveSyntax>())
             {
-                if (previousNode != null)
+                if (previousUsingDirectiveNode != null)
                 {
                     // Check for using directives separated by any lines
-                    if (node.GetLocation().GetLineSpan().StartLinePosition.Line
-                        > previousNode.GetLocation().GetLineSpan().EndLinePosition.Line + 1)
+                    if (GetLocationForSorting(node).GetLineSpan().StartLinePosition.Line
+                        > GetLocationForSorting(previousUsingDirectiveNode).GetLineSpan().EndLinePosition.Line + 1)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(UsingDirectivesShouldNotBeSeparatedByAnyLines,
                             node.GetLocation()));
@@ -150,11 +152,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                         if (wasAliasDirectiveEncountered)
                         {
                             context.ReportDiagnostic(Diagnostic.Create(
-                                UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectives, node.GetLocation()));
+                                UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectives,
+                                node.GetLocation()));
                         }
                     }
 
-                    AnalyzeUsingDirectiveForAlphabeticalOrder(context, node, previousNode);
+                    AnalyzeUsingDirectiveForAlphabeticalOrder(context, node,
+                        previousUsingDirectiveNode);
                 }
 
                 if (node.Alias == null)
@@ -169,7 +173,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     wasAliasDirectiveEncountered = true;
                 }
 
-                previousNode = node;
+                previousUsingDirectiveNode = node;
             }
         }
 
@@ -209,6 +213,56 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     }
                 }
             }
+        }
+
+        private static Location GetLocationForSorting(UsingDirectiveSyntax node)
+        {
+            if (!node.HasLeadingTrivia)
+            {
+                return node.GetLocation();
+            }
+
+            var spanToUseForStart = node.Span;
+
+            foreach (var leadingTrivia in node.GetLeadingTrivia().Reverse())
+            {
+                switch (leadingTrivia.Kind())
+                {
+                    case SyntaxKind.BadDirectiveTrivia:
+                    case SyntaxKind.DefineDirectiveTrivia:
+                    case SyntaxKind.DisabledTextTrivia:
+                    case SyntaxKind.DocumentationCommentExteriorTrivia:
+                    case SyntaxKind.ElifDirectiveTrivia:
+                    case SyntaxKind.ElseDirectiveTrivia:
+                    case SyntaxKind.EndIfDirectiveTrivia:
+                    case SyntaxKind.EndRegionDirectiveTrivia:
+                    case SyntaxKind.ErrorDirectiveTrivia:
+                    case SyntaxKind.IfDirectiveTrivia:
+                    case SyntaxKind.LineDirectiveTrivia:
+                    case SyntaxKind.LoadDirectiveTrivia:
+                    case SyntaxKind.MultiLineCommentTrivia:
+                    case SyntaxKind.MultiLineDocumentationCommentTrivia:
+                    case SyntaxKind.PragmaChecksumDirectiveTrivia:
+                    case SyntaxKind.PragmaWarningDirectiveTrivia:
+                    case SyntaxKind.PreprocessingMessageTrivia:
+                    case SyntaxKind.ReferenceDirectiveTrivia:
+                    case SyntaxKind.RegionDirectiveTrivia:
+                    case SyntaxKind.SingleLineCommentTrivia:
+                    case SyntaxKind.SingleLineDocumentationCommentTrivia:
+                    case SyntaxKind.SkippedTokensTrivia:
+                    case SyntaxKind.UndefDirectiveTrivia:
+                    case SyntaxKind.WarningDirectiveTrivia:
+                    case SyntaxKind.WhitespaceTrivia:
+                        spanToUseForStart = leadingTrivia.Span;
+                        break;
+                    case SyntaxKind.EndOfLineTrivia:
+                    default:
+                        return node.SyntaxTree.GetLocation(
+                            TextSpan.FromBounds(spanToUseForStart.Start, node.Span.End));
+                }
+            }
+
+            return node.SyntaxTree.GetLocation(TextSpan.FromBounds(spanToUseForStart.Start, node.Span.End));
         }
 
         private static bool StartsWithSystemNamespace(NameSyntax node)
