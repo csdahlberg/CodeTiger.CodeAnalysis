@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -64,7 +65,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 .ToArray();
             foreach (string fileNamePart in fileNamePartsWithoutExtension)
             {
-                if (NamingUtility.IsProbablyPascalCased(fileNamePart) == false)
+                if (NamingUtility.IsProbablyPascalCased(fileNamePart, true) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(SourceFileNamesShouldUsePascalCasingDescriptor,
                         Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));
@@ -73,11 +74,23 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
             var firstTypeDeclarationNode = context.Tree.GetRoot(context.CancellationToken)
                 .DescendantNodes()
-                .FirstOrDefault(IsTypeDeclaration);
+                .OfType<BaseTypeDeclarationSyntax>()
+                .FirstOrDefault();
             if (firstTypeDeclarationNode != null)
             {
-                string firstDeclaredTypeName = ((BaseTypeDeclarationSyntax)firstTypeDeclarationNode)
-                    .Identifier.Text;
+                string firstDeclaredTypeName;
+
+                var firstTypeDeclarationNode2 = firstTypeDeclarationNode as TypeDeclarationSyntax;
+                if (firstTypeDeclarationNode2?.TypeParameterList?.Parameters.Any() == true)
+                {
+                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.Text + "`"
+                        + firstTypeDeclarationNode2.TypeParameterList.Parameters.Count
+                            .ToString(CultureInfo.InvariantCulture);
+                }
+                else
+                {
+                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.Text;
+                }
 
                 if (!string.Equals(firstDeclaredTypeName, fileNamePartsWithoutExtension[0]))
                 {
@@ -85,20 +98,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor,
                         Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));
                 }
-            }
-        }
-
-        private static bool IsTypeDeclaration(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                case SyntaxKind.EnumDeclaration:
-                    return true;
-                default:
-                    return false;
             }
         }
     }

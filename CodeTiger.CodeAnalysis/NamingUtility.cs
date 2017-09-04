@@ -4,7 +4,7 @@ namespace CodeTiger.CodeAnalysis
 {
     internal static class NamingUtility
     {
-        public static bool? IsProbablyPascalCased(string value)
+        public static bool? IsProbablyPascalCased(string value, bool isGenericTypeArityAllowed = false)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -19,6 +19,17 @@ namespace CodeTiger.CodeAnalysis
             if (value.Length == 1)
             {
                 return null;
+            }
+
+            if (isGenericTypeArityAllowed)
+            {
+                var valueParts = value.Split('`');
+                if (valueParts.Length == 2 && int.TryParse(valueParts[1], out int arity))
+                {
+                    char[] valuePartCharacters = valueParts[0].ToCharArray();
+                    return valuePartCharacters.All(char.IsLetterOrDigit)
+                        && valuePartCharacters.Any(char.IsLower);
+                }
             }
 
             char[] valueCharacters = value.ToCharArray();
