@@ -28,12 +28,14 @@ namespace ClassLibrary1 { }";
         }
 
         [Fact]
-        public void ClassDeclarationOnSingleLineProducesDiagnostic()
+        public void ClassDeclarationsOnSingleLinesProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1 { }
+    [Obsolete]
+    public class Class2 { }
 }";
 
             VerifyCSharpDiagnostic(code,
@@ -46,17 +48,29 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 4, 18)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 18)
+                    }
                 }
             );
         }
 
         [Fact]
-        public void StructDeclarationOnSingleLineProducesDiagnostic()
+        public void StructDeclarationsOnSingleLinesProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
 {
     public struct Struct1 { }
+    [Obsolete]
+    public struct Struct2 { }
 }";
 
             VerifyCSharpDiagnostic(code,
@@ -69,17 +83,29 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 4, 19)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 19)
+                    }
                 }
             );
         }
 
         [Fact]
-        public void InterfaceDeclarationOnSingleLineProducesDiagnostic()
+        public void InterfaceDeclarationsOnSingleLinesProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
 {
     public interface IInterface1 { }
+    [Obsolete]
+    public interface IInterface2 { }
 }";
 
             VerifyCSharpDiagnostic(code,
@@ -92,17 +118,29 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 4, 22)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 22)
+                    }
                 }
             );
         }
 
         [Fact]
-        public void EnumDeclarationOnSingleLineProducesDiagnostic()
+        public void EnumDeclarationsOnSingleLinesProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1 { }
+    [Obsolete]
+    public enum Enum2 { }
 }";
 
             VerifyCSharpDiagnostic(code,
@@ -114,6 +152,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 4, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3502",
+                    Message = "Types should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 17)
                     }
                 }
             );
@@ -128,6 +176,8 @@ namespace ClassLibrary1
     public class Class1
     {
         public string Name { get; set; }
+        [Obsolete]
+        public string Name2 { get; set; }
     }
 }";
 
@@ -148,6 +198,17 @@ namespace ClassLibrary1
             set;
         }
         public int Age
+        {
+            get; set;
+        }
+        [Obsolete]
+        public string Name2
+        {
+            get;
+            set;
+        }
+        [Obsolete]
+        public int Age2
         {
             get; set;
         }
@@ -174,6 +235,26 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 20)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3503",
+                    Message = "Auto properties should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3503",
+                    Message = "Auto properties should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 22, 20)
+                    }
                 }
             );
         }
@@ -187,6 +268,12 @@ namespace ClassLibrary1
     public class Class1
     {
         public string Name
+        {
+            get { return ""; }
+            set { }
+        }
+        [Obsolete]
+        public string Name2
         {
             get { return ""; }
             set { }
@@ -206,6 +293,8 @@ namespace ClassLibrary1
     public class Class1
     {
         public string Name { get { return """"; } set { } }
+        [Obsolete]
+        public string Name { get { return """"; } set { } }
     }
 }";
 
@@ -218,6 +307,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 6, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3504",
+                    Message = "Non-auto properties should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 23)
                     }
                 }
             );
@@ -447,7 +546,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void MethodOnMultipleLinesDoesNotProduceDiagnostics()
+        public void MethodsOnMultipleLinesDoNotProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -457,7 +556,13 @@ namespace ClassLibrary1
         public void DoSomething()
         {
         }
+        [Obsolete]
+        public void DoSomethingElse()
+        {
+        }
         public bool IsEnabled() => true;
+        [Obsolete]
+        public bool IsDisabled() => false;
     }
 }";
 
@@ -465,7 +570,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void MethodOnSingleLinesProducesDiagnostic()
+        public void MethodsOnSingleLinesProduceDiagnostics()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -473,6 +578,8 @@ namespace ClassLibrary1
     public class Class1
     {
         public void DoSomething() { }
+        [Obsolete]
+        public void DoSomethingElse() { }
     }
 }";
 
@@ -485,6 +592,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 6, 21)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3507",
+                    Message = "Methods should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 21)
                     }
                 }
             );

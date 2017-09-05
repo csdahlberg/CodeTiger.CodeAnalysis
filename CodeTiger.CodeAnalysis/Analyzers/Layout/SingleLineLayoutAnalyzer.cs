@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 {
@@ -202,7 +203,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
-            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            var firstNonAttributeToken = node.ChildNodesAndTokens()
+                .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+                .FirstOrDefault();
+            if (firstNonAttributeToken == null)
+            {
+                return;
+            }
+
+            var locationWithoutAttributes = Location.Create(context.Node.SyntaxTree,
+                TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.Span.End));
+            var nodeLineSpan = locationWithoutAttributes.GetLineSpan();
             if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypesShouldNotBeDefinedOnASingleLineDescriptor,
@@ -219,7 +230,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 return;
             }
 
-            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            var firstNonAttributeToken = node.ChildNodesAndTokens()
+                .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+                .FirstOrDefault();
+            if (firstNonAttributeToken == null)
+            {
+                return;
+            }
+
+            var locationWithoutAttributes = Location.Create(context.Node.SyntaxTree,
+                TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.Span.End));
+            var nodeLineSpan = locationWithoutAttributes.GetLineSpan();
 
             if (node.AccessorList.Accessors.All(x => x.Body == null))
             {
@@ -264,12 +285,22 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (MethodDeclarationSyntax)context.Node;
 
-            if (node.ExpressionBody != null)
+            if (node.Body == null || node.ExpressionBody != null)
             {
                 return;
             }
 
-            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            var firstNonAttributeToken = node.ChildNodesAndTokens()
+                .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+                .FirstOrDefault();
+            if (firstNonAttributeToken == null)
+            {
+                return;
+            }
+
+            var locationWithoutAttributes = Location.Create(context.Node.SyntaxTree,
+                TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.Span.End));
+            var nodeLineSpan = locationWithoutAttributes.GetLineSpan();
             if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodsShouldNotBeDefinedOnASingleLineDescriptor,
@@ -467,7 +498,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 return;
             }
 
-            if (node.Statement.Kind() != SyntaxKind.Block)
+            if (node.Statement.Kind() != SyntaxKind.Block && node.Statement.Kind() != SyntaxKind.UsingStatement)
             {
                 context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
                     node.UsingKeyword.GetLocation()));
