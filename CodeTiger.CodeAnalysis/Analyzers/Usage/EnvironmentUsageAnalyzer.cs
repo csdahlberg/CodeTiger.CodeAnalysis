@@ -61,7 +61,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
                 var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
 
                 var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression);
-                if (targetType.Type == environmentType && memberAccessExpression?.Name?.Identifier.Text == "Exit")
+                if (targetType.Type == environmentType
+                    && memberAccessExpression?.Name?.Identifier.ValueText == "Exit")
                 {
                     context.ReportDiagnostic(Diagnostic.Create(EnvironmentExitShouldNotBeUsedDescriptor,
                         memberAccessExpression.Expression.GetLocation()));

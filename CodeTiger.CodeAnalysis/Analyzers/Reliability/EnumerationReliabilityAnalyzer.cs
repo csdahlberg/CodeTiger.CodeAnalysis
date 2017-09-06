@@ -112,7 +112,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
         private static bool IsProbablyACollectionModifyingMethod(SimpleNameSyntax methodName)
         {
-            switch (methodName.Identifier.Text)
+            switch (methodName.Identifier.ValueText)
             {
                 case "Add":
                 case "AddRange":

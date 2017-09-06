@@ -176,7 +176,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             var expressionType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression);
             if (expressionType.Type?.SpecialType == SpecialType.System_String)
             {
-                switch (memberAccessExpression.Name.Identifier.Text)
+                switch (memberAccessExpression.Name.Identifier.ValueText)
                 {
                     case "ToLower":
                     case "ToLowerInvariant":

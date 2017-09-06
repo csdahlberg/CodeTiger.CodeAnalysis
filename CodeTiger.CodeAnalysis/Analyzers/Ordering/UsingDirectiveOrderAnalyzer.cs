@@ -275,7 +275,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
 
             var simpleNameNode = nameNode as SimpleNameSyntax;
 
-            return simpleNameNode?.Identifier.Text == "System";
+            return simpleNameNode?.Identifier.ValueText == "System";
         }
 
         private static string GetTextForSorting(UsingDirectiveSyntax node)

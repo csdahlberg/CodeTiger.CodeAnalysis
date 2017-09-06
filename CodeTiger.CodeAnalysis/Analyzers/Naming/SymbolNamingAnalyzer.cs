@@ -204,8 +204,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     return;
             }
 
-            if (NamingUtility.IsProbablyPascalCased(typeIdentifier.Text) == false
-                || NamingUtility.IsProbablyPascalCased(typeIdentifier.Text, 'I') == true)
+            if (NamingUtility.IsProbablyPascalCased(typeIdentifier.ValueText) == false
+                || NamingUtility.IsProbablyPascalCased(typeIdentifier.ValueText, 'I') == true)
             {
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
@@ -219,7 +219,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
                 {
-                    if (NamingUtility.IsProbablyPascalCased(fieldDeclaration.Identifier.Text) == false)
+                    if (NamingUtility.IsProbablyPascalCased(fieldDeclaration.Identifier.ValueText) == false)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             ConstantFieldNamesShouldUsePascalCasingDescriptor,
@@ -231,7 +231,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
                 {
-                    if (NamingUtility.IsProbablyCamelCased(fieldDeclaration.Identifier.Text, '_') == false)
+                    if (NamingUtility.IsProbablyCamelCased(fieldDeclaration.Identifier.ValueText, '_') == false)
                     {
                         context.ReportDiagnostic(Diagnostic.Create(PrivateFieldNamesShouldUseCamelCasingDescriptor,
                             fieldDeclaration.Identifier.GetLocation()));
@@ -245,7 +245,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             var eventFieldDeclarationNode = (EventFieldDeclarationSyntax)context.Node;
             foreach (var eventFieldDeclaration in eventFieldDeclarationNode.Declaration.Variables)
             {
-                if (NamingUtility.IsProbablyPascalCased(eventFieldDeclaration.Identifier.Text) == false)
+                if (NamingUtility.IsProbablyPascalCased(eventFieldDeclaration.Identifier.ValueText) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(EventNamesShouldUsePascalCasingDescriptor,
                         eventFieldDeclaration.Identifier.GetLocation()));
@@ -257,7 +257,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var delegateDeclarationNode = (DelegateDeclarationSyntax)context.Node;
 
-            if (NamingUtility.IsProbablyPascalCased(delegateDeclarationNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyPascalCased(delegateDeclarationNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(DelegateNamesShouldUsePascalCasingDescriptor,
                     delegateDeclarationNode.Identifier.GetLocation()));
@@ -268,16 +268,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var propertyDeclarationNode = (PropertyDeclarationSyntax)context.Node;
 
-            if (NamingUtility.IsProbablyPascalCased(propertyDeclarationNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyPascalCased(propertyDeclarationNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
                     propertyDeclarationNode.Identifier.GetLocation()));
             }
 
-            if (propertyDeclarationNode.Identifier.Text.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
-                || propertyDeclarationNode.Identifier.Text.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
+            if (propertyDeclarationNode.Identifier.ValueText.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
+                || propertyDeclarationNode.Identifier.ValueText.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
             {
-                string propertyNameWithoutPrefix = propertyDeclarationNode.Identifier.Text.Substring(3);
+                string propertyNameWithoutPrefix = propertyDeclarationNode.Identifier.ValueText.Substring(3);
                 if (NamingUtility.IsProbablyPascalCased(propertyNameWithoutPrefix) == true)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
@@ -291,20 +291,34 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                 case SyntaxKind.InterfaceDeclaration:
-                case SyntaxKind.EnumDeclaration:
-                    {
-                        var parentIdentifier = ((BaseTypeDeclarationSyntax)propertyDeclarationNode.Parent)
-                            .Identifier;
-                        if (propertyDeclarationNode.Identifier.Text
-                            .StartsWith(parentIdentifier.Text, StringComparison.OrdinalIgnoreCase))
-                        {
-                            context.ReportDiagnostic(Diagnostic.Create(
-                                PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
-                                propertyDeclarationNode.Identifier.GetLocation()));
-                        }
-                    }
+                    AnalyzePropertyNameForPrefixMatchingParentName(context, propertyDeclarationNode);
                     break;
             }
+        }
+
+        private static void AnalyzePropertyNameForPrefixMatchingParentName(SyntaxNodeAnalysisContext context,
+            PropertyDeclarationSyntax propertyDeclarationNode)
+        {
+            var parentIdentifier = ((BaseTypeDeclarationSyntax)propertyDeclarationNode.Parent)
+                .Identifier;
+            if (!propertyDeclarationNode.Identifier.ValueText
+                .StartsWith(parentIdentifier.ValueText, StringComparison.OrdinalIgnoreCase))
+            {
+                // The property name does not start with the name of the containing type, so it is not a violation
+                return;
+            }
+
+            var propertySymbol = context.SemanticModel
+                .GetDeclaredSymbol(propertyDeclarationNode, context.CancellationToken);
+            if (propertySymbol?.ExplicitInterfaceImplementations.Any() == true)
+            {
+                // The property is an explicit implementation, so it cannot simply be renamed in this class
+                return;
+            }
+
+            context.ReportDiagnostic(Diagnostic.Create(
+                PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
+                propertyDeclarationNode.Identifier.GetLocation()));
         }
 
         private void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
@@ -312,7 +326,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             var methodDeclarationNode = (MethodDeclarationSyntax)context.Node;
             var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode);
 
-            if (NamingUtility.IsProbablyPascalCased(methodDeclarationNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyPascalCased(methodDeclarationNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(MethodNamesShouldUsePascalCasingDescriptor,
                     methodDeclarationNode.Identifier.GetLocation()));
@@ -349,7 +363,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var enumMemberDeclarationNode = (EnumMemberDeclarationSyntax)context.Node;
 
-            if (NamingUtility.IsProbablyPascalCased(enumMemberDeclarationNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyPascalCased(enumMemberDeclarationNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(EnumerationMemberNamesShouldUsePascalCasingDescriptor,
                     enumMemberDeclarationNode.Identifier.GetLocation()));
@@ -362,7 +376,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             
             foreach (var variableDeclaratorSyntax in localDeclarationSyntax.Declaration.Variables)
             {
-                if (NamingUtility.IsProbablyCamelCased(variableDeclaratorSyntax.Identifier.Text) == false)
+                if (NamingUtility.IsProbablyCamelCased(variableDeclaratorSyntax.Identifier.ValueText) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(VariableNamesShouldUseCamelCasingDescriptor,
                         variableDeclaratorSyntax.Identifier.GetLocation()));
@@ -374,7 +388,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var interfaceDeclarationNode = (InterfaceDeclarationSyntax)context.Node;
 
-            if (NamingUtility.IsProbablyPascalCased(interfaceDeclarationNode.Identifier.Text, 'I') == false)
+            if (NamingUtility.IsProbablyPascalCased(interfaceDeclarationNode.Identifier.ValueText, 'I') == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
@@ -386,7 +400,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var parameterNode = (ParameterSyntax)context.Node;
             
-            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.Text) == false)
+            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
                     parameterNode.Identifier.GetLocation()));
@@ -397,12 +411,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var typeParameterNode = (TypeParameterSyntax)context.Node;
 
-            if (typeParameterNode.Identifier.Text == "T")
+            if (typeParameterNode.Identifier.ValueText == "T"
+                || (typeParameterNode.Identifier.ValueText.StartsWith("T")
+                    && int.TryParse(typeParameterNode.Identifier.ValueText.Substring(1), out int x)))
             {
                 return;
             }
 
-            if (NamingUtility.IsProbablyPascalCased(typeParameterNode.Identifier.Text, 'T') == false)
+            if (NamingUtility.IsProbablyPascalCased(typeParameterNode.Identifier.ValueText, 'T') == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
@@ -417,7 +433,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         typeParameterNode.Identifier.GetLocation()));
                 }
 
-                if (typeParameterNode.Identifier.Text.EndsWith("Type", StringComparison.OrdinalIgnoreCase))
+                if (typeParameterNode.Identifier.ValueText.EndsWith("Type", StringComparison.OrdinalIgnoreCase))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor,
@@ -430,7 +446,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
             var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode);
-            string className = classDeclarationNode.Identifier.Text;
+            string className = classDeclarationNode.Identifier.ValueText;
 
             const string abstractText = "Abstract";
             if (className.StartsWith(abstractText, StringComparison.OrdinalIgnoreCase)
@@ -532,12 +548,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
 
         private static bool IsNameProbablyDescriptive(TypeParameterSyntax typeParameterNode)
         {
-            if (typeParameterNode.Identifier.Text.Length >= 5)
+            if (typeParameterNode.Identifier.ValueText.Length >= 5)
             {
                 return true;
             }
 
-            switch (typeParameterNode.Identifier.Text)
+            switch (typeParameterNode.Identifier.ValueText)
             {
                 case "TIn":
                 case "TOut":

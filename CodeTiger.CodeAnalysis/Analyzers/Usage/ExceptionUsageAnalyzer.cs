@@ -70,7 +70,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
 
             // Ignore exceptions that are rethrown by explicitly including the caught exception (e.g. "throw ex;"),
             // since they will be identified by CA2200.
-            if (caughtExceptionIdentifier.HasValue
+            if (!string.IsNullOrEmpty(caughtExceptionIdentifier?.ValueText)
                 && IsRethrowWithExplicitArgument(throwExpression, caughtExceptionIdentifier.Value))
             {
                 return;
@@ -78,8 +78,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
 
             if (!IncludesCaughtException(context, throwExpression, caughtExceptionIdentifier))
             {
-                string caughtExceptionText = caughtExceptionIdentifier.HasValue
-                    ? string.Format(CultureInfo.CurrentCulture, " '{0}'", caughtExceptionIdentifier.Value.Text)
+                string caughtExceptionText = !string.IsNullOrEmpty(caughtExceptionIdentifier?.ValueText)
+                    ? string.Format(CultureInfo.CurrentCulture, " '{0}'",
+                        caughtExceptionIdentifier.Value.ValueText)
                     : string.Empty;
 
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -96,7 +97,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
                 var throwIdentifier = (IdentifierNameSyntax)throwExpression;
 
                 // TODO: Find a more direct/reliable way to do this comparison (using SemanticModel.GetSymbolInfo?)
-                if (throwIdentifier.Identifier.Text == caughtExceptionIdentifier.Text)
+                if (throwIdentifier.Identifier.ValueText == caughtExceptionIdentifier.ValueText)
                 {
                     return true;
                 }
@@ -142,7 +143,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             foreach (var readInside in expressionDataFlowAnalysis.ReadInside)
             {
                 // TODO: Find a more direct/reliable way to do this comparison (using SemanticModel.GetSymbolInfo?)
-                if (readInside.Name == identifier.Text)
+                if (readInside.Name == identifier.ValueText)
                 {
                     return true;
                 }

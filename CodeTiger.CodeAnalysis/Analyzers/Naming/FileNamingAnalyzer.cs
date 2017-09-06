@@ -83,13 +83,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 var firstTypeDeclarationNode2 = firstTypeDeclarationNode as TypeDeclarationSyntax;
                 if (firstTypeDeclarationNode2?.TypeParameterList?.Parameters.Any() == true)
                 {
-                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.Text + "`"
+                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.ValueText + "`"
                         + firstTypeDeclarationNode2.TypeParameterList.Parameters.Count
                             .ToString(CultureInfo.InvariantCulture);
                 }
                 else
                 {
-                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.Text;
+                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.ValueText;
                 }
 
                 if (!string.Equals(firstDeclaredTypeName, fileNamePartsWithoutExtension[0]))
