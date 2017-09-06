@@ -170,19 +170,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         private static void AnalyzeFieldForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
-            var variableDeclarator = fieldDeclaration.Declaration.Variables.Single();
-            var fieldSymbol = context.SemanticModel
-                .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
-
-            if (!fieldSymbol.IsExternallyAccessible())
+            foreach (var variableDeclarator in fieldDeclaration.Declaration.Variables)
             {
-                return;
-            }
+                var fieldSymbol = context.SemanticModel
+                    .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
 
-            if (IsOrIncludesNonGenericCollection(context, fieldDeclaration.Declaration.Type))
-            {
-                context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
-                    fieldDeclaration.Declaration.Type.GetLocation()));
+                if (!fieldSymbol.IsExternallyAccessible())
+                {
+                    return;
+                }
+
+                if (IsOrIncludesNonGenericCollection(context, fieldDeclaration.Declaration.Type))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                        fieldDeclaration.Declaration.Type.GetLocation()));
+                }
             }
         }
 
