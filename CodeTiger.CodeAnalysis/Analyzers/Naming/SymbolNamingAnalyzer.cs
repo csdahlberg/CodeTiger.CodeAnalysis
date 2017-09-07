@@ -412,7 +412,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             var typeParameterNode = (TypeParameterSyntax)context.Node;
 
             if (typeParameterNode.Identifier.ValueText == "T"
-                || (typeParameterNode.Identifier.ValueText.StartsWith("T")
+                || (typeParameterNode.Identifier.ValueText.StartsWith("T", StringComparison.Ordinal)
                     && int.TryParse(typeParameterNode.Identifier.ValueText.Substring(1), out int x)))
             {
                 return;
