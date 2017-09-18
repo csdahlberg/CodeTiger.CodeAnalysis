@@ -185,6 +185,25 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void ExpressionBodiedPropertyDeclarationOnMultipleLinesDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string Name
+            => Name2;
+        [Obsolete]
+        public string Name2 => Name3;
+        public string Name3 { get; set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
         public void AutoPropertyDeclarationsOnMultipleLinesProducesDiagnostic()
         {
             string code = @"using System;
