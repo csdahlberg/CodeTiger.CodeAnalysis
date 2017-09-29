@@ -83,6 +83,7 @@
     <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\ExceptionUsageAnalyzer.cs" />
     <Compile Include="Analyzers\Usage\SuppressMessageAttributeUsageAnalyzer.cs" />
+    <Compile Include="CSharp\NameSyntaxExtensions.cs" />
     <Compile Include="CSharp\SyntaxNodeExtensions.cs" />
     <Compile Include="CSharp\SymbolExtensions.cs" />
     <Compile Include="CSharp\SyntaxKindExtensions.cs" />

@@ -1497,6 +1497,102 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void ClassWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+        {
+            string code = @"namespace Test
+{
+    public class Test
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1730",
+                    Message = "Type names should not match their containing namespace name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 3, 18)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void StructWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+        {
+            string code = @"namespace Test
+{
+    public struct Test
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1730",
+                    Message = "Type names should not match their containing namespace name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 3, 19)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void EnumWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+        {
+            string code = @"namespace Test
+{
+    public enum Test
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1730",
+                    Message = "Type names should not match their containing namespace name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 3, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void InterfaceWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+        {
+            string code = @"namespace ITest
+{
+    public interface ITest
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1730",
+                    Message = "Type names should not match their containing namespace name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 3, 22)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SymbolNamingAnalyzer();

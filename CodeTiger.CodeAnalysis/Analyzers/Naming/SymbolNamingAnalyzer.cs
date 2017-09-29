@@ -121,6 +121,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 "CT1728", "Methods not returning a Task or void should not be suffixed with 'Async'.",
                 "Methods not returning a Task or void should not be suffixed with 'Async'.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor TypeNamesShouldNotMatchTheirContainingNamespaceNameDescriptor
+            = new DiagnosticDescriptor("CT1730", "Type names should not match their containing namespace name.",
+                "Type names should not match their containing namespace name.", "CodeTiger.Naming",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -154,7 +158,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     EventArgsTypeNamesShouldBeSuffixedWithEventArgsDescriptor,
                     NonEventArgsTypeNamesShouldNotBeSuffixedWithEventArgsDescriptor,
                     MethodsReturningATaskShouldBeSuffixedWithAsyncDescriptor,
-                    MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor);
+                    MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor,
+                    TypeNamesShouldNotMatchTheirContainingNamespaceNameDescriptor);
             }
         }
 
@@ -210,6 +215,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 context.ReportDiagnostic(Diagnostic.Create(TypeNamesShouldUsePascalCasingDescriptor,
                     typeIdentifier.GetLocation()));
             }
+
+            AnalyzeTypeNameAndContainingNamespaceName(context, typeIdentifier);
         }
 
         private void AnalyzeFieldName(SyntaxNodeAnalysisContext context)
@@ -394,6 +401,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
                     interfaceDeclarationNode.Identifier.GetLocation()));
             }
+
+            AnalyzeTypeNameAndContainingNamespaceName(context, interfaceDeclarationNode.Identifier);
         }
 
         private void AnalyzeParameterName(SyntaxNodeAnalysisContext context)
@@ -543,6 +552,25 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 context.ReportDiagnostic(Diagnostic.Create(
                     NonEventArgsTypeNamesShouldNotBeSuffixedWithEventArgsDescriptor,
                     classDeclarationNode.Identifier.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeTypeNameAndContainingNamespaceName(SyntaxNodeAnalysisContext context,
+            SyntaxToken typeIdentifier)
+        {
+            var containingNode = context.Node.Parent;
+            if (containingNode?.Kind() == SyntaxKind.NamespaceDeclaration)
+            {
+                var containingNamespaceDeclarationNode = (NamespaceDeclarationSyntax)context.Node.Parent;
+                var namespaceName = containingNamespaceDeclarationNode.Name;
+                if (string.Equals(typeIdentifier.ValueText,
+                    containingNamespaceDeclarationNode.Name.GetUnqualifiedName()?.Identifier.ValueText,
+                    StringComparison.Ordinal))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        TypeNamesShouldNotMatchTheirContainingNamespaceNameDescriptor,
+                        typeIdentifier.GetLocation()));
+                }
             }
         }
 
