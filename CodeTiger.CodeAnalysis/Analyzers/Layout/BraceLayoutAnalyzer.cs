@@ -16,6 +16,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3501", "Braces for multi-line elements should be on a new line.",
                 "Braces for multi-line elements should be on a new line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor BracesShouldNotBeOmittedFromCodeBlocksDescriptor
+            = new DiagnosticDescriptor("CT3525", "Braces should not be omitted from code blocks.",
+                "Braces should not be omitted from code blocks.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -24,7 +28,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             get
             {
-                return ImmutableArray.Create(BracesForMultiLineElementsShouldBeOnANewLineDescriptor);
+                return ImmutableArray.Create(BracesForMultiLineElementsShouldBeOnANewLineDescriptor,
+                    BracesShouldNotBeOmittedFromCodeBlocksDescriptor);
             }
         }
 
@@ -40,24 +45,31 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForNamespaceDeclaration,
+            context.RegisterSyntaxNodeAction(AnalyzeNamespaceDeclaration,
                 SyntaxKind.NamespaceDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForComplexElementInitializerExpression,
+            context.RegisterSyntaxNodeAction(AnalyzeComplexElementInitializerExpression,
                 SyntaxKind.ComplexElementInitializerExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForArrayCreationExpression,
+            context.RegisterSyntaxNodeAction(AnalyzeArrayCreationExpression,
                 SyntaxKind.ArrayCreationExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForObjectCreationExpression,
+            context.RegisterSyntaxNodeAction(AnalyzeObjectCreationExpression,
                 SyntaxKind.ObjectCreationExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForAnonymousObjectCreationExpression,
+            context.RegisterSyntaxNodeAction(AnalyzeAnonymousObjectCreationExpression,
                 SyntaxKind.AnonymousObjectCreationExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForBlock, SyntaxKind.Block);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForSwitchStatement, SyntaxKind.SwitchStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForTypeDeclaration, SyntaxKind.ClassDeclaration,
+            context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
+            context.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration, SyntaxKind.EnumDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeBracesForAccessorList, SyntaxKind.AccessorList);
+            context.RegisterSyntaxNodeAction(AnalyzeAccessorList, SyntaxKind.AccessorList);
+            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
+            context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeDoStatement, SyntaxKind.DoStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeUsingStatement, SyntaxKind.UsingStatement);
         }
 
-        private static void AnalyzeBracesForNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (NamespaceDeclarationSyntax)context.Node;
 
@@ -68,7 +80,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private static void AnalyzeBracesForArrayCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeArrayCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ArrayCreationExpressionSyntax)context.Node;
 
@@ -79,7 +91,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private static void AnalyzeBracesForObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ObjectCreationExpressionSyntax)context.Node;
 
@@ -90,21 +102,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private static void AnalyzeBracesForComplexElementInitializerExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeComplexElementInitializerExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (InitializerExpressionSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private static void AnalyzeBracesForAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (AnonymousObjectCreationExpressionSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private static void AnalyzeBracesForBlock(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
         {
             var node = (BlockSyntax)context.Node;
 
@@ -131,14 +143,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 isForDoStatement);
         }
 
-        private static void AnalyzeBracesForSwitchStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (SwitchStatementSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
         }
 
-        private static void AnalyzeBracesForTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
@@ -149,11 +161,95 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private static void AnalyzeBracesForAccessorList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
         {
             var node = (AccessorListSyntax)context.Node;
 
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.OpenBraceToken, node.CloseBraceToken, context);
+        }
+
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (IfStatementSyntax)context.Node;
+
+            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.IfKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ElseClauseSyntax)context.Node;
+
+            if (node.Statement != null
+                && node.Statement.Kind() != SyntaxKind.Block
+                && node.Statement.Kind() != SyntaxKind.IfStatement)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.ElseKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ForStatementSyntax)context.Node;
+
+            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.ForKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ForEachStatementSyntax)context.Node;
+
+            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.ForEachKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (WhileStatementSyntax)context.Node;
+
+            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.WhileKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (DoStatementSyntax)context.Node;
+
+            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.DoKeyword.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        {
+            var node = (UsingStatementSyntax)context.Node;
+
+            if (node.Statement == null)
+            {
+                return;
+            }
+
+            if (node.Statement.Kind() != SyntaxKind.Block && node.Statement.Kind() != SyntaxKind.UsingStatement)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
+                    node.UsingKeyword.GetLocation()));
+            }
         }
 
         private static void AnalyzeBraces(FileLinePositionSpan nodeLineSpan, SyntaxToken openBraceToken,

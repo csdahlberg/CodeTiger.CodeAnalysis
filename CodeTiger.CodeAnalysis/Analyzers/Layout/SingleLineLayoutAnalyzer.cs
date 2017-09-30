@@ -111,10 +111,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "Non-trivial switch sections should not be defined on a single line.",
                 "Non-trivial switch sections should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor BracesShouldNotBeOmittedFromCodeBlocksDescriptor
-            = new DiagnosticDescriptor("CT3525", "Braces should not be omitted from code blocks.",
-                "Braces should not be omitted from code blocks.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
-                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -146,8 +142,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     LockStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
-                    BracesShouldNotBeOmittedFromCodeBlocksDescriptor);
+                    NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -371,12 +366,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(IfStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     node.IfKeyword.GetLocation()));
             }
-
-            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
-                    node.IfKeyword.GetLocation()));
-            }
         }
 
         private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -395,14 +384,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(ElseClausesShouldBeginOnANewLineDescriptor,
                     node.ElseKeyword.GetLocation()));
             }
-
-            if (node.Statement != null
-                && node.Statement.Kind() != SyntaxKind.Block
-                && node.Statement.Kind() != SyntaxKind.IfStatement)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
-                    node.ElseKeyword.GetLocation()));
-            }
         }
 
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
@@ -413,12 +394,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ForStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    node.ForKeyword.GetLocation()));
-            }
-
-            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
                     node.ForKeyword.GetLocation()));
             }
         }
@@ -432,12 +407,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    node.ForEachKeyword.GetLocation()));
-            }
-
-            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
                     node.ForEachKeyword.GetLocation()));
             }
         }
@@ -464,12 +433,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(
                     WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.WhileKeyword.GetLocation()));
             }
-
-            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
-                    node.WhileKeyword.GetLocation()));
-            }
         }
 
         private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
@@ -482,30 +445,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 context.ReportDiagnostic(Diagnostic.Create(
                     DoStatementsShouldNotBeDefinedOnASingleLineDescriptor, node.DoKeyword.GetLocation()));
             }
-
-            if (node.Statement != null && node.Statement.Kind() != SyntaxKind.Block)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
-                    node.DoKeyword.GetLocation()));
-            }
         }
 
         private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (UsingStatementSyntax)context.Node;
 
-            if (node.Statement == null)
-            {
-                return;
-            }
-
-            if (node.Statement.Kind() != SyntaxKind.Block && node.Statement.Kind() != SyntaxKind.UsingStatement)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(BracesShouldNotBeOmittedFromCodeBlocksDescriptor,
-                    node.UsingKeyword.GetLocation()));
-            }
-
-            if (node.Statement.Kind() == SyntaxKind.EmptyStatement)
+            if (node.Statement == null || node.Statement.Kind() == SyntaxKind.EmptyStatement)
             {
                 return;
             }
