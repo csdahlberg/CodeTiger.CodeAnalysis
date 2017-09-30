@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -111,6 +112,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "Non-trivial switch sections should not be defined on a single line.",
                 "Non-trivial switch sections should not be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor MultipleStatementsShouldNotBeOnTheSameLineDescriptor
+            = new DiagnosticDescriptor("CT3528", "Multiple statements should not be on the same line.",
+                "Multiple statements should not be on the same line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -142,7 +147,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     LockStatementsShouldNotBeDefinedOnASingleLineDescriptor,
-                    NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor);
+                    NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
+                    MultipleStatementsShouldNotBeOnTheSameLineDescriptor);
             }
         }
 
@@ -180,6 +186,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
             context.RegisterSyntaxNodeAction(AnalyzeLockStatement, SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(AnalyzeSwitchSection, SyntaxKind.SwitchSection);
+            context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -514,6 +521,31 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                         NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
                         node.Labels.Last().GetLocation()));
                 }
+            }
+        }
+
+        private void AnalyzeBlock(SyntaxNodeAnalysisContext context)
+        {
+            var node = (BlockSyntax)context.Node;
+
+            if (!node.Statements.Any())
+            {
+                return;
+            }
+
+            var previousLineSpan = node.Statements[0].GetLocation().GetLineSpan();
+
+            for (int i = 1; i < node.Statements.Count; i += 1)
+            {
+                var currentLocation = node.Statements[i].GetLocation();
+                var currentLineSpan = currentLocation.GetLineSpan();
+                if (currentLineSpan.StartLinePosition.Line == previousLineSpan.EndLinePosition.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        MultipleStatementsShouldNotBeOnTheSameLineDescriptor, currentLocation));
+                }
+
+                previousLineSpan = currentLineSpan;
             }
         }
 

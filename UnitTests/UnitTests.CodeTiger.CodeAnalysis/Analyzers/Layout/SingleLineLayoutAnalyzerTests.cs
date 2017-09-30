@@ -288,13 +288,13 @@ namespace ClassLibrary1
     {
         public string Name
         {
-            get { return ""; }
+            get { return """"; }
             set { }
         }
         [Obsolete]
         public string Name2
         {
-            get { return ""; }
+            get { return """"; }
             set { }
         }
     }
@@ -488,7 +488,8 @@ namespace ClassLibrary1
             }
             remove
             {
-                _testEvent -= value; ToString();
+                _testEvent -= value;
+                ToString();
             }
         }
     }
@@ -533,12 +534,32 @@ namespace ClassLibrary1
                 },
                 new DiagnosticResult
                 {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 44)
+                    }
+                },
+                new DiagnosticResult
+                {
                     Id = "CT3506",
                     Message = "Non-trivial accessors should not be defined on a single line.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 44)
                     }
                 },
                 new DiagnosticResult
@@ -553,12 +574,32 @@ namespace ClassLibrary1
                 },
                 new DiagnosticResult
                 {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 31)
+                    }
+                },
+                new DiagnosticResult
+                {
                     Id = "CT3506",
                     Message = "Non-trivial accessors should not be defined on a single line.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 16, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 43)
                     }
                 }
             );
@@ -760,12 +801,32 @@ namespace ClassLibrary1
                 },
                 new DiagnosticResult
                 {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 62)
+                    }
+                },
+                new DiagnosticResult
+                {
                     Id = "CT3509",
                     Message = "Non-trivial catch clauses should not be defined on a single line.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 15, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 103)
                     }
                 }
             );
@@ -895,7 +956,7 @@ namespace ClassLibrary1
             try
             {
             }
-            finally { DateTime.Now.ToString(); return; }
+            finally { DateTime.Now.ToString(); }
         }
     }
 }";
@@ -1644,12 +1705,103 @@ namespace ClassLibrary1
                 },
                 new DiagnosticResult
                 {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 12, 57)
+                    }
+                },
+                new DiagnosticResult
+                {
                     Id = "CT3524",
                     Message = "Non-trivial switch sections should not be defined on a single line.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void LinesWithMultipleStatementsProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        private Func<bool> _isEnabled = () => { DateTime.Now.ToString(); return true; };
+        public void DoSomething()
+        {
+            int x = 1; int y = 2;
+            { x += 1; y += 2; };
+            if (DateTime.Now > DateTime.MinValue)
+            {
+                return;
+            } try
+            {
+                throw new Exception();
+            }
+            catch
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 74)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 24)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 32)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3528",
+                    Message = "Multiple statements should not be on the same line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 14, 15)
                     }
                 }
             );
