@@ -28,7 +28,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             get
             {
-                return ImmutableArray.Create<DiagnosticDescriptor>(AttributesShouldBeDeclaredSeparatelyDescriptor,
+                return ImmutableArray.Create(AttributesShouldBeDeclaredSeparatelyDescriptor,
                     AttributesShouldBeDeclaredOnSeparateLinesDescriptor);
             }
         }
