@@ -60,7 +60,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             {
                 var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
 
-                var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression);
+                var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
+                    context.CancellationToken);
                 if (targetType.Type == environmentType
                     && memberAccessExpression?.Name?.Identifier.ValueText == "Exit")
                 {

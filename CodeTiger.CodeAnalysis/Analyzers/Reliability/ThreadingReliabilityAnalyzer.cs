@@ -135,7 +135,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 }
             }
 
-            return context.SemanticModel.GetSymbolInfo(node).Symbol?.DeclaredAccessibility == Accessibility.Public;
+            return context.SemanticModel.GetSymbolInfo(node, context.CancellationToken).Symbol
+                ?.DeclaredAccessibility == Accessibility.Public;
         }
     }
 }

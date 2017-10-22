@@ -80,8 +80,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         private static bool IsAssigningToSameProperty(SyntaxNodeAnalysisContext context,
             AssignmentExpressionSyntax assignmentExpression)
         {
-            return context.SemanticModel.GetSymbolInfo(assignmentExpression.Left).Symbol
-                ?.Equals(context.SemanticModel.GetSymbolInfo(assignmentExpression.Right).Symbol) ?? false;
+            var leftSymbolInfo = context.SemanticModel
+                .GetSymbolInfo(assignmentExpression.Left, context.CancellationToken);
+            var rightSymbolInfo = context.SemanticModel
+                .GetSymbolInfo(assignmentExpression.Right, context.CancellationToken);
+
+            return leftSymbolInfo.Symbol?.Equals(rightSymbolInfo.Symbol) ?? false;
         }
     }
 }

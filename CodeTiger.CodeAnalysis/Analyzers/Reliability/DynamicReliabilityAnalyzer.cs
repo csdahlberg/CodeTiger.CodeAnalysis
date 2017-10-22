@@ -48,7 +48,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             
             if (identifierName.Identifier.ValueText == "dynamic")
             {
-                var identifierSymbol = context.SemanticModel.GetSymbolInfo(identifierName).Symbol;
+                var identifierSymbol = context.SemanticModel
+                    .GetSymbolInfo(identifierName, context.CancellationToken).Symbol;
                 var typeSymbol = identifierSymbol as ITypeSymbol;
 
                 if (typeSymbol?.TypeKind == TypeKind.Dynamic)

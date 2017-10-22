@@ -55,7 +55,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
 
             foreach (var attributeUsage in attributeUsages)
             {
-                var attributeType = context.SemanticModel.GetTypeInfo(attributeUsage);
+                var attributeType = context.SemanticModel.GetTypeInfo(attributeUsage, context.CancellationToken);
                 if (attributeType.Type == suppressMessageAttributeType
                     && !AttributeIncludesJustificationArgument(attributeUsage))
                 {

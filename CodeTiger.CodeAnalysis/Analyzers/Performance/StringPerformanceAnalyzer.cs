@@ -96,7 +96,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         private static bool IsDefinitelyStringConcatenation(SemanticModelAnalysisContext context,
             AssignmentExpressionSyntax assignmentExpression)
         {
-            var typeInfo = context.SemanticModel.GetTypeInfo(assignmentExpression.Left);
+            var typeInfo = context.SemanticModel.GetTypeInfo(assignmentExpression.Left, context.CancellationToken);
             if (typeInfo.Type?.SpecialType != SpecialType.System_String)
             {
                 return false;
@@ -173,7 +173,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         private static bool IsCallToCaseConversionMethod(SemanticModelAnalysisContext context,
             MemberAccessExpressionSyntax memberAccessExpression)
         {
-            var expressionType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression);
+            var expressionType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
+                context.CancellationToken);
             if (expressionType.Type?.SpecialType == SpecialType.System_String)
             {
                 switch (memberAccessExpression.Name.Identifier.ValueText)

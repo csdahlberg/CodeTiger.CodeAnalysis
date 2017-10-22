@@ -331,7 +331,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
         {
             var methodDeclarationNode = (MethodDeclarationSyntax)context.Node;
-            var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode);
+            var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode,
+                context.CancellationToken);
 
             if (NamingUtility.IsProbablyPascalCased(methodDeclarationNode.Identifier.ValueText) == false)
             {
@@ -454,7 +455,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private void AnalyzeClassNamePrefixesAndSuffixes(SyntaxNodeAnalysisContext context)
         {
             var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
-            var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode);
+            var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode,
+                context.CancellationToken);
             string className = classDeclarationNode.Identifier.ValueText;
 
             const string abstractText = "Abstract";
