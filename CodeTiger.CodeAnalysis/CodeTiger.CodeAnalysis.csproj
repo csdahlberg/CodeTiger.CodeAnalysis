@@ -56,6 +56,7 @@
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\DotOperatorLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\LineLengthLayoutAnalyzer.cs" />
+    <Compile Include="Analyzers\Layout\ParenthesisLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Naming\FileNamingAnalyzer.cs" />
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzer.cs" />
