@@ -1807,6 +1807,117 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void LinqQueriesWithAllPartsOnTheSameLineDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var results = from s in Enumerable.Empty<string>() where s.Length > 10 group s by s.Length into sl select sl.Key;
+            var ordered = from l in results orderby l select l;
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void LinqQueriesWithAllPartsOnDifferentLinesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var results = from s in Enumerable.Empty<string>()
+                          where s.Length > 10
+                          group s by s.Length into sl
+                          select sl.Key;
+            var ordered = from l in results
+                          orderby l
+                          select l;
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void LinqQueriesWithSomePartsOnTheSameLineProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var results = from s in Enumerable.Empty<string>() where s.Length > 10
+                          group s by s.Length into sl
+                          select sl.Key;
+            results = from s in Enumerable.Empty<string>()
+                      where s.Length > 10
+                      group s by s.Length into sl select sl.Key;
+            var ordered = from l in results orderby l
+                          select l;
+            ordered = from l in results
+                      orderby l select l;
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3529",
+                    Message = "LINQ query clauses should all be on the same line or separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 27)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3529",
+                    Message = "LINQ query clauses should all be on the same line or separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3529",
+                    Message = "LINQ query clauses should all be on the same line or separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 14, 27)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3529",
+                    Message = "LINQ query clauses should all be on the same line or separate lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 23)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();

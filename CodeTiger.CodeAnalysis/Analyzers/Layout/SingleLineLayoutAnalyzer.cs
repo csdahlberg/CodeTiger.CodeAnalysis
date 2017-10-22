@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -116,6 +117,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3528", "Multiple statements should not be on the same line.",
                 "Multiple statements should not be on the same line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor = new DiagnosticDescriptor("CT3529",
+                "LINQ query clauses should all be on the same line or separate lines.",
+                "LINQ query clauses should all be on the same line or separate lines.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -148,7 +154,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     LockStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
-                    MultipleStatementsShouldNotBeOnTheSameLineDescriptor);
+                    MultipleStatementsShouldNotBeOnTheSameLineDescriptor,
+                    LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor);
             }
         }
 
@@ -187,6 +194,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeLockStatement, SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(AnalyzeSwitchSection, SyntaxKind.SwitchSection);
             context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
+            context.RegisterSyntaxNodeAction(AnalyzeQueryExpression, SyntaxKind.QueryExpression);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -546,6 +554,64 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 }
 
                 previousLineSpan = currentLineSpan;
+            }
+        }
+
+        private void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)
+        {
+            var node = (QueryExpressionSyntax)context.Node;
+
+            var queryParts = new List<CSharpSyntaxNode>();
+
+            if (node.FromClause != null)
+            {
+                queryParts.Add(node.FromClause);
+            }
+
+            if (node.Body != null)
+            {
+                queryParts.AddRange(node.Body.Clauses);
+
+                if (node.Body.SelectOrGroup != null)
+                {
+                    queryParts.Add(node.Body.SelectOrGroup);
+                }
+
+                // A continuation begins with the "into" keyword followed by an identifier (for example, "into y"),
+                // then the body of the continuation. This currently ignores the location of "into y" so that it
+                // can be located either on the same line as the previous clause or on a new line, but it does
+                // check any clauses in the continuation body.
+                if (node.Body.Continuation?.Body != null)
+                {
+                    queryParts.AddRange(node.Body.Continuation.Body.Clauses);
+
+                    if (node.Body.Continuation.Body.SelectOrGroup != null)
+                    {
+                        queryParts.Add(node.Body.Continuation.Body.SelectOrGroup);
+                    }
+                }
+            }
+
+            if (queryParts.Count <= 0)
+            {
+                return;
+            }
+
+            var partsWithLineSpans = queryParts
+                .Select(x => new { Part = x, Location = x.GetLocation().GetLineSpan() })
+                .ToList();
+            var partsGroupedByStartLine = partsWithLineSpans
+                .GroupBy(x => x.Location.StartLinePosition.Line)
+                .ToList();
+
+            // If all query parts start on the same line, they will all be put into a single grouping. If all query
+            // parts start on a different line, they will all be in their own groupings, so the number of groupings
+            // will equal the number of parts. Either case is allowable.
+            if (partsGroupedByStartLine.Count != 1
+                && partsWithLineSpans.Count != partsGroupedByStartLine.Count)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor, node.GetLocation()));
             }
         }
 
