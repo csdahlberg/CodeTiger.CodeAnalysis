@@ -767,6 +767,128 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void InvocationExpressionsWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = DateTime.Now.AddMinutes(5);
+            int min = Math.Min(1, 2);
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void InvocationExpressionsWithOpenParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = DateTime.Now.AddMinutes
+                (5);
+            int min = Math.Min
+                (1, 2);
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3533",
+                    Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3533",
+                    Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NewExpressionsWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = new DateTime(2000, 1, 1);
+            int min = new int();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void NewExpressionsWithOpenParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = new DateTime
+                (2000, 1, 1);
+            int min = new int
+                ();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3533",
+                    Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3533",
+                    Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new ParenthesisLayoutAnalyzer();
