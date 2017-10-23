@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Diagnostics;
-using CodeTiger.CodeAnalysis.Analyzers.Layout;
+﻿using CodeTiger.CodeAnalysis.Analyzers.Layout;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
 namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
@@ -13,7 +8,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
     public class ParenthesisLayoutAnalyzerTests : DiagnosticVerifier
     {
         [Fact]
-        public void ConstructorInitializersWithOpenParenthesisOnSameLineDoNotProduceDiagnostic()
+        public void ConstructorInitializersWithParenthesisOnSameLineDoNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -96,7 +91,60 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void CatchClausWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void ConstructorInitializersWithCloseParenthesisOnNewLineProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public Class1(bool flag)
+        {
+        }
+    }
+
+    public class Class2
+    {
+        public Class2()
+            : this(false
+                )
+        {
+        }
+
+        public Class2(bool flag)
+            : base(flag
+                )
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 15, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 21, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void CatchClausWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -154,7 +202,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void DefaultExpressionWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void DefaultExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -202,7 +250,37 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void FixedStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void DefaultExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            int i = default(int
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void FixedStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -256,7 +334,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void ForStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void ForStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -308,7 +386,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void ForEachStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void ForEachStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -360,7 +438,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void IfStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void IfStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -412,7 +490,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void LockStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void LockStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -464,7 +542,39 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void SizeOfExpressionWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void LockStatementWithClosingParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            lock(this
+                )
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void SizeOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -512,7 +622,37 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void SwitchStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void SizeOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public unsafe void DoSomething()
+        {
+            int size = sizeof(IntPtr
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void SwitchStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -568,7 +708,41 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void TypeOfExpressionWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void SwitchStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            switch(int.MinValue
+                )
+            {
+                default:
+                    break;
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void TypeOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -616,7 +790,37 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void UsingStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void TypeOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var type = typeof(Class1
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void UsingStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -668,7 +872,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void WhileStatementWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void WhileStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -720,7 +924,39 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void NameOfExpressionWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void WhileStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            while (false
+                )
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NameOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -768,7 +1004,37 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void InvocationExpressionsWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void NameOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            string name = nameof(Class1
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void InvocationExpressionsWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -829,7 +1095,49 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void NewExpressionsWithOpenParenthesisOnSameLineDoesNotProduceDiagnostic()
+        public void InvocationExpressionsWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = DateTime.Now.AddMinutes(5
+                );
+            int min = Math.Min(1, 2
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NewExpressionsWithParenthesisOnSameLineDoesNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -880,6 +1188,48 @@ namespace ClassLibrary1
                 {
                     Id = "CT3533",
                     Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NewExpressionsWithCloseParenthesisOnNewLineProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var time = new DateTime(2000, 1, 1
+                );
+            string text = new string(new[] { 'a', 'b', 'c' }
+                );
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
