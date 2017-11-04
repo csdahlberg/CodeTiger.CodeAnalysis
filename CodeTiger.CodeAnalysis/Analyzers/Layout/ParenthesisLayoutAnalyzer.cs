@@ -28,6 +28,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "CT3534", "Closing parenthesis should be on the same line as the preceding argument.",
                 "Closing parenthesis should be on the same line as the preceding argument.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor = new DiagnosticDescriptor(
+                "CT3535", "Closing parenthesis should be on the same line as the preceding element.",
+                "Closing parenthesis should be on the same line as the preceding element.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor EmptyParenthesesShouldBeOnTheSameLineDescriptor
+            = new DiagnosticDescriptor("CT3536", "Empty parentheses should be on the same line.",
+                "Empty parentheses should be on the same line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+                true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -39,7 +48,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 return ImmutableArray.Create(
                     OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor,
                     OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor,
-                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor,
+                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor,
+                    EmptyParenthesesShouldBeOnTheSameLineDescriptor);
             }
         }
 
@@ -71,6 +82,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
             context.RegisterSyntaxNodeAction(AnalyzeInvocationExpression, SyntaxKind.InvocationExpression);
             context.RegisterSyntaxNodeAction(AnalyzeObjectCreationExpression, SyntaxKind.ObjectCreationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeCastExpression, SyntaxKind.CastExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration,
+                SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeDestructorDeclaration, SyntaxKind.DestructorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeParenthesizedLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression);
         }
 
         private void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)
@@ -84,11 +104,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
             }
 
-            if (node.ArgumentList?.CloseParenToken != null && node.ArgumentList.Arguments.Any())
+            if (node.ArgumentList?.CloseParenToken != null)
             {
-                AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
-                    node.ArgumentList.CloseParenToken,
-                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                if (node.ArgumentList.Arguments.Any())
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
+                        node.ArgumentList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.OpenParenToken.GetLocation(),
+                        node.ArgumentList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
             }
         }
 
@@ -96,13 +124,22 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (CatchClauseSyntax)context.Node;
 
-            if (node.Declaration?.OpenParenToken == null)
+            if (node.Declaration?.OpenParenToken != null)
             {
-                return;
+                AnalyzeParenthesis(context, node.CatchKeyword.GetLocation(), node.Declaration.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
             }
 
-            AnalyzeParenthesis(context, node.CatchKeyword.GetLocation(), node.Declaration.OpenParenToken,
-                OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+            if (node.Declaration?.CloseParenToken != null)
+            {
+                var precedingTokenLocation = node.Declaration?.Identifier.GetLocation()
+                    ?? node.Declaration?.Type?.GetLocation();
+                if (precedingTokenLocation != null)
+                {
+                    AnalyzeParenthesis(context, precedingTokenLocation, node.Declaration.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+            }
         }
 
         private void AnalyzeDefaultExpression(SyntaxNodeAnalysisContext context)
@@ -122,6 +159,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             AnalyzeParenthesis(context, node.FixedKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+
+            AnalyzeParenthesis(context, node.Declaration?.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
         private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
@@ -130,6 +170,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             AnalyzeParenthesis(context, node.ForKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+
+            AnalyzeParenthesis(context, node.Declaration.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
         private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
@@ -138,6 +181,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             AnalyzeParenthesis(context, node.ForEachKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+
+            AnalyzeParenthesis(context, node.Expression.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
@@ -146,6 +192,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             AnalyzeParenthesis(context, node.IfKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+
+            AnalyzeParenthesis(context, node.Condition.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
         private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
@@ -198,6 +247,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             AnalyzeParenthesis(context, node.UsingKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
+
+            AnalyzeParenthesis(context, node.Declaration.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
         private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
@@ -232,11 +284,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     descriptor);
             }
 
-            if (node.ArgumentList?.CloseParenToken != null && node.ArgumentList.Arguments.Any())
+            if (node.ArgumentList?.CloseParenToken != null)
             {
-                AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
-                    node.ArgumentList.CloseParenToken,
-                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                if (node.ArgumentList.Arguments.Any())
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
+                        node.ArgumentList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.OpenParenToken.GetLocation(),
+                        node.ArgumentList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
             }
         }
 
@@ -250,11 +310,177 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
             }
 
-            if (node.ArgumentList?.CloseParenToken != null && node.ArgumentList.Arguments.Any())
+            if (node.ArgumentList?.CloseParenToken != null)
             {
-                AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
-                    node.ArgumentList.CloseParenToken,
-                    ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                if (node.ArgumentList.Arguments.Any())
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.Arguments.Last().GetLocation(),
+                        node.ArgumentList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ArgumentList.OpenParenToken.GetLocation(),
+                        node.ArgumentList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeCastExpression(SyntaxNodeAnalysisContext context)
+        {
+            var node = (CastExpressionSyntax)context.Node;
+
+            AnalyzeParenthesis(context, node.Type.GetLocation(), node.CloseParenToken,
+                ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+        }
+
+        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ConstructorDeclarationSyntax)context.Node;
+
+            if (node.ParameterList?.OpenParenToken != null)
+            {
+                AnalyzeParenthesis(context, node.Identifier.GetLocation(), node.ParameterList.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
+            }
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ConversionOperatorDeclarationSyntax)context.Node;
+
+            if (node.ParameterList?.OpenParenToken != null)
+            {
+                AnalyzeParenthesis(context, node.Type.GetLocation(), node.ParameterList.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
+            }
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (DestructorDeclarationSyntax)context.Node;
+
+            if (node.ParameterList?.OpenParenToken != null)
+            {
+                AnalyzeParenthesis(context, node.Identifier.GetLocation(), node.ParameterList.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
+            }
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList?.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList?.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (MethodDeclarationSyntax)context.Node;
+
+            if (node.ParameterList?.OpenParenToken != null)
+            {
+                AnalyzeParenthesis(context, node.Identifier.GetLocation(), node.ParameterList.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
+            }
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var node = (OperatorDeclarationSyntax)context.Node;
+
+            if (node.ParameterList?.OpenParenToken != null)
+            {
+                AnalyzeParenthesis(context, node.ReturnType.GetLocation(), node.ParameterList.OpenParenToken,
+                    OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
+            }
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
+            }
+        }
+
+        private void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ParenthesizedLambdaExpressionSyntax)context.Node;
+
+            if (node.ParameterList?.CloseParenToken != null)
+            {
+                if (node.ParameterList.Parameters.Any())
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.Parameters.Last().GetLocation(),
+                        node.ParameterList.CloseParenToken,
+                        ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
+                }
+                else
+                {
+                    AnalyzeParenthesis(context, node.ParameterList.OpenParenToken.GetLocation(),
+                        node.ParameterList.CloseParenToken, EmptyParenthesesShouldBeOnTheSameLineDescriptor);
+                }
             }
         }
 
