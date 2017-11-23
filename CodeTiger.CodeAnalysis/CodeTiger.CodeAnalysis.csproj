@@ -54,6 +54,7 @@
     <Compile Include="Analyzers\Documentation\RequiredDocumentationAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\AttributeLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzer.cs" />
+    <Compile Include="Analyzers\Layout\CommaLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\DotOperatorLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\LineLengthLayoutAnalyzer.cs" />
     <Compile Include="Analyzers\Layout\ParenthesisLayoutAnalyzer.cs" />
