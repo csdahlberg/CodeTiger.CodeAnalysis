@@ -122,6 +122,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 "LINQ query clauses should all be on the same line or separate lines.",
                 "LINQ query clauses should all be on the same line or separate lines.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor
+            = new DiagnosticDescriptor("CT3538", "Parameter declarations should be defined on a single line.",
+                "Parameter declarations should be defined on a single line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -155,7 +159,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     LockStatementsShouldNotBeDefinedOnASingleLineDescriptor,
                     NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
                     MultipleStatementsShouldNotBeOnTheSameLineDescriptor,
-                    LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor);
+                    LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor,
+                    ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor);
             }
         }
 
@@ -195,6 +200,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeSwitchSection, SyntaxKind.SwitchSection);
             context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
             context.RegisterSyntaxNodeAction(AnalyzeQueryExpression, SyntaxKind.QueryExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeParameterList, SyntaxKind.ParameterList);
         }
 
         private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
@@ -612,6 +618,21 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor, node.GetLocation()));
+            }
+        }
+
+        private void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
+        {
+            var node = (ParameterListSyntax)context.Node;
+
+            foreach (var parameter in node.Parameters)
+            {
+                var lineSpan = parameter.GetLocation().GetLineSpan();
+                if (lineSpan.StartLinePosition.Line != lineSpan.EndLinePosition.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor, parameter.GetLocation()));
+                }
             }
         }
 

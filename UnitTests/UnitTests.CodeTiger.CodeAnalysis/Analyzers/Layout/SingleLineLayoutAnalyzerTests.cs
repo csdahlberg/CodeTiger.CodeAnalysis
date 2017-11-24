@@ -1918,6 +1918,112 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void ParameterDeclarationsDefinedOnOneLineDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(string name,
+            int age, bool isVip)
+        {
+            Func<string, int, bool, string> x = (string n, int a,
+                bool i) => $""{n} {a} {i}"";
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ParameterDeclarationsDefinedAcrossMultipleLinesPRoduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(string
+            name, int
+            age, bool
+            isVip)
+        {
+            Func<string, int, bool, string> x = (string
+                n, int
+                a,
+                bool
+                i) => $""{n} {a} {i}"";
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 33)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 19)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 18)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 11, 50)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 12, 20)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3538",
+                    Message = "Parameter declarations should be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 14, 17)
+                    }
+                }
+            );
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new SingleLineLayoutAnalyzer();
