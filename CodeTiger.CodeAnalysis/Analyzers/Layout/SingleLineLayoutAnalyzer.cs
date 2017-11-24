@@ -203,7 +203,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeParameterList, SyntaxKind.ParameterList);
         }
 
-        private void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (NamespaceDeclarationSyntax)context.Node;
 
@@ -215,7 +215,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (BaseTypeDeclarationSyntax)context.Node;
 
@@ -237,7 +237,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (PropertyDeclarationSyntax)context.Node;
             
@@ -274,7 +274,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (AccessorDeclarationSyntax)context.Node;
 
@@ -298,7 +298,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (MethodDeclarationSyntax)context.Node;
 
@@ -325,7 +325,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTryStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (TryStatementSyntax)context.Node;
 
@@ -337,7 +337,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
         {
             var node = (CatchClauseSyntax)context.Node;
             
@@ -359,7 +359,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeFinallyClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFinallyClause(SyntaxNodeAnalysisContext context)
         {
             var node = (FinallyClauseSyntax)context.Node;
 
@@ -377,7 +377,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (IfStatementSyntax)context.Node;
 
@@ -389,7 +389,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
         {
             var node = (ElseClauseSyntax)context.Node;
 
@@ -407,7 +407,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (ForStatementSyntax)context.Node;
 
@@ -419,7 +419,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (ForEachStatementSyntax)context.Node;
 
@@ -432,7 +432,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (SwitchStatementSyntax)context.Node;
 
@@ -444,7 +444,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (WhileStatementSyntax)context.Node;
 
@@ -456,7 +456,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDoStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (DoStatementSyntax)context.Node;
 
@@ -468,7 +468,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (UsingStatementSyntax)context.Node;
 
@@ -495,7 +495,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (FixedStatementSyntax)context.Node;
 
@@ -507,7 +507,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (LockStatementSyntax)context.Node;
 
@@ -519,7 +519,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
         {
             var node = (SwitchSectionSyntax)context.Node;
 
@@ -538,7 +538,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeBlock(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
         {
             var node = (BlockSyntax)context.Node;
 
@@ -563,7 +563,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeQueryExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (QueryExpressionSyntax)context.Node;
 
@@ -621,7 +621,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
         {
             var node = (ParameterListSyntax)context.Node;
 

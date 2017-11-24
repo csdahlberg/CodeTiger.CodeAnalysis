@@ -51,7 +51,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             context.RegisterSyntaxNodeAction(AnalyzeEventAccessorOrder, SyntaxKind.EventDeclaration);
         }
 
-        private void AnalyzePropertyAccessorOrder(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyAccessorOrder(SyntaxNodeAnalysisContext context)
         {
             var node = context.Node as PropertyDeclarationSyntax;
             if (node?.AccessorList?.Accessors.Count > 1)
@@ -74,7 +74,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             }
         }
 
-        private void AnalyzeEventAccessorOrder(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventAccessorOrder(SyntaxNodeAnalysisContext context)
         {
             var node = context.Node as EventDeclarationSyntax;
             if (node?.AccessorList?.Accessors.Count > 1)

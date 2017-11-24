@@ -53,7 +53,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxTreeAction(AnalyzeFileName);
         }
 
-        private void AnalyzeFileName(SyntaxTreeAnalysisContext context)
+        private static void AnalyzeFileName(SyntaxTreeAnalysisContext context)
         {
             if (string.IsNullOrWhiteSpace(context.Tree.FilePath))
             {

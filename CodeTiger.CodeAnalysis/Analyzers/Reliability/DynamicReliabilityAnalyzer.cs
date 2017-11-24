@@ -42,7 +42,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterSyntaxNodeAction(AnalyzeDynamicReliability, SyntaxKind.IdentifierName);
         }
 
-        private void AnalyzeDynamicReliability(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDynamicReliability(SyntaxNodeAnalysisContext context)
         {
             var identifierName = (IdentifierNameSyntax)context.Node;
             

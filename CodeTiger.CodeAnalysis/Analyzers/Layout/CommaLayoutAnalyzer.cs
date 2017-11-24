@@ -58,7 +58,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 SyntaxKind.AnonymousObjectCreationExpression);
         }
 
-        private void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParameterList(SyntaxNodeAnalysisContext context)
         {
             var node = (ParameterListSyntax)context.Node;
 
@@ -68,7 +68,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeArgumentList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeArgumentList(SyntaxNodeAnalysisContext context)
         {
             var node = (ArgumentListSyntax)context.Node;
 
@@ -78,7 +78,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeParameterList(SyntaxNodeAnalysisContext context)
         {
             var node = (TypeParameterListSyntax)context.Node;
 
@@ -88,7 +88,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeTypeParameterConstraintClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeParameterConstraintClause(SyntaxNodeAnalysisContext context)
         {
             var node = (TypeParameterConstraintClauseSyntax)context.Node;
 
@@ -98,7 +98,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeTypeArgumentList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeArgumentList(SyntaxNodeAnalysisContext context)
         {
             var node = (TypeArgumentListSyntax)context.Node;
 
@@ -108,7 +108,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (EnumDeclarationSyntax)context.Node;
 
@@ -118,7 +118,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (VariableDeclarationSyntax)context.Node;
 
@@ -128,7 +128,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (InitializerExpressionSyntax)context.Node;
 
@@ -138,7 +138,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAnonymousObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (AnonymousObjectCreationExpressionSyntax)context.Node;
 

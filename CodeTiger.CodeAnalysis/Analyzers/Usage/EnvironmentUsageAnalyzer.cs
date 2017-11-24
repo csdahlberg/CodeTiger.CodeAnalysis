@@ -44,7 +44,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             context.RegisterSemanticModelAction(AnalyzeEnvironmentUsage);
         }
 
-        private void AnalyzeEnvironmentUsage(SemanticModelAnalysisContext context)
+        private static void AnalyzeEnvironmentUsage(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
             var environmentType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Environment");

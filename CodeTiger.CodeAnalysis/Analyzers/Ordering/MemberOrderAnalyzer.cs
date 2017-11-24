@@ -114,7 +114,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             }
         }
 
-        private void AnalyzeSemanticModelForMemberOrder(SemanticModelAnalysisContext context)
+        private static void AnalyzeSemanticModelForMemberOrder(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 

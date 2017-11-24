@@ -44,7 +44,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterCodeBlockAction(AnalyzeCatchBlocks);
         }
 
-        private void AnalyzeCatchBlocks(CodeBlockAnalysisContext context)
+        private static void AnalyzeCatchBlocks(CodeBlockAnalysisContext context)
         {
             foreach (var catchClause in context.CodeBlock.DescendantNodes().OfType<CatchClauseSyntax>())
             {

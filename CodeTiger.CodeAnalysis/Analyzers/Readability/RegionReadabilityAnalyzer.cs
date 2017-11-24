@@ -42,7 +42,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             context.RegisterSyntaxNodeAction(AnalyzeRegions, SyntaxKind.RegionDirectiveTrivia);
         }
 
-        private void AnalyzeRegions(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeRegions(SyntaxNodeAnalysisContext context)
         {
             var node = (RegionDirectiveTriviaSyntax)context.Node;
 

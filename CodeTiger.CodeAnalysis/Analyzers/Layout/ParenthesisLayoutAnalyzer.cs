@@ -93,7 +93,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 SyntaxKind.ParenthesizedLambdaExpression);
         }
 
-        private void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConstructorInitializer(SyntaxNodeAnalysisContext context)
         {
             var node = (ConstructorInitializerSyntax)context.Node;
 
@@ -120,7 +120,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
         {
             var node = (CatchClauseSyntax)context.Node;
 
@@ -142,7 +142,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeDefaultExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDefaultExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (DefaultExpressionSyntax)context.Node;
 
@@ -153,7 +153,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFixedStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (FixedStatementSyntax)context.Node;
 
@@ -164,7 +164,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (ForStatementSyntax)context.Node;
 
@@ -175,7 +175,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (ForEachStatementSyntax)context.Node;
 
@@ -186,7 +186,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (IfStatementSyntax)context.Node;
 
@@ -197,7 +197,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLockStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (LockStatementSyntax)context.Node;
 
@@ -208,7 +208,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeSizeOfExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSizeOfExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (SizeOfExpressionSyntax)context.Node;
 
@@ -219,7 +219,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (SwitchStatementSyntax)context.Node;
 
@@ -230,7 +230,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeTypeOfExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeOfExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (TypeOfExpressionSyntax)context.Node;
 
@@ -241,7 +241,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUsingStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (UsingStatementSyntax)context.Node;
 
@@ -252,7 +252,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
         {
             var node = (WhileStatementSyntax)context.Node;
 
@@ -263,7 +263,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor);
         }
 
-        private void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (InvocationExpressionSyntax)context.Node;
 
@@ -300,7 +300,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ObjectCreationExpressionSyntax)context.Node;
 
@@ -326,7 +326,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeCastExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCastExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (CastExpressionSyntax)context.Node;
 
@@ -334,7 +334,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
-        private void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (ConstructorDeclarationSyntax)context.Node;
 
@@ -360,7 +360,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (ConversionOperatorDeclarationSyntax)context.Node;
 
@@ -386,7 +386,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (DestructorDeclarationSyntax)context.Node;
 
@@ -412,7 +412,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (MethodDeclarationSyntax)context.Node;
 
@@ -438,7 +438,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (OperatorDeclarationSyntax)context.Node;
 
@@ -464,7 +464,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
         }
 
-        private void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var node = (ParenthesizedLambdaExpressionSyntax)context.Node;
 

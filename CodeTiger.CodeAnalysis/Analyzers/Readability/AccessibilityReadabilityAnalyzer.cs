@@ -56,7 +56,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 SyntaxKind.PropertyDeclaration);
         }
 
-        private void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
             var modifiers = GetModifiers(context.Node);
 
@@ -69,7 +69,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
             var parentKind = context.Node.Parent?.Kind();
             if (parentKind == SyntaxKind.InterfaceDeclaration || parentKind == SyntaxKind.EnumDeclaration)

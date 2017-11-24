@@ -190,7 +190,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeClassNamePrefixesAndSuffixes, SyntaxKind.ClassDeclaration);
         }
 
-        private void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeTypeName(SyntaxNodeAnalysisContext context)
         {
             SyntaxToken typeIdentifier;
 
@@ -219,7 +219,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             AnalyzeTypeNameAndContainingNamespaceName(context, typeIdentifier);
         }
 
-        private void AnalyzeFieldName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldName(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclarationNode = (FieldDeclarationSyntax)context.Node;
             if (fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.ConstKeyword))
@@ -247,7 +247,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeEventFieldName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEventFieldName(SyntaxNodeAnalysisContext context)
         {
             var eventFieldDeclarationNode = (EventFieldDeclarationSyntax)context.Node;
             foreach (var eventFieldDeclaration in eventFieldDeclarationNode.Declaration.Variables)
@@ -260,7 +260,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeDelegateName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeDelegateName(SyntaxNodeAnalysisContext context)
         {
             var delegateDeclarationNode = (DelegateDeclarationSyntax)context.Node;
 
@@ -271,7 +271,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzePropertyName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyName(SyntaxNodeAnalysisContext context)
         {
             var propertyDeclarationNode = (PropertyDeclarationSyntax)context.Node;
 
@@ -328,7 +328,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 propertyDeclarationNode.Identifier.GetLocation()));
         }
 
-        private void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
         {
             var methodDeclarationNode = (MethodDeclarationSyntax)context.Node;
             var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode,
@@ -367,7 +367,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeEnumerationMemberName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEnumerationMemberName(SyntaxNodeAnalysisContext context)
         {
             var enumMemberDeclarationNode = (EnumMemberDeclarationSyntax)context.Node;
 
@@ -378,7 +378,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeLocalVariableNames(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeLocalVariableNames(SyntaxNodeAnalysisContext context)
         {
             var localDeclarationSyntax = (LocalDeclarationStatementSyntax)context.Node;
             
@@ -392,7 +392,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeInterfaceName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeInterfaceName(SyntaxNodeAnalysisContext context)
         {
             var interfaceDeclarationNode = (InterfaceDeclarationSyntax)context.Node;
 
@@ -406,7 +406,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             AnalyzeTypeNameAndContainingNamespaceName(context, interfaceDeclarationNode.Identifier);
         }
 
-        private void AnalyzeParameterName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParameterName(SyntaxNodeAnalysisContext context)
         {
             var parameterNode = (ParameterSyntax)context.Node;
             
@@ -417,7 +417,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeGenericTypeParameterName(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeGenericTypeParameterName(SyntaxNodeAnalysisContext context)
         {
             var typeParameterNode = (TypeParameterSyntax)context.Node;
 
@@ -452,7 +452,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             }
         }
 
-        private void AnalyzeClassNamePrefixesAndSuffixes(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeClassNamePrefixesAndSuffixes(SyntaxNodeAnalysisContext context)
         {
             var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
             var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode,

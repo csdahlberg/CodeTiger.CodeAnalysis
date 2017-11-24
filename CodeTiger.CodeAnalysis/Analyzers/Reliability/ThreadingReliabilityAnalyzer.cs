@@ -52,7 +52,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterSemanticModelAction(AnalyzeThreadSynchronizationObjects);
         }
 
-        private void AnalyzeThreadResetAbortUsage(SemanticModelAnalysisContext context)
+        private static void AnalyzeThreadResetAbortUsage(SemanticModelAnalysisContext context)
         {
             var threadType = context.SemanticModel.Compilation?.GetTypeByMetadataName("System.Threading.Thread");
 
@@ -83,7 +83,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private void AnalyzeThreadSynchronizationObjects(SemanticModelAnalysisContext context)
+        private static void AnalyzeThreadSynchronizationObjects(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 

@@ -53,7 +53,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 SyntaxKind.FieldDeclaration);
         }
 
-        private void AnalyzeMethodForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -108,7 +108,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
         }
 
-        private void AnalyzePropertyForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertyForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
@@ -152,7 +152,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
         }
 
-        private void AnalyzeFieldForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeFieldForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
         {
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 

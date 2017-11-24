@@ -48,7 +48,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             context.RegisterSyntaxNodeAction(AnalyzeAttributeList, SyntaxKind.AttributeList);
         }
 
-        private void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAttributeList(SyntaxNodeAnalysisContext context)
         {
             var node = (AttributeListSyntax)context.Node;
 

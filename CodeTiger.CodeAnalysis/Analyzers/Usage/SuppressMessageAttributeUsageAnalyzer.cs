@@ -45,7 +45,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             context.RegisterSemanticModelAction(AnalyzeSuppressMessageAttributeUsage);
         }
 
-        private void AnalyzeSuppressMessageAttributeUsage(SemanticModelAnalysisContext context)
+        private static void AnalyzeSuppressMessageAttributeUsage(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
             var suppressMessageAttributeType = context.SemanticModel.Compilation

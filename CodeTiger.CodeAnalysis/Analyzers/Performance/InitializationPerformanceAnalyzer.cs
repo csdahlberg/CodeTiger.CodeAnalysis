@@ -45,7 +45,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             context.RegisterSemanticModelAction(AnalyzeVariablesForDoubleInitialization);
         }
 
-        private void AnalyzeVariablesForDoubleInitialization(SemanticModelAnalysisContext context)
+        private static void AnalyzeVariablesForDoubleInitialization(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 

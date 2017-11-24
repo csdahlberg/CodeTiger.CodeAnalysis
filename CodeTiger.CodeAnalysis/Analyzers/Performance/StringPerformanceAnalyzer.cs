@@ -59,7 +59,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             context.RegisterSemanticModelAction(AnalyzeStringConcatenation);
         }
 
-        private void AnalyzeStringComparisons(SemanticModelAnalysisContext context)
+        private static void AnalyzeStringComparisons(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 

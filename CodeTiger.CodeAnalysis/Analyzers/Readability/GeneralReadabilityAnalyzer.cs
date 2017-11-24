@@ -41,7 +41,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             context.RegisterSyntaxNodeAction(AnalyzeEmptyStatements, SyntaxKind.EmptyStatement);
         }
 
-        private void AnalyzeEmptyStatements(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEmptyStatements(SyntaxNodeAnalysisContext context)
         {
             context.ReportDiagnostic(Diagnostic.Create(EmptyStatementsShouldNotBeUsedDescriptor,
                 context.Node.GetLocation()));

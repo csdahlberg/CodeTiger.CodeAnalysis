@@ -62,7 +62,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             context.RegisterSyntaxNodeAction(AnalyzeAttributes, SyntaxKind.Attribute);
         }
 
-        private void AnalyzeUnaryPlusUsage(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUnaryPlusUsage(SyntaxNodeAnalysisContext context)
         {
             var node = (PrefixUnaryExpressionSyntax)context.Node;
 
@@ -70,7 +70,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 node.OperatorToken.GetLocation()));
         }
 
-        private void AnalyzeUnnecessaryParenthesisUsage(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeUnnecessaryParenthesisUsage(SyntaxNodeAnalysisContext context)
         {
             var node = (ParenthesizedExpressionSyntax)context.Node;
 
@@ -84,7 +84,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private void AnalyzeAnonymousMethods(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAnonymousMethods(SyntaxNodeAnalysisContext context)
         {
             var node = (AnonymousMethodExpressionSyntax)context.Node;
 
@@ -96,7 +96,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private void AnalyzeAttributes(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAttributes(SyntaxNodeAnalysisContext context)
         {
             var node = (AttributeSyntax)context.Node;
 

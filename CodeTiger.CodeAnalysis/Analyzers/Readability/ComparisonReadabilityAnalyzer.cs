@@ -54,7 +54,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
                 SyntaxKind.LessThanOrEqualExpression);
         }
 
-        private void AnalyzeComparison(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeComparison(SyntaxNodeAnalysisContext context)
         {
             var node = (BinaryExpressionSyntax)context.Node;
 

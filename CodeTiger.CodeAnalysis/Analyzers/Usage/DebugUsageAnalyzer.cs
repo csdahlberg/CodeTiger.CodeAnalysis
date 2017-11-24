@@ -45,7 +45,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             context.RegisterSemanticModelAction(AnalyzeDebugUsage);
         }
 
-        private void AnalyzeDebugUsage(SemanticModelAnalysisContext context)
+        private static void AnalyzeDebugUsage(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
             var debugType = context.SemanticModel.Compilation

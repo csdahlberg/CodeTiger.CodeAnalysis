@@ -44,7 +44,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             context.RegisterSyntaxNodeAction(AnalyzeClassForAllStaticMembers, SyntaxKind.ClassDeclaration);
         }
 
-        private void AnalyzeClassForAllStaticMembers(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeClassForAllStaticMembers(SyntaxNodeAnalysisContext context)
         {
             var node = (ClassDeclarationSyntax)context.Node;
             var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);

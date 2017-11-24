@@ -41,7 +41,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterSymbolAction(AnalyzeFieldAccessibility, SymbolKind.Field);
         }
 
-        private void AnalyzeFieldAccessibility(SymbolAnalysisContext context)
+        private static void AnalyzeFieldAccessibility(SymbolAnalysisContext context)
         {
             var fieldSymbol = (IFieldSymbol)context.Symbol;
 

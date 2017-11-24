@@ -45,7 +45,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             context.RegisterSyntaxNodeAction(AnalyzePropertySetter, SyntaxKind.SetAccessorDeclaration);
         }
 
-        private void AnalyzePropertySetter(SyntaxNodeAnalysisContext context)
+        private static void AnalyzePropertySetter(SyntaxNodeAnalysisContext context)
         {
             var setAccessorDeclaration = (AccessorDeclarationSyntax)context.Node;
 
@@ -85,7 +85,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
         }
 
-        private bool ShouldIncludeInAnalysis(SyntaxNode node)
+        private static bool ShouldIncludeInAnalysis(SyntaxNode node)
         {
             switch (node.Kind())
             {

@@ -48,7 +48,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             context.RegisterSyntaxNodeAction(AnalyzeNullableShorthand, SyntaxKind.GenericName);
         }
 
-        private void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
             var symbol = context.SemanticModel.GetSymbolInfo(context.Node, context.CancellationToken).Symbol;
             if (symbol?.Kind != SymbolKind.NamedType)
@@ -80,7 +80,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private void AnalyzeNullableShorthand(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeNullableShorthand(SyntaxNodeAnalysisContext context)
         {
             var genericName = (GenericNameSyntax)context.Node;
             

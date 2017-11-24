@@ -48,7 +48,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             context.RegisterSemanticModelAction(AnalyzeExceptionUsage);
         }
 
-        private void AnalyzeExceptionUsage(SemanticModelAnalysisContext context)
+        private static void AnalyzeExceptionUsage(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
@@ -63,7 +63,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             }
         }
 
-        private void AnalyzeThrowExpressionWithinCatchDeclaration(SemanticModelAnalysisContext context,
+        private static void AnalyzeThrowExpressionWithinCatchDeclaration(SemanticModelAnalysisContext context,
             ExpressionSyntax throwExpression)
         {
             var caughtExceptionIdentifier = GetCaughtExceptionIdentifier(throwExpression);
@@ -106,7 +106,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             return false;
         }
 
-        private bool IncludesCaughtException(SemanticModelAnalysisContext context,
+        private static bool IncludesCaughtException(SemanticModelAnalysisContext context,
             ExpressionSyntax throwExpression, SyntaxToken? caughtExceptionIdentifier)
         {
             if (!caughtExceptionIdentifier.HasValue)
@@ -134,7 +134,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             return null;
         }
 
-        private bool IsIdentifierReadByExpression(SemanticModelAnalysisContext context,
+        private static bool IsIdentifierReadByExpression(SemanticModelAnalysisContext context,
             SyntaxToken identifier, ExpressionSyntax expression)
         {
             var expressionDataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(expression);

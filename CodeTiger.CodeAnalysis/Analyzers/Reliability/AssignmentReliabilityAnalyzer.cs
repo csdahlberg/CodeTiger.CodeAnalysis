@@ -44,7 +44,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             context.RegisterSemanticModelAction(AnalyzeAssignmentReliability);
         }
 
-        private void AnalyzeAssignmentReliability(SemanticModelAnalysisContext context)
+        private static void AnalyzeAssignmentReliability(SemanticModelAnalysisContext context)
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
@@ -54,7 +54,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context, SyntaxNode node)
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context, SyntaxNode node)
         {
             switch (node.Kind())
             {
@@ -86,7 +86,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
             FieldDeclarationSyntax fieldDeclaration)
         {
             var variables = fieldDeclaration.Declaration?.Variables;
@@ -99,7 +99,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
             VariableDeclaratorSyntax variableDeclarator)
         {
             var initializer = variableDeclarator.Initializer;
@@ -110,28 +110,28 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
             IfStatementSyntax ifStatement)
         {
             AnalyzeExpressionForAssignmentReliability(context, ifStatement.Condition,
                 ifStatement.Condition.GetLocation());
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
             SwitchStatementSyntax switchStatement)
         {
             AnalyzeExpressionForAssignmentReliability(context, switchStatement.Expression,
                 switchStatement.Expression.GetLocation());
         }
 
-        private void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
             AssignmentExpressionSyntax assignmentExpression)
         {
             AnalyzeExpressionForAssignmentReliability(context, assignmentExpression.Right,
                 assignmentExpression.OperatorToken.GetLocation());
         }
 
-        private void AnalyzeExpressionForAssignmentReliability(SemanticModelAnalysisContext context,
+        private static void AnalyzeExpressionForAssignmentReliability(SemanticModelAnalysisContext context,
             ExpressionSyntax expression, Location usageLocation)
         {
             switch (expression.Kind())

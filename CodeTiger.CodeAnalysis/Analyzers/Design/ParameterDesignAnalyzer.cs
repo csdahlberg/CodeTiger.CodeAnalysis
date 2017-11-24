@@ -47,7 +47,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 SyntaxKind.OperatorDeclaration);
         }
 
-        private void AnalyzeParameterCount(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeParameterCount(SyntaxNodeAnalysisContext context)
         {
             if (GetParameterCount(context.Node) > 7)
             {
