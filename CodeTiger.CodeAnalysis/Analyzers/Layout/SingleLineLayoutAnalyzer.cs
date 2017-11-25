@@ -126,6 +126,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             = new DiagnosticDescriptor("CT3538", "Parameter declarations should be defined on a single line.",
                 "Parameter declarations should be defined on a single line.", "CodeTiger.Layout",
                 DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            NonTrivialSwitchSectionStatementsShouldBeginOnANewLineDescriptor = new DiagnosticDescriptor("CT3539",
+                "Non-trivial switch section statements should begin on a new line.",
+                "Non-trivial switch section statements should begin on a new line.", "CodeTiger.Layout",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -160,7 +165,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
                     MultipleStatementsShouldNotBeOnTheSameLineDescriptor,
                     LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor,
-                    ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor);
+                    ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor,
+                    NonTrivialSwitchSectionStatementsShouldBeginOnANewLineDescriptor);
             }
         }
 
@@ -528,12 +534,22 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     && node.Statements[0].Kind() == SyntaxKind.Block
                     && IsBlockNonTrivial((BlockSyntax)node.Statements[0])))
             {
+                var firstStatement = node.Statements[0];
+
                 var nodeLineSpan = node.GetLocation().GetLineSpan();
                 if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
-                        NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor,
-                        node.Labels.Last().GetLocation()));
+                        NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor, node.GetLocation()));
+                }
+
+                var lastLabelLineSpan = node.Labels.Last().GetLocation().GetLineSpan();
+                var firstStatementLocation = firstStatement.GetLocation();
+                var firstStatementLineSpan = firstStatementLocation.GetLineSpan();
+                if (firstStatementLineSpan.StartLinePosition.Line == lastLabelLineSpan.EndLinePosition.Line)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        NonTrivialSwitchSectionStatementsShouldBeginOnANewLineDescriptor, firstStatementLocation));
                 }
             }
         }

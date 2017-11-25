@@ -1705,6 +1705,16 @@ namespace ClassLibrary1
                 },
                 new DiagnosticResult
                 {
+                    Id = "CT3539",
+                    Message = "Non-trivial switch section statements should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 12, 43)
+                    }
+                },
+                new DiagnosticResult
+                {
                     Id = "CT3528",
                     Message = "Multiple statements should not be on the same line.",
                     Severity = DiagnosticSeverity.Warning,
@@ -1721,6 +1731,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3539",
+                    Message = "Non-trivial switch section statements should begin on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 26)
                     }
                 }
             );
