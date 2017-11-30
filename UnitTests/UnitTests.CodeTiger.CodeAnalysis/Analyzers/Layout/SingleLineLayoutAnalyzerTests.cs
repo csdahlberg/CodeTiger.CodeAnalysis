@@ -168,7 +168,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void AutoPropertyDeclarationOnSingleLineDoesNotProduceDiagnostic()
+        public void AutoPropertyDeclarationsOnASingleLineDoNotProduceDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -178,6 +178,25 @@ namespace ClassLibrary1
         public string Name { get; set; }
         [Obsolete]
         public string Name2 { get; set; }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void AutoPropertyDeclarationsWithDefaultValuesOnANewLineDoNotProduceDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string Name { get; set; }
+            = ""Thing 1"";
+        [Obsolete]
+        public string Name2 { get; set; }
+            = ""Thing 2"";
     }
 }";
 

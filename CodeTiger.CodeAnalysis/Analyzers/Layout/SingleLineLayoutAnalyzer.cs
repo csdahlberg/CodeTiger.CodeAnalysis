@@ -261,7 +261,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
 
             var locationWithoutAttributes = Location.Create(context.Node.SyntaxTree,
-                TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.Span.End));
+                TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.AccessorList.Span.End));
             var nodeLineSpan = locationWithoutAttributes.GetLineSpan();
 
             if (node.ExpressionBody == null && node.AccessorList.Accessors.All(x => x.Body == null))
