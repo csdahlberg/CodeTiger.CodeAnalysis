@@ -195,7 +195,7 @@
     <Compile Include="Analyzers\Layout\AttributeLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\BraceLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\CommaLayoutAnalyzerTests.cs" />
-    <Compile Include="Analyzers\Layout\DotOperatorLayoutAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Layout\BinaryOperatorLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\LineLengthLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\ParenthesisLayoutAnalyzerTests.cs" />
     <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzerTests.cs" />
