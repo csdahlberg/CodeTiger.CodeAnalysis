@@ -171,7 +171,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             AnalyzeParenthesis(context, node.ForKeyword.GetLocation(), node.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
 
-            AnalyzeParenthesis(context, node.Declaration.GetLocation(), node.CloseParenToken,
+            var lastTokenBeforeClosingParenthesis = node.Incrementors.Last()?.GetLastToken()
+                ?? node.SecondSemicolonToken;
+            AnalyzeParenthesis(context, lastTokenBeforeClosingParenthesis.GetLocation(), node.CloseParenToken,
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
 
