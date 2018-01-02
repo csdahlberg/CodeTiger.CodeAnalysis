@@ -142,7 +142,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (AnonymousObjectCreationExpressionSyntax)context.Node;
 
-            for (int i = 0; i < node.Initializers.Count; i += 1)
+            for (int i = 0; i < node.Initializers.SeparatorCount; i += 1)
             {
                 AnalyzeComma(context, node.Initializers[i].GetLocation(), node.Initializers.GetSeparator(i));
             }
@@ -156,14 +156,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 return;
             }
 
-            var parenthesisLocation = commaToken.GetLocation();
+            var commaLocation = commaToken.GetLocation();
 
-            if (parenthesisLocation.GetLineSpan().StartLinePosition.Line
+            if (commaLocation.GetLineSpan().StartLinePosition.Line
                 != precedingElementLocation.GetLineSpan().EndLinePosition.Line)
             {
                 context.ReportDiagnostic(
-                    Diagnostic.Create(CommasShouldBeOnTheSameLineAsThePrecedingElementDescriptor,
-                        parenthesisLocation));
+                    Diagnostic.Create(CommasShouldBeOnTheSameLineAsThePrecedingElementDescriptor, commaLocation));
             }
         }
     }
