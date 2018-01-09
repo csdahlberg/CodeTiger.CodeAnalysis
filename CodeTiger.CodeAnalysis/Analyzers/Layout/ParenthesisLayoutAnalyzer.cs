@@ -132,9 +132,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
             if (node.Declaration?.CloseParenToken != null)
             {
-                var precedingTokenLocation = node.Declaration?.Identifier.GetLocation()
-                    ?? node.Declaration?.Type?.GetLocation();
-                if (precedingTokenLocation != null)
+                var precedingTokenLocation = node.Declaration.Identifier.GetLocation();
+                if (precedingTokenLocation == null || precedingTokenLocation.Kind == LocationKind.None)
+                {
+                    precedingTokenLocation = node.Declaration.Type.GetLocation();
+                }
+
+                if (precedingTokenLocation != null && precedingTokenLocation.Kind != LocationKind.None)
                 {
                     AnalyzeParenthesis(context, precedingTokenLocation, node.Declaration.CloseParenToken,
                         ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);

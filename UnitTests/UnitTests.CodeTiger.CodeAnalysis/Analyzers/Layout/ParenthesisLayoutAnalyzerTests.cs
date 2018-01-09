@@ -156,6 +156,9 @@ namespace ClassLibrary1
             try
             {
             }
+            catch (FileNotFoundException)
+            {
+            }
             catch (Exception ex)
             {
             }
@@ -180,6 +183,10 @@ namespace ClassLibrary1
             {
             }
             catch
+            (FileNotFoundException)
+            {
+            }
+            catch
             (Exception ex)
             {
             }
@@ -197,6 +204,16 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 12, 13)
                     }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3532",
+                    Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 13)
+                    }
                 }
             );
         }
@@ -212,6 +229,10 @@ namespace ClassLibrary1
         public void DoSomething()
         {
             try
+            {
+            }
+            catch (FileNotFoundException
+                )
             {
             }
             catch (Exception ex
@@ -231,6 +252,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 12, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3535",
+                    Message = "Closing parenthesis should be on the same line as the preceding element.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 16, 17)
                     }
                 }
             );
