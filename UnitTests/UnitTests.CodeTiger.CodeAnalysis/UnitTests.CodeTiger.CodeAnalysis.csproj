@@ -203,6 +203,7 @@
     <Compile Include="Analyzers\Naming\SymbolNamingAnalyzerTests.cs" />
     <Compile Include="Analyzers\Ordering\UsingDirectiveOrderAnalyzerTests.cs" />
     <Compile Include="Analyzers\Readability\ComparisonReadabilityAnalyzerTests.cs" />
+    <Compile Include="Analyzers\Readability\TypeAliasReadabilityAnalyzerTests.cs" />
     <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

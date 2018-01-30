@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,7 +15,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
     {
         internal static readonly DiagnosticDescriptor BuiltInTypeAliasesShouldBeUsedDescriptor
             = new DiagnosticDescriptor("CT3101", "Built-in type aliases should be used.",
-                "Built-in type alises should be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+                "Built-in type aliases should be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor ShorthandShouldBeUsedForNullableTypesDescriptor
             = new DiagnosticDescriptor("CT3102", "Shorthand should be used for nullable types.",
                 "Shorthand should be used for nullable types.", "CodeTiger.Readability",
@@ -50,6 +51,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
         private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
+            if (IsInDocumentationComment(context.Node, context.CancellationToken))
+            {
+                return;
+            }
+
             var symbol = context.SemanticModel.GetSymbolInfo(context.Node, context.CancellationToken).Symbol;
             if (symbol?.Kind != SymbolKind.NamedType)
             {
@@ -82,6 +88,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
         private static void AnalyzeNullableShorthand(SyntaxNodeAnalysisContext context)
         {
+            if (IsInDocumentationComment(context.Node, context.CancellationToken))
+            {
+                return;
+            }
+
             var genericName = (GenericNameSyntax)context.Node;
             
             var symbol = context.SemanticModel.GetSymbolInfo(genericName, context.CancellationToken).Symbol;
@@ -91,11 +102,27 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
 
             var namedTypeSymbol = (INamedTypeSymbol)symbol;
-            if (namedTypeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            if (namedTypeSymbol.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T
+                && !namedTypeSymbol.IsUnboundGenericType)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ShorthandShouldBeUsedForNullableTypesDescriptor,
                     context.Node.GetLocation()));
             }
+        }
+
+        private static bool IsInDocumentationComment(SyntaxNode node, CancellationToken cancellationToken)
+        {
+            while (node != null)
+            {
+                if (SyntaxFacts.IsDocumentationCommentTrivia(node.Kind()))
+                {
+                    return true;
+                }
+
+                node = node.Parent;
+            }
+
+            return false;
         }
     }
 }
