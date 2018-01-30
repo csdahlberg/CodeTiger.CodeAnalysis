@@ -284,11 +284,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (AccessorDeclarationSyntax)context.Node;
 
-            var nodeLineSpan = node.GetLocation().GetLineSpan();
+            var accessorLineSpan = Location
+                .Create(context.Node.SyntaxTree, TextSpan.FromBounds(node.Keyword.SpanStart, node.Span.End))
+                .GetLineSpan();
 
             if (IsAccessorTrivial(node.Body))
             {
-                if (nodeLineSpan.Span.Start.Line != nodeLineSpan.Span.End.Line)
+                if (accessorLineSpan.Span.Start.Line != accessorLineSpan.Span.End.Line)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor, node.Keyword.GetLocation()));
@@ -296,7 +298,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
             else if (IsAccessorNonTrivial(node.Body))
             {
-                if (nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
+                if (accessorLineSpan.Span.Start.Line == accessorLineSpan.Span.End.Line)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor, node.Keyword.GetLocation()));

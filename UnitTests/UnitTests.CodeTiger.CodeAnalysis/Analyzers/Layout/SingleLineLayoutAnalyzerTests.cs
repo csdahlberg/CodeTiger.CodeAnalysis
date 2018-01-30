@@ -377,7 +377,9 @@ namespace ClassLibrary1
         }
         public event EventHandler TestEvent
         {
+            [CLSCompliant(true)]
             add { _testEvent += value; }
+            [CLSCompliant(true)]
             remove { _testEvent -= value; }
         }
     }
