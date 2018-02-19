@@ -348,7 +348,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             const string asyncText = "Async";
             var taskType = context.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-            bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType);
+            bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType)
+                || methodDeclaration.ReturnType.IsConstrainedTo(taskType);
             bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText, StringComparison.OrdinalIgnoreCase);
             if (returnsTaskType)
             {

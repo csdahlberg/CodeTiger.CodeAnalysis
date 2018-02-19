@@ -1392,9 +1392,10 @@ namespace ClassLibrary1
 {
     public class TestClass
     {
-        public Task DoSomethingAsync() { return Task.FromResult(true); }
+        public Task<bool> DoSomethingAsync() { return Task.FromResult(true); }
         protected async Task DoSomething2Async() { }
         private async void DoSomething3Async() { }
+        private T DoSomething4Async<T>(T original) where T : Task { return original; }
     }
 }";
 

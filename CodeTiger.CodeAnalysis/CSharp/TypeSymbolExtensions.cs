@@ -39,5 +39,15 @@ namespace CodeTiger.CodeAnalysis.CSharp
 
             return false;
         }
+
+        public static bool IsConstrainedTo(this ITypeSymbol type, ITypeSymbol otherType)
+        {
+            if (type is ITypeParameterSymbol typeParameter)
+            {
+                return typeParameter.ConstraintTypes.Any(x => x.IsSameOrSubclassOf(otherType));
+            }
+
+            return false;
+        }
     }
 }
