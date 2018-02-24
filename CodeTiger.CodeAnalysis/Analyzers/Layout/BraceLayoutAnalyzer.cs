@@ -2,6 +2,7 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using System.Collections.Immutable;
 
 namespace CodeTiger.CodeAnalysis.Analyzers.Layout
@@ -125,13 +126,23 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 case SyntaxKind.IfStatement:
                 case SyntaxKind.ElseClause:
-                case SyntaxKind.AccessorList:
+                    nodeLinePositionSpan = node.Parent.GetLocation().GetLineSpan();
+                    break;
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
-                    nodeLinePositionSpan = node.Parent.GetLocation().GetLineSpan();
-                    break;
+                    {
+                        var accessorDeclarationNode = (AccessorDeclarationSyntax)node.Parent;
+                        var accessorDeclarationStartSpan = accessorDeclarationNode.Modifiers.Count > 0
+                            ? accessorDeclarationNode.Modifiers.Span
+                            : accessorDeclarationNode.Keyword.Span;
+                        var spanWithoutAttributes = TextSpan.FromBounds(accessorDeclarationStartSpan.Start,
+                            accessorDeclarationNode.Span.End);
+                        nodeLinePositionSpan = Location.Create(node.SyntaxTree, spanWithoutAttributes)
+                            .GetLineSpan();
+                        break;
+                    }
                 default:
                     nodeLinePositionSpan = node.GetLocation().GetLineSpan();
                     break;

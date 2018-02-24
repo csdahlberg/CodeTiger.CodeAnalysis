@@ -524,14 +524,46 @@ namespace ClassLibrary1
 {
     public class Class1
     {
+        [CLSCompliant(false)]
         public string Name { get; set; }
+        [CLSCompliant(false)]
         public int Age
         {
             get { return 1; }
         }
+        [CLSCompliant(false)]
         public event EventHandler OnSomething
         {
             add { }
+            remove
+            {
+            }
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void AccessorsWithValidBraceLayoutsDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public string Name { get; set; }
+        public int Age
+        {
+            [CLSCompliant(false)]
+            get { return 1; }
+        }
+        public event EventHandler OnSomething
+        {
+            [CLSCompliant(false)]
+            add { }
+            [CLSCompliant(false)]
             remove
             {
             }
