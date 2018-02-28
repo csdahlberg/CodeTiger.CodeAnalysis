@@ -789,6 +789,72 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void MethodArgumentsWithValidBraceLayoutsDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Threading.Tasks;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public async Task DoSomethingAsync()
+        {
+            Task.Run(() => { });
+            Task.Run(() =>
+            {
+            });
+            await Task.Run(() => { }).ConfigureAwait(false);
+            await Task.Run(() =>
+            {
+            }).ConfigureAwait(false);
+        }
+    }
+}";
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void MethodArgumentsWithInvalidBraceLayoutsProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public async Task DoSomethingAsync()
+        {
+            Task.Run(() => {
+            });
+            await Task.Run(() => {
+            }).ConfigureAwait(false);
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3501",
+                    Message = "Braces for multi-line elements should be on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 28)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3501",
+                    Message = "Braces for multi-line elements should be on a new line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 34)
+                    }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new BraceLayoutAnalyzer();

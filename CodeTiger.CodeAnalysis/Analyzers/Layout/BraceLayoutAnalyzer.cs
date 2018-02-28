@@ -149,9 +149,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
 
             bool isForDoStatement = node.Parent?.Kind() == SyntaxKind.DoStatement;
+            bool isForArgument = node.Parent is ArgumentSyntax || node.Parent?.Parent is ArgumentSyntax;
 
             AnalyzeBraces(nodeLinePositionSpan, node.OpenBraceToken, node.CloseBraceToken, context,
-                isForDoStatement);
+                isForDoStatement, isForArgument);
         }
 
         private static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -264,7 +265,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         }
 
         private static void AnalyzeBraces(FileLinePositionSpan nodeLineSpan, SyntaxToken openBraceToken,
-            SyntaxToken closeBraceToken, SyntaxNodeAnalysisContext context, bool isForDoStatementBlock = false)
+            SyntaxToken closeBraceToken, SyntaxNodeAnalysisContext context, bool isForDoStatement = false,
+            bool isForArgument = false)
         {
             if (nodeLineSpan.StartLinePosition.Line == nodeLineSpan.EndLinePosition.Line)
             {
@@ -277,7 +279,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                     openBraceToken.GetLocation()));
             }
 
-            if (isForDoStatementBlock)
+            if (isForDoStatement || isForArgument)
             {
                 if (!IsFirstTokenOnLine(closeBraceToken))
                 {
