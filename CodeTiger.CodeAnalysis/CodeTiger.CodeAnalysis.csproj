@@ -1,148 +1,64 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{493936FB-E4BE-49F4-84AC-3EA84D8C2155}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CodeTiger.CodeAnalysis</RootNamespace>
-    <AssemblyName>CodeTiger.CodeAnalysis</AssemblyName>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <PackageTargetFallback>portable-net45+win8+wp8+wpa81</PackageTargetFallback>
+    <MinClientVersion>2.8</MinClientVersion>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <VersionSuffix>unofficial</VersionSuffix>
+    <FileVersion>0.0.1.0</FileVersion>
+    <Authors>Chris Dahlberg</Authors>
+    <Company>CodeTiger</Company>
+    <Description>General purpose Roslyn-based static code analysis rules for C#.
+
+While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.</Description>
+    
+    <Copyright>Copyright 2015 © Chris Dahlberg</Copyright>
+    <Title>CodeTiger Code Analysis</Title>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <PackageProjectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis/wiki/License</PackageLicenseUrl>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageIconUrl>http://www.codetiger.net/images/tigerpaw32.png</PackageIconUrl>
+    <PackageTags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</PackageTags>
+    <PackageReleaseNotes>This is an unofficial build that should not be distributed.</PackageReleaseNotes>
+    <Product>CodeTiger Code Analysis</Product>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <DebugSymbols>true</DebugSymbols>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis.git</RepositoryUrl>
+    <RepositoryCommit>abcd</RepositoryCommit>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\Build\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\Build\Debug\CodeTiger.CodeAnalysis.xml</DocumentationFile>
+    <DocumentationFile>..\Build\Debug\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
+    <NoWarn />
+    <WarningsAsErrors />
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\Build\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Build\Release\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
+    <NoWarn />
+    <WarningsAsErrors />
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <DocumentationFile>..\Build\Release\CodeTiger.CodeAnalysis.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\CodeTiger.CodeAnalysis.snk</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Analyzers\Design\CopyConstructorDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\InheritedMemberDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\ParameterDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\PropertySetterDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\StaticDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\NonGenericCollectionDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Design\UnmanagedDesignAnalyzer.cs" />
-    <Compile Include="Analyzers\Documentation\RequiredDocumentationAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\AttributeLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\BraceLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\CommaLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\BinaryOperatorLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\LineLengthLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\ParenthesisLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Layout\SingleLineLayoutAnalyzer.cs" />
-    <Compile Include="Analyzers\Naming\FileNamingAnalyzer.cs" />
-    <Compile Include="Analyzers\Naming\SymbolNamingAnalyzer.cs" />
-    <Compile Include="Analyzers\Ordering\AccessorOrderAnalyzer.cs" />
-    <Compile Include="Analyzers\Ordering\DeclarationKeywordOrderAnalyzer.cs" />
-    <Compile Include="Analyzers\Ordering\MemberOrderAnalyzer.cs" />
-    <Compile Include="Analyzers\Ordering\UsingDirectiveOrderAnalyzer.cs" />
-    <Compile Include="Analyzers\Performance\InitializationPerformanceAnalyzer.cs" />
-    <Compile Include="Analyzers\Performance\StringPerformanceAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\AccessibilityReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\ComparisonReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\GeneralReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\RegionReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\TypeAliasReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Readability\UnnecessaryCodeReadabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\AssignmentReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\DynamicReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\EnumerationReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\ExceptionHandlingReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\FieldReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\ThreadingReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\UnmanagedReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Reliability\UnsafeReliabilityAnalyzer.cs" />
-    <Compile Include="Analyzers\Usage\DebugUsageAnalyzer.cs" />
-    <Compile Include="Analyzers\Usage\EnvironmentUsageAnalyzer.cs" />
-    <Compile Include="Analyzers\Usage\ExceptionUsageAnalyzer.cs" />
-    <Compile Include="Analyzers\Usage\SuppressMessageAttributeUsageAnalyzer.cs" />
-    <Compile Include="CSharp\NameSyntaxExtensions.cs" />
-    <Compile Include="CSharp\SyntaxNodeExtensions.cs" />
-    <Compile Include="CSharp\SymbolExtensions.cs" />
-    <Compile Include="CSharp\SyntaxKindExtensions.cs" />
-    <Compile Include="CSharp\TypeSymbolExtensions.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="Guard.cs" />
-    <Compile Include="NamingUtility.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValidatedNotNullAttribute.cs" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="..\CodeTiger.CodeAnalysis.snk">
-      <Link>CodeTiger.CodeAnalysis.snk</Link>
-    </None>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="CodeTiger.CodeAnalysis.nuspec">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="tools\install.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="tools\uninstall.ps1">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(OutputPath)\$(AssemblyName).pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
   </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.CodeAnalysis, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.3.2\lib\portable-net45+win8\Microsoft.CodeAnalysis.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.3.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.3.2\lib\portable-net45+win8\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Collections.Immutable, Version=1.1.37.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reflection.Metadata, Version=1.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Reflection.Metadata.1.2.0\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>"$(SolutionDir)NuGet.exe" pack "$(TargetDir)$(ProjectName).nuspec" -BasePath "$(TargetDir) " -OutputDirectory "$(TargetDir) "</PostBuildEvent>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
