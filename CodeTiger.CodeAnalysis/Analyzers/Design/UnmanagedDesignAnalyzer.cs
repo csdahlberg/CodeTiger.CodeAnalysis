@@ -68,9 +68,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     .Select(GetMemberType)
                     .ToList();
 
-                var destructor = typeDeclaration.Members
-                    .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration)
-                    as DestructorDeclarationSyntax;
+                var destructor = (DestructorDeclarationSyntax)typeDeclaration.Members
+                    .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration);
 
                 if (destructor != null)
                 {

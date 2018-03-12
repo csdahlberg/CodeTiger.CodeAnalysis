@@ -160,8 +160,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
 
             foreach (var member in node.Members)
             {
-                var fieldMember = member as BaseFieldDeclarationSyntax;
-                if (fieldMember != null)
+                if (member is BaseFieldDeclarationSyntax fieldMember)
                 {
                     var fieldMemberVariable = fieldMember.Declaration.Variables.FirstOrDefault();
                     if (fieldMemberVariable != null)

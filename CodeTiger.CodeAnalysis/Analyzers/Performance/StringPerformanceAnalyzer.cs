@@ -160,8 +160,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             if (expression.Kind() == SyntaxKind.InvocationExpression)
             {
                 var invocationExpression = (InvocationExpressionSyntax)expression;
-                var memberAccessExpression = invocationExpression.Expression as MemberAccessExpressionSyntax;
-                if (memberAccessExpression != null && IsCallToCaseConversionMethod(context, memberAccessExpression))
+                if (invocationExpression.Expression is MemberAccessExpressionSyntax memberAccessExpression
+                    && IsCallToCaseConversionMethod(context, memberAccessExpression))
                 {
                     return true;
                 }
