@@ -146,7 +146,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (LambdaExpressionSyntax)context.Node;
 
-            if (IsLineSplitAfterToken(node.ArrowToken))
+            if (IsLineSplitAfterToken(node.ArrowToken) && !IsTokenFollowedByOpenBrace(node.ArrowToken))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     MultiLineExpressionsShouldNotBeSplitAfterABinaryOperatorDescriptor,
@@ -170,6 +170,29 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 if (!SyntaxFacts.IsTrivia(nextToken.Kind()))
                 {
                     return false;
+                }
+
+                nextToken = nextToken.GetNextToken();
+            }
+
+            return true;
+        }
+
+        private static bool IsTokenFollowedByOpenBrace(SyntaxToken token)
+        {
+            var tokenLineSpan = token.GetLocation().GetLineSpan();
+
+            var nextToken = token.GetNextToken();
+            while (nextToken != default(SyntaxToken))
+            {
+                if (nextToken.Kind() == SyntaxKind.OpenBraceToken)
+                {
+                    return true;
+                }
+
+                if (!SyntaxFacts.IsTrivia(nextToken.Kind()))
+                {
+                    return nextToken.Kind() == SyntaxKind.OpenBraceToken;
                 }
 
                 nextToken = nextToken.GetNextToken();

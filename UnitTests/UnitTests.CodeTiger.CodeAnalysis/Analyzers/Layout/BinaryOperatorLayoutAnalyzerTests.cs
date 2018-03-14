@@ -2991,6 +2991,31 @@ namespace ClassLibrary1
             );
         }
 
+        [Fact]
+        public void LambdaOperatorsEndingALineFollowedByACodeBlockDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public Func<int, int> GetAge { get; set; } = i =>
+            { return i; };
+        public void DoSomething()
+        {
+            GetAge = (i) =>
+                { i; };
+            Func<int> getNextAge = () =>
+            {
+                Age + 1;
+            };
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new BinaryOperatorLayoutAnalyzer();
