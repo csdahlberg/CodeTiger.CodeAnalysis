@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 using CodeTiger.CodeAnalysis.CSharp;
@@ -77,7 +78,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
         {
             if (context.Node.SyntaxTree.Options.DocumentationMode >= DocumentationMode.Diagnose
                 && IsExternallyAccessible(context)
-                && HasNonVoidReturnType(context)
+                && HasReturnTypeThatRequiresDocumentation(context)
                 && IsMissingReturnValueDocumentation(context))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -124,34 +125,48 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
             return parameterList?.Parameters.Any() ?? false;
         }
 
-        private static bool HasNonVoidReturnType(SyntaxNodeAnalysisContext context)
+        private static bool HasReturnTypeThatRequiresDocumentation(SyntaxNodeAnalysisContext context)
         {
-            TypeSyntax returnType;
+            TypeSyntax returnTypeNode;
 
             switch (context.Node.Kind())
             {
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    returnType = ((ConversionOperatorDeclarationSyntax)context.Node).Type;
+                    returnTypeNode = ((ConversionOperatorDeclarationSyntax)context.Node).Type;
                     break;
                 case SyntaxKind.DelegateDeclaration:
-                    returnType = ((DelegateDeclarationSyntax)context.Node).ReturnType;
+                    returnTypeNode = ((DelegateDeclarationSyntax)context.Node).ReturnType;
                     break;
                 case SyntaxKind.IndexerDeclaration:
-                    returnType = ((IndexerDeclarationSyntax)context.Node).Type;
+                    returnTypeNode = ((IndexerDeclarationSyntax)context.Node).Type;
                     break;
                 case SyntaxKind.MethodDeclaration:
-                    returnType = ((MethodDeclarationSyntax)context.Node).ReturnType;
+                    returnTypeNode = ((MethodDeclarationSyntax)context.Node).ReturnType;
                     break;
                 case SyntaxKind.OperatorDeclaration:
-                    returnType = ((OperatorDeclarationSyntax)context.Node).ReturnType;
+                    returnTypeNode = ((OperatorDeclarationSyntax)context.Node).ReturnType;
                     break;
                 default:
                     return false;
             }
 
-            var type = context.SemanticModel.GetTypeInfo(returnType, context.CancellationToken).Type;
+            var type = context.SemanticModel.GetTypeInfo(returnTypeNode, context.CancellationToken).Type;
+            
+            if (type?.SpecialType == SpecialType.System_Void)
+            {
+                return false;
+            }
 
-            return type?.SpecialType != SpecialType.System_Void;
+            if (context.Node.Kind() == SyntaxKind.MethodDeclaration)
+            {
+                var taskType = context.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
+                var returnType = context.SemanticModel.GetSymbolInfo(returnTypeNode, context.CancellationToken)
+                    .Symbol;
+
+                return taskType != returnType;
+            }
+
+            return true;
         }
 
         private static bool IsMissingParameterDocumentation(SyntaxNodeAnalysisContext context)

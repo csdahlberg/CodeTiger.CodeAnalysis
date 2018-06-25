@@ -30,6 +30,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         private static readonly MetadataReference CodeAnalysisReference
             = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
 
+        protected virtual DocumentationMode DocumentationMode => DocumentationMode.Parse;
+
         /// <summary>
         /// Get the CSharp analyzer being tested - to be implemented in non-abstract class
         /// </summary>
@@ -196,7 +198,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="source">Classes in the form of a string</param>
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Document created from the source string</returns>
-        protected static Document CreateDocument(string source, string language = LanguageNames.CSharp)
+        protected Document CreateDocument(string source, string language = LanguageNames.CSharp)
         {
             return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
         }
@@ -400,7 +402,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="language">The language the source classes are in</param>
         /// <param name="analyzer">The analyzer to be run on the sources</param>
         /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-        private static Diagnostic[] GetSortedDiagnostics(string[] sources, string language,
+        private Diagnostic[] GetSortedDiagnostics(string[] sources, string language,
             DiagnosticAnalyzer analyzer)
         {
             return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
@@ -414,7 +416,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="language">The language the source classes are in</param>
         /// <param name="analyzer">The analyzer to be run on the sources</param>
         /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-        private static Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
+        private Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
             DiagnosticAnalyzer analyzer)
         {
             return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
@@ -438,7 +440,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
         /// </returns>
-        private static Document[] GetDocuments(string[] sources, string language)
+        private Document[] GetDocuments(string[] sources, string language)
         {
             if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
             {
@@ -466,7 +468,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
         /// </returns>
-        private static Document[] GetDocuments(Tuple<string, string>[] sources, string language)
+        private Document[] GetDocuments(Tuple<string, string>[] sources, string language)
         {
             if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
             {
@@ -490,14 +492,17 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="sources">Classes in the form of strings</param>
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Project created out of the Documents created from the source strings</returns>
-        private static Project CreateProject(Tuple<string, string>[] sources,
+        private Project CreateProject(Tuple<string, string>[] sources,
             string language = LanguageNames.CSharp)
         {
             var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
+            var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode);
+            var projectInfo = ProjectInfo.Create(projectId, VersionStamp.Default, TestProjectName, TestProjectName,
+                language, parseOptions: parseOptions);
             var solution = new AdhocWorkspace()
                 .CurrentSolution
-                .AddProject(projectId, TestProjectName, TestProjectName, language)
+                .AddProject(projectInfo)
                 .AddMetadataReference(projectId, CorlibReference)
                 .AddMetadataReference(projectId, SystemCoreReference)
                 .AddMetadataReference(projectId, CSharpSymbolsReference)
