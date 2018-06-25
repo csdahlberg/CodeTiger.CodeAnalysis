@@ -106,17 +106,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
             {
                 return true;
             }
-
-            var identifier = assignmentExpression.Left as IdentifierNameSyntax;
-            if (identifier == null)
+            
+            if (assignmentExpression.Left is IdentifierNameSyntax identifier)
             {
-                return false;
+                return assignmentExpression.Kind() == SyntaxKind.SimpleAssignmentExpression
+                    && assignmentExpression.Right.Kind() == SyntaxKind.AddExpression
+                    && assignmentExpression.Left.Kind() == SyntaxKind.IdentifierName
+                    && ((IdentifierNameSyntax)assignmentExpression.Left) == identifier;
             }
 
-            return assignmentExpression.Kind() == SyntaxKind.SimpleAssignmentExpression
-                && assignmentExpression.Right.Kind() == SyntaxKind.AddExpression
-                && assignmentExpression.Left.Kind() == SyntaxKind.IdentifierName
-                && ((IdentifierNameSyntax)assignmentExpression.Left) == identifier;
+            return false;
         }
 
         private static bool IsWithinLoop(ExpressionSyntax expression)
