@@ -70,7 +70,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 return;
             }
 
-            var objectTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName("System.Object");
+            var objectTypeSymbol = context.SemanticModel.Compilation
+                .GetTypeByMetadataName(typeof(object).FullName);
             if (!classTypeSymbol.BaseType.Equals(objectTypeSymbol))
             {
                 // The class inherits from a class other than System.Object, and so cannot be made static

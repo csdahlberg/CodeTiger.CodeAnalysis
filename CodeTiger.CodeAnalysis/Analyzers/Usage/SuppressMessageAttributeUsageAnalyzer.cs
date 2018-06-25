@@ -49,7 +49,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
             var suppressMessageAttributeType = context.SemanticModel.Compilation
-                .GetTypeByMetadataName("System.Diagnostics.CodeAnalysis.SuppressMessageAttribute");
+                .GetTypeByMetadataName(typeof(SuppressMessageAttribute).FullName);
 
             var attributeUsages = root.DescendantNodes().OfType<AttributeSyntax>();
 

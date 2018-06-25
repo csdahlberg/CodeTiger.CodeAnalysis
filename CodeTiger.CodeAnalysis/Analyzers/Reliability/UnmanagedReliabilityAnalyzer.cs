@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -31,19 +34,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
         private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]
             {
-                "System.IntPtr",
-                "System.UIntPtr",
-                "System.Runtime.InteropServices.BINDPTR",
-                "System.Runtime.InteropServices.ComTypes.BindPtr",
+                typeof(IntPtr).FullName,
+                typeof(UIntPtr).FullName,
+                typeof(BINDPTR).FullName,
             };
         private static readonly string[] _metadataNamesOfDestructorSafeTypeNames = new string[]
             {
-                "System.GC",
-                "System.Runtime.InteropServices.Marshal",
+                typeof(GC).FullName,
+                typeof(Marshal).FullName,
             };
         private static readonly string[] _metadataNamesOfDisposableTypesWhichDoNotNeedToBeDisposed = new string[]
             {
-                "System.Threading.Tasks.Task",
+                typeof(Task).FullName,
             };
 
         /// <summary>
@@ -78,7 +80,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
-            var disposableType = context.SemanticModel.Compilation.GetTypeByMetadataName("System.IDisposable");
+            var disposableType = context.SemanticModel.Compilation
+                .GetTypeByMetadataName(typeof(IDisposable).FullName);
 
             foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
             {

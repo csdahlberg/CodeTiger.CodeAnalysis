@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading.Tasks;
 using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -347,7 +348,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             MethodDeclarationSyntax methodDeclarationNode, IMethodSymbol methodDeclaration)
         {
             const string asyncText = "Async";
-            var taskType = context.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
+            var taskType = context.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
             bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType)
                 || methodDeclaration.ReturnType.IsConstrainedTo(taskType);
             bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText, StringComparison.OrdinalIgnoreCase);
@@ -487,7 +488,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
         {
             const string attributeText = "Attribute";
-            var attributeType = context.Compilation.GetTypeByMetadataName("System.Attribute");
+            var attributeType = context.Compilation.GetTypeByMetadataName(typeof(Attribute).FullName);
             bool isAttributeType = classDeclaration.IsSubclassOf(attributeType);
             bool hasAttributeSuffix = classDeclaration.Name
                 .EndsWith(attributeText, StringComparison.OrdinalIgnoreCase);
@@ -512,7 +513,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
         {
             const string exceptionText = "Exception";
-            var exceptionType = context.Compilation.GetTypeByMetadataName("System.Exception");
+            var exceptionType = context.Compilation.GetTypeByMetadataName(typeof(Exception).FullName);
             bool isExceptionType = classDeclaration.IsSubclassOf(exceptionType);
             bool hasExceptionSuffix = classDeclaration.Name
                 .EndsWith(exceptionText, StringComparison.OrdinalIgnoreCase);
@@ -537,7 +538,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
         {
             const string eventArgsText = "EventArgs";
-            var exceptionType = context.Compilation.GetTypeByMetadataName("System.EventArgs");
+            var exceptionType = context.Compilation.GetTypeByMetadataName(typeof(EventArgs).FullName);
             bool isEventArgsType = classDeclaration.IsSubclassOf(exceptionType);
             bool hasEventArgsSuffix = classDeclaration.Name
                 .EndsWith(eventArgsText, StringComparison.OrdinalIgnoreCase);

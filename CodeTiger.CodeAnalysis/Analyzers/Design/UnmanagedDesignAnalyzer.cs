@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,10 +26,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
 
         private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]
             {
-                "System.IntPtr",
-                "System.UIntPtr",
-                "System.Runtime.InteropServices.BINDPTR",
-                "System.Runtime.InteropServices.ComTypes.BindPtr",
+                typeof(IntPtr).FullName,
+                typeof(UIntPtr).FullName,
+                typeof(BINDPTR).FullName,
             };
 
         /// <summary>

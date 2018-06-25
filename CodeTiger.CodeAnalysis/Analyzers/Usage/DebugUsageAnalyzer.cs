@@ -49,7 +49,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
         {
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
             var debugType = context.SemanticModel.Compilation
-                .GetTypeByMetadataName("System.Diagnostics.Debug");
+                .GetTypeByMetadataName(typeof(Debug).FullName);
 
             var invocations = root.DescendantNodes().OfType<InvocationExpressionSyntax>();
 
