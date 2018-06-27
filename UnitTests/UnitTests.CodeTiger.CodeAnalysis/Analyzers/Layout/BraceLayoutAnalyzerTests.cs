@@ -808,7 +808,13 @@ namespace ClassLibrary1
             await Task.Run(() =>
             {
             }).ConfigureAwait(false);
+            await DoSomethingAsync(new Thing { }).ConfigureAwait(false);
+            await DoSomethingAsync(new Thing
+            {
+            }).ConfigureAwait(false);
         }
+        private Task DoSomethingAsync(Thing thing) => Task.CompletedTask;
+        private class Thing { }
     }
 }";
             VerifyCSharpDiagnostic(code);

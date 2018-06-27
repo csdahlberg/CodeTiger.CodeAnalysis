@@ -99,7 +99,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             if (node.Initializer != null)
             {
                 AnalyzeBraces(node.GetLocation().GetLineSpan(), node.Initializer.OpenBraceToken,
-                    node.Initializer.CloseBraceToken, context);
+                    node.Initializer.CloseBraceToken, context,
+                    isForArgument: node.Parent.Kind() == SyntaxKind.Argument);
             }
         }
 
@@ -289,7 +290,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             }
             else
             {
-                if (!IsOnOwnLine(closeBraceToken))
+                if (!IsFirstTokenOnLine(closeBraceToken)
+                    || (!isForArgument && !IsLastTokenOnLine(closeBraceToken)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         BracesForMultiLineElementsShouldBeOnANewLineDescriptor, closeBraceToken.GetLocation()));
