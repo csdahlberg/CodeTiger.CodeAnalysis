@@ -291,7 +291,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             {
                 var destructorSafeType = context.SemanticModel.Compilation
                     .GetTypeByMetadataName(destructorSafeTypeName);
-                if (destructorSafeType != null && destructorSafeType.Equals(accessedTypeSymbol))
+                if (destructorSafeType?.Equals(accessedTypeSymbol) == true)
                 {
                     return false;
                 }
