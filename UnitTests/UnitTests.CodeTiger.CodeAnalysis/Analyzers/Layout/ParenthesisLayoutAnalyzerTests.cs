@@ -1027,6 +1027,9 @@ namespace ClassLibrary1
             using (var disposable = (IDisposable)null)
             {
             }
+            using ((IDisposable)null)
+            {
+            }
         }
     }
 }";
@@ -1048,6 +1051,10 @@ namespace ClassLibrary1
                 (var disposable = (IDisposable)null)
             {
             }
+            using
+                ((IDisposable)null)
+            {
+            }
         }
     }
 }";
@@ -1061,6 +1068,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3532",
+                    Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
                 }
             );
@@ -1080,6 +1097,10 @@ namespace ClassLibrary1
                 )
             {
             }
+            using ((IDisposable)null
+                )
+            {
+            }
         }
     }
 }";
@@ -1093,6 +1114,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3535",
+                    Message = "Closing parenthesis should be on the same line as the preceding element.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
                 }
             );
@@ -1272,6 +1303,7 @@ namespace ClassLibrary1
         {
             var time = DateTime.Now.AddMinutes(5);
             int min = Math.Min(1, 2);
+            string intName = nameof(int);
         }
     }
 }";
@@ -1293,6 +1325,8 @@ namespace ClassLibrary1
                 (5);
             int min = Math.Min
                 (1, 2);
+            string intName = nameof
+                (int);
         }
     }
 }";
@@ -1316,6 +1350,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3532",
+                    Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
                 }
             );
@@ -1335,6 +1379,8 @@ namespace ClassLibrary1
                 );
             int min = Math.Min(1, 2
                 );
+            string intName = nameof(int
+                );
         }
     }
 }";
@@ -1358,6 +1404,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3534",
+                    Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
                 }
             );
