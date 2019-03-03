@@ -5,7 +5,6 @@
     <DisplayName>CodeTiger Code Analysis</DisplayName>
     <Description xml:space="preserve">Roslyn-based static code analysis for C# projects.</Description>
     <MoreInfo>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</MoreInfo>
-    <License>https://github.com/csdahlberg/CodeTiger.CodeAnalysis/wiki/License</License>
     <Tags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop</Tags>
   </Metadata>
   <Installation>
