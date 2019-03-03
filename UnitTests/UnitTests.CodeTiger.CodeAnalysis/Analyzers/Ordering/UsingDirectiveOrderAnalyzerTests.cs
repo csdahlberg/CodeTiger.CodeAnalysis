@@ -7,7 +7,6 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Ordering
 {
     public class UsingDirectiveOrderAnalyzerTests : DiagnosticVerifier
     {
-
         [Fact]
         public void ValidUsingDirectivesDoNotProduceDiagnostics()
         {
@@ -19,7 +18,8 @@ using System.Reflection;
 #else
 using System.Runtime;
 #endif
-using Microsoft.Win32;";
+using Microsoft.Win32;
+using static System.Threading.Tasks.Task;";
 
             VerifyCSharpDiagnostic(code);
         }
@@ -153,6 +153,34 @@ using Microsoft.Win32;";
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 12, 1)
+                    }
+                }
+            );
+        }
+
+        [Fact]
+        public void NonStaticUsingDirectivesAfterStaticUsingDirectiveProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Collections;
+using System.Collections.Generic;
+#if !PORTABLE
+using System.Reflection;
+#else
+using System.Runtime;
+#endif
+using static System.Threading.Tasks.Task;
+using Microsoft.Win32;";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3218",
+                    Message = "Non-static using directives should be before static using directives.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 1)
                     }
                 }
             );

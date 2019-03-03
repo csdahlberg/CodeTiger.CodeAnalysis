@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Immutable;
+﻿using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,18 +25,24 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 "Using directives for System namespaces should be before other namespaces.",
                 "Using directives for System namespaces should be before other namespaces.", "CodeTiger.Ordering",
                 DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectives
-            = new DiagnosticDescriptor("CT3212",
-                "Using namespace directives should be before using alias directives.",
+        internal static readonly DiagnosticDescriptor
+            UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor = new DiagnosticDescriptor(
+                "CT3212", "Using namespace directives should be before using alias directives.",
                 "Using namespace directives should be before using alias directives.", "CodeTiger.Ordering",
                 DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroups
-            = new DiagnosticDescriptor("CT3213", "Using directives should be ordered alphabetically.",
+        internal static readonly DiagnosticDescriptor
+            UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor = new DiagnosticDescriptor("CT3213",
+                "Using directives should be ordered alphabetically.",
                 "Using directives should be ordered alphabetically.", "CodeTiger.Ordering",
                 DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor UsingDirectivesShouldNotBeSeparatedByAnyLines
+        internal static readonly DiagnosticDescriptor UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor
             = new DiagnosticDescriptor("CT3214", "Using directives should not be separated by any lines.",
                 "Using directives should not be separated by any lines.", "CodeTiger.Ordering",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor = new DiagnosticDescriptor(
+                "CT3218", "Non-static using directives should be before static using directives.",
+                "Non-static using directives should be before static using directives.", "CodeTiger.Ordering",
                 DiagnosticSeverity.Warning, true);
 
         /// <summary>
@@ -48,9 +54,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             {
                 return ImmutableArray.Create(UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor,
                     UsingNamespaceDirectivesForSystemNamespacesShouldBeBeforeOtherNamespacesDescriptor,
-                    UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectives,
-                    UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroups,
-                    UsingDirectivesShouldNotBeSeparatedByAnyLines);
+                    UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor,
+                    UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor,
+                    UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor,
+                    NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor);
             }
         }
 
@@ -120,6 +127,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         {
             bool wasNonSystemNamespaceEncountered = false;
             bool wasAliasDirectiveEncountered = false;
+            bool wasStaticUsingDirectiveEncountered = false;
 
             UsingDirectiveSyntax previousUsingDirectiveNode = null;
 
@@ -131,11 +139,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                     if (GetLocationForSorting(node).GetLineSpan().StartLinePosition.Line
                         > GetLocationForSorting(previousUsingDirectiveNode).GetLineSpan().EndLinePosition.Line + 1)
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(UsingDirectivesShouldNotBeSeparatedByAnyLines,
+                        context.ReportDiagnostic(Diagnostic.Create(UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor,
                             node.GetLocation()));
                     }
 
-                    if (node.Alias == null)
+                    if (node.Alias == null && !node.IsStaticUsingDirective())
                     {
                         if (StartsWithSystemNamespace(node.Name))
                         {
@@ -152,25 +160,36 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                         if (wasAliasDirectiveEncountered)
                         {
                             context.ReportDiagnostic(Diagnostic.Create(
-                                UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectives,
+                                UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor,
                                 node.GetLocation()));
                         }
                     }
 
-                    AnalyzeUsingDirectiveForAlphabeticalOrder(context, node,
-                        previousUsingDirectiveNode);
+                    // Check for non-static using directives after static using directives
+                    if (!node.IsStaticUsingDirective() && wasStaticUsingDirectiveEncountered)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor,
+                            node.GetLocation()));
+                    }
+
+                    AnalyzeUsingDirectiveForAlphabeticalOrder(context, node, previousUsingDirectiveNode);
                 }
 
-                if (node.Alias == null)
+                if (node.Alias != null)
+                {
+                    wasAliasDirectiveEncountered = true;
+                }
+                else if (node.IsStaticUsingDirective())
+                {
+                    wasStaticUsingDirectiveEncountered = true;
+                }
+                else if (node.Alias == null)
                 {
                     if (!StartsWithSystemNamespace(node.Name))
                     {
                         wasNonSystemNamespaceEncountered = true;
                     }
-                }
-                else
-                {
-                    wasAliasDirectiveEncountered = true;
                 }
 
                 previousUsingDirectiveNode = node;
@@ -180,37 +199,32 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         private static void AnalyzeUsingDirectiveForAlphabeticalOrder(SyntaxTreeAnalysisContext context,
             UsingDirectiveSyntax node, UsingDirectiveSyntax previousNode)
         {
-            // Check for alphabetical ordering
-            string currentNodeText = GetTextForSorting(node);
-            if (string.CompareOrdinal(GetTextForSorting(previousNode), currentNodeText) > 0)
+            if (node.Alias != null)
             {
-                if (node.Alias == null)
+                if (previousNode.Alias != null
+                    && string.CompareOrdinal(previousNode.Alias.Name.ToString(), node.Alias.Name.ToString()) > 0)
                 {
-                    if (StartsWithSystemNamespace(node.Name))
-                    {
-                        // Both node and previousNode are for System namespaces, and node should be before
-                        // previousNode.
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroups, node.GetLocation()));
-                    }
-                    else if (!StartsWithSystemNamespace(previousNode.Name)
-                        && string.CompareOrdinal(GetTextForSorting(previousNode), currentNodeText) > 0)
-                    {
-                        // Both node and previousNode are for non-System namespaces, and node should be
-                        // before previousNode.
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroups, node.GetLocation()));
-                    }
+                    // Both node and previousNode are aliases, and node should be before previousNode.
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor, node.GetLocation()));
                 }
-                else
+            }
+            else if (node.IsStaticUsingDirective() == previousNode.IsStaticUsingDirective()
+                && string.CompareOrdinal(GetTextForSorting(previousNode), GetTextForSorting(node)) > 0)
+            {
+                if (StartsWithSystemNamespace(node.Name))
                 {
-                    if (previousNode.Alias != null
-                        && string.CompareOrdinal(GetTextForSorting(previousNode), currentNodeText) > 0)
-                    {
-                        // Both node and previousNode are aliases, and node should be before previousNode.
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroups, node.GetLocation()));
-                    }
+                    // Both node and previousNode are for System namespaces, and node should be before
+                    // previousNode.
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor, node.GetLocation()));
+                }
+                else if (!StartsWithSystemNamespace(previousNode.Name))
+                {
+                    // Both node and previousNode are for non-System namespaces, and node should be
+                    // before previousNode.
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor, node.GetLocation()));
                 }
             }
         }
