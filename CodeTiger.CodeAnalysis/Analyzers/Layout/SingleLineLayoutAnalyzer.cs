@@ -264,7 +264,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                 TextSpan.FromBounds(firstNonAttributeToken.Span.Start, node.AccessorList.Span.End));
             var nodeLineSpan = locationWithoutAttributes.GetLineSpan();
 
-            if (node.ExpressionBody == null && node.AccessorList.Accessors.All(x => x.Body == null))
+            if (node.ExpressionBody == null
+                && node.AccessorList.Accessors.All(x => x.Body == null && x.ExpressionBody == null))
             {
                 if (nodeLineSpan.Span.Start.Line != nodeLineSpan.Span.End.Line)
                 {
@@ -272,7 +273,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
                         AutoPropertiesShouldBeDefinedOnASingleLineDescriptor, node.Identifier.GetLocation()));
                 }
             }
-            else if (node.AccessorList.Accessors.Any(x => x.Body != null)
+            else if (node.AccessorList.Accessors.Any(x => x.Body != null || x.ExpressionBody != null)
                 && nodeLineSpan.Span.Start.Line == nodeLineSpan.Span.End.Line)
             {
                 context.ReportDiagnostic(Diagnostic.Create(

@@ -316,6 +316,11 @@ namespace ClassLibrary1
             get { return """"; }
             set { }
         }
+        public string Name3
+        {
+            get => Name2;
+            set => Name2 = value;
+        }
     }
 }";
 
@@ -332,7 +337,8 @@ namespace ClassLibrary1
     {
         public string Name { get { return """"; } set { } }
         [Obsolete]
-        public string Name { get { return """"; } set { } }
+        public string Name2 { get { return """"; } set { } }
+        public string Name3 { get => Name2; set => Name2 = value; }
     }
 }";
 
@@ -355,6 +361,16 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 23)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3504",
+                    Message = "Non-auto properties should not be defined on a single line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 23)
                     }
                 }
             );
