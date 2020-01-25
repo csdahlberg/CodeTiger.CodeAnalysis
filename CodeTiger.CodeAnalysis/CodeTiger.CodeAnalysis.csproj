@@ -20,7 +20,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     <PackageProjectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</PackageProjectUrl>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageIconUrl>http://www.codetiger.net/images/tigerpaw32.png</PackageIconUrl>
+    <PackageIcon>CodeTiger.png</PackageIcon>
     <PackageTags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</PackageTags>
     <PackageReleaseNotes>This is an unofficial build that should not be distributed.</PackageReleaseNotes>
     <Product>CodeTiger Code Analysis</Product>
@@ -57,6 +57,13 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\CodeTiger.png" Link="CodeTiger.png">
+      <Pack>True</Pack> 
       <PackagePath></PackagePath>
     </None>
   </ItemGroup>
