@@ -18,7 +18,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     <Title>CodeTiger Code Analysis</Title>
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageProjectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis/wiki/License</PackageLicenseUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <NeutralLanguage>en-US</NeutralLanguage>
     <PackageIconUrl>http://www.codetiger.net/images/tigerpaw32.png</PackageIconUrl>
     <PackageTags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</PackageTags>
@@ -52,6 +52,13 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
