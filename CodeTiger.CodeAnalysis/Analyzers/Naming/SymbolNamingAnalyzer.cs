@@ -276,16 +276,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         {
             var propertyDeclarationNode = (PropertyDeclarationSyntax)context.Node;
 
-            if (NamingUtility.IsProbablyPascalCased(propertyDeclarationNode.Identifier.ValueText) == false)
+            string propertyName = propertyDeclarationNode.Identifier.ValueText;
+
+            if (NamingUtility.IsProbablyPascalCased(propertyName) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
                     propertyDeclarationNode.Identifier.GetLocation()));
             }
 
-            if (propertyDeclarationNode.Identifier.ValueText.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
-                || propertyDeclarationNode.Identifier.ValueText.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
+            if (propertyName.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
+                || propertyName.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
             {
-                string propertyNameWithoutPrefix = propertyDeclarationNode.Identifier.ValueText.Substring(3);
+                string propertyNameWithoutPrefix = propertyName.Substring(3);
+
                 if (NamingUtility.IsProbablyPascalCased(propertyNameWithoutPrefix) == true)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(

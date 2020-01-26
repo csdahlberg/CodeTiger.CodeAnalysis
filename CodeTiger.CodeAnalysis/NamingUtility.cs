@@ -4,6 +4,8 @@ namespace CodeTiger.CodeAnalysis
 {
     internal static class NamingUtility
     {
+        private static readonly char[] _genericTypeAritySeparators = new[] { '`', '_' };
+
         public static bool? IsProbablyPascalCased(string value, bool isGenericTypeArityAllowed = false)
         {
             if (string.IsNullOrEmpty(value))
@@ -21,21 +23,33 @@ namespace CodeTiger.CodeAnalysis
                 return null;
             }
 
-            if (isGenericTypeArityAllowed)
-            {
-                var valueParts = value.Split('`');
-                if (valueParts.Length == 2 && int.TryParse(valueParts[1], out int arity))
+            // For generic types, allow things like Thing`2, Thing_2, and Thing`2Tests
+            if (isGenericTypeArityAllowed && _genericTypeAritySeparators.Any(value.Contains))
+            {                
+                string[] valueParts = value.Split(_genericTypeAritySeparators);
+                if (valueParts.Length != 2
+                    || !valueParts[0].All(char.IsLetterOrDigit)
+                    || !valueParts[0].Any(char.IsLower)
+                    || valueParts[1].Length == 0
+                    || !char.IsDigit(valueParts[1][0]))
                 {
-                    char[] valuePartCharacters = valueParts[0].ToCharArray();
-                    return valuePartCharacters.All(char.IsLetterOrDigit)
-                        && valuePartCharacters.Any(char.IsLower);
+                    return false;
                 }
+
+                // Make sure there is a valid number for the start of value[1] and any remainder is pascal cased
+                char[] charactersAfterTypeAritySeparator = valueParts[1].SkipWhile(char.IsDigit).ToArray();
+
+                if (charactersAfterTypeAritySeparator.Length == 0)
+                {
+                    return true;
+                }
+
+                return char.IsUpper(charactersAfterTypeAritySeparator[0])
+                    && charactersAfterTypeAritySeparator.All(char.IsLetterOrDigit)
+                    && charactersAfterTypeAritySeparator.Any(char.IsLower);
             }
 
-            char[] valueCharacters = value.ToCharArray();
-
-            return valueCharacters.All(char.IsLetterOrDigit)
-                && valueCharacters.Any(char.IsLower);
+            return value.All(char.IsLetterOrDigit) && value.Any(char.IsLower);
         }
 
         public static bool? IsProbablyPascalCased(string value, char leadingCharacter)
