@@ -1,15 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26014.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{E2D4450A-0F0A-41EC-A45E-D113BF65BE60}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeTiger.CodeAnalysis", "CodeTiger.CodeAnalysis\CodeTiger.CodeAnalysis.csproj", "{493936FB-E4BE-49F4-84AC-3EA84D8C2155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeTiger.CodeAnalysis", "CodeTiger.CodeAnalysis\CodeTiger.CodeAnalysis.csproj", "{493936FB-E4BE-49F4-84AC-3EA84D8C2155}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests.CodeTiger.CodeAnalysis", "UnitTests\UnitTests.CodeTiger.CodeAnalysis\UnitTests.CodeTiger.CodeAnalysis.csproj", "{A9A0557F-9344-4C8F-821D-9AE708BD062D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.CodeTiger.CodeAnalysis", "UnitTests\UnitTests.CodeTiger.CodeAnalysis\UnitTests.CodeTiger.CodeAnalysis.csproj", "{A9A0557F-9344-4C8F-821D-9AE708BD062D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeTiger.CodeAnalysis.Vsix", "CodeTiger.CodeAnalysis.Vsix\CodeTiger.CodeAnalysis.Vsix.csproj", "{21081813-F345-4BBC-A144-065AEE5455FB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{149BEB05-D06A-4BDB-B458-149A77B843D1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,5 +40,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A9A0557F-9344-4C8F-821D-9AE708BD062D} = {E2D4450A-0F0A-41EC-A45E-D113BF65BE60}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CFAC6EED-6BBF-45BF-B333-2388FB2E0C2E}
 	EndGlobalSection
 EndGlobal
