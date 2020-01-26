@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using CodeTiger.CodeAnalysis.Resources;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -200,7 +201,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                         return propertyDeclaration.Type;
                     }
                 default:
-                    throw new ArgumentException("The argument must be a field or property.",
+                    throw new ArgumentException(Strings.ArgumentMustBeFieldOrPropertyMessage,
                         nameof(memberDeclaration));
             }
         }
