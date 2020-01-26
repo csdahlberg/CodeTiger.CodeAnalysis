@@ -36,7 +36,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>..\Build\Debug\</OutputPath>
     <DocumentationFile>..\Build\Debug\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
-    <NoWarn />
+    <NoWarn>NU5128</NoWarn>
     <WarningsAsErrors />
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
@@ -44,7 +44,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <OutputPath>..\Build\Release\</OutputPath>
     <DocumentationFile>..\Build\Release\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
-    <NoWarn />
+    <NoWarn>NU5128</NoWarn>
     <WarningsAsErrors />
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
