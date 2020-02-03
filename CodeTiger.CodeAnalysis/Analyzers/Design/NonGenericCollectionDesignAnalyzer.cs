@@ -114,9 +114,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
 
             if (IsOrIncludesNonGenericCollection(context, propertyDeclaration.Type))
-
-            context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
-                propertyDeclaration.Type.GetLocation()));
+            {
+                context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
+                    propertyDeclaration.Type.GetLocation()));
+            }
         }
 
         private static void AnalyzeMethodForNonGenericCollectionExposure(SyntaxNodeAnalysisContext context)
