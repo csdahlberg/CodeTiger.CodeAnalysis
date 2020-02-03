@@ -312,7 +312,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
             {
                 DiagnosticDescriptor descriptor;
                 if (node.Expression is SimpleNameSyntax simpleNameExpression 
-                    && string.Equals(simpleNameExpression.Identifier.Text, "nameof", StringComparison.OrdinalIgnoreCase))
+                    && string.Equals(simpleNameExpression.Identifier.Text, "nameof",
+                        StringComparison.OrdinalIgnoreCase))
                 {
                     descriptor = OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor;
                 }

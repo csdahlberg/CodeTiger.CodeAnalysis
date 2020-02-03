@@ -135,45 +135,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             {
                 if (previousUsingDirectiveNode != null)
                 {
-                    // Check for using directives separated by any lines
-                    if (GetLocationForSorting(node).GetLineSpan().StartLinePosition.Line
-                        > GetLocationForSorting(previousUsingDirectiveNode).GetLineSpan().EndLinePosition.Line + 1)
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor,
-                            node.GetLocation()));
-                    }
-
-                    if (node.Alias == null && !node.IsStaticUsingDirective())
-                    {
-                        if (StartsWithSystemNamespace(node.Name))
-                        {
-                            // Check for using namespace directives for System.* after other namespaces
-                            if (wasNonSystemNamespaceEncountered)
-                            {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    UsingNamespaceDirectivesForSystemNamespacesShouldBeBeforeOtherNamespacesDescriptor,
-                                    node.GetLocation()));
-                            }
-                        }
-
-                        // Check for using namespace directives after using alias directives
-                        if (wasAliasDirectiveEncountered)
-                        {
-                            context.ReportDiagnostic(Diagnostic.Create(
-                                UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor,
-                                node.GetLocation()));
-                        }
-                    }
-
-                    // Check for non-static using directives after static using directives
-                    if (!node.IsStaticUsingDirective() && wasStaticUsingDirectiveEncountered)
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor,
-                            node.GetLocation()));
-                    }
-
-                    AnalyzeUsingDirectiveForAlphabeticalOrder(context, node, previousUsingDirectiveNode);
+                    AnalyzeUsingDirectiveForOrder(context, wasNonSystemNamespaceEncountered,
+                        wasAliasDirectiveEncountered, wasStaticUsingDirectiveEncountered,
+                        previousUsingDirectiveNode, node);
                 }
 
                 if (node.Alias != null)
@@ -194,6 +158,51 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
 
                 previousUsingDirectiveNode = node;
             }
+        }
+
+        private static void AnalyzeUsingDirectiveForOrder(SyntaxTreeAnalysisContext context,
+            bool wasNonSystemNamespaceEncountered, bool wasAliasDirectiveEncountered,
+            bool wasStaticUsingDirectiveEncountered, UsingDirectiveSyntax previousNode, UsingDirectiveSyntax node)
+        {
+            // Check for using directives separated by any lines
+            if (GetLocationForSorting(node).GetLineSpan().StartLinePosition.Line
+                > GetLocationForSorting(previousNode).GetLineSpan().EndLinePosition.Line + 1)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor, node.GetLocation()));
+            }
+
+            if (node.Alias == null && !node.IsStaticUsingDirective())
+            {
+                if (StartsWithSystemNamespace(node.Name))
+                {
+                    // Check for using namespace directives for System.* after other namespaces
+                    if (wasNonSystemNamespaceEncountered)
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            UsingNamespaceDirectivesForSystemNamespacesShouldBeBeforeOtherNamespacesDescriptor,
+                            node.GetLocation()));
+                    }
+                }
+
+                // Check for using namespace directives after using alias directives
+                if (wasAliasDirectiveEncountered)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor,
+                        node.GetLocation()));
+                }
+            }
+
+            // Check for non-static using directives after static using directives
+            if (!node.IsStaticUsingDirective() && wasStaticUsingDirectiveEncountered)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor,
+                    node.GetLocation()));
+            }
+
+            AnalyzeUsingDirectiveForAlphabeticalOrder(context, node, previousNode);
         }
 
         private static void AnalyzeUsingDirectiveForAlphabeticalOrder(SyntaxTreeAnalysisContext context,

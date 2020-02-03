@@ -15,7 +15,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
     {
         internal static readonly DiagnosticDescriptor BuiltInTypeAliasesShouldBeUsedDescriptor
             = new DiagnosticDescriptor("CT3101", "Built-in type aliases should be used.",
-                "Built-in type aliases should be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+                "Built-in type aliases should be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning,
+                true);
         internal static readonly DiagnosticDescriptor ShorthandShouldBeUsedForNullableTypesDescriptor
             = new DiagnosticDescriptor("CT3102", "Shorthand should be used for nullable types.",
                 "Shorthand should be used for nullable types.", "CodeTiger.Readability",

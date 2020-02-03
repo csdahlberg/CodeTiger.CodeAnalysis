@@ -72,8 +72,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
             foreach (var invocation in root.DescendantNodes().OfType<InvocationExpressionSyntax>())
             {
-                var invokedSymbol = context.SemanticModel.GetSymbolInfo(invocation.Expression, context.CancellationToken).Symbol
-                    ?? context.SemanticModel.GetDeclaredSymbol(invocation.Expression, context.CancellationToken);
+                var invokedSymbol = context.SemanticModel
+                    .GetSymbolInfo(invocation.Expression, context.CancellationToken).Symbol
+                        ?? context.SemanticModel
+                            .GetDeclaredSymbol(invocation.Expression, context.CancellationToken);
 
                 if (resetAbortSymbols.Any(x => x.Equals(invokedSymbol)))
                 {

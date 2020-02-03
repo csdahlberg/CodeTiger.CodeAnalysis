@@ -1839,7 +1839,9 @@ namespace ClassLibrary1
         [Fact]
         public void LinqQueriesWithAllPartsOnTheSameLineDoNotProduceDiagnostics()
         {
-            string code = @"using System;
+            string code =
+#pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
+ @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1851,6 +1853,7 @@ namespace ClassLibrary1
         }
     }
 }";
+#pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
 
             VerifyCSharpDiagnostic(code);
         }

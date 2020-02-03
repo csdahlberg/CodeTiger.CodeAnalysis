@@ -10,10 +10,12 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
         [Fact]
         public void LinesShorterOrEqualToTheMaximumLengthDoNotProduceDiagnostics()
         {
-            string code = @"using System;
+            string code =
+#pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
+ @"using System;
 namespace ClassLibrary1.Namespace0000000000000000000000000000000000000000000000000000000000000000000000000000000000
 {
-	public class Class111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    public class Class111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     {
         public void DoSomething()
         {
@@ -21,6 +23,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
         }
     }
 }";
+#pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
 
             VerifyCSharpDiagnostic(code);
         }
@@ -28,10 +31,12 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
         [Fact]
         public void LinesLongerThanTheMaximumLengthProduceDiagnostics()
         {
-            string code = @"using System;
+            string code =
+#pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
+ @"using System;
 namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000000000000000000000000000000000000000
 {
-	public class Class1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    public class Class1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
     {
         public void DoSomething22222222222222222222222222222222222222222222222222222222222222222222222222222222222()
         {
@@ -39,7 +44,8 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
         }
     }
 }";
-
+#pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
+            
             VerifyCSharpDiagnostic(code,
                 new DiagnosticResult
                 {
@@ -58,7 +64,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[]
                     {
-                        new DiagnosticResultLocation("Test0.cs", 4, 113)
+                        new DiagnosticResultLocation("Test0.cs", 4, 116)
                     }
                 },
                 new DiagnosticResult

@@ -168,37 +168,43 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             {
                 var field = context.SemanticModel.GetDeclaredSymbol(fieldVariable, context.CancellationToken);
 
-                var baseType = field.ContainingType.BaseType;
+                AnalyzeFieldForHidingOfBaseImplementation(context, fieldDeclarationType, fieldVariable, field);
+            }
+        }
 
-                while (baseType != null)
+        private static void AnalyzeFieldForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context,
+            ITypeSymbol fieldDeclarationType, VariableDeclaratorSyntax fieldVariable, ISymbol field)
+        {
+            var baseType = field.ContainingType.BaseType;
+
+            while (baseType != null)
+            {
+                var matchingBaseFields = baseType.GetMembers(field.Name)
+                    .Where(x => x.Kind == SymbolKind.Field && x.Name == field.Name)
+                    .OfType<IFieldSymbol>()
+                    .ToList();
+
+                switch (matchingBaseFields.Count)
                 {
-                    var matchingBaseFields = baseType.GetMembers(field.Name)
-                        .Where(x => x.Kind == SymbolKind.Field && x.Name == field.Name)
-                        .OfType<IFieldSymbol>()
-                        .ToList();
+                    case 0:
+                        break;
+                    case 1:
+                        var matchingBaseField = matchingBaseFields.Single();
 
-                    switch (matchingBaseFields.Count)
-                    {
-                        case 0:
-                            break;
-                        case 1:
-                            var matchingBaseField = matchingBaseFields.Single();
-
-                            if (!fieldDeclarationType.IsSubclassOf(matchingBaseField.Type)
-                                && !fieldDeclarationType.AllInterfaces.Contains(matchingBaseField.Type))
-                            {
-                                context.ReportDiagnostic(Diagnostic.Create(
-                                    MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
-                                    fieldVariable.Identifier.GetLocation()));
-                                return;
-                            }
-                            break;
-                        default:
+                        if (!fieldDeclarationType.IsSubclassOf(matchingBaseField.Type)
+                            && !fieldDeclarationType.AllInterfaces.Contains(matchingBaseField.Type))
+                        {
+                            context.ReportDiagnostic(Diagnostic.Create(
+                                MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                                fieldVariable.Identifier.GetLocation()));
                             return;
-                    }
-
-                    baseType = baseType.BaseType;
+                        }
+                        break;
+                    default:
+                        return;
                 }
+
+                baseType = baseType.BaseType;
             }
         }
 

@@ -49,7 +49,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
             }
         }
 
-        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context, SyntaxNode node)
+        private static void AnalyzeNodeForAssignmentReliability(SemanticModelAnalysisContext context,
+            SyntaxNode node)
         {
             switch (node.Kind())
             {

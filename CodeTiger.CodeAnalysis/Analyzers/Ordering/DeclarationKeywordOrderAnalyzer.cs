@@ -162,7 +162,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             }
         }
 
-        private static string GetKeywordsOfHigherOrderedKinds(Dictionary<SyntaxKind, int> encounteredModifiers, int order)
+        private static string GetKeywordsOfHigherOrderedKinds(Dictionary<SyntaxKind, int> encounteredModifiers,
+            int order)
         {
             var higherOrderedKinds = encounteredModifiers.Where(x => x.Value > order)
                 .Select(x => x.Key)
