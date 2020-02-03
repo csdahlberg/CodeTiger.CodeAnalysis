@@ -1,7 +1,7 @@
-﻿using CodeTiger.CodeAnalysis.Analyzers.Readability;
+﻿using System;
+using CodeTiger.CodeAnalysis.Analyzers.Readability;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System;
 using Xunit;
 
 namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Readability
