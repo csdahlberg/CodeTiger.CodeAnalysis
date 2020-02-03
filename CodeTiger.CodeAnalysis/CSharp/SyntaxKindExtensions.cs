@@ -44,7 +44,8 @@ namespace CodeTiger.CodeAnalysis.CSharp
             }
         }
 
-        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
+        [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity",
+            Justification = "This method is conceptually simple.")]
         public static string GetKeywordName(this SyntaxKind kind)
         {
             switch (kind)
