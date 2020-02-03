@@ -56,7 +56,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         private static bool IsProbablyCopyConstructor(SyntaxNodeAnalysisContext context,
             ConstructorDeclarationSyntax constructorDeclaration, IMethodSymbol constructorSymbol)
         {
-            if (constructorSymbol.Parameters.Count() != 1)
+            if (constructorSymbol.Parameters.Length != 1)
             {
                 return false;
             }
