@@ -569,7 +569,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             if (containingNode?.Kind() == SyntaxKind.NamespaceDeclaration)
             {
                 var containingNamespaceDeclarationNode = (NamespaceDeclarationSyntax)context.Node.Parent;
-                var namespaceName = containingNamespaceDeclarationNode.Name;
                 if (string.Equals(typeIdentifier.ValueText,
                     containingNamespaceDeclarationNode.Name.GetUnqualifiedName()?.Identifier.ValueText,
                     StringComparison.Ordinal))

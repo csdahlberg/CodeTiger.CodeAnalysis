@@ -180,8 +180,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
 
         private static bool IsTokenFollowedByOpenBrace(SyntaxToken token)
         {
-            var tokenLineSpan = token.GetLocation().GetLineSpan();
-
             var nextToken = token.GetNextToken();
             while (nextToken != default(SyntaxToken))
             {
