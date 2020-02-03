@@ -77,8 +77,7 @@ using System.Runtime;
                     {
                         new DiagnosticResultLocation("Test0.cs", 6, 1)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -104,8 +103,7 @@ using Microsoft.Win32;";
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 1)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -154,8 +152,7 @@ using Microsoft.Win32;";
                     {
                         new DiagnosticResultLocation("Test0.cs", 12, 1)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -182,8 +179,7 @@ using Microsoft.Win32;";
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 1)
                     }
-                }
-            );
+                });
         }
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()

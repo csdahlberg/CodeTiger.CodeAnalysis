@@ -57,8 +57,7 @@ namespace ClassLibrary2
                     {
                         new DiagnosticResultLocation("Test0.cs", 5, 3)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -161,8 +160,7 @@ namespace ClassLibrary1
                 CreateResult(24, 45),
                 CreateResult(25, 17),
                 CreateResult(27, 17),
-                CreateResult(27, 19)
-            );
+                CreateResult(27, 19));
         }
 
         [Fact]
@@ -268,8 +266,7 @@ namespace ClassLibrary1
                 CreateResult(25, 13),
                 CreateResult(25, 15),
                 CreateResult(29, 28),
-                CreateResult(30, 32)
-            );
+                CreateResult(30, 32));
         }
 
         [Fact]
@@ -329,8 +326,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 7)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -390,8 +386,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 7)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -451,8 +446,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 7)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -512,8 +506,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 7)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -617,8 +610,7 @@ namespace ClassLibrary1
                 CreateResult(8, 11),
                 CreateResult(11, 17),
                 CreateResult(14, 13),
-                CreateResult(14, 15)
-            );
+                CreateResult(14, 15));
         }
 
         [Fact]
@@ -785,8 +777,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 29, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]

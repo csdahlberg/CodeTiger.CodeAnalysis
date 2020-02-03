@@ -81,8 +81,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 15, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -144,8 +143,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 12, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -196,8 +194,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 6, 9)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -251,8 +248,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 8, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -315,8 +311,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -382,8 +377,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 9)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -441,8 +435,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -818,8 +811,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 59, 17)
                     }
-                }
-            );
+                });
         }
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()

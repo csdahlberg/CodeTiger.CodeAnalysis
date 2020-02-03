@@ -86,8 +86,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 21, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -139,8 +138,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 21, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -214,8 +212,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 16, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -263,8 +260,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 16, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -311,8 +307,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -341,8 +336,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -395,8 +389,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -428,8 +421,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 10, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -480,8 +472,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -512,8 +503,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -564,8 +554,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -596,8 +585,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -648,8 +636,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -680,8 +667,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -732,8 +718,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -764,8 +749,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -812,8 +796,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -842,8 +825,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -898,8 +880,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -932,8 +913,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -980,8 +960,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1010,8 +989,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1079,8 +1057,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1125,8 +1102,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1177,8 +1153,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1209,8 +1184,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1257,8 +1231,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1287,8 +1260,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 9, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1361,8 +1333,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1415,8 +1386,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 13, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1476,8 +1446,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1518,8 +1487,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1579,8 +1547,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1628,8 +1595,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 7, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1671,8 +1637,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1717,8 +1682,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 7, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1746,8 +1710,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 7, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1795,8 +1758,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 7, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1838,8 +1800,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 13)
                     }
-                }
-            );
+                });
         }
 
         [Fact]
@@ -1899,8 +1860,7 @@ namespace ClassLibrary1
                     {
                         new DiagnosticResultLocation("Test0.cs", 11, 17)
                     }
-                }
-            );
+                });
         }
 
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
