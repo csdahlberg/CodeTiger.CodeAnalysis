@@ -23,12 +23,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(DoubleInitializationShouldBeAvoidedDescriptor);
-            }
-        }
+            => ImmutableArray.Create(DoubleInitializationShouldBeAvoidedDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.

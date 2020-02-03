@@ -22,12 +22,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
         /// Returns a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(EnvironmentExitShouldNotBeUsedDescriptor);
-            }
-        }
+            => ImmutableArray.Create(EnvironmentExitShouldNotBeUsedDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.

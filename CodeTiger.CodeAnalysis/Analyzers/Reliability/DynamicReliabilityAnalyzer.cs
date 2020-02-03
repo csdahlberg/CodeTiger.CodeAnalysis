@@ -20,12 +20,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(DynamicShouldNotBeUsedDescriptor);
-            }
-        }
+            => ImmutableArray.Create(DynamicShouldNotBeUsedDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.

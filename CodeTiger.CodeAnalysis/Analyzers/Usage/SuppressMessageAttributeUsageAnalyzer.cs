@@ -23,12 +23,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(SuppressMessageAttributeShouldIncludeJustificationDescriptor);
-            }
-        }
+            => ImmutableArray.Create(SuppressMessageAttributeShouldIncludeJustificationDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.

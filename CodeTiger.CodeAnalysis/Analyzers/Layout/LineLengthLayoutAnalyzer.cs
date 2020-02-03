@@ -20,12 +20,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(LinesShouldNotExceedTheMaximumLengthDescriptor);
-            }
-        }
+            => ImmutableArray.Create(LinesShouldNotExceedTheMaximumLengthDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.

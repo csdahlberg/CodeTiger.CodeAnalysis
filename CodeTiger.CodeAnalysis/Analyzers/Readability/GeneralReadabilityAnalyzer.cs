@@ -19,12 +19,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        {
-            get
-            {
-                return ImmutableArray.Create(EmptyStatementsShouldNotBeUsedDescriptor);
-            }
-        }
+            => ImmutableArray.Create(EmptyStatementsShouldNotBeUsedDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.
