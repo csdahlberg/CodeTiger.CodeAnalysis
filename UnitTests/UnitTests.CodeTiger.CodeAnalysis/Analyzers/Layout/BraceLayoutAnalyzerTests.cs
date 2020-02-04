@@ -98,7 +98,7 @@ namespace ClassLibrary1
         [Fact]
         public void InitializerExpressionsWithInvalidBraceLayoutsProduceDiagnostics()
         {
-            DiagnosticResult CreateResult(int line, int column)
+            static DiagnosticResult CreateResult(int line, int column)
             {
                 return new DiagnosticResult
                 {
@@ -204,7 +204,7 @@ namespace ClassLibrary1
         [Fact]
         public void CodeBlocksWithInvalidBraceLayoutsProduceDiagnostics()
         {
-            DiagnosticResult CreateResult(int line, int column)
+            static DiagnosticResult CreateResult(int line, int column)
             {
                 return new DiagnosticResult
                 {
@@ -570,7 +570,7 @@ namespace ClassLibrary1
         [Fact]
         public void AccessorListsWithInvalidBraceLayoutsProduceDiagnostics()
         {
-            DiagnosticResult CreateResult(int line, int column)
+            static DiagnosticResult CreateResult(int line, int column)
             {
                 return new DiagnosticResult
                 {
