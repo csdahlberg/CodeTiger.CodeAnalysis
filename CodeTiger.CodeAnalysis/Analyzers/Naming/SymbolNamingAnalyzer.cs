@@ -425,10 +425,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private static void AnalyzeGenericTypeParameterName(SyntaxNodeAnalysisContext context)
         {
             var typeParameterNode = (TypeParameterSyntax)context.Node;
-
             if (typeParameterNode.Identifier.ValueText == "T"
                 || (typeParameterNode.Identifier.ValueText.StartsWith("T", StringComparison.Ordinal)
-                    && int.TryParse(typeParameterNode.Identifier.ValueText.Substring(1), out int x)))
+                    && int.TryParse(typeParameterNode.Identifier.ValueText.Substring(1), out _)))
             {
                 return;
             }
