@@ -52,7 +52,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
         private static void AnalyzeSyntaxNode(SyntaxNodeAnalysisContext context)
         {
-            if (IsInDocumentationComment(context.Node, context.CancellationToken))
+            if (IsInDocumentationComment(context.Node))
             {
                 return;
             }
@@ -89,7 +89,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
 
         private static void AnalyzeNullableShorthand(SyntaxNodeAnalysisContext context)
         {
-            if (IsInDocumentationComment(context.Node, context.CancellationToken))
+            if (IsInDocumentationComment(context.Node))
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability
             }
         }
 
-        private static bool IsInDocumentationComment(SyntaxNode node, CancellationToken cancellationToken)
+        private static bool IsInDocumentationComment(SyntaxNode node)
         {
             while (node != null)
             {
