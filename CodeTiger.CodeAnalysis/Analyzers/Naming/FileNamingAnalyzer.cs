@@ -92,7 +92,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.ValueText;
                 }
 
-                if (!string.Equals(firstDeclaredTypeName, fileNamePartsWithoutExtension[0]))
+                if (!string.Equals(firstDeclaredTypeName, fileNamePartsWithoutExtension[0],
+                    StringComparison.Ordinal))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor,
