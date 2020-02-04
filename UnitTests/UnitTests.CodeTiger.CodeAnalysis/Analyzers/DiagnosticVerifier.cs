@@ -21,13 +21,13 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         private const string VisualBasicDefaultExt = "vb";
         private const string TestProjectName = "TestProject";
 
-        private static readonly MetadataReference CorlibReference 
+        private static readonly MetadataReference _corlibReference 
             = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        private static readonly MetadataReference SystemCoreReference
+        private static readonly MetadataReference _systemCoreReference
             = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-        private static readonly MetadataReference CSharpSymbolsReference
+        private static readonly MetadataReference _cSharpSymbolsReference
             = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
-        private static readonly MetadataReference CodeAnalysisReference
+        private static readonly MetadataReference _codeAnalysisReference
             = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
 
         protected virtual DocumentationMode DocumentationMode => DocumentationMode.Parse;
@@ -111,6 +111,17 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         }
 
         /// <summary>
+        /// Create a Document from a string through creating a project that contains it.
+        /// </summary>
+        /// <param name="source">Classes in the form of a string</param>
+        /// <param name="language">The language the source code is in</param>
+        /// <returns>A Document created from the source string</returns>
+        protected Document CreateDocument(string source, string language = LanguageNames.CSharp)
+        {
+            return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
+        }
+
+        /// <summary>
         /// General method that gets a collection of actual diagnostics found in the source after the analyzer is
         /// run, then verifies each of them.
         /// </summary>
@@ -142,6 +153,118 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         {
             var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
             VerifyDiagnosticResults(diagnostics, analyzer, expected);
+        }
+
+        /// <summary>
+        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return
+        /// the diagnostics found in the string after converting it to a document.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source classes are in</param>
+        /// <param name="analyzer">The analyzer to be run on the sources</param>
+        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
+        private Diagnostic[] GetSortedDiagnostics(string[] sources, string language,
+            DiagnosticAnalyzer analyzer)
+        {
+            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+        }
+
+        /// <summary>
+        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return
+        /// the diagnostics found in the string after converting it to a document.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source classes are in</param>
+        /// <param name="analyzer">The analyzer to be run on the sources</param>
+        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
+        private Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
+            DiagnosticAnalyzer analyzer)
+        {
+            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+        }
+
+        /// <summary>
+        /// Given an array of strings as sources and a language, turn them into a project and return the documents
+        /// and spans of it.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source code is in</param>
+        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
+        /// </returns>
+        private Document[] GetDocuments(string[] sources, string language)
+        {
+            if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
+            {
+                throw new ArgumentException("Unsupported Language");
+            }
+
+            var namedSources = CreateNamedSources(sources, language);
+
+            var project = CreateProject(namedSources, language);
+            var documents = project.Documents.ToArray();
+
+            if (sources.Length != documents.Length)
+            {
+                throw new SystemException("Amount of sources did not match amount of Documents created");
+            }
+
+            return documents;
+        }
+
+        /// <summary>
+        /// Given an array of strings as sources and a language, turn them into a project and return the documents
+        /// and spans of it.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source code is in</param>
+        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
+        /// </returns>
+        private Document[] GetDocuments(Tuple<string, string>[] sources, string language)
+        {
+            if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
+            {
+                throw new ArgumentException("Unsupported Language");
+            }
+
+            var project = CreateProject(sources, language);
+            var documents = project.Documents.ToArray();
+
+            if (sources.Length != documents.Length)
+            {
+                throw new SystemException("Amount of sources did not match amount of Documents created");
+            }
+
+            return documents;
+        }
+
+        /// <summary>
+        /// Create a project using the inputted strings as sources.
+        /// </summary>
+        /// <param name="sources">Classes in the form of strings</param>
+        /// <param name="language">The language the source code is in</param>
+        /// <returns>A Project created out of the Documents created from the source strings</returns>
+        private Project CreateProject(Tuple<string, string>[] sources,
+            string language = LanguageNames.CSharp)
+        {
+            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
+
+            var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode);
+            var projectInfo = ProjectInfo.Create(projectId, VersionStamp.Default, TestProjectName, TestProjectName,
+                language, parseOptions: parseOptions);
+            var solution = new AdhocWorkspace()
+                .CurrentSolution
+                .AddProject(projectInfo)
+                .AddMetadataReference(projectId, _corlibReference)
+                .AddMetadataReference(projectId, _systemCoreReference)
+                .AddMetadataReference(projectId, _cSharpSymbolsReference)
+                .AddMetadataReference(projectId, _codeAnalysisReference);
+
+            foreach (var source in sources)
+            {
+                var documentId = DocumentId.CreateNewId(projectId, debugName: source.Item1);
+                solution = solution.AddDocument(documentId, source.Item1, SourceText.From(source.Item2));
+            }
+            return solution.GetProject(projectId);
         }
 
         /// <summary>
@@ -193,14 +316,13 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         }
 
         /// <summary>
-        /// Create a Document from a string through creating a project that contains it.
+        /// Sort diagnostics by location in source document
         /// </summary>
-        /// <param name="source">Classes in the form of a string</param>
-        /// <param name="language">The language the source code is in</param>
-        /// <returns>A Document created from the source string</returns>
-        protected Document CreateDocument(string source, string language = LanguageNames.CSharp)
+        /// <param name="diagnostics">The list of Diagnostics to be sorted</param>
+        /// <returns>An IEnumerable containing the Diagnostics in order of Location</returns>
+        private static Diagnostic[] SortDiagnostics(IEnumerable<Diagnostic> diagnostics)
         {
-            return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
+            return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
         }
 
         /// <summary>
@@ -392,128 +514,6 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
                 }
             }
             return builder.ToString();
-        }
-
-        /// <summary>
-        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return
-        /// the diagnostics found in the string after converting it to a document.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="language">The language the source classes are in</param>
-        /// <param name="analyzer">The analyzer to be run on the sources</param>
-        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-        private Diagnostic[] GetSortedDiagnostics(string[] sources, string language,
-            DiagnosticAnalyzer analyzer)
-        {
-            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
-        }
-
-        /// <summary>
-        /// Given classes in the form of strings, their language, and an IDiagnosticAnlayzer to apply to it, return
-        /// the diagnostics found in the string after converting it to a document.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="language">The language the source classes are in</param>
-        /// <param name="analyzer">The analyzer to be run on the sources</param>
-        /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-        private Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
-            DiagnosticAnalyzer analyzer)
-        {
-            return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
-        }
-
-        /// <summary>
-        /// Sort diagnostics by location in source document
-        /// </summary>
-        /// <param name="diagnostics">The list of Diagnostics to be sorted</param>
-        /// <returns>An IEnumerable containing the Diagnostics in order of Location</returns>
-        private static Diagnostic[] SortDiagnostics(IEnumerable<Diagnostic> diagnostics)
-        {
-            return diagnostics.OrderBy(d => d.Location.SourceSpan.Start).ToArray();
-        }
-
-        /// <summary>
-        /// Given an array of strings as sources and a language, turn them into a project and return the documents
-        /// and spans of it.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="language">The language the source code is in</param>
-        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
-        /// </returns>
-        private Document[] GetDocuments(string[] sources, string language)
-        {
-            if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
-            {
-                throw new ArgumentException("Unsupported Language");
-            }
-
-            var namedSources = CreateNamedSources(sources, language);
-
-            var project = CreateProject(namedSources, language);
-            var documents = project.Documents.ToArray();
-
-            if (sources.Length != documents.Length)
-            {
-                throw new SystemException("Amount of sources did not match amount of Documents created");
-            }
-
-            return documents;
-        }
-
-        /// <summary>
-        /// Given an array of strings as sources and a language, turn them into a project and return the documents
-        /// and spans of it.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="language">The language the source code is in</param>
-        /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
-        /// </returns>
-        private Document[] GetDocuments(Tuple<string, string>[] sources, string language)
-        {
-            if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
-            {
-                throw new ArgumentException("Unsupported Language");
-            }
-
-            var project = CreateProject(sources, language);
-            var documents = project.Documents.ToArray();
-
-            if (sources.Length != documents.Length)
-            {
-                throw new SystemException("Amount of sources did not match amount of Documents created");
-            }
-
-            return documents;
-        }
-
-        /// <summary>
-        /// Create a project using the inputted strings as sources.
-        /// </summary>
-        /// <param name="sources">Classes in the form of strings</param>
-        /// <param name="language">The language the source code is in</param>
-        /// <returns>A Project created out of the Documents created from the source strings</returns>
-        private Project CreateProject(Tuple<string, string>[] sources,
-            string language = LanguageNames.CSharp)
-        {
-            var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
-
-            var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode);
-            var projectInfo = ProjectInfo.Create(projectId, VersionStamp.Default, TestProjectName, TestProjectName,
-                language, parseOptions: parseOptions);
-            var solution = new AdhocWorkspace()
-                .CurrentSolution
-                .AddProject(projectInfo)
-                .AddMetadataReference(projectId, CorlibReference)
-                .AddMetadataReference(projectId, SystemCoreReference)
-                .AddMetadataReference(projectId, CSharpSymbolsReference)
-                .AddMetadataReference(projectId, CodeAnalysisReference);
-
-            foreach (var source in sources)
-            {
-                var documentId = DocumentId.CreateNewId(projectId, debugName: source.Item1);
-                solution = solution.AddDocument(documentId, source.Item1, SourceText.From(source.Item2));
-            }
-            return solution.GetProject(projectId);
         }
 
         private static Tuple<string, string>[] CreateNamedSources(string[] sources, string language)

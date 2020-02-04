@@ -53,8 +53,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
             var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
             var nestedThrows = root.DescendantNodes().OfType<CatchClauseSyntax>()
-                .SelectMany(catchDeclaration =>
-                    catchDeclaration.Block?.DescendantNodes().OfType<ThrowStatementSyntax>()
+                .SelectMany(catchDeclaration
+                    => catchDeclaration.Block?.DescendantNodes().OfType<ThrowStatementSyntax>()
                         ?? Enumerable.Empty<ThrowStatementSyntax>())
                 .Distinct();
             foreach (var nestedThrow in nestedThrows.Where(x => x?.Expression != null))

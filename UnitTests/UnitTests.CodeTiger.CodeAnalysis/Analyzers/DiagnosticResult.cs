@@ -7,23 +7,20 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
     /// </summary>
     public struct DiagnosticResult
     {
-        private DiagnosticResultLocation[] locations;
+        private DiagnosticResultLocation[] _locations;
 
         public DiagnosticResultLocation[] Locations
         {
             get
             {
-                if (locations == null)
+                if (_locations == null)
                 {
-                    locations = new DiagnosticResultLocation[] { };
+                    _locations = new DiagnosticResultLocation[] { };
                 }
-                return locations;
+                return _locations;
             }
 
-            set
-            {
-                locations = value;
-            }
+            set => _locations = value;
         }
 
         public DiagnosticSeverity Severity { get; set; }
