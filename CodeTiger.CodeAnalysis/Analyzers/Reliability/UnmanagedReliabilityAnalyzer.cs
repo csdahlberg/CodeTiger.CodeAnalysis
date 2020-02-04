@@ -152,10 +152,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                         break;
                 }
 
-                ITypeSymbol accessedTypeSymbol = accessedSymbol as ITypeSymbol;
-
                 if (accessedNode != null
-                    && accessedTypeSymbol != null
+                    && accessedSymbol is ITypeSymbol accessedTypeSymbol
                     && accessedTypeSymbol != destructorSymbol.ContainingType
                     && IsTypeProbablyUnsafeToAccessFromDestructor(context, accessedTypeSymbol))
                 {
