@@ -541,7 +541,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             switch (higherOrderedKinds.Count)
             {
                 case 0:
-                    throw new ArgumentOutOfRangeException("encounteredKinds");
+                    throw new ArgumentOutOfRangeException(nameof(encounteredKinds));
                 case 1:
                     return higherOrderedKinds[0].GetDeclarationName();
                 case 2:
@@ -565,7 +565,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             switch (higherOrderedAccessibilities.Count)
             {
                 case 0:
-                    throw new ArgumentOutOfRangeException("encounteredAccessibilities");
+                    throw new ArgumentOutOfRangeException(nameof(encounteredAccessibilities));
                 case 1:
                     return higherOrderedAccessibilities[0].ToString();
                 case 2:

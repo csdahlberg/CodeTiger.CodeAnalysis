@@ -172,7 +172,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             switch (higherOrderedKinds.Count)
             {
                 case 0:
-                    throw new ArgumentOutOfRangeException("encounteredModifiers", "");
+                    throw new ArgumentOutOfRangeException(nameof(encounteredModifiers), "");
                 case 1:
                     return higherOrderedKinds[0].GetKeywordName() + " keyword";
                 case 2:
