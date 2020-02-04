@@ -63,8 +63,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage
 
         private static bool AttributeIncludesJustificationArgument(AttributeSyntax attributeUsage)
         {
-            return attributeUsage.ArgumentList.Arguments
-                .Any(arg => arg.NameEquals?.Name?.Identifier.ValueText == "Justification");
+            return attributeUsage?.ArgumentList?.Arguments
+                .Any(arg => arg.NameEquals?.Name?.Identifier.ValueText == "Justification")
+                ?? false;
         }
     }
 }
