@@ -185,7 +185,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             Dictionary<long, List<Accessibility>> encounteredKinds)
         {
             var symbolAccessibility = memberSymbol.DeclaredAccessibility;
-            var order = GetOrderForAccessibility(symbolAccessibility);
+            int order = GetOrderForAccessibility(symbolAccessibility);
 
             long kindDescriptor = GetMemberKindDescriptor(member);
             if (encounteredKinds.ContainsKey(kindDescriptor))
@@ -557,7 +557,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
         private static string GetDisplayNamesOfHigherOrderedAccessibilities(
             List<Accessibility> encounteredAccessibilities, Accessibility memberAccessibility)
         {
-            var order = GetOrderForAccessibility(memberAccessibility);
+            int order = GetOrderForAccessibility(memberAccessibility);
             var higherOrderedAccessibilities = encounteredAccessibilities
                 .Where(x => GetOrderForAccessibility(x) > order)
                 .ToList();

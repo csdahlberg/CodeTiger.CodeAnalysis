@@ -175,7 +175,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
 
             try
             {
-                var documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
+                string documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
 
                 // If the documentation does not exists, ignore it for this diagnostic.
                 if (string.IsNullOrWhiteSpace(documentationXml))
@@ -201,7 +201,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Documentation
 
             try
             {
-                var documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
+                string documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
 
                 // If the documentation does not exists, ignore it for this diagnostic.
                 if (string.IsNullOrWhiteSpace(documentationXml))

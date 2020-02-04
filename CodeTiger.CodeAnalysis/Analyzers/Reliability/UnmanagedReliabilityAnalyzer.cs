@@ -288,7 +288,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 return false;
             }
 
-            foreach (var destructorSafeTypeName in _metadataNamesOfDestructorSafeTypeNames)
+            foreach (string destructorSafeTypeName in _metadataNamesOfDestructorSafeTypeNames)
             {
                 var destructorSafeType = context.SemanticModel.Compilation
                     .GetTypeByMetadataName(destructorSafeTypeName);
