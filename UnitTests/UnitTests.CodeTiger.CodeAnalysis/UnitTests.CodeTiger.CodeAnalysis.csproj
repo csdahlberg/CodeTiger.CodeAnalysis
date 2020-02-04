@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <Description>Contains unit tests for the CodeTiger.CodeAnalysis project.</Description>
     <Company>CodeTiger</Company>
     <Product>CodeTiger Code Analysis</Product>
