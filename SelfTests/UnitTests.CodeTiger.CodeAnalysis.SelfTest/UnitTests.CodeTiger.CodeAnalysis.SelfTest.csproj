@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CodeTiger.CodeAnalysis.SelfTest\CodeTiger.CodeAnalysis.SelfTest.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../UnitTests/UnitTests.CodeTiger.CodeAnalysis/**/*.cs"
+             Exclude="../../UnitTests/UnitTests.CodeTiger.CodeAnalysis/obj/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Analyzer Include="../../Build/$(Configuration)/CodeTiger.CodeAnalysis.dll"/>
+  </ItemGroup>
+
+</Project>

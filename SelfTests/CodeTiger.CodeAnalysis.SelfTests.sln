@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeTiger.CodeAnalysis.SelfTest", "CodeTiger.CodeAnalysis.SelfTest\CodeTiger.CodeAnalysis.SelfTest.csproj", "{CD33D544-FAC1-4295-B496-88F076E4D46C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests.CodeTiger.CodeAnalysis.SelfTest", "UnitTests.CodeTiger.CodeAnalysis.SelfTest\UnitTests.CodeTiger.CodeAnalysis.SelfTest.csproj", "{CB3CE470-BBE5-4936-BAD8-C9AB1B2B2452}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD33D544-FAC1-4295-B496-88F076E4D46C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD33D544-FAC1-4295-B496-88F076E4D46C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD33D544-FAC1-4295-B496-88F076E4D46C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD33D544-FAC1-4295-B496-88F076E4D46C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3CE470-BBE5-4936-BAD8-C9AB1B2B2452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3CE470-BBE5-4936-BAD8-C9AB1B2B2452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3CE470-BBE5-4936-BAD8-C9AB1B2B2452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3CE470-BBE5-4936-BAD8-C9AB1B2B2452}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {94208C80-B9FE-4A03-B003-9CCC4DE459DD}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\netstandard1.3\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
+    <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="../../CodeTiger.CodeAnalysis/**/*.cs"
+             Exclude="../../CodeTiger.CodeAnalysis/obj/**/*.cs" />
+    <Compile Remove="../../CodeTiger.CodeAnalysis/AssemblyAttributes.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Analyzer Include="../../Build/$(Configuration)/CodeTiger.CodeAnalysis.dll"/>
+  </ItemGroup>
+  
+</Project>
