@@ -21,6 +21,6 @@
     <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="CodeTiger.CodeAnalysis" Path="|CodeTiger.CodeAnalysis|"/>
   </Assets>
   <Prerequisites>
-    <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.Compiler" Version="[14.0,16.0)" DisplayName="C# and Visual Basic Roslyn compilers" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Roslyn.Compiler" Version="[14.0,)" DisplayName="C# and Visual Basic Roslyn compilers" />
   </Prerequisites>
 </PackageManifest>
