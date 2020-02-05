@@ -78,28 +78,41 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 .FirstOrDefault();
             if (firstTypeDeclarationNode != null)
             {
-                string firstDeclaredTypeName;
+                string[] firstDeclaredTypeNames;
 
                 var firstTypeDeclarationNode2 = firstTypeDeclarationNode as TypeDeclarationSyntax;
                 if (firstTypeDeclarationNode2?.TypeParameterList?.Parameters.Any() == true)
                 {
-                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.ValueText + "`"
-                        + firstTypeDeclarationNode2.TypeParameterList.Parameters.Count
-                            .ToString(CultureInfo.InvariantCulture);
+                    // Allow filenames for generic types to either omit or include the type arity
+                    firstDeclaredTypeNames = new[]
+                    {
+                        firstTypeDeclarationNode.Identifier.ValueText,
+                        firstTypeDeclarationNode.Identifier.ValueText + "`"
+                            + firstTypeDeclarationNode2.TypeParameterList.Parameters.Count
+                            .ToString(CultureInfo.InvariantCulture),
+                    };
                 }
                 else
                 {
-                    firstDeclaredTypeName = firstTypeDeclarationNode.Identifier.ValueText;
+                    firstDeclaredTypeNames = new[] { firstTypeDeclarationNode.Identifier.ValueText };
                 }
 
-                if (!string.Equals(firstDeclaredTypeName, fileNamePartsWithoutExtension[0],
-                    StringComparison.Ordinal))
+                if (!firstDeclaredTypeNames
+                    .Any(x => DoesTypeNameMatchFileName(x, fileNamePartsWithoutExtension[0])))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor,
                         Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));
                 }
             }
+        }
+
+        private static bool DoesTypeNameMatchFileName(string typeName, string fileNamePart)
+        {
+            string typeNameAlphaNumeric = new string(typeName.Where(char.IsLetterOrDigit).ToArray());
+            string fileNamePartAlphaNumeric = new string(fileNamePart.Where(char.IsLetterOrDigit).ToArray());
+
+            return string.Equals(typeNameAlphaNumeric, fileNamePartAlphaNumeric, StringComparison.Ordinal);
         }
     }
 }

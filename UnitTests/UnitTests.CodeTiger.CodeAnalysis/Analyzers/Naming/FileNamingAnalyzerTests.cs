@@ -98,6 +98,76 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void FileWithMatchingGenericTypeDeclarationWithoutArityDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType<T>
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType.cs", code));
+        }
+
+        [Fact]
+        public void FileWithMatchingGenericTypeDeclarationWithoutAritySeparatorDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType<T>
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType1.cs", code));
+        }
+
+        [Fact]
+        public void FileWithMatchingGenericTypeDeclarationWithAritySeparatorDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType<T>
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType`1.cs", code));
+        }
+
+        [Fact]
+        public void TestFileWithMatchingTypeDeclarationWithAritySeparatorDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType1Tests
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType`1Tests.cs", code));
+        }
+
+        [Fact]
+        public void TestFileWithMatchingTypeDeclarationWithoutAritySeparatorDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType1Tests
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType1Tests.cs", code));
+        }
+
+        [Fact]
         public void FileWithMatchingPartialTypeDeclarationDoesNotProduceDiagnostics()
         {
             string code = @"using System;
