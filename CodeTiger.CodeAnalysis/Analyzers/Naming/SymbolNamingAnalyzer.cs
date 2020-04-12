@@ -319,6 +319,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 return;
             }
 
+            if (propertyDeclarationNode.Identifier.ValueText.Length > parentIdentifier.ValueText.Length
+                && !char.IsUpper(propertyDeclarationNode.Identifier.ValueText[parentIdentifier.ValueText.Length]))
+            {
+                // The property name starts with the name of the containing type, but it appears to be a longer
+                // word that starts with the same characters. For example, a "RunnerId" property in a "Run" type.
+                return;
+            }
+
             var propertySymbol = context.SemanticModel
                 .GetDeclaredSymbol(propertyDeclarationNode, context.CancellationToken);
             if (propertySymbol?.ExplicitInterfaceImplementations.Any() == true)

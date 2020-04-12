@@ -836,6 +836,7 @@ namespace ClassLibrary1
         }
         private object Four => One;
     }
+    public class Run { public string RunnerId { get; set; } }
 }";
 
             VerifyCSharpDiagnostic(code);
@@ -849,8 +850,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public object Class1one { get; set; }
-        protected bool Class1two => true;
+        public object Class1One { get; set; }
+        protected bool Class1Two => true;
         internal int Class1Three
         {
             get { return 3; }
