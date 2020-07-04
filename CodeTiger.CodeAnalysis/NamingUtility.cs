@@ -1,10 +1,40 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace CodeTiger.CodeAnalysis
 {
     internal static class NamingUtility
     {
         private static readonly char[] _genericTypeAritySeparators = new[] { '`', '_' };
+        private static readonly string[] _hungarianNotationPrefixes = new[]
+        {
+            "b", "c", "d", "f", "i", "l", "li", "n", "o", "p", "s", "si", "str", "sz", "ui", "ul"
+        };
+
+        public static bool? IsProbablyHungarianNotation(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            if (value.StartsWith("_", StringComparison.OrdinalIgnoreCase))
+            {
+                value = value.Substring(1);
+            }
+
+            foreach (string prefix in _hungarianNotationPrefixes)
+            {
+                if (value.Length > prefix.Length
+                    && value.StartsWith(prefix, StringComparison.Ordinal)
+                    && char.IsUpper(value[prefix.Length]))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         public static bool? IsProbablyPascalCased(string value, bool isGenericTypeArityAllowed = false)
         {

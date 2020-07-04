@@ -54,6 +54,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
             = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
                 "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor HungarianNotationShouldNotBeUsedDescriptor
+            = new DiagnosticDescriptor("CT1713", "Hungarian notation should not be used.",
+                "Hungarian notation should not be used.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor
             PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor = new DiagnosticDescriptor(
                 "CT1714", "Property names should not begin with the name of the containing type.",
@@ -145,6 +148,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                     VariableNamesShouldUseCamelCasingDescriptor,
                     InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor,
                     ParameterNamesShouldUseCamelCasingDescriptor,
+                    HungarianNotationShouldNotBeUsedDescriptor,
                     PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
                     GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor,
                     GenericTypeParameterNamesShouldBeDescriptiveDescriptor,
@@ -179,6 +183,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
                 SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeFieldNameForHungarianNotation, SyntaxKind.FieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEventFieldName, SyntaxKind.EventFieldDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeDelegateName, SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzePropertyName, SyntaxKind.PropertyDeclaration);
@@ -244,6 +249,19 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                         context.ReportDiagnostic(Diagnostic.Create(PrivateFieldNamesShouldUseCamelCasingDescriptor,
                             fieldDeclaration.Identifier.GetLocation()));
                     }
+                }
+            }
+        }
+
+        private static void AnalyzeFieldNameForHungarianNotation(SyntaxNodeAnalysisContext context)
+        {
+            var fieldDeclarationNode = (FieldDeclarationSyntax)context.Node;
+            foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
+            {
+                if (NamingUtility.IsProbablyHungarianNotation(fieldDeclaration.Identifier.ValueText) == true)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(HungarianNotationShouldNotBeUsedDescriptor,
+                        fieldDeclaration.Identifier.GetLocation()));
                 }
             }
         }
@@ -397,10 +415,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             
             foreach (var variableDeclaratorSyntax in localDeclarationSyntax.Declaration.Variables)
             {
-                if (NamingUtility.IsProbablyCamelCased(variableDeclaratorSyntax.Identifier.ValueText) == false)
+                var identifier = variableDeclaratorSyntax.Identifier;
+
+                if (NamingUtility.IsProbablyCamelCased(identifier.ValueText) == false)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(VariableNamesShouldUseCamelCasingDescriptor,
-                        variableDeclaratorSyntax.Identifier.GetLocation()));
+                        identifier.GetLocation()));
+                }
+
+                if (NamingUtility.IsProbablyHungarianNotation(identifier.ValueText) == true)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(HungarianNotationShouldNotBeUsedDescriptor,
+                        identifier.GetLocation()));
                 }
             }
         }
@@ -426,6 +452,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false)
             {
                 context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
+                    parameterNode.Identifier.GetLocation()));
+            }
+
+            if (NamingUtility.IsProbablyHungarianNotation(parameterNode.Identifier.ValueText) == true)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(HungarianNotationShouldNotBeUsedDescriptor,
                     parameterNode.Identifier.GetLocation()));
             }
         }

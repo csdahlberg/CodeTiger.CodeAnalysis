@@ -743,6 +743,160 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void VariablesWithHungarianPrefixesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var oVariable = new object();
+            int nVariable = 13, iVariable = 36;
+            string strVariable = oVariable == null ? 12.ToString() : iVariable.ToString();
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 9, 33)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 10, 20)
+                    }
+                });
+        }
+
+        [Fact]
+        public void ParametersWithHungarianPrefixesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(object oVariable, int nVariable, string strVariable)
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 40)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 55)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 73)
+                    }
+                });
+        }
+
+        [Fact]
+        public void FieldsWithHungarianPrefixesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        object _oVariable = new object();
+        int nVariable = 13;
+        string strVariable = oVariable == null ? 12.ToString() : nVariable.ToString();
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 16)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 13)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1713",
+                    Message = "Hungarian notation should not be used.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 8, 16)
+                    }
+                });
+        }
+
+        [Fact]
         public void InterfaceWithPascalCasedNamesDoNotProduceDiagnostics()
         {
             string code = @"using System;

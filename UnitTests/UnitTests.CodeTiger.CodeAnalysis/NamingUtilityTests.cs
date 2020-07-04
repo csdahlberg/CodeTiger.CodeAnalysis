@@ -5,6 +5,33 @@ namespace UnitTests.CodeTiger.CodeAnalysis
 {
     public class NamingUtilityTests
     {
+        public class IsProbablyHungarianNotation_String
+        {
+            [Fact]
+            public void ReturnsNullWhenNameIsNull()
+            {
+                Assert.Null(NamingUtility.IsProbablyHungarianNotation(null));
+            }
+
+            [Theory]
+            [InlineData("bIsReal")]
+            [InlineData("strName")]
+            [InlineData("iValue")]
+            public void ReturnsTrueForHungarianPrefixedNames(string name)
+            {
+                Assert.True(NamingUtility.IsProbablyHungarianNotation(name));
+            }
+
+            [Theory]
+            [InlineData("IsReal")]
+            [InlineData("Name")]
+            [InlineData("IValue")]
+            public void ReturnsFalseForNonHungarianPrefixedNames(string name)
+            {
+                Assert.False(NamingUtility.IsProbablyHungarianNotation(name));
+            }
+        }
+
         public class IsProbablyPascalCased_String_Boolean
         {
             [Fact]

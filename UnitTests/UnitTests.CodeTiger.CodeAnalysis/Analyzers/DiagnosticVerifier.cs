@@ -25,7 +25,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
             = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
         private static readonly MetadataReference _systemCoreReference
             = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-        private static readonly MetadataReference _cSharpSymbolsReference
+        private static readonly MetadataReference _csharpSymbolsReference
             = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
         private static readonly MetadataReference _codeAnalysisReference
             = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
@@ -256,7 +256,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
                 .AddProject(projectInfo)
                 .AddMetadataReference(projectId, _corlibReference)
                 .AddMetadataReference(projectId, _systemCoreReference)
-                .AddMetadataReference(projectId, _cSharpSymbolsReference)
+                .AddMetadataReference(projectId, _csharpSymbolsReference)
                 .AddMetadataReference(projectId, _codeAnalysisReference);
 
             foreach (var source in sources)
