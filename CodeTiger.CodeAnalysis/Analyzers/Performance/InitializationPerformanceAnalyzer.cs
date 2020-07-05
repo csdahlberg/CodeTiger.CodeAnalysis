@@ -62,11 +62,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance
                         .OfType<StatementSyntax>()
                         .SkipWhile(x => x != statementContainingDeclarator)
                         .Skip(1)
-                        .Where(x => x.DescendantNodes()
+                        .FirstOrDefault(x => x.DescendantNodes()
                             .OfType<IdentifierNameSyntax>()
                             .Any(y => context.SemanticModel.GetSymbolInfo(y, context.CancellationToken)
-                                .Symbol == variableSymbol))
-                        .FirstOrDefault();
+                                .Symbol == variableSymbol));
 
                     if (statementIncludingVariable != null)
                     {
