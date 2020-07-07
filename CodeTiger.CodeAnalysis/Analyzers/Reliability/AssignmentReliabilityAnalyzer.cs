@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 {
     /// <summary>
-    /// Analyzess assignments for potential reliability issues.
+    /// Analyzes assignments for potential reliability issues.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class AssignmentReliabilityAnalyzer : DiagnosticAnalyzer
