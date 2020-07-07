@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Immutable;
-using System.Linq;
+﻿using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
@@ -19,13 +18,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing
         internal static readonly DiagnosticDescriptor FilesShouldEndWithABlankLineDescriptor
             = new DiagnosticDescriptor("CT3001", "Files should end with a blank line.",
                 "Files should end with a blank line.", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor CodeShouldNotContainConsecutiveBlankLinesDescriptor
+            = new DiagnosticDescriptor("CT3002", "Code should not contain consecutive blank lines.",
+                "Code should not contain consecutive blank lines.", "CodeTiger.Spacing",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
             FilesShouldNotBeginWithBlankLinesDescriptor,
-            FilesShouldEndWithABlankLineDescriptor);
+            FilesShouldEndWithABlankLineDescriptor,
+            CodeShouldNotContainConsecutiveBlankLinesDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.
@@ -49,6 +53,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing
             {
                 AnalyzeForStartingBlankLines(context, lines);
                 AnalyzeForEndingBlankLine(context, lines);
+                AnalyzeForConsecutiveBlankLines(context, lines);
             }
         }
 
@@ -76,6 +81,38 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing
             {
                 context.ReportDiagnostic(Diagnostic.Create(FilesShouldEndWithABlankLineDescriptor,
                     Location.Create(context.Tree, lastLine.Span)));
+            }
+        }
+
+        private static void AnalyzeForConsecutiveBlankLines(SyntaxTreeAnalysisContext context,
+            TextLineCollection lines)
+        {
+            for (int i = 1; i < lines.Count; i += 1)
+            {
+                if (string.IsNullOrWhiteSpace(lines[i - 1].ToString())
+                    && string.IsNullOrWhiteSpace(lines[i].ToString()))
+                {
+                    var containingNode = context.Tree.GetRoot(context.CancellationToken).FindToken(lines[i].Start);
+                    if (!IsStringLiteral(containingNode))
+                    {
+                        context.ReportDiagnostic(Diagnostic.Create(
+                            CodeShouldNotContainConsecutiveBlankLinesDescriptor,
+                            Location.Create(context.Tree, lines[i].Span)));
+                    }
+                }
+            }
+        }
+
+        private static bool IsStringLiteral(SyntaxToken token)
+        {
+            switch (token.Kind())
+            {
+                case SyntaxKind.InterpolatedStringTextToken:
+                case SyntaxKind.InterpolatedStringToken:
+                case SyntaxKind.StringLiteralToken:
+                    return true;
+                default:
+                    return false;
             }
         }
     }

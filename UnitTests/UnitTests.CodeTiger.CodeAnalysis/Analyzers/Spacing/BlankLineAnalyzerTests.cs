@@ -84,6 +84,93 @@ namespace ClassLibrary1
                 });
         }
 
+        [Fact]
+        public void CodeThatDoesNotHaveConsecutiveBlankLinesDoesNotProduceDiagnostic()
+        {
+            string code = @"namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public void DoSomething()
+        {
+        }
+    }
+}
+";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void CodeThatHasConsecutiveBlankLinesInStringLiteralsDoesNotProduceDiagnostic()
+        {
+            string code = @"namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public const string StringField = @""
+
+
+"";
+
+        public void DoSomething()
+        {
+            string stringVariable = @""
+
+
+"";
+        }
+    }
+}
+";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void CodeThatHasConsecutiveBlankLinesProducesDiagnostic()
+        {
+            string code = @"namespace ClassLibrary1
+{
+    public class TestClass
+    {
+        public string Name { get; set; }
+
+
+        public void DoSomething()
+        {
+            int i = 1;
+
+
+            return;
+        }
+    }
+}
+";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3002",
+                    Message = "Code should not contain consecutive blank lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 7, 0)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT3002",
+                    Message = "Code should not contain consecutive blank lines.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 12, 0)
+                    }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new BlankLineAnalyzer();
