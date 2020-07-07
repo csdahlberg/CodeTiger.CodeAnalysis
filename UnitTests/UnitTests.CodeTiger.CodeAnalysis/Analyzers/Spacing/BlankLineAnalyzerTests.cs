@@ -16,7 +16,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Spacing
     public class TestClass
     {
     }
-}";
+}
+";
 
             VerifyCSharpDiagnostic(code);
         }
@@ -30,7 +31,8 @@ namespace ClassLibrary1
     public class TestClass
     {
     }
-}";
+}
+";
 
             VerifyCSharpDiagnostic(code,
                 new DiagnosticResult
@@ -41,6 +43,43 @@ namespace ClassLibrary1
                     Locations = new[]
                     {
                         new DiagnosticResultLocation("Test0.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
+        public void FileThatEndsWithBlankLineDoesNotProduceDiagnostic()
+        {
+            string code = @"namespace ClassLibrary1
+{
+    public class TestClass
+    {
+    }
+}
+";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void FileThatDoesNotEndWithBlankLineProducesDiagnostic()
+        {
+            string code = @"namespace ClassLibrary1
+{
+    public class TestClass
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT3001",
+                    Message = "Files should end with a blank line.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 0)
                     }
                 });
         }

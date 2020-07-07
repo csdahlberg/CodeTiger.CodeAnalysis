@@ -1,4 +1,6 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -14,12 +16,16 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing
         internal static readonly DiagnosticDescriptor FilesShouldNotBeginWithBlankLinesDescriptor
             = new DiagnosticDescriptor("CT3000", "Files should not begin with blank lines.",
                 "Files should not begin with blank lines.", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor FilesShouldEndWithABlankLineDescriptor
+            = new DiagnosticDescriptor("CT3001", "Files should end with a blank line.",
+                "Files should end with a blank line.", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(
-            FilesShouldNotBeginWithBlankLinesDescriptor);
+            FilesShouldNotBeginWithBlankLinesDescriptor,
+            FilesShouldEndWithABlankLineDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.
@@ -41,17 +47,35 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing
             var lines = context.Tree.GetText(context.CancellationToken).Lines;
             if (lines.Count > 0)
             {
-                int length = 0;
-                for (int i = 0; i < lines.Count && string.IsNullOrWhiteSpace(lines[i].ToString()); i += 1)
-                {
-                    length += lines[i].SpanIncludingLineBreak.Length;
-                }
+                AnalyzeForStartingBlankLines(context, lines);
+                AnalyzeForEndingBlankLine(context, lines);
+            }
+        }
 
-                if (length > 0)
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(FilesShouldNotBeginWithBlankLinesDescriptor,
-                        Location.Create(context.Tree, new TextSpan(0, length))));
-                }
+        private static void AnalyzeForStartingBlankLines(SyntaxTreeAnalysisContext context,
+            TextLineCollection lines)
+        {
+            int length = 0;
+            for (int i = 0; i < lines.Count && string.IsNullOrWhiteSpace(lines[i].ToString()); i += 1)
+            {
+                length += lines[i].SpanIncludingLineBreak.Length;
+            }
+
+            if (length > 0)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(FilesShouldNotBeginWithBlankLinesDescriptor,
+                    Location.Create(context.Tree, new TextSpan(0, length))));
+            }
+        }
+
+        private static void AnalyzeForEndingBlankLine(SyntaxTreeAnalysisContext context, TextLineCollection lines)
+        {
+            var lastLine = lines[lines.Count - 1];
+
+            if (!string.IsNullOrWhiteSpace(lastLine.ToString()))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(FilesShouldEndWithABlankLineDescriptor,
+                    Location.Create(context.Tree, lastLine.Span)));
             }
         }
     }
