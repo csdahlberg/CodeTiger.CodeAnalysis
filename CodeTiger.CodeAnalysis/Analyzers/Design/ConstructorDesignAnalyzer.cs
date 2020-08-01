@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,12 +17,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
         internal static readonly DiagnosticDescriptor CopyConstructorsShouldNotBePublicDescriptor
             = new DiagnosticDescriptor("CT1001", "Copy constructors should not be public.",
                 "Copy constructors should not be public.", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor ConstructorsForAbstractClassesShouldNotBePublicDescriptor
+            = new DiagnosticDescriptor("CT1013", "Constructors for abstract classes should not be public.",
+                "Constructors for abstract classes should not be public.", "CodeTiger.Design",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
         /// </summary>
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(CopyConstructorsShouldNotBePublicDescriptor);
+            => ImmutableArray.Create(
+                CopyConstructorsShouldNotBePublicDescriptor,
+                ConstructorsForAbstractClassesShouldNotBePublicDescriptor);
 
         /// <summary>
         /// Registers actions in an analysis context.
@@ -40,16 +47,22 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
 
         private static void AnalyzeCopyConstructor(SyntaxNodeAnalysisContext context)
         {
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+            var node = (ConstructorDeclarationSyntax)context.Node;
 
-            var constructorSymbol = context.SemanticModel.GetDeclaredSymbol(constructorDeclaration,
-                context.CancellationToken);
+            var constructor = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
 
-            if (IsProbablyCopyConstructor(context, constructorDeclaration, constructorSymbol)
-                && constructorSymbol.DeclaredAccessibility == Accessibility.Public)
+            if (IsProbablyCopyConstructor(context, node, constructor)
+                && constructor.DeclaredAccessibility == Accessibility.Public)
             {
                 context.ReportDiagnostic(Diagnostic.Create(CopyConstructorsShouldNotBePublicDescriptor,
-                    constructorDeclaration.Identifier.GetLocation()));
+                    node.Identifier.GetLocation()));
+            }
+
+            if (constructor.ContainingType.IsAbstract
+                && constructor.DeclaredAccessibility == Accessibility.Public)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    ConstructorsForAbstractClassesShouldNotBePublicDescriptor, node.Identifier.GetLocation()));
             }
         }
 
