@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
@@ -20,6 +21,10 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 "Members of base types should not be hidden except to return more specialized types.",
                 "Members of base types should not be hidden except to return more specialized types.",
                 "CodeTiger.Design", DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor DefaultValuesOfParametersShouldMatchAnyBaseDefinitions
+            = new DiagnosticDescriptor("CT1011", "Default values of parameters should match any base definitions.",
+                "Default values of parameters should match any base definitions.", "CodeTiger.Design",
+                DiagnosticSeverity.Warning, true);
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -29,7 +34,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             get
             {
                 return ImmutableArray.Create(
-                    MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor);
+                    MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                    DefaultValuesOfParametersShouldMatchAnyBaseDefinitions);
             }
         }
 
@@ -51,6 +57,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeFieldDeclarationForHidingOfBaseImplementation,
                 SyntaxKind.FieldDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeMethodForDefaultValues, SyntaxKind.MethodDeclaration);
         }
 
         private static void AnalyzeMethodForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
@@ -169,6 +176,65 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 var field = context.SemanticModel.GetDeclaredSymbol(fieldVariable, context.CancellationToken);
 
                 AnalyzeFieldForHidingOfBaseImplementation(context, fieldDeclarationType, fieldVariable, field);
+            }
+        }
+
+        private static void AnalyzeMethodForDefaultValues(SyntaxNodeAnalysisContext context)
+        {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+            
+            var method = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+            if (method.IsOverride)
+            {
+                AnalyzeParametersForDefaultValues(context, methodDeclaration, method, method.OverriddenMethod);
+            }
+
+            var containingType = method.ContainingType;
+
+            foreach (var implementedInterface in method.ContainingType.AllInterfaces)
+            {
+                foreach (var interfaceMethod in implementedInterface.GetMembers().OfType<IMethodSymbol>())
+                {
+                    var implementation = containingType.FindImplementationForInterfaceMember(interfaceMethod);
+                    if (implementation is IMethodSymbol implementationMethod
+                        && implementationMethod == method)
+                    {
+                        AnalyzeParametersForDefaultValues(context, methodDeclaration, method, interfaceMethod);
+                    }
+                }
+            }
+        }
+
+        private static void AnalyzeParametersForDefaultValues(SyntaxNodeAnalysisContext context,
+            MethodDeclarationSyntax methodDeclaration, IMethodSymbol method, IMethodSymbol baseMethod)
+        {
+            for (int i = 0; i < method.Parameters.Length; i += 1)
+            {
+                var parameter = method.Parameters[i];
+                var baseParameter = baseMethod.Parameters[i];
+
+                if (parameter.HasExplicitDefaultValue)
+                {
+                    if (!baseParameter.HasExplicitDefaultValue)
+                    {
+                        context.ReportDiagnostic(
+                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                            methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
+                    }
+                    else if (parameter.ExplicitDefaultValue != baseParameter.ExplicitDefaultValue)
+                    {
+                        context.ReportDiagnostic(
+                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                            methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
+                    }
+                }
+                else if (baseParameter.HasExplicitDefaultValue)
+                {
+                    context.ReportDiagnostic(
+                        Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                        methodDeclaration.ParameterList.Parameters[i].Identifier.GetLocation()));
+                }
             }
         }
 
