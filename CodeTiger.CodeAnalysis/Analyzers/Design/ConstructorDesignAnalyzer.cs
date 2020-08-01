@@ -8,10 +8,10 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace CodeTiger.CodeAnalysis.Analyzers.Design
 {
     /// <summary>
-    /// Analyzes copy constructors for design issues.
+    /// Analyzes constructors for design issues.
     /// </summary>
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class CopyConstructorDesignAnalyzer : DiagnosticAnalyzer
+    public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor CopyConstructorsShouldNotBePublicDescriptor
             = new DiagnosticDescriptor("CT1001", "Copy constructors should not be public.",
