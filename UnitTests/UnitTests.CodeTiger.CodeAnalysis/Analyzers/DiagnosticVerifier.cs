@@ -55,7 +55,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="source">A class in the form of a string to run the analyzer on</param>
         /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source
         /// </param>
-        protected void VerifyCSharpDiagnostic(string source, params DiagnosticResult[] expected)
+        protected private void VerifyCSharpDiagnostic(string source, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
         }
@@ -67,7 +67,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="source">A class in the form of a string to run the analyzer on</param>
         /// <param name="expected"> DiagnosticResults that should appear after the analyzer is run on the source
         /// </param>
-        protected void VerifyCSharpDiagnostic(Tuple<string, string> source, params DiagnosticResult[] expected)
+        protected private void VerifyCSharpDiagnostic(Tuple<string, string> source,
+            params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
         }
@@ -79,7 +80,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="source">A class in the form of a string to run the analyzer on</param>
         /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the source
         /// </param>
-        protected void VerifyBasicDiagnostic(string source, params DiagnosticResult[] expected)
+        protected private void VerifyBasicDiagnostic(string source, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, GetBasicDiagnosticAnalyzer(), expected);
         }
@@ -92,7 +93,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// </param>
         /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
         /// </param>
-        protected void VerifyCSharpDiagnostic(string[] sources, params DiagnosticResult[] expected)
+        protected private void VerifyCSharpDiagnostic(string[] sources, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(sources, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
         }
@@ -105,7 +106,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// </param>
         /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
         /// </param>
-        protected void VerifyBasicDiagnostic(string[] sources, params DiagnosticResult[] expected)
+        protected private void VerifyBasicDiagnostic(string[] sources, params DiagnosticResult[] expected)
         {
             VerifyDiagnostics(sources, LanguageNames.VisualBasic, GetBasicDiagnosticAnalyzer(), expected);
         }
@@ -116,7 +117,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers
         /// <param name="source">Classes in the form of a string</param>
         /// <param name="language">The language the source code is in</param>
         /// <returns>A Document created from the source string</returns>
-        protected Document CreateDocument(string source, string language = LanguageNames.CSharp)
+        protected private Document CreateDocument(string source, string language = LanguageNames.CSharp)
         {
             return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
         }
