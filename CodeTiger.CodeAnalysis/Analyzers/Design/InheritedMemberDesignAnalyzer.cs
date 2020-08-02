@@ -21,9 +21,15 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 "Members of base types should not be hidden except to return more specialized types.",
                 "Members of base types should not be hidden except to return more specialized types.",
                 "CodeTiger.Design", DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor DefaultValuesOfParametersShouldMatchAnyBaseDefinitions
-            = new DiagnosticDescriptor("CT1011", "Default values of parameters should match any base definitions.",
+        internal static readonly DiagnosticDescriptor
+            DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor = new DiagnosticDescriptor("CT1011",
+                "Default values of parameters should match any base definitions.",
                 "Default values of parameters should match any base definitions.", "CodeTiger.Design",
+                DiagnosticSeverity.Warning, true);
+        internal static readonly DiagnosticDescriptor
+            ParamsModifierOfOverriddenMethodShouldMatchAnyBaseDefinitionsDescriptor = new DiagnosticDescriptor(
+                "CT1019", "Params modifier of parameters should match any base definitions.",
+                "Params modifier of parameters should match any base definitions.", "CodeTiger.Design",
                 DiagnosticSeverity.Warning, true);
 
         /// <summary>
@@ -35,7 +41,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             {
                 return ImmutableArray.Create(
                     MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
-                    DefaultValuesOfParametersShouldMatchAnyBaseDefinitions);
+                    DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
+                    ParamsModifierOfOverriddenMethodShouldMatchAnyBaseDefinitionsDescriptor);
             }
         }
 
@@ -57,7 +64,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                 SyntaxKind.PropertyDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeFieldDeclarationForHidingOfBaseImplementation,
                 SyntaxKind.FieldDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeMethodForDefaultValues, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeMethodForKeywords, SyntaxKind.MethodDeclaration);
         }
 
         private static void AnalyzeMethodForHidingOfBaseImplementation(SyntaxNodeAnalysisContext context)
@@ -179,7 +186,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             }
         }
 
-        private static void AnalyzeMethodForDefaultValues(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeMethodForKeywords(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
             
@@ -187,7 +194,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
 
             if (method.IsOverride)
             {
-                AnalyzeParametersForDefaultValues(context, methodDeclaration, method, method.OverriddenMethod);
+                AnalyzeParametersForKeywords(context, methodDeclaration, method, method.OverriddenMethod);
             }
 
             var containingType = method.ContainingType;
@@ -200,13 +207,13 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     if (implementation is IMethodSymbol implementationMethod
                         && implementationMethod == method)
                     {
-                        AnalyzeParametersForDefaultValues(context, methodDeclaration, method, interfaceMethod);
+                        AnalyzeParametersForKeywords(context, methodDeclaration, method, interfaceMethod);
                     }
                 }
             }
         }
 
-        private static void AnalyzeParametersForDefaultValues(SyntaxNodeAnalysisContext context,
+        private static void AnalyzeParametersForKeywords(SyntaxNodeAnalysisContext context,
             MethodDeclarationSyntax methodDeclaration, IMethodSymbol method, IMethodSymbol baseMethod)
         {
             for (int i = 0; i < method.Parameters.Length; i += 1)
@@ -219,20 +226,27 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                     if (!baseParameter.HasExplicitDefaultValue)
                     {
                         context.ReportDiagnostic(
-                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
                             methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
                     }
                     else if (parameter.ExplicitDefaultValue != baseParameter.ExplicitDefaultValue)
                     {
                         context.ReportDiagnostic(
-                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                            Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
                             methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
                     }
                 }
                 else if (baseParameter.HasExplicitDefaultValue)
                 {
                     context.ReportDiagnostic(
-                        Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitions,
+                        Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
+                        methodDeclaration.ParameterList.Parameters[i].Identifier.GetLocation()));
+                }
+
+                if (methodDeclaration.ParameterList.Parameters[i].IsParams() != baseParameter.IsParams)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        ParamsModifierOfOverriddenMethodShouldMatchAnyBaseDefinitionsDescriptor,
                         methodDeclaration.ParameterList.Parameters[i].Identifier.GetLocation()));
                 }
             }

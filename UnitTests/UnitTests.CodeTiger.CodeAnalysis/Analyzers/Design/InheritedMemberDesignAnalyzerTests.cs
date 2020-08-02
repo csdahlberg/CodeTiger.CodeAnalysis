@@ -8,7 +8,7 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
     public class InheritedMemberDesignAnalyzerTests : DiagnosticVerifier
     {
         [Fact]
-        public void ClassWithBaseClassAndWithStaticMethodDoesNotProduceDiagnostics()
+        public void ClassesWithBaseClassAndWithStaticMethodDoNotProduceDiagnostics()
         {
             string code = @"using System;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace ClassLibrary1
         }
 
         [Fact]
-        public void ClassWithStaticMethodProducesDiagnostic()
+        public void ClassesWithHiddenBaseMethodsProducesDiagnostic()
         {
             string code = @"using System;
 namespace ClassLibrary1
@@ -74,10 +74,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 11, 24)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 24) }
                 },
                 new DiagnosticResult
                 {
@@ -85,10 +82,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 27)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 27) }
                 },
                 new DiagnosticResult
                 {
@@ -96,10 +90,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 16, 24)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 16, 24) }
                 },
                 new DiagnosticResult
                 {
@@ -107,10 +98,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 17, 27)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 17, 27) }
                 },
                 new DiagnosticResult
                 {
@@ -118,10 +106,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 21, 32)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 21, 32) }
                 },
                 new DiagnosticResult
                 {
@@ -129,10 +114,7 @@ namespace ClassLibrary1
                     Message
                         = "Members of base types should not be hidden except to return more specialized types.",
                     Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 22, 27)
-                    }
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 22, 27) }
                 });
         }
 
@@ -620,6 +602,142 @@ namespace ClassLibrary1
                     Message = "Default values of parameters should match any base definitions.",
                     Severity = DiagnosticSeverity.Warning,
                     Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 68) },
+                });
+        }
+
+        [Fact]
+        public void ParametersWithParamsKeywordThatMatchBaseInterfaceDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public interface IThing
+    {
+        void SetValue(params int[] values);
+        void SetValue(string[] values);
+    }
+    public class ThingClass : IThing
+    {
+        public void SetValue(params int[] values) { }
+        public virtual void SetValue(string[] values) { }
+    }
+    public struct ThingStruct : IThing
+    {
+        public void SetValue(params int[] values) { }
+        public void SetValue(string[] values) { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ParametersWithParamsKeywordThatDoesNotMatchBaseInterfaceProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public interface IThing
+    {
+        void SetValue(params int[] values);
+        void SetValue(string[] values);
+    }
+    public class ThingClass : IThing
+    {
+        public void SetValue(int[] values) { }
+        public virtual void SetValue(params string[] values) { }
+    }
+    public struct ThingStruct : IThing
+    {
+        public void SetValue(int[] values) { }
+        public void SetValue(params string[] values) { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 36) },
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 54) },
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 16, 36) },
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 17, 46) },
+                });
+        }
+
+        [Fact]
+        public void ParametersWithParamsKeywordThatMatchBaseTypeDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class ThingClass
+    {
+        public virtual void SetValue(params int[] values) { }
+        public virtual void SetValue(string[] values) { }
+    }
+    public class ThingClass2 : ThingClass
+    {
+        public override void SetValue(params int[] values) { }
+        public override void SetValue(string[] values) { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ParametersWithParamsKeywordThatDoesNotMatchBaseTypeProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class ThingClass
+    {
+        public virtual void SetValue(params int[] values) { }
+        public virtual void SetValue(string[] values) { }
+    }
+    public class ThingClass2 : ThingClass
+    {
+        public override void SetValue(int[] values) { }
+        public override void SetValue(params string[] values) { }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 45) },
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1019",
+                    Message = "Params modifier of parameters should match any base definitions.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 55) },
                 });
         }
 
