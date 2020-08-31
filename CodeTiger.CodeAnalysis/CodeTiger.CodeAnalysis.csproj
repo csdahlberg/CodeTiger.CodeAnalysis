@@ -30,7 +30,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     <DebugSymbols>true</DebugSymbols>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis.git</RepositoryUrl>
-    <RepositoryCommit>abcd</RepositoryCommit>
+    <RepositoryCommit></RepositoryCommit>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
