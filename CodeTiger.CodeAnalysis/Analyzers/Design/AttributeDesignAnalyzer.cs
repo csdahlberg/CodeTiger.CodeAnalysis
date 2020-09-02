@@ -58,7 +58,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
             foreach (var customAttribute in node.AttributeLists.SelectMany(x => x.Attributes))
             {
                 var customAttributeType = context.SemanticModel
-                    .GetTypeInfo(customAttribute, context.CancellationToken);
+                    .GetTypeInfo(customAttribute.Name, context.CancellationToken);
                 
                 if (customAttributeType.Type == attributeUsageType)
                 {
