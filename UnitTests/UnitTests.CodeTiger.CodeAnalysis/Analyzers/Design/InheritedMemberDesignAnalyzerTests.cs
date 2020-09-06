@@ -126,11 +126,11 @@ namespace ClassLibrary1
 {
     public interface IThing
     {
-        void SetValue(bool flag, int i = 0, string str = default);
+        void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"");
     }
     public class ThingClass : IThing
     {
-        public void SetValue(bool flag, int i = 0, string str = default) { }
+        public void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
         public virtual void SetValue(bool flag, string str = default) { }
     }
     public class ThingClass2 : ThingClass
@@ -139,7 +139,7 @@ namespace ClassLibrary1
     }
     public struct ThingStruct : IThing
     {
-        public void SetValue(bool flag, int i = 0, string str = default) { }
+        public void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
     }
 }";
 
@@ -424,12 +424,12 @@ namespace ClassLibrary1
 {
     public class ThingClass : IThing
     {
-        public abstract void SetValue(bool flag, int i = 0, string str = default);
+        public abstract void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"");
         public virtual void SetValue(bool flag, string str = default) { }
     }
     public class ThingClass2 : ThingClass
     {
-        public override void SetValue(bool flag, int i = 0, string str = default) { }
+        public override void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
         public override void SetValue(bool flag, string str = default) { }
     }
 }";

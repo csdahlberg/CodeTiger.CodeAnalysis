@@ -229,7 +229,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design
                             Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
                             methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
                     }
-                    else if (parameter.ExplicitDefaultValue != baseParameter.ExplicitDefaultValue)
+                    else if (!Equals(parameter.ExplicitDefaultValue, baseParameter.ExplicitDefaultValue))
                     {
                         context.ReportDiagnostic(
                             Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
