@@ -448,8 +448,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
         private static void AnalyzeParameterName(SyntaxNodeAnalysisContext context)
         {
             var parameterNode = (ParameterSyntax)context.Node;
-            
-            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false)
+
+            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false
+                && !IsAllowableDiscard())
             {
                 context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
                     parameterNode.Identifier.GetLocation()));
@@ -459,6 +460,18 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 context.ReportDiagnostic(Diagnostic.Create(HungarianNotationShouldNotBeUsedDescriptor,
                     parameterNode.Identifier.GetLocation()));
+            }
+
+            bool IsAllowableDiscard()
+            {
+                switch (parameterNode.Parent.Kind())
+                {
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                    case SyntaxKind.SimpleLambdaExpression:
+                        return "_".Equals(parameterNode.Identifier.ValueText, StringComparison.OrdinalIgnoreCase);
+                    default:
+                        return false;
+                }
             }
         }
 

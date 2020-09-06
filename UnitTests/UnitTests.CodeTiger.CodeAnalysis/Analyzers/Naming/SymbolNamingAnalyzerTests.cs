@@ -850,6 +850,107 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void ParametersWithCamelCasedNamesDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(string firstName, int age)
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ParametersWithPascalCasedNamesProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(string FirstName, int Age)
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1712",
+                    Message = "Parameter names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 40)
+                    }
+                },
+                new DiagnosticResult
+                {
+                    Id = "CT1712",
+                    Message = "Parameter names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 55)
+                    }
+                });
+        }
+
+        [Fact]
+        public void ParametersWithDiscardNamesWhereAllowedDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+using System.Collections.Concurrent;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething()
+        {
+            var dictionary = new ConcurrentDictionary<int, string>();
+            dictionary.GetOrAdd(0, _ => ""0"");
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void ParameterWithDiscardNamesWhereNotAllowedProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething(string _)
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code,
+                new DiagnosticResult
+                {
+                    Id = "CT1712",
+                    Message = "Parameter names should use camel casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test0.cs", 6, 40)
+                    }
+                });
+        }
+
+        [Fact]
         public void FieldsWithHungarianPrefixesProduceDiagnostics()
         {
             string code = @"using System;
