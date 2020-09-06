@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Immutable;
 using System.Linq;
 using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
@@ -211,7 +212,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             if (node.Alias != null)
             {
                 if (previousNode.Alias != null
-                    && string.CompareOrdinal(previousNode.Alias.Name.ToString(), node.Alias.Name.ToString()) > 0)
+                    && CompareCaseInsensitive(previousNode.Alias.Name.ToString(), node.Alias.Name.ToString()) > 0)
                 {
                     // Both node and previousNode are aliases, and node should be before previousNode.
                     context.ReportDiagnostic(Diagnostic.Create(
@@ -219,7 +220,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                 }
             }
             else if (node.IsStaticUsingDirective() == previousNode.IsStaticUsingDirective()
-                && string.CompareOrdinal(GetTextForSorting(previousNode), GetTextForSorting(node)) > 0)
+                && CompareCaseInsensitive(GetTextForSorting(previousNode), GetTextForSorting(node)) > 0)
             {
                 if (StartsWithSystemNamespace(node.Name))
                 {
@@ -236,6 +237,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
                         UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor, node.GetLocation()));
                 }
             }
+
+            string GetTextForSorting(UsingDirectiveSyntax usingDirectiveNode)
+                => usingDirectiveNode?.Alias?.ToString() + usingDirectiveNode.Name.ToString();
+            int CompareCaseInsensitive(string first, string second)
+                => string.Compare(first, second, StringComparison.OrdinalIgnoreCase);
         }
 
         private static Location GetLocationForSorting(UsingDirectiveSyntax node)
@@ -299,11 +305,6 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering
             var simpleNameNode = nameNode as SimpleNameSyntax;
 
             return simpleNameNode?.Identifier.ValueText == "System";
-        }
-
-        private static string GetTextForSorting(UsingDirectiveSyntax node)
-        {
-            return node?.Alias?.ToString() + node.Name.ToString();
         }
     }
 }
