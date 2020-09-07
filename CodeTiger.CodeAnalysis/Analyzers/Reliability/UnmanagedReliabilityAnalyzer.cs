@@ -20,8 +20,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
     public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
     {
         internal static readonly DiagnosticDescriptor TypesWithDisposableStateShouldImplementIDisposableDescriptor
-            = new DiagnosticDescriptor("CT2001", "Types with disposable state should implement IDisposable",
-                "Types with disposable state should implement IDisposable", "CodeTiger.Reliability",
+            = new DiagnosticDescriptor("CT2001", "Types with disposable state should implement IDisposable.",
+                "Types with disposable state should implement IDisposable.", "CodeTiger.Reliability",
                 DiagnosticSeverity.Warning, true);
         internal static readonly DiagnosticDescriptor
             TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor = new DiagnosticDescriptor(
@@ -92,7 +92,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
 
                 bool isTypeDisposable = IsTypeDisposable(context, typeDeclaration, disposableType);
 
-                if (!isTypeDisposable
+                if (typeDeclaration.Kind() == SyntaxKind.ClassDeclaration
+                    && !isTypeDisposable
                     && instanceStateMemberTypes.Any(x => DoesTypeNeedToBeDisposed(context, x, disposableType)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
@@ -103,7 +104,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability
                 var destructor = typeDeclaration.Members
                     .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration);
 
-                if ((!isTypeDisposable || destructor == null)
+                if (typeDeclaration.Kind() == SyntaxKind.ClassDeclaration
+                    && (!isTypeDisposable || destructor == null)
                     && AreAnyTypesUnmanaged(context, instanceStateMemberTypes))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
