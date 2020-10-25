@@ -52,6 +52,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout
         {
             var node = (AttributeListSyntax)context.Node;
 
+            // Allow parameters to have multiple attributes on the same line or in the same attribute list.
+            if (node.Parent?.Kind() == SyntaxKind.Parameter)
+            {
+                return;
+            }
+
             if (node.Attributes.Count > 1)
             {
                 context.ReportDiagnostic(Diagnostic.Create(AttributesShouldBeDeclaredSeparatelyDescriptor,

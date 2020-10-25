@@ -19,7 +19,25 @@ namespace ClassLibrary1
     {
         [Obsolete]
         [CLSCompliant(false)]
-        public void DoSomething()
+        public void DoSomething([Obsolete] string value)
+        {
+        }
+    }
+}";
+
+            VerifyCSharpDiagnostic(code);
+        }
+
+        [Fact]
+        public void AttributesDeclaredTogetherForParametersDoNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Class1
+    {
+        public void DoSomething([Obsolete, CLSCompliant(false)] string value1,
+            [Obsolete] [CLSCompliant(false)] string value2)
         {
         }
     }
