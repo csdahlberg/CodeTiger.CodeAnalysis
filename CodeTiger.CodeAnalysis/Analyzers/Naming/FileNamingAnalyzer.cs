@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -25,6 +27,9 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             = new DiagnosticDescriptor("CT1729", "Source file names should match the primary type name.",
                 "Source file names should match the primary type name.", "CodeTiger.Naming",
                 DiagnosticSeverity.Warning, true);
+
+        private static readonly ReadOnlyCollection<string> _knownPartialFileNames
+            = new List<string> { "aspx", "xaml" }.AsReadOnly();
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
@@ -59,13 +64,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
             {
                 return;
             }
-
+            
             string[] fileNamePartsWithoutExtension = Path.GetFileNameWithoutExtension(context.Tree.FilePath)
                 .Split('.')
                 .ToArray();
-            foreach (string fileNamePart in fileNamePartsWithoutExtension)
+            for (int i = 0; i < fileNamePartsWithoutExtension.Length; i += 1)
             {
-                if (NamingUtility.IsProbablyPascalCased(fileNamePart, true) == false)
+                string fileNamePart = fileNamePartsWithoutExtension[i];
+
+                if (NamingUtility.IsProbablyPascalCased(fileNamePart, true) == false
+                    && (i < fileNamePartsWithoutExtension.Length - 1
+                        || !_knownPartialFileNames.Contains(fileNamePart, StringComparer.Ordinal)))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(SourceFileNamesShouldUsePascalCasingDescriptor,
                         Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));

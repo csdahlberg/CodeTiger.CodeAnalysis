@@ -31,6 +31,18 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void NestedFileWithMultiPartPascalCasedNameDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace TestApp
+{
+    public sealed partial class App { }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("App.xaml.cs", code));
+        }
+
+        [Fact]
         public void FileWithGeneratedMultiPartNonPascalCasedNameDoesNotProduceDiagnostics()
         {
             string code = @"using System;
