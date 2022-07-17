@@ -6,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
@@ -29,7 +28,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 DiagnosticSeverity.Warning, true);
 
         private static readonly ReadOnlyCollection<string> _knownPartialFileNames
-            = new List<string> { "aspx", "xaml" }.AsReadOnly();
+            = new List<string> { "aspx", "xaml", "cshtml" }.AsReadOnly();
 
         /// <summary>
         /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.

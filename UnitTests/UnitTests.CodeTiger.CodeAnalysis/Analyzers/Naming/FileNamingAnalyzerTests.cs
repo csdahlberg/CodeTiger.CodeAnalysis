@@ -217,6 +217,44 @@ namespace ClassLibrary1
                 });
         }
 
+        [Fact]
+        public void RazorCodeBehindFileWithMatchingTypeDeclarationDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public partial class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType.cshtml.cs", code));
+        }
+
+        [Fact]
+        public void RazorCodeBehindFileWithNonMatchingTypeDeclarationProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestFile.cshtml.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1729",
+                    Message = "Source file names should match the primary type name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("TestFile.cshtml.cs", 0, 0)
+                    }
+                });
+        }
+
         protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
         {
             return new FileNamingAnalyzer();
