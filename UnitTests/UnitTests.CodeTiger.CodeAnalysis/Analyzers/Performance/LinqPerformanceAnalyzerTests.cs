@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Performance
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Performance;
+
+public class LinqPerformanceAnalyzerTests : DiagnosticVerifier
 {
-    public class LinqPerformanceAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void WhereClauseDoesNotProduceDiagnostic()
     {
-        [Fact]
-        public void WhereClauseDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing
@@ -22,13 +22,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void WhereClauseFollowedByMethodWithPredicateDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void WhereClauseFollowedByMethodWithPredicateDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing
@@ -40,13 +40,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void WhereClauseFollowedByMethodWithoutPredicateProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void WhereClauseFollowedByMethodWithoutPredicateProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing
@@ -58,22 +58,21 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1802",
+                Message = "Unnecessary where clauses should be simplified.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1802",
-                    Message = "Unnecessary where clauses should be simplified.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 27)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 27)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new LinqPerformanceAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new LinqPerformanceAnalyzer();
     }
 }

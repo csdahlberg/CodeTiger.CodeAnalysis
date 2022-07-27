@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Maintainability
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Maintainability;
+
+public class ParameterMaintainabilityAnalyzerTests : DiagnosticVerifier
 {
-    public class ParameterMaintainabilityAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ParametersWithDefaultValuesThatMatchDefaultValueForTypeDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void ParametersWithDefaultValuesThatMatchDefaultValueForTypeDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     enum Color { None, Red }
@@ -22,13 +22,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExternallyAccessibleParametersWithDefaultValuesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExternallyAccessibleParametersWithDefaultValuesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     enum Color { None, Red }
@@ -40,47 +40,46 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
-                {
-                    Id = "CT1501",
-                    Message = "Externally-accessible parameters should not have default values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 33) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1501",
-                    Message = "Externally-accessible parameters should not have default values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 58) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1501",
-                    Message = "Externally-accessible parameters should not have default values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 33) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1501",
-                    Message = "Externally-accessible parameters should not have default values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 49) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1501",
-                    Message = "Externally-accessible parameters should not have default values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 80) }
-                });
-        }
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1501",
+                Message = "Externally-accessible parameters should not have default values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 33) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1501",
+                Message = "Externally-accessible parameters should not have default values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 58) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1501",
+                Message = "Externally-accessible parameters should not have default values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 33) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1501",
+                Message = "Externally-accessible parameters should not have default values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 49) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1501",
+                Message = "Externally-accessible parameters should not have default values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 80) }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new ParameterMaintainabilityAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new ParameterMaintainabilityAnalyzer();
     }
 }

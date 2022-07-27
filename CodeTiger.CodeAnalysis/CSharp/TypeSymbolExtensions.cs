@@ -1,53 +1,52 @@
 ﻿using System.Linq;
 using Microsoft.CodeAnalysis;
 
-namespace CodeTiger.CodeAnalysis.CSharp
+namespace CodeTiger.CodeAnalysis.CSharp;
+
+internal static class TypeSymbolExtensions
 {
-    internal static class TypeSymbolExtensions
+    public static bool IsSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
     {
-        public static bool IsSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
+        return IsSameOrSubclassOf(type.BaseType, otherType);
+    }
+
+    public static bool IsSameOrSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
+    {
+        // Consider all other types a subclass of System.Object
+        if (otherType.SpecialType == SpecialType.System_Object)
         {
-            return IsSameOrSubclassOf(type.BaseType, otherType);
+            return true;
         }
 
-        public static bool IsSameOrSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
+        while (type != null)
         {
-            // Consider all other types a subclass of System.Object
-            if (otherType.SpecialType == SpecialType.System_Object)
+            if (type.Equals(otherType))
             {
                 return true;
             }
 
-            while (type != null)
+            if (otherType.Kind == SymbolKind.TypeParameter)
             {
-                if (type.Equals(otherType))
+                var otherTypeParameter = (ITypeParameterSymbol)otherType;
+                if (otherTypeParameter.ConstraintTypes.Any(type.Equals))
                 {
                     return true;
                 }
-
-                if (otherType.Kind == SymbolKind.TypeParameter)
-                {
-                    var otherTypeParameter = (ITypeParameterSymbol)otherType;
-                    if (otherTypeParameter.ConstraintTypes.Any(type.Equals))
-                    {
-                        return true;
-                    }
-                }
-
-                type = type.BaseType;
             }
 
-            return false;
+            type = type.BaseType;
         }
 
-        public static bool IsConstrainedTo(this ITypeSymbol type, ITypeSymbol otherType)
+        return false;
+    }
+
+    public static bool IsConstrainedTo(this ITypeSymbol type, ITypeSymbol otherType)
+    {
+        if (type is ITypeParameterSymbol typeParameter)
         {
-            if (type is ITypeParameterSymbol typeParameter)
-            {
-                return typeParameter.ConstraintTypes.Any(x => x.IsSameOrSubclassOf(otherType));
-            }
-
-            return false;
+            return typeParameter.ConstraintTypes.Any(x => x.IsSameOrSubclassOf(otherType));
         }
+
+        return false;
     }
 }

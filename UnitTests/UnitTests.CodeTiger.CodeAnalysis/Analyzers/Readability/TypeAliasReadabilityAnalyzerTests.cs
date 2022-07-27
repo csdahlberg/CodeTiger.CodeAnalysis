@@ -4,14 +4,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Readability
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Readability;
+
+public class TypeAliasReadabilityAnalyzerTests : DiagnosticVerifier
 {
-    public class TypeAliasReadabilityAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void BuiltInTypeAliasesDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void BuiltInTypeAliasesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -22,13 +22,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
-        }
+        VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
+    }
 
-        [Fact]
-        public void DotNetTypeNamesInDocumentationCommentsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DotNetTypeNamesInDocumentationCommentsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     /// <summary>Does something with <see cref=""Int32""/> or <see cref=""Nullable{Int32}""/> values.</summary>
@@ -40,13 +40,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
-        }
+        VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
+    }
 
-        [Fact]
-        public void ComparisonsWithLiteralOnLeftProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ComparisonsWithLiteralOnLeftProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -57,32 +57,31 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3101",
+                Message = "Built-in type aliases should be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3101",
-                    Message = "Built-in type aliases should be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 33)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 33)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3101",
+                Message = "Built-in type aliases should be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3101",
-                    Message = "Built-in type aliases should be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 51)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 51)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new TypeAliasReadabilityAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new TypeAliasReadabilityAnalyzer();
     }
 }

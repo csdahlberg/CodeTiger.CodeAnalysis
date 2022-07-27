@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class ParameterDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class ParameterDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ExtensionMethodThatUsesTheThisParameterDoesNotProduceDiagnostic()
     {
-        [Fact]
-        public void ExtensionMethodThatUsesTheThisParameterDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public static class StringExtensions
@@ -19,13 +19,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExtensionMethodThatDoesNotUseTheThisParameterProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExtensionMethodThatDoesNotUseTheThisParameterProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public static class StringExtensions
@@ -34,19 +34,18 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
-                {
-                    Id = "CT1020",
-                    Message = "Extension methods should use the 'this' parameter.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 30) }
-                });
-        }
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1020",
+                Message = "Extension methods should use the 'this' parameter.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 30) }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new ParameterDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new ParameterDesignAnalyzer();
     }
 }

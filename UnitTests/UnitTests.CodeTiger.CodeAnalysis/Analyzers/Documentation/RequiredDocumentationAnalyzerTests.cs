@@ -3,16 +3,16 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Documentation
-{
-    public class RequiredDocumentationAnalyzerTests : DiagnosticVerifier
-    {
-        protected override DocumentationMode DocumentationMode => DocumentationMode.Diagnose;
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Documentation;
 
-        [Fact]
-        public void DocumentationCommentsForMethodsWithVoidReturnTypeDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+public class RequiredDocumentationAnalyzerTests : DiagnosticVerifier
+{
+    protected override DocumentationMode DocumentationMode => DocumentationMode.Diagnose;
+
+    [Fact]
+    public void DocumentationCommentsForMethodsWithVoidReturnTypeDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -25,13 +25,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DocumentationCommentsForAsyncMethodWithTaskReturnTypeDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DocumentationCommentsForAsyncMethodWithTaskReturnTypeDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -42,13 +42,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DocumentationCommentsWithReturnsElementDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DocumentationCommentsWithReturnsElementDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -64,13 +64,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DocumentationCommentsWithoutReturnsElementProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DocumentationCommentsWithoutReturnsElementProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -84,32 +84,31 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3601",
+                Message = "Return values of externally accessible members should be documented.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3601",
-                    Message = "Return values of externally accessible members should be documented.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3601",
+                Message = "Return values of externally accessible members should be documented.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3601",
-                    Message = "Return values of externally accessible members should be documented.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 11, 33)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 11, 33)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new RequiredDocumentationAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new RequiredDocumentationAnalyzer();
     }
 }

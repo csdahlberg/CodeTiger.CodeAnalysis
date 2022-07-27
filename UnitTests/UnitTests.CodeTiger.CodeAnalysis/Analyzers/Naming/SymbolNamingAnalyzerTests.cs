@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Naming
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Naming;
+
+public class SymbolNamingAnalyzerTests : DiagnosticVerifier
 {
-    public class SymbolNamingAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void TypesWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void TypesWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class ClassType
@@ -24,13 +24,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void TypesWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypesWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class classType
@@ -44,43 +44,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1702",
+                Message = "Type names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1702",
-                    Message = "Type names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1702",
+                Message = "Type names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1702",
-                    Message = "Type names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 19)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 19)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1702",
+                Message = "Type names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1702",
-                    Message = "Type names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 17)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                }
+            });
+    }
 
-        [Fact]
-        public void ConstFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ConstFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -91,13 +91,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ConstFieldsWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ConstFieldsWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -108,43 +108,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1703",
+                Message = "Constant field names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1703",
-                    Message = "Constant field names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 26)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 26)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1703",
+                Message = "Constant field names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1703",
-                    Message = "Constant field names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 29)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 29)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1703",
+                Message = "Constant field names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1703",
-                    Message = "Constant field names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 27)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 27)
+                }
+            });
+    }
 
-        [Fact]
-        public void PrivateFieldsWithUnderscorePrefixedCamelCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PrivateFieldsWithUnderscorePrefixedCamelCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -156,13 +156,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void PrivateFieldsWithNonUnderscorePrefixedCamelCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PrivateFieldsWithNonUnderscorePrefixedCamelCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -173,43 +173,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1704",
+                Message = "Private field names should use camel casing with a leading underscore.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1704",
-                    Message = "Private field names should use camel casing with a leading underscore.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1704",
+                Message = "Private field names should use camel casing with a leading underscore.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1704",
-                    Message = "Private field names should use camel casing with a leading underscore.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 30)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 30)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1704",
+                Message = "Private field names should use camel casing with a leading underscore.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1704",
-                    Message = "Private field names should use camel casing with a leading underscore.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 28)
+                }
+            });
+    }
 
-        [Fact]
-        public void EventFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EventFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -221,13 +221,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EventFieldsWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EventFieldsWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -238,43 +238,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1705",
+                Message = "Event names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1705",
-                    Message = "Event names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 29)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 29)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1705",
+                Message = "Event names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1705",
-                    Message = "Event names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 32)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 32)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1705",
+                Message = "Event names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1705",
-                    Message = "Event names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 30)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 30)
+                }
+            });
+    }
 
-        [Fact]
-        public void DelegatesWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DelegatesWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -286,13 +286,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DelegatesWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DelegatesWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -304,53 +304,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1706",
+                Message = "Delegate names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1706",
-                    Message = "Delegate names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 30)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 30)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1706",
+                Message = "Delegate names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1706",
-                    Message = "Delegate names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 32)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 32)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1706",
+                Message = "Delegate names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1706",
-                    Message = "Delegate names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 34)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 34)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1706",
+                Message = "Delegate names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1706",
-                    Message = "Delegate names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 33)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 33)
+                }
+            });
+    }
 
-        [Fact]
-        public void PropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -366,13 +366,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void PropertiesWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PropertiesWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -388,53 +388,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1707",
-                    Message = "Property names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 23)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 23)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1707",
-                    Message = "Property names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 24)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 24)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1707",
-                    Message = "Property names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1707",
-                    Message = "Property names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 13, 24)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 13, 24)
+                }
+            });
+    }
 
-        [Fact]
-        public void PropertiesWithNamesPrefixedWithGetOrSetProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PropertiesWithNamesPrefixedWithGetOrSetProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -444,33 +444,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1718",
+                Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1718",
-                    Message = "Property names should not be prefixed with 'Get' or 'Set'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 23)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 23)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1718",
+                Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1718",
-                    Message = "Property names should not be prefixed with 'Get' or 'Set'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 24)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 24)
+                }
+            });
+    }
 
-        [Fact]
-        public void MethodsWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -482,13 +482,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MethodsWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -500,53 +500,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1708",
+                Message = "Method names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1708",
-                    Message = "Method names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1708",
+                Message = "Method names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1708",
-                    Message = "Method names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 24)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 24)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1708",
+                Message = "Method names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1708",
-                    Message = "Method names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1708",
+                Message = "Method names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1708",
-                    Message = "Method names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 24)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 24)
+                }
+            });
+    }
 
-        [Fact]
-        public void EnumerationMembersWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumerationMembersWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1
@@ -557,13 +557,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EnumerationMembersWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumerationMembersWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1
@@ -574,43 +574,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1709",
+                Message = "Enumeration member names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1709",
-                    Message = "Enumeration member names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 9)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 9)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1709",
+                Message = "Enumeration member names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1709",
-                    Message = "Enumeration member names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 9)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 9)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1709",
+                Message = "Enumeration member names should use pascal casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1709",
-                    Message = "Enumeration member names should use pascal casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 9)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 9)
+                }
+            });
+    }
 
-        [Fact]
-        public void VariablesWithCamelCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void VariablesWithCamelCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -644,13 +644,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void VariablesWithNonCamellCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void VariablesWithNonCamellCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -679,73 +679,73 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 36)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 36)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 18, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 18, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 19, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 19, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1710",
+                Message = "Variable names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1710",
-                    Message = "Variable names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 19, 36)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 19, 36)
+                }
+            });
+    }
 
-        [Fact]
-        public void VariablesWithHungarianPrefixesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void VariablesWithHungarianPrefixesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -759,53 +759,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 33)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 33)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 20)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 20)
+                }
+            });
+    }
 
-        [Fact]
-        public void ParametersWithHungarianPrefixesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParametersWithHungarianPrefixesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -816,43 +816,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 40)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 40)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 55)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 55)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 73)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 73)
+                }
+            });
+    }
 
-        [Fact]
-        public void ParametersWithCamelCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParametersWithCamelCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -863,13 +863,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ParametersWithPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParametersWithPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -880,33 +880,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1712",
+                Message = "Parameter names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1712",
-                    Message = "Parameter names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 40)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 40)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1712",
+                Message = "Parameter names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1712",
-                    Message = "Parameter names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 55)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 55)
+                }
+            });
+    }
 
-        [Fact]
-        public void ParametersWithDiscardNamesWhereAllowedDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParametersWithDiscardNamesWhereAllowedDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Collections.Concurrent;
 namespace ClassLibrary1
 {
@@ -920,13 +920,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ParameterWithDiscardNamesWhereNotAllowedProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParameterWithDiscardNamesWhereNotAllowedProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -937,23 +937,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1712",
+                Message = "Parameter names should use camel casing.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1712",
-                    Message = "Parameter names should use camel casing.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 40)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 40)
+                }
+            });
+    }
 
-        [Fact]
-        public void FieldsWithHungarianPrefixesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void FieldsWithHungarianPrefixesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -964,43 +964,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 16)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 16)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1713",
+                Message = "Hungarian notation should not be used.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1713",
-                    Message = "Hungarian notation should not be used.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 16)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 16)
+                }
+            });
+    }
 
-        [Fact]
-        public void InterfaceWithPascalCasedNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InterfaceWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public interface IInterface1
@@ -1008,13 +1008,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void InterfacesWithNonPascalCasedNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InterfacesWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public interface interface1
@@ -1031,53 +1031,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1711",
+                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1711",
-                    Message = "Interface names should use pascal casing prefixed with 'I'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1711",
+                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1711",
-                    Message = "Interface names should use pascal casing prefixed with 'I'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1711",
+                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1711",
-                    Message = "Interface names should use pascal casing prefixed with 'I'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1711",
+                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1711",
-                    Message = "Interface names should use pascal casing prefixed with 'I'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 13, 22)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 13, 22)
+                }
+            });
+    }
 
-        [Fact]
-        public void PropertiesWithNamesNotPrefixedWithContainingTypeNameDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PropertiesWithNamesNotPrefixedWithContainingTypeNameDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1094,13 +1094,13 @@ namespace ClassLibrary1
     public class Run { public string RunnerId { get; set; } }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void PropertiesWithNamesPrefixedWithContainingTypeNameProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PropertiesWithNamesPrefixedWithContainingTypeNameProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1116,53 +1116,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1714",
+                Message = "Property names should not begin with the name of the containing type.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1714",
-                    Message = "Property names should not begin with the name of the containing type.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 23)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 23)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1714",
+                Message = "Property names should not begin with the name of the containing type.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1714",
-                    Message = "Property names should not begin with the name of the containing type.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 24)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 24)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1714",
+                Message = "Property names should not begin with the name of the containing type.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1714",
-                    Message = "Property names should not begin with the name of the containing type.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 22)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 22)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1714",
+                Message = "Property names should not begin with the name of the containing type.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1714",
-                    Message = "Property names should not begin with the name of the containing type.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 13, 24)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 13, 24)
+                }
+            });
+    }
 
-        [Fact]
-        public void GenericTypeParametersWithValidNamesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GenericTypeParametersWithValidNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<T, TFactory>
@@ -1174,13 +1174,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void GenericTypeParametersWithInvalidNamesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GenericTypeParametersWithInvalidNamesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<t, TFac>
@@ -1192,53 +1192,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1715",
+                Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1715",
-                    Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 25)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 25)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1716",
+                Message = "Generic type parameter names should be descriptive.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1716",
-                    Message = "Generic type parameter names should be descriptive.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 28)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 28)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1717",
+                Message = "Generic type parameter names should not be suffixed with 'Type'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1717",
-                    Message = "Generic type parameter names should not be suffixed with 'Type'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 33)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 33)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1715",
+                Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1715",
-                    Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            });
+    }
 
-        [Fact]
-        public void TypesWithNamesPrefixedWithAbstractProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypesWithNamesPrefixedWithAbstractProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class AbstractClass1
@@ -1246,23 +1246,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1719",
+                Message = "Type names should not be prefixed with 'Abstract'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1719",
-                    Message = "Type names should not be prefixed with 'Abstract'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void TypesWithNamesPrefixedOrSuffixedWithBaseProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypesWithNamesPrefixedOrSuffixedWithBaseProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class BaseClass1
@@ -1273,33 +1273,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1720",
+                Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1720",
-                    Message = "Type names should not be prefixed or suffixed with 'Base'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1720",
+                Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1720",
-                    Message = "Type names should not be prefixed or suffixed with 'Base'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void AttributeTypesWithNamesSuffixedWithAttributeDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AttributeTypesWithNamesSuffixedWithAttributeDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstAttribute : Attribute
@@ -1310,13 +1310,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AttributeTypesWithNamesNotSuffixedWithAttributeProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AttributeTypesWithNamesNotSuffixedWithAttributeProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstAttr : Attribute
@@ -1327,33 +1327,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1721",
+                Message = "Attribute type names should be suffixed with 'Attribute'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1721",
-                    Message = "Attribute type names should be suffixed with 'Attribute'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1721",
+                Message = "Attribute type names should be suffixed with 'Attribute'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1721",
-                    Message = "Attribute type names should be suffixed with 'Attribute'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void NonAttributeTypesWithNamesNotSuffixedWithAttributeDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonAttributeTypesWithNamesNotSuffixedWithAttributeDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstThing
@@ -1364,13 +1364,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NonAttributeTypesWithNamesSuffixedWithAttributeProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonAttributeTypesWithNamesSuffixedWithAttributeProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstAttribute
@@ -1381,33 +1381,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1722",
+                Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1722",
-                    Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1722",
+                Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1722",
-                    Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void ExceptionTypesWithNamesSuffixedWithExceptionDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExceptionTypesWithNamesSuffixedWithExceptionDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstException : Exception
@@ -1418,13 +1418,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExceptionTypesWithNamesNotSuffixedWithExceptionProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExceptionTypesWithNamesNotSuffixedWithExceptionProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstAttr : Exception
@@ -1435,33 +1435,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1723",
+                Message = "Exception type names should be suffixed with 'Exception'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1723",
-                    Message = "Exception type names should be suffixed with 'Exception'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1723",
+                Message = "Exception type names should be suffixed with 'Exception'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1723",
-                    Message = "Exception type names should be suffixed with 'Exception'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void NonExceptionTypesWithNamesNotSuffixedWithExceptionDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonExceptionTypesWithNamesNotSuffixedWithExceptionDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstThing
@@ -1472,13 +1472,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NonExceptionTypesWithNamesSuffixedWithExceptionProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonExceptionTypesWithNamesSuffixedWithExceptionProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstException
@@ -1489,33 +1489,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1724",
+                Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1724",
-                    Message = "Non-exception type names should not be suffixed with 'Exception'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1724",
+                Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1724",
-                    Message = "Non-exception type names should not be suffixed with 'Exception'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void EventArgsTypesWithNamesSuffixedWithEventArgsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EventArgsTypesWithNamesSuffixedWithEventArgsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstEventArgs : EventArgs
@@ -1526,13 +1526,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EventArgsTypesWithNamesNotSuffixedWithEventArgsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EventArgsTypesWithNamesNotSuffixedWithEventArgsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstArgs : EventArgs
@@ -1543,33 +1543,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1725",
+                Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1725",
-                    Message = "EventArgs type names should be suffixed with 'EventArgs'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1725",
+                Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1725",
-                    Message = "EventArgs type names should be suffixed with 'EventArgs'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void NonEventArgsTypesWithNamesNotSuffixedWithEventArgsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonEventArgsTypesWithNamesNotSuffixedWithEventArgsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstThing
@@ -1580,13 +1580,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NonEventArgsTypesWithNamesSuffixedWithEventArgsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonEventArgsTypesWithNamesSuffixedWithEventArgsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FirstEventArgs
@@ -1597,33 +1597,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1726",
+                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1726",
-                    Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1726",
+                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1726",
-                    Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 7, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void MethodsReturningATaskWithNamesSuffixedWithAsyncDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsReturningATaskWithNamesSuffixedWithAsyncDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -1636,13 +1636,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MethodsReturningATaskWithNamesNotSuffixedWithAsyncProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsReturningATaskWithNamesNotSuffixedWithAsyncProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -1654,33 +1654,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1727",
+                Message = "Methods returning a Task should be suffixed with 'Async'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1727",
-                    Message = "Methods returning a Task should be suffixed with 'Async'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1727",
+                Message = "Methods returning a Task should be suffixed with 'Async'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1727",
-                    Message = "Methods returning a Task should be suffixed with 'Async'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 30)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 30)
+                }
+            });
+    }
 
-        [Fact]
-        public void MethodsNotReturningATaskWithNamesNotSuffixedWithAsyncDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsNotReturningATaskWithNamesNotSuffixedWithAsyncDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -1692,13 +1692,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MethodsNotReturningATaskWithNamesSuffixedWithAsyncProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodsNotReturningATaskWithNamesSuffixedWithAsyncProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -1710,124 +1710,123 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1728",
+                Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1728",
-                    Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1728",
+                Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1728",
-                    Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 24)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 24)
+                }
+            });
+    }
 
-        [Fact]
-        public void ClassWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
-        {
-            string code = @"namespace Test
+    [Fact]
+    public void ClassWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+    {
+        string code = @"namespace Test
 {
     public class Test
     {
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1730",
+                Message = "Type names should not match their containing namespace name.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1730",
-                    Message = "Type names should not match their containing namespace name.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 3, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 3, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void StructWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
-        {
-            string code = @"namespace Test
+    [Fact]
+    public void StructWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+    {
+        string code = @"namespace Test
 {
     public struct Test
     {
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1730",
+                Message = "Type names should not match their containing namespace name.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1730",
-                    Message = "Type names should not match their containing namespace name.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 3, 19)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 3, 19)
+                }
+            });
+    }
 
-        [Fact]
-        public void EnumWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
-        {
-            string code = @"namespace Test
+    [Fact]
+    public void EnumWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+    {
+        string code = @"namespace Test
 {
     public enum Test
     {
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1730",
+                Message = "Type names should not match their containing namespace name.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1730",
-                    Message = "Type names should not match their containing namespace name.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 3, 17)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 3, 17)
+                }
+            });
+    }
 
-        [Fact]
-        public void InterfaceWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
-        {
-            string code = @"namespace ITest
+    [Fact]
+    public void InterfaceWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
+    {
+        string code = @"namespace ITest
 {
     public interface ITest
     {
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1730",
+                Message = "Type names should not match their containing namespace name.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1730",
-                    Message = "Type names should not match their containing namespace name.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 3, 22)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 3, 22)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new SymbolNamingAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new SymbolNamingAnalyzer();
     }
 }

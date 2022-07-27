@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.3</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <DocumentationFile>bin\$(Configuration)\netstandard1.3\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
   </PropertyGroup>
 

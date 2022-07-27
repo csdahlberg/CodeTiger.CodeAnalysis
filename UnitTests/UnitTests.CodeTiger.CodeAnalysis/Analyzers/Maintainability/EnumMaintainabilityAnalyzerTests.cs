@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Maintainability
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Maintainability;
+
+public class EnumMaintainabilityAnalyzerTests : DiagnosticVerifier
 {
-    public class EnumMaintainabilityAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void EnumValuesForNonFlagsEnumsDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void EnumValuesForNonFlagsEnumsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Color
@@ -24,13 +24,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EnumValuesForFlagsEnumsThatAreSingleBitsOrCombinationsOfOtherValuesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumValuesForFlagsEnumsThatAreSingleBitsOrCombinationsOfOtherValuesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     [Flags]
@@ -45,13 +45,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EnumValuesForFlagsEnumsThatAreNotSingleBitsOrCombinationsOfOtherValuesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumValuesForFlagsEnumsThatAreNotSingleBitsOrCombinationsOfOtherValuesProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     [Flags]
@@ -66,33 +66,32 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
-                {
-                    Id = "CT1505",
-                    Message = "Composite values in Flags enumerations should equal a combination of other values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 9) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1505",
-                    Message = "Composite values in Flags enumerations should equal a combination of other values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 9) }
-                },
-                new DiagnosticResult
-                {
-                    Id = "CT1505",
-                    Message = "Composite values in Flags enumerations should equal a combination of other values.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 9) }
-                });
-        }
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1505",
+                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 9) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1505",
+                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 9) }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1505",
+                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 9) }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new EnumMaintainabilityAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new EnumMaintainabilityAnalyzer();
     }
 }

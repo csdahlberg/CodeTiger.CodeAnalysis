@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Usage
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Usage;
+
+public class StringUsageAnalyzerTests : DiagnosticVerifier
 {
-    public class StringUsageAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void EmptyStringLiteralDoesNotProduceDiagnostic()
     {
-        [Fact]
-        public void EmptyStringLiteralDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -22,13 +22,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithUnbracedLocalVariableDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithUnbracedLocalVariableDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -41,13 +41,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithBracedLocalVariableProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithBracedLocalVariableProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -60,23 +60,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2208",
+                Message = "Interpolated strings require a leading '$' character.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2208",
-                    Message = "Interpolated strings require a leading '$' character.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 28)
+                }
+            });
+    }
 
-        [Fact]
-        public void StringLiteralWithUnbracedFieldDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithUnbracedFieldDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -89,13 +89,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithBracedFieldProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithBracedFieldProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -108,23 +108,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2208",
+                Message = "Interpolated strings require a leading '$' character.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2208",
-                    Message = "Interpolated strings require a leading '$' character.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 28)
+                }
+            });
+    }
 
-        [Fact]
-        public void StringLiteralWithUnbracedParameterDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithUnbracedParameterDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -136,13 +136,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithBracedParameterProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithBracedParameterProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -154,23 +154,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2208",
+                Message = "Interpolated strings require a leading '$' character.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2208",
-                    Message = "Interpolated strings require a leading '$' character.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 28)
+                }
+            });
+    }
 
-        [Fact]
-        public void StringLiteralWithUnbracedNameofExpressionDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithUnbracedNameofExpressionDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -182,13 +182,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithBracedNameofExpressionProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithBracedNameofExpressionProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -200,23 +200,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2208",
+                Message = "Interpolated strings require a leading '$' character.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2208",
-                    Message = "Interpolated strings require a leading '$' character.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 28)
+                }
+            });
+    }
 
-        [Fact]
-        public void StringLiteralWithUnbracedMemberAccessExpressionDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithUnbracedMemberAccessExpressionDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -229,13 +229,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StringLiteralWithBracedMemberAccessExpressionProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StringLiteralWithBracedMemberAccessExpressionProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class TestClass
@@ -248,22 +248,21 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2208",
+                Message = "Interpolated strings require a leading '$' character.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2208",
-                    Message = "Interpolated strings require a leading '$' character.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 28)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new StringUsageAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new StringUsageAnalyzer();
     }
 }

@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class AttributeDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class AttributeDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void AttributeWithAttributeUsageAttributeDoesNotProduceDiagnostic()
     {
-        [Fact]
-        public void AttributeWithAttributeUsageAttributeDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     [AttributeUsage(AttributeTargets.Assembly)]
@@ -19,13 +19,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AttributeWithoutAttributeUsageAttributeProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AttributeWithoutAttributeUsageAttributeProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class FooAttribute : Attribute
@@ -33,19 +33,18 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
-                {
-                    Id = "CT1012",
-                    Message = "Attribute classes should include an AttributeUsage attribute.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 4, 18) }
-                });
-        }
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1012",
+                Message = "Attribute classes should include an AttributeUsage attribute.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 4, 18) }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new AttributeDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new AttributeDesignAnalyzer();
     }
 }

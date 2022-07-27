@@ -6,63 +6,62 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CodeTiger.CodeAnalysis.Analyzers.Usage
+namespace CodeTiger.CodeAnalysis.Analyzers.Usage;
+
+/// <summary>
+/// Analyzes usage of the <see cref="Debug"/> class.
+/// </summary>
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public class DebugUsageAnalyzer : DiagnosticAnalyzer
 {
+    internal static readonly DiagnosticDescriptor CallsToDebugAssertShouldIncludeAMessageDescriptor
+        = new DiagnosticDescriptor("CT2202", "Calls to the Debug.Assert method should include a message.",
+            "Calls to the Debug.Assert method should include a message.", "CodeTiger.Usage",
+            DiagnosticSeverity.Warning, true);
+
     /// <summary>
-    /// Analyzes usage of the <see cref="Debug"/> class.
+    /// Returns a set of descriptors for the diagnostics that this analyzer is capable of producing.
     /// </summary>
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class DebugUsageAnalyzer : DiagnosticAnalyzer
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        => ImmutableArray.Create(CallsToDebugAssertShouldIncludeAMessageDescriptor);
+
+    /// <summary>
+    /// Registers actions in an analysis context.
+    /// </summary>
+    /// <param name="context">The context to register actions in.</param>
+    /// <remarks>This method should only be called once, at the start of a session.</remarks>
+    public override void Initialize(AnalysisContext context)
     {
-        internal static readonly DiagnosticDescriptor CallsToDebugAssertShouldIncludeAMessageDescriptor
-            = new DiagnosticDescriptor("CT2202", "Calls to the Debug.Assert method should include a message.",
-                "Calls to the Debug.Assert method should include a message.", "CodeTiger.Usage",
-                DiagnosticSeverity.Warning, true);
+        Guard.ArgumentIsNotNull(nameof(context), context);
 
-        /// <summary>
-        /// Returns a set of descriptors for the diagnostics that this analyzer is capable of producing.
-        /// </summary>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-            => ImmutableArray.Create(CallsToDebugAssertShouldIncludeAMessageDescriptor);
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+        context.EnableConcurrentExecution();
 
-        /// <summary>
-        /// Registers actions in an analysis context.
-        /// </summary>
-        /// <param name="context">The context to register actions in.</param>
-        /// <remarks>This method should only be called once, at the start of a session.</remarks>
-        public override void Initialize(AnalysisContext context)
+        context.RegisterSemanticModelAction(AnalyzeDebugUsage);
+    }
+
+    private static void AnalyzeDebugUsage(SemanticModelAnalysisContext context)
+    {
+        var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
+        var debugType = context.SemanticModel.Compilation
+            .GetTypeByMetadataName(typeof(Debug).FullName);
+
+        var invocations = root.DescendantNodes().OfType<InvocationExpressionSyntax>();
+
+        foreach (var invocation in invocations
+            .Where(x => x.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression))
         {
-            Guard.ArgumentIsNotNull(nameof(context), context);
+            var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
-
-            context.RegisterSemanticModelAction(AnalyzeDebugUsage);
-        }
-
-        private static void AnalyzeDebugUsage(SemanticModelAnalysisContext context)
-        {
-            var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
-            var debugType = context.SemanticModel.Compilation
-                .GetTypeByMetadataName(typeof(Debug).FullName);
-
-            var invocations = root.DescendantNodes().OfType<InvocationExpressionSyntax>();
-
-            foreach (var invocation in invocations
-                .Where(x => x.Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression))
+            var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
+                context.CancellationToken);
+            if (targetType.Type == debugType && memberAccessExpression?.Name?.Identifier.ValueText == "Assert")
             {
-                var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
-
-                var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
-                    context.CancellationToken);
-                if (targetType.Type == debugType && memberAccessExpression?.Name?.Identifier.ValueText == "Assert")
+                // NOTE: This assumes that the message is always the second argument.
+                if (invocation.ArgumentList.Arguments.Count < 2)
                 {
-                    // NOTE: This assumes that the message is always the second argument.
-                    if (invocation.ArgumentList.Arguments.Count < 2)
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            CallsToDebugAssertShouldIncludeAMessageDescriptor, invocation.GetLocation()));
-                    }
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        CallsToDebugAssertShouldIncludeAMessageDescriptor, invocation.GetLocation()));
                 }
             }
         }

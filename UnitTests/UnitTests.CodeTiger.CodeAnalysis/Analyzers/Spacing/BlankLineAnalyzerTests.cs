@@ -3,15 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Spacing
-{
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Spacing;
 
-    public class BlankLineAnalyzerTests : DiagnosticVerifier
+public class BlankLineAnalyzerTests : DiagnosticVerifier
+{
+    [Fact]
+    public void FileThatDoesNotStartWithBlankLineDoesNotProduceDiagnostic()
     {
-        [Fact]
-        public void FileThatDoesNotStartWithBlankLineDoesNotProduceDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
@@ -19,13 +18,13 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Spacing
 }
 ";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void FileThatStartsWithBlankLineProducesDiagnostic()
-        {
-            string code = @"
+    [Fact]
+    public void FileThatStartsWithBlankLineProducesDiagnostic()
+    {
+        string code = @"
 namespace ClassLibrary1
 {
     public class TestClass
@@ -34,23 +33,23 @@ namespace ClassLibrary1
 }
 ";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3000",
+                Message = "Files should not begin with blank lines.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3000",
-                    Message = "Files should not begin with blank lines.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 0, 0)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 0, 0)
+                }
+            });
+    }
 
-        [Fact]
-        public void FileThatEndsWithBlankLineDoesNotProduceDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+    [Fact]
+    public void FileThatEndsWithBlankLineDoesNotProduceDiagnostic()
+    {
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
@@ -58,36 +57,36 @@ namespace ClassLibrary1
 }
 ";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void FileThatDoesNotEndWithBlankLineProducesDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+    [Fact]
+    public void FileThatDoesNotEndWithBlankLineProducesDiagnostic()
+    {
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3001",
+                Message = "Files should end with a blank line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3001",
-                    Message = "Files should end with a blank line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 0)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 0)
+                }
+            });
+    }
 
-        [Fact]
-        public void CodeThatDoesNotHaveConsecutiveBlankLinesDoesNotProduceDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+    [Fact]
+    public void CodeThatDoesNotHaveConsecutiveBlankLinesDoesNotProduceDiagnostic()
+    {
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
@@ -98,13 +97,13 @@ namespace ClassLibrary1
 }
 ";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void CodeThatHasConsecutiveBlankLinesInStringLiteralsDoesNotProduceDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+    [Fact]
+    public void CodeThatHasConsecutiveBlankLinesInStringLiteralsDoesNotProduceDiagnostic()
+    {
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
@@ -124,13 +123,13 @@ namespace ClassLibrary1
 }
 ";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void CodeThatHasConsecutiveBlankLinesProducesDiagnostic()
-        {
-            string code = @"namespace ClassLibrary1
+    [Fact]
+    public void CodeThatHasConsecutiveBlankLinesProducesDiagnostic()
+    {
+        string code = @"namespace ClassLibrary1
 {
     public class TestClass
     {
@@ -148,32 +147,31 @@ namespace ClassLibrary1
 }
 ";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3002",
+                Message = "Code should not contain consecutive blank lines.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3002",
-                    Message = "Code should not contain consecutive blank lines.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 0)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 0)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3002",
+                Message = "Code should not contain consecutive blank lines.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3002",
-                    Message = "Code should not contain consecutive blank lines.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 0)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 12, 0)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new BlankLineAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new BlankLineAnalyzer();
     }
 }

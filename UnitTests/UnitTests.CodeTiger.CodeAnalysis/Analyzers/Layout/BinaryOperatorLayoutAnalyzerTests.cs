@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
+
+public class BinaryOperatorLayoutAnalyzerTests : DiagnosticVerifier
 {
-    public class BinaryOperatorLayoutAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void SingleLineExpressionsDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void SingleLineExpressionsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 using System.Linq;
 namespace ClassLibrary1.Namespace1
 {
@@ -32,13 +32,13 @@ namespace ClassLibrary1.Namespace1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiLineExpressionsSplitBeforeDotOrMemberAccessTokensDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiLineExpressionsSplitBeforeDotOrMemberAccessTokensDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System
     .Linq;
 namespace ClassLibrary1
@@ -66,13 +66,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiLineExpressionsSplitAfterDotOrMemberAccessTokensProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiLineExpressionsSplitAfterDotOrMemberAccessTokensProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.
     Linq;
 namespace ClassLibrary1.
@@ -100,73 +100,73 @@ namespace ClassLibrary1.
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 2, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 2, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 24)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 24)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 19)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 12, 19)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 13, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 13, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 19, 30)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 19, 30)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3530",
+                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3530",
-                    Message = "Multi-line expressions should not be split after a dot or member access token.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 20, 22)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 20, 22)
+                }
+            });
+    }
 
-        [Fact]
-        public void AdditionOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AdditionOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -179,13 +179,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AdditionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AdditionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -200,13 +200,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AdditionOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AdditionOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -221,33 +221,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void SubtractionOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractionOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -260,13 +260,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SubtractionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -281,13 +281,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SubtractionOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractionOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -302,33 +302,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void MultiplicationOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplicationOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -341,13 +341,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiplicationOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplicationOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -362,13 +362,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiplicationOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplicationOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -383,33 +383,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void DivisionOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivisionOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -422,13 +422,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DivisionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivisionOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -443,13 +443,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DivisionOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivisionOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -464,33 +464,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void ModuloOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -503,13 +503,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ModuloOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -524,13 +524,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ModuloOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -545,33 +545,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LessThanOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -584,13 +584,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LessThanOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -605,13 +605,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LessThanOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -626,33 +626,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void GreaterThanOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -665,13 +665,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void GreaterThanOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -686,13 +686,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void GreaterThanOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -707,33 +707,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LessThanOrEqualToOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOrEqualToOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -746,13 +746,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LessThanOrEqualToOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOrEqualToOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -767,13 +767,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LessThanOrEqualToOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LessThanOrEqualToOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -788,33 +788,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void GreaterThanOrEqualToOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOrEqualToOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -827,13 +827,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void GreaterThanOrEqualToOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOrEqualToOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -848,13 +848,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void GreaterThanOrEqualToOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void GreaterThanOrEqualToOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -869,33 +869,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void EqualsOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EqualsOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -908,13 +908,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EqualsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EqualsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -929,13 +929,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EqualsOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EqualsOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -950,33 +950,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void NotEqualsOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NotEqualsOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -989,13 +989,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NotEqualsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NotEqualsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1010,13 +1010,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NotEqualsOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NotEqualsOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1031,33 +1031,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void IsOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void IsOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1070,13 +1070,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void IsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void IsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1091,13 +1091,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void IsOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void IsOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1112,33 +1112,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 55)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 55)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 38)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 38)
+                }
+            });
+    }
 
-        [Fact]
-        public void AsOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AsOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1151,13 +1151,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AsOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1172,13 +1172,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AsOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AsOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1193,33 +1193,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LeftShiftOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1232,13 +1232,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LeftShiftOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1253,13 +1253,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LeftShiftOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1274,33 +1274,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void RightShiftOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1313,13 +1313,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void RightShiftOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1334,13 +1334,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void RightShiftOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1355,33 +1355,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void BitwiseAndOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseAndOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1394,13 +1394,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void BitwiseAndOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseAndOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1415,13 +1415,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void BitwiseAndOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseAndOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1436,33 +1436,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void BitwiseOrOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseOrOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1475,13 +1475,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void BitwiseOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1496,13 +1496,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void BitwiseOrOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void BitwiseOrOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1517,33 +1517,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LogicalAndOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalAndOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1556,13 +1556,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LogicalAndOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalAndOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1577,13 +1577,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LogicalAndOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalAndOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1598,33 +1598,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LogicalOrOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalOrOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1637,13 +1637,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LogicalOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1658,13 +1658,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LogicalOrOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LogicalOrOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1679,33 +1679,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void ExclusiveOrOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1718,13 +1718,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExclusiveOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1739,13 +1739,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExclusiveOrOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1760,33 +1760,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void CoalesceOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CoalesceOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1799,13 +1799,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void CoalesceOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CoalesceOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1820,13 +1820,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void CoalesceOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CoalesceOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1841,33 +1841,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 48)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 48)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 37)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 37)
+                }
+            });
+    }
 
-        [Fact]
-        public void ConditionalOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ConditionalOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1880,13 +1880,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ConditionalOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ConditionalOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1903,13 +1903,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ConditionalOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ConditionalOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1926,53 +1926,53 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 45)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 45)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 15)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 15)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 11, 32)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 19)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 12, 19)
+                }
+            });
+    }
 
-        [Fact]
-        public void SimpleAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SimpleAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1985,13 +1985,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SimpleAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SimpleAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2006,13 +2006,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SimpleAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SimpleAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2027,33 +2027,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void AddAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AddAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2066,13 +2066,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AddAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AddAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2087,13 +2087,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AddAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AddAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2108,33 +2108,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void SubtractAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2147,13 +2147,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SubtractAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2168,13 +2168,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void SubtractAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void SubtractAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2189,33 +2189,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void MultiplyAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplyAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2228,13 +2228,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiplyAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplyAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2249,13 +2249,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MultiplyAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MultiplyAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2270,33 +2270,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void DivideAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivideAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2309,13 +2309,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DivideAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivideAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2330,13 +2330,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void DivideAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void DivideAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2351,33 +2351,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void ModuloAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2390,13 +2390,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ModuloAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2411,13 +2411,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ModuloAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ModuloAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2432,33 +2432,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void AndAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AndAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2471,13 +2471,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AndAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AndAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2492,13 +2492,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AndAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AndAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2513,33 +2513,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void OrAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void OrAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2552,13 +2552,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void OrAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void OrAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2573,13 +2573,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void OrAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void OrAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2594,33 +2594,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void ExclusiveOrAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2633,13 +2633,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExclusiveOrAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2654,13 +2654,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ExclusiveOrAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ExclusiveOrAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2675,33 +2675,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LeftShiftAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2714,13 +2714,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LeftShiftAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2735,13 +2735,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LeftShiftAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LeftShiftAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2756,33 +2756,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void RightShiftAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftAssignmentOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2795,13 +2795,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void RightShiftAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftAssignmentOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2816,13 +2816,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void RightShiftAssignmentOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void RightShiftAssignmentOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2837,33 +2837,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 42)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 31)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                }
+            });
+    }
 
-        [Fact]
-        public void LambdaOperatorsOnSameLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LambdaOperatorsOnSameLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2877,13 +2877,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LambdaOperatorsStartingOnNewLineDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LambdaOperatorsStartingOnNewLineDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2900,13 +2900,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void LambdaOperatorsEndingALineProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LambdaOperatorsEndingALineProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2923,43 +2923,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 56)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 56)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 26)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 26)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3540",
+                Message = "Multi-line expressions should not be split after a binary operator.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3540",
-                    Message = "Multi-line expressions should not be split after a binary operator.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 39)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 12, 39)
+                }
+            });
+    }
 
-        [Fact]
-        public void LambdaOperatorsEndingALineFollowedByACodeBlockDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void LambdaOperatorsEndingALineFollowedByACodeBlockDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -2978,12 +2978,11 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new BinaryOperatorLayoutAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new BinaryOperatorLayoutAnalyzer();
     }
 }

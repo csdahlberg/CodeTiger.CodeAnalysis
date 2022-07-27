@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class StaticDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class StaticDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ClassWithNoMembersDoesNotProduceDiagnostics()
     {
-        [Fact]
-        public void ClassWithNoMembersDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -18,13 +18,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassImplementingInterfaceAndWithStaticMethodDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassImplementingInterfaceAndWithStaticMethodDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1 : IDisposable
@@ -33,13 +33,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithBaseClassAndWithStaticMethodDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithBaseClassAndWithStaticMethodDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1 : Task
@@ -48,13 +48,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithStaticMethodProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithStaticMethodProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -63,23 +63,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1000",
+                Message = "Classes with all static members should be static.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1000",
-                    Message = "Classes with all static members should be static.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void ClassWithStaticPropertyProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithStaticPropertyProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -88,22 +88,21 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1000",
+                Message = "Classes with all static members should be static.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1000",
-                    Message = "Classes with all static members should be static.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new StaticDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new StaticDesignAnalyzer();
     }
 }

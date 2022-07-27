@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CodeTiger.CodeAnalysis.Analyzers.Layout;
+﻿using CodeTiger.CodeAnalysis.Analyzers.Layout;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
+
+public class CommaLayoutAnalyzerTests : DiagnosticVerifier
 {
-    public class CommaLayoutAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        [Fact]
-        public void ParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -34,13 +29,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ParameterListsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ParameterListsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -61,33 +56,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 15, 13)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 15, 13)
+                }
+            });
+    }
 
-        [Fact]
-        public void ArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 using System.Globalization;
 namespace ClassLibrary1
 {
@@ -101,13 +96,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ArgumentListsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ArgumentListsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 using System.Globalization;
 namespace ClassLibrary1
 {
@@ -123,33 +118,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 12, 17)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 12, 17)
+                }
+            });
+    }
 
-        [Fact]
-        public void TypeParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<TFirst, TSecond,
@@ -158,13 +153,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void TypeParameterListsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeParameterListsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<TFirst
@@ -174,33 +169,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 5, 9)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 5, 9)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 9)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 6, 9)
+                }
+            });
+    }
 
-        [Fact]
-        public void TypeParameterConstraintClausesWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeParameterConstraintClausesWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<TFirst, TSecond, TThird>
@@ -210,13 +205,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void TypeParameterConstraintClausesWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeParameterConstraintClausesWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1<TFirst, TSecond, TThird>
@@ -228,33 +223,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 6, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 6, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 13)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 13)
+                }
+            });
+    }
 
-        [Fact]
-        public void TypeArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -263,13 +258,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void TypeArgumentListsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void TypeArgumentListsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -281,43 +276,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 13)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 9, 13)
+                }
+            });
+    }
 
-        [Fact]
-        public void EnumMemberDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumMemberDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1
@@ -328,13 +323,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EnumMemberDeclarationsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumMemberDeclarationsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1
@@ -347,43 +342,43 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 7, 9)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 7, 9)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 9)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 9)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 9)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 9)
+                }
+            });
+    }
 
-        [Fact]
-        public void VariableDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void VariableDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -395,13 +390,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void VariableDeclarationsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void VariableDeclarationsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -415,33 +410,33 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 17)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                }
+            });
+    }
 
-        [Fact]
-        public void InitializerExpressionsWithCommasOnSameLineDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InitializerExpressionsWithCommasOnSameLineDoNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -491,13 +486,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void InitializerExpressionsWithCommasOnNewLinesProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InitializerExpressionsWithCommasOnNewLinesProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -561,262 +556,261 @@ namespace ClassLibrary1
     }
 }"; 
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 14, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 14, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 15, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 15, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 16, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 16, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 19, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 19, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 20, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 20, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 24, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 24, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 25, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 25, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 26, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 26, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 31, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 31, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 32, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 32, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 33, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 33, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 38, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 38, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 39, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 39, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 40, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 40, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 41, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 41, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 42, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 42, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 43, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 43, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 49, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 49, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 51, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 51, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 53, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 53, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 55, 17)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 55, 17)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 57, 21)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 57, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3537",
-                    Message = "Commas should be on the same line as the preceding element.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 59, 17)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 59, 17)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new CommaLayoutAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new CommaLayoutAnalyzer();
     }
 }

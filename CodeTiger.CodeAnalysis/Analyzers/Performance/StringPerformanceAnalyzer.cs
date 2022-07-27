@@ -5,183 +5,181 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CodeTiger.CodeAnalysis.Analyzers.Performance
+namespace CodeTiger.CodeAnalysis.Analyzers.Performance;
+
+/// <summary>
+/// Analyzes string operations for performance issues.
+/// </summary>
+[DiagnosticAnalyzer(LanguageNames.CSharp)]
+public class StringPerformanceAnalyzer : DiagnosticAnalyzer
 {
+    internal static readonly DiagnosticDescriptor
+        StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor
+        = new DiagnosticDescriptor("CT1800", "String.Equals should be used for case insensitive equality checks.",
+            "String.Equals should be used for case insensitive equality checks.", "CodeTiger.Performance",
+            DiagnosticSeverity.Warning, true);
+    internal static readonly DiagnosticDescriptor
+        StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor
+        = new DiagnosticDescriptor("CT1801",
+            "StringBuilder should be used instead of multiple string concatenations.",
+            "StringBuilder should be used instead of multiple string concatenations.", "CodeTiger.Performance",
+            DiagnosticSeverity.Warning, true);
+
     /// <summary>
-    /// Analyzes string operations for performance issues.
+    /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
     /// </summary>
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class StringPerformanceAnalyzer : DiagnosticAnalyzer
+    public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
     {
-        internal static readonly DiagnosticDescriptor
-            StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor
-            = new DiagnosticDescriptor(
-                "CT1800", "String.Equals should be used for case insensitive equality checks.",
-                "String.Equals should be used for case insensitive equality checks.", "CodeTiger.Performance",
-                DiagnosticSeverity.Warning, true);
-        internal static readonly DiagnosticDescriptor
-            StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor
-            = new DiagnosticDescriptor(
-                "CT1801", "StringBuilder should be used instead of multiple string concatenations.",
-                "StringBuilder should be used instead of multiple string concatenations.",
-                "CodeTiger.Performance", DiagnosticSeverity.Warning, true);
-
-        /// <summary>
-        /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.
-        /// </summary>
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        get
         {
-            get
+            return ImmutableArray.Create(StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor,
+                StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor);
+        }
+    }
+
+    /// <summary>
+    /// Registers actions in an analysis context.
+    /// </summary>
+    /// <param name="context">The context to register actions in.</param>
+    /// <remarks>This method should only be called once, at the start of a session.</remarks>
+    public override void Initialize(AnalysisContext context)
+    {
+        Guard.ArgumentIsNotNull(nameof(context), context);
+
+        context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
+        context.EnableConcurrentExecution();
+
+        context.RegisterSemanticModelAction(AnalyzeStringComparisons);
+        context.RegisterSemanticModelAction(AnalyzeStringConcatenation);
+    }
+
+    private static void AnalyzeStringComparisons(SemanticModelAnalysisContext context)
+    {
+        var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
+
+        foreach (var node in root.DescendantNodes())
+        {
+            switch (node.Kind())
             {
-                return ImmutableArray.Create(StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor,
-                    StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor);
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
+                    AnalyzeBinaryExpressionForStringComparisons(context, (BinaryExpressionSyntax)node);
+                    break;
+            }
+        }
+    }
+
+    private static void AnalyzeStringConcatenation(SemanticModelAnalysisContext context)
+    {
+        var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
+
+        foreach (var assignmentExpression in root.DescendantNodes().OfType<AssignmentExpressionSyntax>())
+        {
+            if (IsDefinitelyStringConcatenation(context, assignmentExpression)
+                && IsWithinLoop(assignmentExpression))
+            {
+                context.ReportDiagnostic(Diagnostic.Create(
+                    StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor,
+                    assignmentExpression.GetLocation()));
             }
         }
 
-        /// <summary>
-        /// Registers actions in an analysis context.
-        /// </summary>
-        /// <param name="context">The context to register actions in.</param>
-        /// <remarks>This method should only be called once, at the start of a session.</remarks>
-        public override void Initialize(AnalysisContext context)
+        // TODO: Improve this to identify cases where concatenation is done many times without any loops.
+    }
+
+    private static bool IsDefinitelyStringConcatenation(SemanticModelAnalysisContext context,
+        AssignmentExpressionSyntax assignmentExpression)
+    {
+        var typeInfo = context.SemanticModel.GetTypeInfo(assignmentExpression.Left, context.CancellationToken);
+        if (typeInfo.Type?.SpecialType != SpecialType.System_String)
         {
-            Guard.ArgumentIsNotNull(nameof(context), context);
-
-            context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
-            context.EnableConcurrentExecution();
-
-            context.RegisterSemanticModelAction(AnalyzeStringComparisons);
-            context.RegisterSemanticModelAction(AnalyzeStringConcatenation);
+            return false;
         }
 
-        private static void AnalyzeStringComparisons(SemanticModelAnalysisContext context)
+        if (assignmentExpression.Kind() == SyntaxKind.AddAssignmentExpression)
         {
-            var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
-
-            foreach (var node in root.DescendantNodes())
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.EqualsExpression:
-                    case SyntaxKind.NotEqualsExpression:
-                        AnalyzeBinaryExpressionForStringComparisons(context, (BinaryExpressionSyntax)node);
-                        break;
-                }
-            }
+            return true;
+        }
+        
+        if (assignmentExpression.Left is IdentifierNameSyntax identifier)
+        {
+            return assignmentExpression.Kind() == SyntaxKind.SimpleAssignmentExpression
+                && assignmentExpression.Right.Kind() == SyntaxKind.AddExpression
+                && assignmentExpression.Left.Kind() == SyntaxKind.IdentifierName
+                && ((IdentifierNameSyntax)assignmentExpression.Left) == identifier;
         }
 
-        private static void AnalyzeStringConcatenation(SemanticModelAnalysisContext context)
-        {
-            var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
+        return false;
+    }
 
-            foreach (var assignmentExpression in root.DescendantNodes().OfType<AssignmentExpressionSyntax>())
+    private static bool IsWithinLoop(ExpressionSyntax expression)
+    {
+        var parent = expression.Parent;
+        while (parent != null)
+        {
+            switch (parent.Kind())
             {
-                if (IsDefinitelyStringConcatenation(context, assignmentExpression)
-                    && IsWithinLoop(assignmentExpression))
-                {
-                    context.ReportDiagnostic(Diagnostic.Create(
-                        StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor,
-                        assignmentExpression.GetLocation()));
-                }
+                case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForStatement:
+                    return true;
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                    return false;
             }
 
-            // TODO: Improve this to identify cases where concatenation is done many times without any loops.
+            parent = parent.Parent;
         }
 
-        private static bool IsDefinitelyStringConcatenation(SemanticModelAnalysisContext context,
-            AssignmentExpressionSyntax assignmentExpression)
-        {
-            var typeInfo = context.SemanticModel.GetTypeInfo(assignmentExpression.Left, context.CancellationToken);
-            if (typeInfo.Type?.SpecialType != SpecialType.System_String)
-            {
-                return false;
-            }
+        return false;
+    }
 
-            if (assignmentExpression.Kind() == SyntaxKind.AddAssignmentExpression)
+    private static void AnalyzeBinaryExpressionForStringComparisons(SemanticModelAnalysisContext context,
+        BinaryExpressionSyntax node)
+    {
+        if (IsResultOfCaseConversion(context, node.Left) || IsResultOfCaseConversion(context, node.Right))
+        {
+            context.ReportDiagnostic(Diagnostic.Create(
+                StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor, node.GetLocation()));
+        }
+    }
+
+    private static bool IsResultOfCaseConversion(SemanticModelAnalysisContext context,
+        ExpressionSyntax expression)
+    {
+        if (expression.Kind() == SyntaxKind.InvocationExpression)
+        {
+            var invocationExpression = (InvocationExpressionSyntax)expression;
+            if (invocationExpression.Expression is MemberAccessExpressionSyntax memberAccessExpression
+                && IsCallToCaseConversionMethod(context, memberAccessExpression))
             {
                 return true;
             }
-            
-            if (assignmentExpression.Left is IdentifierNameSyntax identifier)
-            {
-                return assignmentExpression.Kind() == SyntaxKind.SimpleAssignmentExpression
-                    && assignmentExpression.Right.Kind() == SyntaxKind.AddExpression
-                    && assignmentExpression.Left.Kind() == SyntaxKind.IdentifierName
-                    && ((IdentifierNameSyntax)assignmentExpression.Left) == identifier;
-            }
-
-            return false;
         }
 
-        private static bool IsWithinLoop(ExpressionSyntax expression)
+        return false;
+    }
+
+    private static bool IsCallToCaseConversionMethod(SemanticModelAnalysisContext context,
+        MemberAccessExpressionSyntax memberAccessExpression)
+    {
+        var expressionType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
+            context.CancellationToken);
+        if (expressionType.Type?.SpecialType == SpecialType.System_String)
         {
-            var parent = expression.Parent;
-            while (parent != null)
+            switch (memberAccessExpression.Name.Identifier.ValueText)
             {
-                switch (parent.Kind())
-                {
-                    case SyntaxKind.ForEachStatement:
-                    case SyntaxKind.ForStatement:
-                        return true;
-                    case SyntaxKind.MethodDeclaration:
-                    case SyntaxKind.ConstructorDeclaration:
-                    case SyntaxKind.GetAccessorDeclaration:
-                    case SyntaxKind.SetAccessorDeclaration:
-                    case SyntaxKind.AddAccessorDeclaration:
-                    case SyntaxKind.RemoveAccessorDeclaration:
-                        return false;
-                }
-
-                parent = parent.Parent;
-            }
-
-            return false;
-        }
-
-        private static void AnalyzeBinaryExpressionForStringComparisons(SemanticModelAnalysisContext context,
-            BinaryExpressionSyntax node)
-        {
-            if (IsResultOfCaseConversion(context, node.Left) || IsResultOfCaseConversion(context, node.Right))
-            {
-                context.ReportDiagnostic(Diagnostic.Create(
-                    StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor, node.GetLocation()));
-            }
-        }
-
-        private static bool IsResultOfCaseConversion(SemanticModelAnalysisContext context,
-            ExpressionSyntax expression)
-        {
-            if (expression.Kind() == SyntaxKind.InvocationExpression)
-            {
-                var invocationExpression = (InvocationExpressionSyntax)expression;
-                if (invocationExpression.Expression is MemberAccessExpressionSyntax memberAccessExpression
-                    && IsCallToCaseConversionMethod(context, memberAccessExpression))
-                {
+                case "ToLower":
+                case "ToLowerInvariant":
+                case "ToUpper":
+                case "ToUpperInvariant":
                     return true;
-                }
             }
-
-            return false;
         }
 
-        private static bool IsCallToCaseConversionMethod(SemanticModelAnalysisContext context,
-            MemberAccessExpressionSyntax memberAccessExpression)
-        {
-            var expressionType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
-                context.CancellationToken);
-            if (expressionType.Type?.SpecialType == SpecialType.System_String)
-            {
-                switch (memberAccessExpression.Name.Identifier.ValueText)
-                {
-                    case "ToLower":
-                    case "ToLowerInvariant":
-                    case "ToUpper":
-                    case "ToUpperInvariant":
-                        return true;
-                }
-            }
-
-            return false;
-        }
+        return false;
     }
 }

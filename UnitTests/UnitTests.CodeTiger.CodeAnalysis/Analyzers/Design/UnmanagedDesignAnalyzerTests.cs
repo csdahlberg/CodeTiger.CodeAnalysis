@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class UnmanagedDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class UnmanagedDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ClassWithNoMembersDoesNotProduceDiagnostics()
     {
-        [Fact]
-        public void ClassWithNoMembersDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -18,13 +18,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithUnmanagedMemberAndFinalizerDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithUnmanagedMemberAndFinalizerDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -38,13 +38,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithoutUnmanagedMemberAndFinalizerProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithoutUnmanagedMemberAndFinalizerProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -58,23 +58,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1007",
+                Message = "Types without unmanaged state should not have a finalizer.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1007",
-                    Message = "Types without unmanaged state should not have a finalizer.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 10)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 10)
+                }
+            });
+    }
 
-        [Fact]
-        public void ClassWithEmptyFinalizerProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithEmptyFinalizerProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -87,22 +87,21 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1008",
+                Message = "Empty finalizers should not exist.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1008",
-                    Message = "Empty finalizers should not exist.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 10)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 10)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new UnmanagedDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new UnmanagedDesignAnalyzer();
     }
 }

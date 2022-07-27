@@ -3,67 +3,67 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
+
+public class BraceLayoutAnalyzerTests : DiagnosticVerifier
 {
-    public class BraceLayoutAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void NamespaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostics()
     {
-        [Fact]
-        public void NamespaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NamespaceDeclarationsWithInvalidBraceLayoutProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NamespaceDeclarationsWithInvalidBraceLayoutProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1 {
 }
 namespace ClassLibrary2
 { }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 2, 25)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 2, 25)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 5, 1)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 5, 1)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 5, 3)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 5, 3)
+                }
+            });
+    }
 
-        [Fact]
-        public void InitializerExpressionsWithValidBraceLayoutsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InitializerExpressionsWithValidBraceLayoutsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -92,27 +92,27 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void InitializerExpressionsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        static DiagnosticResult CreateResult(int line, int column)
+        {
+            return new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", line, column)
+                }
+            };
         }
 
-        [Fact]
-        public void InitializerExpressionsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            static DiagnosticResult CreateResult(int line, int column)
-            {
-                return new DiagnosticResult
-                {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", line, column)
-                    }
-                };
-            }
-
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -143,30 +143,30 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                CreateResult(6, 42),
-                CreateResult(8, 36),
-                CreateResult(10, 55),
-                CreateResult(11, 16),
-                CreateResult(12, 69),
-                CreateResult(12, 71),
-                CreateResult(13, 19),
-                CreateResult(13, 21),
-                CreateResult(18, 13),
-                CreateResult(18, 15),
-                CreateResult(20, 13),
-                CreateResult(20, 25),
-                CreateResult(23, 20),
-                CreateResult(24, 45),
-                CreateResult(25, 17),
-                CreateResult(27, 17),
-                CreateResult(27, 19));
-        }
+        VerifyCSharpDiagnostic(code,
+            CreateResult(6, 42),
+            CreateResult(8, 36),
+            CreateResult(10, 55),
+            CreateResult(11, 16),
+            CreateResult(12, 69),
+            CreateResult(12, 71),
+            CreateResult(13, 19),
+            CreateResult(13, 21),
+            CreateResult(18, 13),
+            CreateResult(18, 15),
+            CreateResult(20, 13),
+            CreateResult(20, 25),
+            CreateResult(23, 20),
+            CreateResult(24, 45),
+            CreateResult(25, 17),
+            CreateResult(27, 17),
+            CreateResult(27, 19));
+    }
 
-        [Fact]
-        public void CodeBlocksWithValidBraceLayoutsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CodeBlocksWithValidBraceLayoutsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -198,27 +198,27 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void CodeBlocksWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        static DiagnosticResult CreateResult(int line, int column)
+        {
+            return new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", line, column)
+                }
+            };
         }
 
-        [Fact]
-        public void CodeBlocksWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            static DiagnosticResult CreateResult(int line, int column)
-            {
-                return new DiagnosticResult
-                {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", line, column)
-                    }
-                };
-            }
-
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -253,26 +253,26 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                CreateResult(6, 35),
-                CreateResult(7, 23),
-                CreateResult(8, 13),
-                CreateResult(8, 20),
-                CreateResult(13, 28),
-                CreateResult(14, 29),
-                CreateResult(22, 9),
-                CreateResult(23, 13),
-                CreateResult(23, 15),
-                CreateResult(25, 13),
-                CreateResult(25, 15),
-                CreateResult(29, 28),
-                CreateResult(30, 32));
-        }
+        VerifyCSharpDiagnostic(code,
+            CreateResult(6, 35),
+            CreateResult(7, 23),
+            CreateResult(8, 13),
+            CreateResult(8, 20),
+            CreateResult(13, 28),
+            CreateResult(14, 29),
+            CreateResult(22, 9),
+            CreateResult(23, 13),
+            CreateResult(23, 15),
+            CreateResult(25, 13),
+            CreateResult(25, 15),
+            CreateResult(29, 28),
+            CreateResult(30, 32));
+    }
 
-        [Fact]
-        public void ClassDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -280,13 +280,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1 {
@@ -296,43 +296,43 @@ namespace ClassLibrary1
     { }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 25)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 25)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 5)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 5)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 7)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 7)
+                }
+            });
+    }
 
-        [Fact]
-        public void StructDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StructDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public struct Struct1
@@ -340,13 +340,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void StructDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StructDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public struct Struct1 {
@@ -356,43 +356,43 @@ namespace ClassLibrary1
     { }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 27)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 27)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 5)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 5)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 7)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 7)
+                }
+            });
+    }
 
-        [Fact]
-        public void InterfaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InterfaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public interface IInterface1
@@ -400,13 +400,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void InterfaceDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void InterfaceDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public interface IInterface1 {
@@ -416,43 +416,43 @@ namespace ClassLibrary1
     { }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 34)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 34)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 5)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 5)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 7)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 7)
+                }
+            });
+    }
 
-        [Fact]
-        public void EnumDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1
@@ -460,13 +460,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void EnumDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void EnumDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public enum Enum1 {
@@ -476,43 +476,43 @@ namespace ClassLibrary1
     { }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 23)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 4, 23)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 5)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 5)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 7)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 8, 7)
+                }
+            });
+    }
 
-        [Fact]
-        public void AccessorListsWithValidBraceLayoutsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AccessorListsWithValidBraceLayoutsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -535,13 +535,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void AccessorsWithValidBraceLayoutsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void AccessorsWithValidBraceLayoutsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -564,27 +564,27 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void AccessorListsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        static DiagnosticResult CreateResult(int line, int column)
+        {
+            return new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", line, column)
+                }
+            };
         }
 
-        [Fact]
-        public void AccessorListsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            static DiagnosticResult CreateResult(int line, int column)
-            {
-                return new DiagnosticResult
-                {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", line, column)
-                    }
-                };
-            }
-
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
         public string Name {
@@ -601,22 +601,22 @@ namespace ClassLibrary1
         }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                CreateResult(4, 28),
-                CreateResult(5, 23),
-                CreateResult(7, 9),
-                CreateResult(7, 15),
-                CreateResult(8, 9),
-                CreateResult(8, 11),
-                CreateResult(11, 17),
-                CreateResult(14, 13),
-                CreateResult(14, 15));
-        }
+        VerifyCSharpDiagnostic(code,
+            CreateResult(4, 28),
+            CreateResult(5, 23),
+            CreateResult(7, 9),
+            CreateResult(7, 15),
+            CreateResult(8, 9),
+            CreateResult(8, 11),
+            CreateResult(11, 17),
+            CreateResult(14, 13),
+            CreateResult(14, 15));
+    }
 
-        [Fact]
-        public void CodeBlocksWithBracesDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CodeBlocksWithBracesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Linq;
 namespace ClassLibrary1
 {
@@ -657,13 +657,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void CodeBlocksWithoutBracesProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void CodeBlocksWithoutBracesProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Linq;
 namespace ClassLibrary1
 {
@@ -697,93 +697,93 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 11, 18)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 11, 18)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 13, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 13, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 16, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 16, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 19, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 19, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 22, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 22, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 25, 13)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 25, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3525",
+                Message = "Braces should not be omitted from code blocks.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3525",
-                    Message = "Braces should not be omitted from code blocks.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 29, 13)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 29, 13)
+                }
+            });
+    }
 
-        [Fact]
-        public void MethodArgumentsWithValidBraceLayoutsDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodArgumentsWithValidBraceLayoutsDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Threading.Tasks;
 namespace ClassLibrary1
 {
@@ -808,13 +808,13 @@ namespace ClassLibrary1
         private class Thing { }
     }
 }";
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void MethodArgumentsWithInvalidBraceLayoutsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void MethodArgumentsWithInvalidBraceLayoutsProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Class1
@@ -829,32 +829,31 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 28)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 28)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3501",
+                Message = "Braces for multi-line elements should be on a new line.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT3501",
-                    Message = "Braces for multi-line elements should be on a new line.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 34)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 34)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new BraceLayoutAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new BraceLayoutAnalyzer();
     }
 }

@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Reliability
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Reliability;
+
+public class UnmanagedReliabilityAnalyzerTests : DiagnosticVerifier
 {
-    public class UnmanagedReliabilityAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void ClassWithDisposableStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
     {
-        [Fact]
-        public void ClassWithDisposableStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing : IDisposable
@@ -22,13 +22,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithDisposableStateWithoutADestructorDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithDisposableStateWithoutADestructorDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing : IDisposable
@@ -39,13 +39,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithDisposableStateThatDoesNotImplementIDisposableProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithDisposableStateThatDoesNotImplementIDisposableProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing
@@ -55,23 +55,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2001",
+                Message = "Types with disposable state should implement IDisposable.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2001",
-                    Message = "Types with disposable state should implement IDisposable.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void StructWithDisposableStateDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StructWithDisposableStateDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public struct Thing
@@ -80,13 +80,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithUnmanagedStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithUnmanagedStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing : IDisposable
@@ -98,13 +98,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void ClassWithUnmanagedStateWithoutADestructorProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithUnmanagedStateWithoutADestructorProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing : IDisposable
@@ -115,23 +115,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2002",
+                Message = "Types with unmanaged state should implement the full dispose pattern.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2002",
-                    Message = "Types with unmanaged state should implement the full dispose pattern.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void ClassWithUnmanagedStateThatDoesNotImplementIDisposableProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void ClassWithUnmanagedStateThatDoesNotImplementIDisposableProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public class Thing
@@ -141,23 +141,23 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2002",
+                Message = "Types with unmanaged state should implement the full dispose pattern.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT2002",
-                    Message = "Types with unmanaged state should implement the full dispose pattern.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 4, 18)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 4, 18)
+                }
+            });
+    }
 
-        [Fact]
-        public void StructWithUnmanagedStateDoesNotProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void StructWithUnmanagedStateDoesNotProduceDiagnostics()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public struct Thing
@@ -166,12 +166,11 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new UnmanagedReliabilityAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new UnmanagedReliabilityAnalyzer();
     }
 }

@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class ConstructorDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class ConstructorDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void NonPublicConstructorsDoNotProduceDiagnostic()
     {
-        [Fact]
-        public void NonPublicConstructorsDoNotProduceDiagnostic()
-        {
-            string code = @"using System;
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public abstract class Thing
@@ -21,13 +21,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void PublicConstructorProducesDiagnostic()
-        {
-            string code = @"using System;
+    [Fact]
+    public void PublicConstructorProducesDiagnostic()
+    {
+        string code = @"using System;
 namespace ClassLibrary1
 {
     public abstract class Thing
@@ -36,19 +36,18 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
-                {
-                    Id = "CT1013",
-                    Message = "Constructors for abstract classes should not be public.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 16) }
-                });
-        }
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1013",
+                Message = "Constructors for abstract classes should not be public.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 16) }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new ConstructorDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new ConstructorDesignAnalyzer();
     }
 }

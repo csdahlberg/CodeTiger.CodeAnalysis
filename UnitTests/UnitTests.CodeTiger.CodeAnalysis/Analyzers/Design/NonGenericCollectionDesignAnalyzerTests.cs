@@ -3,14 +3,14 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
 
-namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design
+namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Design;
+
+public class NonGenericCollectionDesignAnalyzerTests : DiagnosticVerifier
 {
-    public class NonGenericCollectionDesignAnalyzerTests : DiagnosticVerifier
+    [Fact]
+    public void GenericCollectionsAndPrivateNonGenericStatelessMembersDoNotProduceDiagnostics()
     {
-        [Fact]
-        public void GenericCollectionsAndPrivateNonGenericStatelessMembersDoNotProduceDiagnostics()
-        {
-            string code = @"using System;
+        string code = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 namespace ClassLibrary1
@@ -23,13 +23,13 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code);
-        }
+        VerifyCSharpDiagnostic(code);
+    }
 
-        [Fact]
-        public void NonGenericCollectionsProduceDiagnostics()
-        {
-            string code = @"using System;
+    [Fact]
+    public void NonGenericCollectionsProduceDiagnostics()
+    {
+        string code = @"using System;
 using System.Collections;
 using System.Collections.Generic;
 namespace ClassLibrary1
@@ -42,52 +42,51 @@ namespace ClassLibrary1
     }
 }";
 
-            VerifyCSharpDiagnostic(code,
-                new DiagnosticResult
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1004",
+                Message = "Non-generic collections should not be held as state.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1004",
-                    Message = "Non-generic collections should not be held as state.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 8, 23)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 8, 23)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1005",
+                Message = "Non-generic collections should not be exposed.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1005",
-                    Message = "Non-generic collections should not be exposed.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 9, 16)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 9, 16)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1005",
+                Message = "Non-generic collections should not be exposed.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1005",
-                    Message = "Non-generic collections should not be exposed.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 16)
-                    }
-                },
-                new DiagnosticResult
+                    new DiagnosticResultLocation("Test0.cs", 10, 16)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1004",
+                Message = "Non-generic collections should not be held as state.",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
                 {
-                    Id = "CT1004",
-                    Message = "Non-generic collections should not be held as state.",
-                    Severity = DiagnosticSeverity.Warning,
-                    Locations = new[]
-                    {
-                        new DiagnosticResultLocation("Test0.cs", 10, 28)
-                    }
-                });
-        }
+                    new DiagnosticResultLocation("Test0.cs", 10, 28)
+                }
+            });
+    }
 
-        protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-        {
-            return new NonGenericCollectionDesignAnalyzer();
-        }
+    protected override DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
+    {
+        return new NonGenericCollectionDesignAnalyzer();
     }
 }
