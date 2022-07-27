@@ -22,5 +22,24 @@ namespace CodeTiger.CodeAnalysis
                 throw new ArgumentNullException(name);
             }
         }
+
+        /// <summary>
+        /// Ensures that the value of a <see cref="int"/> argument is not negative, throwing an exception if it
+        /// is negative.
+        /// </summary>
+        /// <param name="name">The name of the argument.</param>
+        /// <param name="value">The value of the argument.</param>
+        /// <returns><paramref name="value"/> if it is not negative.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when <paramref name="value"/> is negative.
+        /// </exception>
+        public static int ArgumentIsNotNegative(string name, int value)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(name);
+            }
+
+            return value;
+        }
     }
 }
