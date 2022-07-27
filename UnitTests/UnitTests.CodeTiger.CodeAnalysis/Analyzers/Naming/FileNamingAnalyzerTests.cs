@@ -218,6 +218,78 @@ namespace ClassLibrary1
         }
 
         [Fact]
+        public void FileWithAritySeparatorForNonGenericTypeProducesDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("Test_Type.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1701",
+                    Message = "Source file names should use pascal casing.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("Test_Type.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
+        public void FileWithArityForNonGenericTypeProducesDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType1.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1729",
+                    Message = "Source file names should match the primary type name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("TestType1.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
+        public void FileWithAritySeparatorAndArityForNonGenericTypeProducesDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType_1.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1729",
+                    Message = "Source file names should match the primary type name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("TestType_1.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
         public void RazorCodeBehindFileWithMatchingTypeDeclarationDoesNotProduceDiagnostics()
         {
             string code = @"using System;
@@ -238,6 +310,44 @@ namespace ClassLibrary1
 namespace ClassLibrary1
 {
     public class TestType
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestFile.cshtml.cs", code),
+                new DiagnosticResult
+                {
+                    Id = "CT1729",
+                    Message = "Source file names should match the primary type name.",
+                    Severity = DiagnosticSeverity.Warning,
+                    Locations = new[]
+                    {
+                        new DiagnosticResultLocation("TestFile.cshtml.cs", 0, 0)
+                    }
+                });
+        }
+
+        [Fact]
+        public void RazorModelInCodeBehindFileWithMatchingTypeDeclarationDoesNotProduceDiagnostics()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestTypeModel
+    {
+    }
+}";
+
+            VerifyCSharpDiagnostic(Tuple.Create("TestType.cshtml.cs", code));
+        }
+
+        [Fact]
+        public void RazorModelInCodeBehindFileWithNonMatchingTypeDeclarationProducesDiagnostic()
+        {
+            string code = @"using System;
+namespace ClassLibrary1
+{
+    public class TestTypeModel
     {
     }
 }";

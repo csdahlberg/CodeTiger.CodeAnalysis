@@ -80,47 +80,104 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming
                 }
             }
 
+            AnalyzeNameOfFirstType(context, fileNamePartsWithoutExtension);
+        }
+
+        private static void AnalyzeNameOfFirstType(SyntaxTreeAnalysisContext context,
+            string[] fileNamePartsWithoutExtension)
+        {
             var firstTypeDeclarationNode = context.Tree.GetRoot(context.CancellationToken)
                 .DescendantNodes()
                 .OfType<BaseTypeDeclarationSyntax>()
                 .FirstOrDefault();
-            if (firstTypeDeclarationNode != null)
+
+            if (firstTypeDeclarationNode == null)
             {
-                string[] firstDeclaredTypeNames;
+                return;
+            }
 
-                var firstTypeDeclarationNode2 = firstTypeDeclarationNode as TypeDeclarationSyntax;
-                if (firstTypeDeclarationNode2?.TypeParameterList?.Parameters.Any() == true)
-                {
-                    // Allow filenames for generic types to either omit or include the type arity
-                    firstDeclaredTypeNames = new[]
-                    {
-                        firstTypeDeclarationNode.Identifier.ValueText,
-                        firstTypeDeclarationNode.Identifier.ValueText + "`"
-                            + firstTypeDeclarationNode2.TypeParameterList.Parameters.Count
-                            .ToString(CultureInfo.InvariantCulture),
-                    };
-                }
-                else
-                {
-                    firstDeclaredTypeNames = new[] { firstTypeDeclarationNode.Identifier.ValueText };
-                }
+            string firstTypeName = firstTypeDeclarationNode.Identifier.ValueText;
+            string firstFileNamePart = fileNamePartsWithoutExtension[0];
 
-                if (!firstDeclaredTypeNames
-                    .Any(x => DoesTypeNameMatchFileName(x, fileNamePartsWithoutExtension[0])))
+            if (DoesTypeNameMatchFileName(firstTypeName, firstFileNamePart))
+            {
+                return;
+            }
+
+            if (fileNamePartsWithoutExtension.Length >= 2
+                && string.Equals("cshtml", fileNamePartsWithoutExtension[^1]))
+            {
+                // Having PageModel types in the code-behind file for Razor pages is the recommended approach, so
+                // allow '{PageName}Model' types to be in '{PageName}.cshtml.cs' files.
+                string razorModelName = firstFileNamePart + "Model";
+                if (DoesTypeNameMatchFileName(firstTypeName, razorModelName))
                 {
-                    context.ReportDiagnostic(Diagnostic.Create(
-                        SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor,
-                        Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));
+                    return;
                 }
             }
+
+            var firstTypeDeclarationNode2 = firstTypeDeclarationNode as TypeDeclarationSyntax;
+            if (firstTypeDeclarationNode2?.TypeParameterList?.Parameters.Any() == true)
+            {
+                if (DoesTypeNameMatchFileName(firstTypeName, firstFileNamePart,
+                    firstTypeDeclarationNode2.TypeParameterList.Parameters.Count))
+                {
+                    return;
+                }
+            }
+
+            context.ReportDiagnostic(Diagnostic.Create(
+                SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor,
+                Location.Create(context.Tree, TextSpan.FromBounds(0, 0))));
         }
 
-        private static bool DoesTypeNameMatchFileName(string typeName, string fileNamePart)
+        private static bool DoesTypeNameMatchFileName(string typeName, string fileNamePart, int? arity = null)
         {
-            string typeNameAlphaNumeric = new string(typeName.Where(char.IsLetterOrDigit).ToArray());
-            string fileNamePartAlphaNumeric = new string(fileNamePart.Where(char.IsLetterOrDigit).ToArray());
+            int typeNameIndex = 0;
+            int fileNameIndex = 0;
 
-            return string.Equals(typeNameAlphaNumeric, fileNamePartAlphaNumeric, StringComparison.Ordinal);
+            while (typeNameIndex < typeName.Length && fileNameIndex < fileNamePart.Length)
+            {
+                char fileNameChar = fileNamePart[fileNameIndex];
+
+                if (typeName[typeNameIndex] != fileNameChar)
+                {
+                    // Allow for things like a 'Class1Tests' class in a 'Class_1Tests.cs' file
+                    if (fileNameChar == '`' || fileNameChar == '_')
+                    {
+                        fileNameIndex += 1;
+                        continue;
+                    }
+
+                    return false;
+                }
+
+                typeNameIndex += 1;
+                fileNameIndex += 1;
+            }
+
+            if (typeNameIndex == typeName.Length && fileNameIndex == fileNamePart.Length)
+            {
+                return true;
+            }
+
+            if (arity.HasValue && fileNameIndex < fileNamePart.Length)
+            {
+                char fileNameChar = fileNamePart[fileNameIndex];
+
+                if (fileNameChar == '`' || fileNameChar == '_')
+                {
+                    fileNameIndex += 1;
+                }
+
+                if (int.TryParse(fileNamePart.Substring(fileNameIndex), out int parsedArity)
+                    && parsedArity == arity.Value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
