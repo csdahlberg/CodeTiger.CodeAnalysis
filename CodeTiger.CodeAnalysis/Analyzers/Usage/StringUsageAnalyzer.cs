@@ -65,10 +65,9 @@ public sealed class StringUsageAnalyzer : DiagnosticAnalyzer
         var speculativeRoot = speculativeModel.SyntaxTree.GetRoot(context.CancellationToken);
         var expressionStatementNode = speculativeRoot as ExpressionStatementSyntax;
         var assignmentExpressionNode = expressionStatementNode?.Expression as AssignmentExpressionSyntax;
-        var interpolatedStringExpressionNode = assignmentExpressionNode?.Right
-            as InterpolatedStringExpressionSyntax;
 
-        if (interpolatedStringExpressionNode == null)
+        if (assignmentExpressionNode?.Right is not
+            InterpolatedStringExpressionSyntax interpolatedStringExpressionNode)
         {
             return;
         }

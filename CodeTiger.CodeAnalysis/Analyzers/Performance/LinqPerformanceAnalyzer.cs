@@ -57,14 +57,14 @@ public class LinqPerformanceAnalyzer : DiagnosticAnalyzer
                 continue;
             }
 
-            if (!(invocationExpression.Expression is MemberAccessExpressionSyntax memberAccessExpression)
+            if (invocationExpression.Expression is not MemberAccessExpressionSyntax memberAccessExpression
                 || !_linqMethodsWithPredicates.Contains(memberAccessExpression.Name.Identifier.ValueText))
             {
                 continue;
             }
 
-            if (!(memberAccessExpression.Expression is InvocationExpressionSyntax parentExpression)
-                || !(parentExpression.Expression is MemberAccessExpressionSyntax parentMemberAccessExpression))
+            if (memberAccessExpression.Expression is not InvocationExpressionSyntax parentExpression
+                || parentExpression.Expression is not MemberAccessExpressionSyntax parentMemberAccessExpression)
             {
                 continue;
             }

@@ -76,7 +76,7 @@ public class ParameterDesignAnalyzer : DiagnosticAnalyzer
             var thisParameter = context.SemanticModel
                 .GetDeclaredSymbol(thisParameterNode, context.CancellationToken);
 
-            DataFlowAnalysis dataFlow = node.Body != null
+            var dataFlow = node.Body != null
                 ? context.SemanticModel.AnalyzeDataFlow(node.Body)
                 : context.SemanticModel.AnalyzeDataFlow(node.ExpressionBody);
 

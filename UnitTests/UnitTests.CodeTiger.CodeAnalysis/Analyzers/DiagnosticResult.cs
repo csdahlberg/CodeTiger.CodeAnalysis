@@ -11,15 +11,7 @@ public struct DiagnosticResult
 
     public DiagnosticResultLocation[] Locations
     {
-        get
-        {
-            if (_locations == null)
-            {
-                _locations = new DiagnosticResultLocation[] { };
-            }
-            return _locations;
-        }
-
+        get => _locations ??= new DiagnosticResultLocation[0];
         set => _locations = value;
     }
 

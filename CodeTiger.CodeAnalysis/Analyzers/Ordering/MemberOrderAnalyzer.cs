@@ -609,7 +609,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         var declarationMember = member;
         while (declarationMember != null
-            && !(declarationMember is MemberDeclarationSyntax)
+            && declarationMember is not MemberDeclarationSyntax
             && declarationMember.Parent != null)
         {
             declarationMember = declarationMember.Parent;

@@ -44,8 +44,6 @@ internal static class SyntaxKindExtensions
         }
     }
 
-    [SuppressMessage("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity",
-        Justification = "This method is conceptually simple.")]
     public static string GetKeywordName(this SyntaxKind kind)
     {
         switch (kind)
