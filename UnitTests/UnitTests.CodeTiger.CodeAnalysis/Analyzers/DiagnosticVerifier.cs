@@ -18,7 +18,6 @@ public abstract class DiagnosticVerifier
 {
     private const string DefaultFilePathPrefix = "Test";
     private const string CSharpDefaultFileExt = "cs";
-    private const string VisualBasicDefaultExt = "vb";
     private const string TestProjectName = "TestProject";
 
     private static readonly MetadataReference _corlibReference
@@ -41,14 +40,6 @@ public abstract class DiagnosticVerifier
     }
 
     /// <summary>
-    /// Get the Visual Basic analyzer being tested (C#) - to be implemented in non-abstract class
-    /// </summary>
-    protected virtual DiagnosticAnalyzer GetBasicDiagnosticAnalyzer()
-    {
-        throw new NotImplementedException();
-    }
-
-    /// <summary>
     /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source
     /// Note: input a DiagnosticResult for each Diagnostic expected
     /// </summary>
@@ -57,7 +48,7 @@ public abstract class DiagnosticVerifier
     /// </param>
     protected private void VerifyCSharpDiagnostic(string source, params DiagnosticResult[] expected)
     {
-        VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
+        VerifyDiagnostics(new[] { source }, GetCSharpDiagnosticAnalyzer(), expected);
     }
 
     /// <summary>
@@ -70,19 +61,7 @@ public abstract class DiagnosticVerifier
     protected private void VerifyCSharpDiagnostic(Tuple<string, string> source,
         params DiagnosticResult[] expected)
     {
-        VerifyDiagnostics(new[] { source }, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
-    }
-
-    /// <summary>
-    /// Called to test a VB DiagnosticAnalyzer when applied on the single inputted string as a source
-    /// Note: input a DiagnosticResult for each Diagnostic expected
-    /// </summary>
-    /// <param name="source">A class in the form of a string to run the analyzer on</param>
-    /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the source
-    /// </param>
-    protected private void VerifyBasicDiagnostic(string source, params DiagnosticResult[] expected)
-    {
-        VerifyDiagnostics(new[] { source }, LanguageNames.VisualBasic, GetBasicDiagnosticAnalyzer(), expected);
+        VerifyDiagnostics(new[] { source }, GetCSharpDiagnosticAnalyzer(), expected);
     }
 
     /// <summary>
@@ -95,31 +74,17 @@ public abstract class DiagnosticVerifier
     /// </param>
     protected private void VerifyCSharpDiagnostic(string[] sources, params DiagnosticResult[] expected)
     {
-        VerifyDiagnostics(sources, LanguageNames.CSharp, GetCSharpDiagnosticAnalyzer(), expected);
-    }
-
-    /// <summary>
-    /// Called to test a VB DiagnosticAnalyzer when applied on the inputted strings as a source
-    /// Note: input a DiagnosticResult for each Diagnostic expected
-    /// </summary>
-    /// <param name="sources">An array of strings to create source documents from to run the analyzers on
-    /// </param>
-    /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
-    /// </param>
-    protected private void VerifyBasicDiagnostic(string[] sources, params DiagnosticResult[] expected)
-    {
-        VerifyDiagnostics(sources, LanguageNames.VisualBasic, GetBasicDiagnosticAnalyzer(), expected);
+        VerifyDiagnostics(sources, GetCSharpDiagnosticAnalyzer(), expected);
     }
 
     /// <summary>
     /// Create a Document from a string through creating a project that contains it.
     /// </summary>
     /// <param name="source">Classes in the form of a string</param>
-    /// <param name="language">The language the source code is in</param>
     /// <returns>A Document created from the source string</returns>
-    protected private Document CreateDocument(string source, string language = LanguageNames.CSharp)
+    protected private Document CreateDocument(string source)
     {
-        return CreateProject(CreateNamedSources(new[] { source }, language), language).Documents.First();
+        return CreateProject(CreateNamedSources(new[] { source })).Documents.First();
     }
 
     /// <summary>
@@ -128,14 +93,13 @@ public abstract class DiagnosticVerifier
     /// </summary>
     /// <param name="sources">An array of strings to create source documents from to run the analyzers on
     /// </param>
-    /// <param name="language">The language of the classes represented by the source strings</param>
     /// <param name="analyzer">The analyzer to be run on the source code</param>
     /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
     /// </param>
-    private void VerifyDiagnostics(string[] sources, string language, DiagnosticAnalyzer analyzer,
+    private void VerifyDiagnostics(string[] sources, DiagnosticAnalyzer analyzer,
         params DiagnosticResult[] expected)
     {
-        var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
+        var diagnostics = GetSortedDiagnostics(sources, analyzer);
         VerifyDiagnosticResults(diagnostics, analyzer, expected);
     }
 
@@ -145,14 +109,13 @@ public abstract class DiagnosticVerifier
     /// </summary>
     /// <param name="sources">An array of strings to create source documents from to run the analyzers on
     /// </param>
-    /// <param name="language">The language of the classes represented by the source strings</param>
     /// <param name="analyzer">The analyzer to be run on the source code</param>
     /// <param name="expected">DiagnosticResults that should appear after the analyzer is run on the sources
     /// </param>
-    private void VerifyDiagnostics(Tuple<string, string>[] sources, string language,
-        DiagnosticAnalyzer analyzer, params DiagnosticResult[] expected)
+    private void VerifyDiagnostics(Tuple<string, string>[] sources, DiagnosticAnalyzer analyzer,
+        params DiagnosticResult[] expected)
     {
-        var diagnostics = GetSortedDiagnostics(sources, language, analyzer);
+        var diagnostics = GetSortedDiagnostics(sources, analyzer);
         VerifyDiagnosticResults(diagnostics, analyzer, expected);
     }
 
@@ -161,13 +124,11 @@ public abstract class DiagnosticVerifier
     /// the diagnostics found in the string after converting it to a document.
     /// </summary>
     /// <param name="sources">Classes in the form of strings</param>
-    /// <param name="language">The language the source classes are in</param>
     /// <param name="analyzer">The analyzer to be run on the sources</param>
     /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-    private Diagnostic[] GetSortedDiagnostics(string[] sources, string language,
-        DiagnosticAnalyzer analyzer)
+    private Diagnostic[] GetSortedDiagnostics(string[] sources, DiagnosticAnalyzer analyzer)
     {
-        return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+        return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources));
     }
 
     /// <summary>
@@ -175,13 +136,12 @@ public abstract class DiagnosticVerifier
     /// the diagnostics found in the string after converting it to a document.
     /// </summary>
     /// <param name="sources">Classes in the form of strings</param>
-    /// <param name="language">The language the source classes are in</param>
     /// <param name="analyzer">The analyzer to be run on the sources</param>
     /// <returns>An IEnumerable of Diagnostics that surfaced in the source code, sorted by Location</returns>
-    private Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources, string language,
+    private Diagnostic[] GetSortedDiagnostics(Tuple<string, string>[] sources,
         DiagnosticAnalyzer analyzer)
     {
-        return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources, language));
+        return GetSortedDiagnosticsFromDocuments(analyzer, GetDocuments(sources));
     }
 
     /// <summary>
@@ -189,19 +149,13 @@ public abstract class DiagnosticVerifier
     /// and spans of it.
     /// </summary>
     /// <param name="sources">Classes in the form of strings</param>
-    /// <param name="language">The language the source code is in</param>
     /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
     /// </returns>
-    private Document[] GetDocuments(string[] sources, string language)
+    private Document[] GetDocuments(string[] sources)
     {
-        if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
-        {
-            throw new ArgumentException("Unsupported Language");
-        }
+        var namedSources = CreateNamedSources(sources);
 
-        var namedSources = CreateNamedSources(sources, language);
-
-        var project = CreateProject(namedSources, language);
+        var project = CreateProject(namedSources);
         var documents = project.Documents.ToArray();
 
         if (sources.Length != documents.Length)
@@ -217,17 +171,11 @@ public abstract class DiagnosticVerifier
     /// and spans of it.
     /// </summary>
     /// <param name="sources">Classes in the form of strings</param>
-    /// <param name="language">The language the source code is in</param>
     /// <returns>A Tuple containing the Documents produced from the sources and their TextSpans if relevant
     /// </returns>
-    private Document[] GetDocuments(Tuple<string, string>[] sources, string language)
+    private Document[] GetDocuments(Tuple<string, string>[] sources)
     {
-        if (language != LanguageNames.CSharp && language != LanguageNames.VisualBasic)
-        {
-            throw new ArgumentException("Unsupported Language");
-        }
-
-        var project = CreateProject(sources, language);
+        var project = CreateProject(sources);
         var documents = project.Documents.ToArray();
 
         if (sources.Length != documents.Length)
@@ -242,16 +190,14 @@ public abstract class DiagnosticVerifier
     /// Create a project using the inputted strings as sources.
     /// </summary>
     /// <param name="sources">Classes in the form of strings</param>
-    /// <param name="language">The language the source code is in</param>
     /// <returns>A Project created out of the Documents created from the source strings</returns>
-    private Project CreateProject(Tuple<string, string>[] sources,
-        string language = LanguageNames.CSharp)
+    private Project CreateProject(Tuple<string, string>[] sources)
     {
         var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
         var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode);
         var projectInfo = ProjectInfo.Create(projectId, VersionStamp.Default, TestProjectName, TestProjectName,
-            language, parseOptions: parseOptions);
+            LanguageNames.CSharp, parseOptions: parseOptions);
         var solution = new AdhocWorkspace()
             .CurrentSolution
             .AddProject(projectInfo)
@@ -517,10 +463,10 @@ public abstract class DiagnosticVerifier
         return builder.ToString();
     }
 
-    private static Tuple<string, string>[] CreateNamedSources(string[] sources, string language)
+    private static Tuple<string, string>[] CreateNamedSources(string[] sources)
     {
         string fileNamePrefix = DefaultFilePathPrefix;
-        string fileExt = language == LanguageNames.CSharp ? CSharpDefaultFileExt : VisualBasicDefaultExt;
+        string fileExt = CSharpDefaultFileExt;
 
         var namedSources = sources
             .Select((source, index) => Tuple.Create($"{fileNamePrefix}{index}.{fileExt}", source))
