@@ -146,7 +146,7 @@ public class UnmanagedDesignAnalyzer : DiagnosticAnalyzer
         foreach (var instanceMemberType in instanceStateMemberTypes)
         {
             var memberType = context.SemanticModel.GetTypeInfo(instanceMemberType, context.CancellationToken);
-            if (unmanagedTypes.Any(x => x.Equals(memberType.Type)))
+            if (unmanagedTypes.Contains(memberType.Type, SymbolEqualityComparer.Default))
             {
                 return true;
             }

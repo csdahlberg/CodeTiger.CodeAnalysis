@@ -97,7 +97,8 @@ public class EnumerationReliabilityAnalyzer : DiagnosticAnalyzer
         var collectionExpressionSymbolInfo = context.SemanticModel.GetSymbolInfo(collectionExpression,
             context.CancellationToken);
 
-        if (collectionExpressionSymbolInfo.Symbol != invocationSymbolInfo.Symbol)
+        if (!SymbolEqualityComparer.Default.Equals(collectionExpressionSymbolInfo.Symbol,
+            invocationSymbolInfo.Symbol))
         {
             return false;
         }

@@ -20,7 +20,7 @@ internal static class TypeSymbolExtensions
 
         while (type != null)
         {
-            if (type.Equals(otherType))
+            if (SymbolEqualityComparer.Default.Equals(type, otherType))
             {
                 return true;
             }

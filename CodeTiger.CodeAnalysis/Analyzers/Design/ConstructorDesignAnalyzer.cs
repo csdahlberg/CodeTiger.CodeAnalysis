@@ -74,7 +74,7 @@ public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var parameterSymbol = constructorSymbol.Parameters.Single();
-        if (!parameterSymbol?.Type?.Equals(constructorSymbol.ContainingType) ?? false)
+        if (!SymbolEqualityComparer.Default.Equals(parameterSymbol?.Type, constructorSymbol.ContainingType))
         {
             return false;
         }
@@ -92,6 +92,6 @@ public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
         var rightSymbolInfo = context.SemanticModel
             .GetSymbolInfo(assignmentExpression.Right, context.CancellationToken);
 
-        return leftSymbolInfo.Symbol?.Equals(rightSymbolInfo.Symbol) ?? false;
+        return SymbolEqualityComparer.Default.Equals(leftSymbolInfo.Symbol, rightSymbolInfo.Symbol);
     }
 }

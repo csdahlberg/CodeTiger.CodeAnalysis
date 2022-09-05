@@ -77,7 +77,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
 
         var objectType = context.Compilation.GetSpecialType(SpecialType.System_Object);
 
-        if (method.ReturnType == objectType)
+        if (SymbolEqualityComparer.Default.Equals(method.ReturnType, objectType))
         {
             context.ReportDiagnostic(Diagnostic.Create(
                 MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
@@ -101,9 +101,10 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                     break;
                 case 1:
                     var matchingBaseMethod = matchingBaseMethods.Single();
-                    if (method.ReturnType != objectType
+                    if (!SymbolEqualityComparer.Default.Equals(method.ReturnType, objectType)
                         && !method.ReturnType.IsSubclassOf(matchingBaseMethod.ReturnType)
-                        && !method.ReturnType.AllInterfaces.Contains(matchingBaseMethod.ReturnType))
+                        && !method.ReturnType.AllInterfaces
+                            .Contains(matchingBaseMethod.ReturnType, SymbolEqualityComparer.Default))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
@@ -146,7 +147,8 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                 case 1:
                     var matchingBaseProperty = matchingBaseProperties.Single();
                     if (!property.Type.IsSubclassOf(matchingBaseProperty.Type)
-                        && !property.Type.AllInterfaces.Contains(matchingBaseProperty.Type))
+                        && !property.Type.AllInterfaces
+                            .Contains(matchingBaseProperty.Type, SymbolEqualityComparer.Default))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
@@ -200,7 +202,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
             {
                 var implementation = containingType.FindImplementationForInterfaceMember(interfaceMethod);
                 if (implementation is IMethodSymbol implementationMethod
-                    && implementationMethod == method)
+                    && SymbolEqualityComparer.Default.Equals(implementationMethod, method))
                 {
                     AnalyzeParametersForKeywords(context, methodDeclaration, method, interfaceMethod);
                 }
@@ -267,7 +269,8 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                     var matchingBaseField = matchingBaseFields.Single();
 
                     if (!fieldDeclarationType.IsSubclassOf(matchingBaseField.Type)
-                        && !fieldDeclarationType.AllInterfaces.Contains(matchingBaseField.Type))
+                        && !fieldDeclarationType.AllInterfaces
+                            .Contains(matchingBaseField.Type, SymbolEqualityComparer.Default))
                     {
                         context.ReportDiagnostic(Diagnostic.Create(
                             MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
@@ -293,7 +296,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
 
         for (int i = 0; i < firstParameters.Length; i++)
         {
-            if (firstParameters[i].Type != secondParameters[i].Type)
+            if (!SymbolEqualityComparer.Default.Equals(firstParameters[i].Type, secondParameters[i].Type))
             {
                 return false;
             }

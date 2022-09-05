@@ -60,7 +60,7 @@ public class AttributeDesignAnalyzer : DiagnosticAnalyzer
             var customAttributeType = context.SemanticModel
                 .GetTypeInfo(customAttribute.Name, context.CancellationToken);
             
-            if (customAttributeType.Type == attributeUsageType)
+            if (SymbolEqualityComparer.Default.Equals(customAttributeType.Type, attributeUsageType))
             {
                 hasAttributeUsageAttribute = true;
                 break;
@@ -88,7 +88,7 @@ public class AttributeDesignAnalyzer : DiagnosticAnalyzer
         {
             var baseType = context.SemanticModel.GetTypeInfo(baseTypeNode.Type, context.CancellationToken);
 
-            if (baseType.Type == attributeType)
+            if (SymbolEqualityComparer.Default.Equals(baseType.Type, attributeType))
             {
                 return true;
             }

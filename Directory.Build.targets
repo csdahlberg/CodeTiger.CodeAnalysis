@@ -1,0 +1,13 @@
+<Project>
+  <ItemGroup>
+    <!-- Many files under $(ProjectDir) get included for compilation by default. Since there is a separate obj
+         directory for each version of Roslyn being targeted, and only the obj folder for the currently-targeted
+         version of Roslyn should be included, files in all of the other obj directories need to be excluded.
+         
+         The current obj directory appears to be re-added during the build, so there should be no need to
+         explicitly include it here. -->
+    <Compile Remove="$(ProjectDir)obj\**\*.*" Visible="false" />
+    <EmbeddedResource Remove="$(ProjectDir)obj\**\*.*" Visible="false" />
+    <None Remove="$(ProjectDir)obj\**\*.*" Visible="false" />
+  </ItemGroup>
+</Project>

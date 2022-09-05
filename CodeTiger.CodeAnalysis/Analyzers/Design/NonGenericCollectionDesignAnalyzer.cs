@@ -240,7 +240,7 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
         {
             var nonGenericSymbol = context.SemanticModel.Compilation
                 .GetTypeByMetadataName(nonGenericCollectionName);
-            if (nonGenericSymbol != null && nonGenericSymbol.Equals(typeSymbol))
+            if (nonGenericSymbol != null && SymbolEqualityComparer.Default.Equals(nonGenericSymbol, typeSymbol))
             {
                 return true;
             }

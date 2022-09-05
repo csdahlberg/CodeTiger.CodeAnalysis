@@ -66,7 +66,7 @@ public class StaticDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var objectTypeSymbol = context.SemanticModel.Compilation.GetTypeByMetadataName(typeof(object).FullName);
-        if (!classTypeSymbol.BaseType.Equals(objectTypeSymbol))
+        if (!SymbolEqualityComparer.Default.Equals(classTypeSymbol.BaseType, objectTypeSymbol))
         {
             // The class inherits from a class other than System.Object, and so cannot be made static
             return;

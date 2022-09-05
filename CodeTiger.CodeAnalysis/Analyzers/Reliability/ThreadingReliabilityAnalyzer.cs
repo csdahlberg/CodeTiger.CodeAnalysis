@@ -77,7 +77,7 @@ public class ThreadingReliabilityAnalyzer : DiagnosticAnalyzer
                     ?? context.SemanticModel
                         .GetDeclaredSymbol(invocation.Expression, context.CancellationToken);
 
-            if (resetAbortSymbols.Any(x => x.Equals(invokedSymbol)))
+            if (resetAbortSymbols.Contains(invokedSymbol, SymbolEqualityComparer.Default))
             {
                 context.ReportDiagnostic(Diagnostic.Create(ThreadResetAbortShouldNotBeUsedDescriptor,
                     invocation.Expression.GetLocation()));

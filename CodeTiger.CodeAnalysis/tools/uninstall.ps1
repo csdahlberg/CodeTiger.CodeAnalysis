@@ -1,55 +1,20 @@
 ﻿param($installPath, $toolsPath, $package, $project)
 
-$analyzersPaths = Join-Path (Join-Path (Split-Path -Path $toolsPath -Parent) "analyzers" ) * -Resolve
-
-foreach($analyzersPath in $analyzersPaths)
+if ($project.Object.SupportsPackageDependencyResolution)
 {
-    # Uninstall the language agnostic analyzers.
-    if (Test-Path $analyzersPath)
+    if ($project.Object.SupportsPackageDependencyResolution())
     {
-        foreach ($analyzerFilePath in Get-ChildItem $analyzersPath -Filter *.dll)
-        {
-            if($project.Object.AnalyzerReferences)
-            {
-                $project.Object.AnalyzerReferences.Remove($analyzerFilePath.FullName)
-            }
-        }
+        # Do not install analyzers via install.ps1, instead let the project system handle it.
+        return
     }
 }
 
-# $project.Type gives the language name like (C# or VB.NET)
-$languageFolder = ""
-if($project.Type -eq "C#")
-{
-    $languageFolder = "cs"
-}
-if($project.Type -eq "VB.NET")
-{
-    $languageFolder = "vb"
-}
-if($languageFolder -eq "")
-{
-    return
-}
+# NuGet 3.x+ and Visual Studio 2019 do not seem to run install.ps1/uninstall.ps1 scripts. For Visual Studio 2017,
+# install the Roslyn 2.6 version of the analyzer library.
+$rootPath = [IO.Path]::GetDirectoryName($toolsPath)
+$analyzerFilePath = [IO.Path]::Combine($rootPath, "analyzers", "dotnet", "roslyn2.6", "cs", "CodeTiger.CodeAnalysis.dll")
 
-foreach($analyzersPath in $analyzersPaths)
+if ($project.Object.AnalyzerReferences)
 {
-    # Uninstall language specific analyzers.
-    $languageAnalyzersPath = join-path $analyzersPath $languageFolder
-    if (Test-Path $languageAnalyzersPath)
-    {
-        foreach ($analyzerFilePath in Get-ChildItem $languageAnalyzersPath -Filter *.dll)
-        {
-            if($project.Object.AnalyzerReferences)
-            {
-                try
-                {
-                    $project.Object.AnalyzerReferences.Remove($analyzerFilePath.FullName)
-                }
-                catch
-                {
-                }
-            }
-        }
-    }
+    $project.Object.AnalyzerReferences.Remove($analyzerFilePath)
 }

@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework Condition="'$(RoslynVersion)'=='2.6'">netstandard1.3</TargetFramework>
+    <TargetFramework Condition="'$(RoslynVersion)'!='2.6'">netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <MinClientVersion>2.8</MinClientVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -35,20 +36,27 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\Build\Debug\</OutputPath>
-    <DocumentationFile>..\Build\Debug\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
+    <OutputPath>..\Build\Debug\roslyn$(RoslynVersion)\</OutputPath>
+    <DocumentationFile>..\Build\Debug\roslyn$(RoslynVersion)\CodeTiger.CodeAnalysis.xml</DocumentationFile>
     <NoWarn>NU5128</NoWarn>
     <WarningsAsErrors />
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\Build\Release\</OutputPath>
-    <DocumentationFile>..\Build\Release\netstandard1.3\CodeTiger.CodeAnalysis.xml</DocumentationFile>
+    <OutputPath>..\Build\Release\roslyn$(RoslynVersion)\</OutputPath>
+    <DocumentationFile>..\Build\Release\roslyn$(RoslynVersion)\CodeTiger.CodeAnalysis.xml</DocumentationFile>
     <NoWarn>NU5128</NoWarn>
     <WarningsAsErrors />
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+
+  <!-- The SymbolEqualityComparer type became available in Microsoft.CodeAnalysis.Common 3.3.0. For those versions,
+    exclude our local implementation of it. -->
+  <ItemGroup Condition="'$(RoslynVersion)'!='2.6'">
+    <Compile Remove="Microsoft\CodeAnalysis\SymbolEqualityComparer.cs" />
+    <None Include="Microsoft\CodeAnalysis\SymbolEqualityComparer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="AnalyzerReleases.Shipped.md" />
@@ -61,7 +69,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynPackageVersion)" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 
@@ -81,8 +89,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
 
   <ItemGroup>
     <None Update="tools\*.ps1" CopyToOutputDirectory="Always" Pack="true" PackagePath="" />
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="$(OutputPath)\$(AssemblyName).pdb" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/roslyn$(RoslynVersion)/cs" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>

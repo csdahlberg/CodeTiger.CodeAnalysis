@@ -74,7 +74,8 @@ public class EnumMaintainabilityAnalyzer : DiagnosticAnalyzer
         var flagsAttributeType = context.SemanticModel.Compilation
             .GetTypeByMetadataName(typeof(FlagsAttribute).FullName);
 
-        return enumDeclaration.GetAttributes().Any(x => x.AttributeClass == flagsAttributeType);
+        return enumDeclaration.GetAttributes()
+            .Any(x => SymbolEqualityComparer.Default.Equals(x.AttributeClass, flagsAttributeType));
     }
 
     private static bool IsProbablyInvalidValue(object value, IEnumerable<IFieldSymbol> enumValues)

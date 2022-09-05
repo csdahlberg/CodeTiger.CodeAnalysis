@@ -156,7 +156,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
 
             if (accessedNode != null
                 && accessedSymbol is ITypeSymbol accessedTypeSymbol
-                && accessedTypeSymbol != destructorSymbol.ContainingType
+                && !SymbolEqualityComparer.Default.Equals(accessedTypeSymbol, destructorSymbol.ContainingType)
                 && IsTypeProbablyUnsafeToAccessFromDestructor(context, accessedTypeSymbol))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -222,7 +222,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
         foreach (var instanceMemberType in instanceStateMemberTypes)
         {
             var memberType = context.SemanticModel.GetTypeInfo(instanceMemberType, context.CancellationToken);
-            if (unmanagedTypes.Any(x => x.Equals(memberType.Type)))
+            if (unmanagedTypes.Contains(memberType.Type, SymbolEqualityComparer.Default))
             {
                 return true;
             }
@@ -250,7 +250,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
         var baseType = typeSymbol.BaseType;
         while (baseType != null)
         {
-            if (disposableTypesWhichDoNotNeedToBeDisposed.Any(x => x.Equals(baseType)))
+            if (disposableTypesWhichDoNotNeedToBeDisposed.Contains(baseType, SymbolEqualityComparer.Default))
             {
                 return false;
             }
@@ -277,7 +277,8 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
             return false;
         }
 
-        return disposableType.Equals(typeSymbol) || typeSymbol.AllInterfaces.Any(disposableType.Equals);
+        return SymbolEqualityComparer.Default.Equals(disposableType, typeSymbol)
+            || typeSymbol.AllInterfaces.Contains(disposableType, SymbolEqualityComparer.Default);
     }
 
     private static bool IsTypeProbablyUnsafeToAccessFromDestructor(SemanticModelAnalysisContext context,
@@ -292,7 +293,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
         {
             var destructorSafeType = context.SemanticModel.Compilation
                 .GetTypeByMetadataName(destructorSafeTypeName);
-            if (destructorSafeType?.Equals(accessedTypeSymbol) == true)
+            if (SymbolEqualityComparer.Default.Equals(destructorSafeType, accessedTypeSymbol))
             {
                 return false;
             }

@@ -51,7 +51,7 @@ public class SuppressMessageAttributeUsageAnalyzer : DiagnosticAnalyzer
         foreach (var attributeUsage in attributeUsages)
         {
             var attributeType = context.SemanticModel.GetTypeInfo(attributeUsage, context.CancellationToken);
-            if (attributeType.Type == suppressMessageAttributeType
+            if (SymbolEqualityComparer.Default.Equals(attributeType.Type, suppressMessageAttributeType)
                 && !AttributeIncludesJustificationArgument(attributeUsage))
             {
                 context.ReportDiagnostic(Diagnostic.Create(

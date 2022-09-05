@@ -163,7 +163,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
             var returnType = context.SemanticModel.GetSymbolInfo(returnTypeNode, context.CancellationToken)
                 .Symbol;
 
-            return taskType != returnType;
+            return !SymbolEqualityComparer.Default.Equals(taskType, returnType);
         }
 
         return true;

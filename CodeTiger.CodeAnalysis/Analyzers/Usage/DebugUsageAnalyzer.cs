@@ -55,7 +55,8 @@ public class DebugUsageAnalyzer : DiagnosticAnalyzer
 
             var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
                 context.CancellationToken);
-            if (targetType.Type == debugType && memberAccessExpression?.Name?.Identifier.ValueText == "Assert")
+            if (SymbolEqualityComparer.Default.Equals(targetType.Type, debugType)
+                && memberAccessExpression?.Name?.Identifier.ValueText == "Assert")
             {
                 // NOTE: This assumes that the message is always the second argument.
                 if (invocation.ArgumentList.Arguments.Count < 2)

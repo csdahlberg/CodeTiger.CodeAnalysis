@@ -58,7 +58,7 @@ public class EnvironmentUsageAnalyzer : DiagnosticAnalyzer
 
             var targetType = context.SemanticModel.GetTypeInfo(memberAccessExpression.Expression,
                 context.CancellationToken);
-            if (targetType.Type == environmentType
+            if (SymbolEqualityComparer.Default.Equals(targetType.Type, environmentType)
                 && memberAccessExpression?.Name?.Identifier.ValueText == "Exit")
             {
                 context.ReportDiagnostic(Diagnostic.Create(EnvironmentExitShouldNotBeUsedDescriptor,

@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework Condition="'$(RoslynVersion)'=='2.6'">netstandard1.3</TargetFramework>
+    <TargetFramework Condition="'$(RoslynVersion)'!='2.6'">netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <DocumentationFile>bin\$(Configuration)\netstandard1.3\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\roslyn$(RoslynVersion)\$(TargetFramework)\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.6.1" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynPackageVersion)" PrivateAssets="all" />
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 
@@ -25,8 +26,15 @@
     <Compile Remove="../../CodeTiger.CodeAnalysis/AssemblyAttributes.cs" />
   </ItemGroup>
 
+  <!-- The SymbolEqualityComparer type became available in Microsoft.CodeAnalysis.Common 3.3.0. For those versions,
+    exclude our local implementation of it. -->
+  <ItemGroup Condition="'$(RoslynVersion)'!='2.6'">
+    <Compile Remove="..\..\CodeTiger.CodeAnalysis\Microsoft\CodeAnalysis\SymbolEqualityComparer.cs" />
+    <None Include="..\..\CodeTiger.CodeAnalysis\Microsoft\CodeAnalysis\SymbolEqualityComparer.cs" />
+  </ItemGroup>
+
   <ItemGroup>
-    <Analyzer Include="../../Build/$(Configuration)/CodeTiger.CodeAnalysis.dll"/>
+    <Analyzer Include="../../Build/$(Configuration)/roslyn$(RoslynVersion)/CodeTiger.CodeAnalysis.dll"/>
   </ItemGroup>
   
 </Project>

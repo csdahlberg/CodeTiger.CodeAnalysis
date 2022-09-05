@@ -58,14 +58,23 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                     .Single(x => x.DescendantNodes().Contains(variableDeclarator));
 
                 // Get the first statement after the declarator that include the variable
-                var statementIncludingVariable = containingNode.ChildNodes()
+                StatementSyntax statementIncludingVariable = null;
+                foreach (var statementNode in containingNode.ChildNodes()
                     .OfType<StatementSyntax>()
                     .SkipWhile(x => x != statementContainingDeclarator)
-                    .Skip(1)
-                    .FirstOrDefault(x => x.DescendantNodes()
-                        .OfType<IdentifierNameSyntax>()
-                        .Any(y => context.SemanticModel.GetSymbolInfo(y, context.CancellationToken)
-                            .Symbol == variableSymbol));
+                    .Skip(1))
+                {
+                    foreach (var identifierNode in statementNode.DescendantNodes()
+                        .OfType<IdentifierNameSyntax>())
+                    {
+                        var identifierSymbolInfo = context.SemanticModel
+                            .GetSymbolInfo(identifierNode, context.CancellationToken).Symbol;
+                        if (SymbolEqualityComparer.Default.Equals(identifierSymbolInfo, variableSymbol))
+                        {
+                            statementIncludingVariable = statementNode;
+                        }
+                    }
+                }
 
                 if (statementIncludingVariable != null)
                 {
