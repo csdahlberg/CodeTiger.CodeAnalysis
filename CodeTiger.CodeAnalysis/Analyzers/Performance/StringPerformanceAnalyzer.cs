@@ -15,14 +15,14 @@ public class StringPerformanceAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         StringEqualsShouldBeUsedForCaseInsensitiveEqualityChecksDescriptor
-        = new DiagnosticDescriptor("CT1800", "String.Equals should be used for case insensitive equality checks.",
-            "String.Equals should be used for case insensitive equality checks.", "CodeTiger.Performance",
+        = new DiagnosticDescriptor("CT1800", "String.Equals should be used for case insensitive equality checks",
+            "String.Equals should be used for case insensitive equality checks", "CodeTiger.Performance",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         StringBuilderShouldBeUsedInsteadOfMultipleStringConcatenationsDescriptor
         = new DiagnosticDescriptor("CT1801",
-            "StringBuilder should be used instead of multiple string concatenations.",
-            "StringBuilder should be used instead of multiple string concatenations.", "CodeTiger.Performance",
+            "StringBuilder should be used instead of multiple string concatenations",
+            "StringBuilder should be used instead of multiple string concatenations", "CodeTiger.Performance",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

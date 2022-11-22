@@ -38,7 +38,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1020",
-                Message = "Extension methods should use the 'this' parameter.",
+                Message = "Extension methods should use the 'this' parameter",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 30) }
             });

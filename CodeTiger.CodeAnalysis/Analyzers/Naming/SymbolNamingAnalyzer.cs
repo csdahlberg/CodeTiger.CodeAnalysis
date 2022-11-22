@@ -17,117 +17,117 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming;
 public class SymbolNamingAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor TypeNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1702", "Type names should use pascal casing.",
-            "Type names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1702", "Type names should use pascal casing",
+            "Type names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ConstantFieldNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing.",
-            "Constant field names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1703", "Constant field names should use pascal casing",
+            "Constant field names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor PrivateFieldNamesShouldUseCamelCasingDescriptor
         = new DiagnosticDescriptor("CT1704",
-            "Private field names should use camel casing with a leading underscore.",
-            "Private field names should use camel casing with a leading underscore.", "CodeTiger.Naming",
+            "Private field names should use camel casing with a leading underscore",
+            "Private field names should use camel casing with a leading underscore", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor EventNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1705", "Event names should use pascal casing.",
-            "Event names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1705", "Event names should use pascal casing",
+            "Event names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor DelegateNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1706", "Delegate names should use pascal casing.",
-            "Delegate names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1706", "Delegate names should use pascal casing",
+            "Delegate names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor PropertyNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1707", "Property names should use pacal casing.",
-            "Property names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1707", "Property names should use pacal casing",
+            "Property names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MethodNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1708", "Method names should use pascal casing.",
-            "Method names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1708", "Method names should use pascal casing",
+            "Method names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor EnumerationMemberNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1709", "Enumeration member names should use pascal casing.",
-            "Enumeration member names should use pascal casing.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1709", "Enumeration member names should use pascal casing",
+            "Enumeration member names should use pascal casing", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor VariableNamesShouldUseCamelCasingDescriptor
-        = new DiagnosticDescriptor("CT1710", "Variable names should use camel casing.",
-            "Variable names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1710", "Variable names should use camel casing",
+            "Variable names should use camel casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor InterfaceNamesShouldUsePascalCasingPrefixedWithIDescriptor
-        = new DiagnosticDescriptor("CT1711", "Interface names should use pascal casing prefixed with 'I'.",
-            "Interface names should use pascal casing prefixed with 'I'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1711", "Interface names should use pascal casing prefixed with 'I'",
+            "Interface names should use pascal casing prefixed with 'I'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ParameterNamesShouldUseCamelCasingDescriptor
-        = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing.",
-            "Parameter names should use camel casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1712", "Parameter names should use camel casing",
+            "Parameter names should use camel casing", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor HungarianNotationShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT1713", "Hungarian notation should not be used.",
-            "Hungarian notation should not be used.", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1713", "Hungarian notation should not be used",
+            "Hungarian notation should not be used", "CodeTiger.Naming", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor = new DiagnosticDescriptor(
-            "CT1714", "Property names should not begin with the name of the containing type.",
-            "Property names should not begin with the name of the containing type.", "CodeTiger.Naming",
+            "CT1714", "Property names should not begin with the name of the containing type",
+            "Property names should not begin with the name of the containing type", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         GenericTypeParameterNamesShouldUsePascalCasingPrefixedWithCapitalTDescriptor
         = new DiagnosticDescriptor("CT1715",
-            "Generic type parameter names should use pascal casing prefixed with 'T'.",
-            "Generic type parameter names should use pascal casing prefixed with 'T'.", "CodeTiger.Naming",
+            "Generic type parameter names should use pascal casing prefixed with 'T'",
+            "Generic type parameter names should use pascal casing prefixed with 'T'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor GenericTypeParameterNamesShouldBeDescriptiveDescriptor
-        = new DiagnosticDescriptor("CT1716", "Generic type parameter names should be descriptive.",
-            "Generic type parameter names should be descriptive.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1716", "Generic type parameter names should be descriptive",
+            "Generic type parameter names should be descriptive", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor = new DiagnosticDescriptor(
-            "CT1717", "Generic type parameter names should not be suffixed with 'Type'.",
-            "Generic type parameter names should not be suffixed with 'Type'.", "CodeTiger.Naming",
+            "CT1717", "Generic type parameter names should not be suffixed with 'Type'",
+            "Generic type parameter names should not be suffixed with 'Type'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor
-        = new DiagnosticDescriptor("CT1718", "Property names should not be prefixed with 'Get' or 'Set'.",
-            "Property names should not be prefixed with 'Get' or 'Set'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1718", "Property names should not be prefixed with 'Get' or 'Set'",
+            "Property names should not be prefixed with 'Get' or 'Set'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor TypeNamesShouldNotBePrefixedWithAbstractDescriptor
-        = new DiagnosticDescriptor("CT1719", "Type names should not be prefixed with 'Abstract'.",
-            "Type names should not be prefixed with 'Abstract'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1719", "Type names should not be prefixed with 'Abstract'",
+            "Type names should not be prefixed with 'Abstract'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor TypeNamesShouldNotBePrefixedOrSuffixedWithBaseDescriptor
-        = new DiagnosticDescriptor("CT1720", "Type names should not be prefixed or suffixed with 'Base'.",
-            "Type names should not be prefixed or suffixed with 'Base'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1720", "Type names should not be prefixed or suffixed with 'Base'",
+            "Type names should not be prefixed or suffixed with 'Base'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor AttributeTypeNamesShouldBeSuffixedWithAttributeDescriptor
-        = new DiagnosticDescriptor("CT1721", "Attribute type names should be suffixed with 'Attribute'.",
-            "Attribute type names should be suffixed with 'Attribute'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1721", "Attribute type names should be suffixed with 'Attribute'",
+            "Attribute type names should be suffixed with 'Attribute'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonAttributeTypeNamesShouldNotBeSuffixedWithAttributeDescriptor = new DiagnosticDescriptor("CT1722",
-            "Non-attribute type names should not be suffixed with 'Attribute'.",
-            "Non-attribute type names should not be suffixed with 'Attribute'.", "CodeTiger.Naming",
+            "Non-attribute type names should not be suffixed with 'Attribute'",
+            "Non-attribute type names should not be suffixed with 'Attribute'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ExceptionTypeNamesShouldBeSuffixedWithExceptionDescriptor
-        = new DiagnosticDescriptor("CT1723", "Exception type names should be suffixed with 'Exception'.",
-            "Exception type names should be suffixed with 'Exception'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1723", "Exception type names should be suffixed with 'Exception'",
+            "Exception type names should be suffixed with 'Exception'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonExceptionTypeNamesShouldNotBeSuffixedWithExceptionDescriptor = new DiagnosticDescriptor("CT1724",
-            "Non-exception type names should not be suffixed with 'Exception'.",
-            "Non-exception type names should not be suffixed with 'Exception'.", "CodeTiger.Naming",
+            "Non-exception type names should not be suffixed with 'Exception'",
+            "Non-exception type names should not be suffixed with 'Exception'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor EventArgsTypeNamesShouldBeSuffixedWithEventArgsDescriptor
-        = new DiagnosticDescriptor("CT1725", "EventArgs type names should be suffixed with 'EventArgs'.",
-            "EventArgs type names should be suffixed with 'EventArgs'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1725", "EventArgs type names should be suffixed with 'EventArgs'",
+            "EventArgs type names should be suffixed with 'EventArgs'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonEventArgsTypeNamesShouldNotBeSuffixedWithEventArgsDescriptor = new DiagnosticDescriptor("CT1726",
-            "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
-            "Non-EventArgs type names should not be suffixed with 'EventArgs'.", "CodeTiger.Naming",
+            "Non-EventArgs type names should not be suffixed with 'EventArgs'",
+            "Non-EventArgs type names should not be suffixed with 'EventArgs'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MethodsReturningATaskShouldBeSuffixedWithAsyncDescriptor
-        = new DiagnosticDescriptor("CT1727", "Methods returning a Task should be suffixed with 'Async'.",
-            "Methods returning a Task should be suffixed with 'Async'.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1727", "Methods returning a Task should be suffixed with 'Async'",
+            "Methods returning a Task should be suffixed with 'Async'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         MethodsNotReturningATaskOrVoidShouldNotBeSuffixedWithAsyncDescriptor = new DiagnosticDescriptor(
-            "CT1728", "Methods not returning a Task or void should not be suffixed with 'Async'.",
-            "Methods not returning a Task or void should not be suffixed with 'Async'.", "CodeTiger.Naming",
+            "CT1728", "Methods not returning a Task or void should not be suffixed with 'Async'",
+            "Methods not returning a Task or void should not be suffixed with 'Async'", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor TypeNamesShouldNotMatchTheirContainingNamespaceNameDescriptor
-        = new DiagnosticDescriptor("CT1730", "Type names should not match their containing namespace name.",
-            "Type names should not match their containing namespace name.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1730", "Type names should not match their containing namespace name",
+            "Type names should not match their containing namespace name", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

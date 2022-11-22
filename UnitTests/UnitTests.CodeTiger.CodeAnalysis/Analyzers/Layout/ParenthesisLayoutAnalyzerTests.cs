@@ -70,7 +70,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -80,7 +80,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -122,7 +122,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -132,7 +132,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -196,7 +196,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -206,7 +206,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -244,7 +244,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -254,7 +254,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -301,7 +301,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -330,7 +330,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -383,7 +383,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -415,7 +415,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -466,7 +466,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -497,7 +497,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -548,7 +548,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -579,7 +579,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -630,7 +630,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -661,7 +661,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -712,7 +712,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -743,7 +743,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -790,7 +790,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -819,7 +819,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -874,7 +874,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -907,7 +907,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -954,7 +954,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -983,7 +983,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1041,7 +1041,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1051,7 +1051,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1086,7 +1086,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1096,7 +1096,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1147,7 +1147,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1178,7 +1178,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1225,7 +1225,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1254,7 +1254,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1307,7 +1307,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1317,7 +1317,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1327,7 +1327,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3532",
-                Message = "Opening parenthesis should be on the same line as the preceding keyword.",
+                Message = "Opening parenthesis should be on the same line as the preceding keyword",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1360,7 +1360,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1370,7 +1370,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1380,7 +1380,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1430,7 +1430,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1440,7 +1440,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1471,7 +1471,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1481,7 +1481,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3534",
-                Message = "Closing parenthesis should be on the same line as the preceding argument.",
+                Message = "Closing parenthesis should be on the same line as the preceding argument",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1531,7 +1531,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1541,7 +1541,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1589,7 +1589,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1621,7 +1621,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3536",
-                Message = "Empty parentheses should be on the same line.",
+                Message = "Empty parentheses should be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1631,7 +1631,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1676,7 +1676,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1704,7 +1704,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3536",
-                Message = "Empty parentheses should be on the same line.",
+                Message = "Empty parentheses should be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1752,7 +1752,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3533",
-                Message = "Opening parenthesis should be on the same line as the preceding identifier.",
+                Message = "Opening parenthesis should be on the same line as the preceding identifier",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1784,7 +1784,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3536",
-                Message = "Empty parentheses should be on the same line.",
+                Message = "Empty parentheses should be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1794,7 +1794,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1844,7 +1844,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3536",
-                Message = "Empty parentheses should be on the same line.",
+                Message = "Empty parentheses should be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1854,7 +1854,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3535",
-                Message = "Closing parenthesis should be on the same line as the preceding element.",
+                Message = "Closing parenthesis should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

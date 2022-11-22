@@ -37,7 +37,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3000",
-                Message = "Files should not begin with blank lines.",
+                Message = "Files should not begin with blank lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -74,7 +74,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3001",
-                Message = "Files should end with a blank line.",
+                Message = "Files should end with a blank line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -151,7 +151,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3002",
-                Message = "Code should not contain consecutive blank lines.",
+                Message = "Code should not contain consecutive blank lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -161,7 +161,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3002",
-                Message = "Code should not contain consecutive blank lines.",
+                Message = "Code should not contain consecutive blank lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

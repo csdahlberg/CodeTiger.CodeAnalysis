@@ -14,14 +14,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class ThreadingReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor ThreadResetAbortShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT2005", "Thread.ResetAbort should not be used.",
-            "Thread.ResetAbort should not be used.", "CodeTiger.Reliability", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT2005", "Thread.ResetAbort should not be used",
+            "Thread.ResetAbort should not be used", "CodeTiger.Reliability", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor
         ThreadSynchronizationShouldNotBeDoneUsingAPubliclyAccessibleObjectDescriptor
         = new DiagnosticDescriptor("CT2006",
-            "Thread synchronization should not be done using a publicly accessible object.",
-            "Thread synchronization should not be done using a publicly accessible object.",
+            "Thread synchronization should not be done using a publicly accessible object",
+            "Thread synchronization should not be done using a publicly accessible object",
             "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
 
     /// <summary>

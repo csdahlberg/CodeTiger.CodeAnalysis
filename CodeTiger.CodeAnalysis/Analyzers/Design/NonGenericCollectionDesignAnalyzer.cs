@@ -15,12 +15,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor NonGenericCollectionsShouldNotBeHeldAsStateDescriptor
-        = new DiagnosticDescriptor("CT1004", "Non-generic collections should not be held as state.",
-            "Non-generic collections should not be held as state.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1004", "Non-generic collections should not be held as state",
+            "Non-generic collections should not be held as state", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor NonGenericCollectionsShouldNotBeExposedDescriptor
-        = new DiagnosticDescriptor("CT1005", "Non-generic collections should not be exposed.",
-            "Non-generic collections should not be exposed.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1005", "Non-generic collections should not be exposed",
+            "Non-generic collections should not be exposed", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     private static readonly string[] _nonGenericCollectionMetadataNames = new string[]

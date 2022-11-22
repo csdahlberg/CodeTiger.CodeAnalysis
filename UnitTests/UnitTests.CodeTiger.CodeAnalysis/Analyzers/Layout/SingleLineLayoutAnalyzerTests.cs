@@ -17,7 +17,7 @@ namespace ClassLibrary1 { }";
             new DiagnosticResult
             {
                 Id = "CT3500",
-                Message = "Namespaces should not be defined on a single line.",
+                Message = "Namespaces should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -41,7 +41,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -51,7 +51,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -75,7 +75,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -85,7 +85,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -109,7 +109,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -119,7 +119,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -143,7 +143,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -153,7 +153,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3502",
-                Message = "Types should not be defined on a single line.",
+                Message = "Types should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -252,7 +252,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3503",
-                Message = "Auto properties should be defined on a single line.",
+                Message = "Auto properties should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -262,7 +262,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3503",
-                Message = "Auto properties should be defined on a single line.",
+                Message = "Auto properties should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -272,7 +272,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3503",
-                Message = "Auto properties should be defined on a single line.",
+                Message = "Auto properties should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -282,7 +282,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3503",
-                Message = "Auto properties should be defined on a single line.",
+                Message = "Auto properties should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -340,7 +340,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3504",
-                Message = "Non-auto properties should not be defined on a single line.",
+                Message = "Non-auto properties should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -350,7 +350,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3504",
-                Message = "Non-auto properties should not be defined on a single line.",
+                Message = "Non-auto properties should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -360,7 +360,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3504",
-                Message = "Non-auto properties should not be defined on a single line.",
+                Message = "Non-auto properties should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -436,7 +436,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3505",
-                Message = "Trivial accessors should be defined on a single line.",
+                Message = "Trivial accessors should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -446,7 +446,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3505",
-                Message = "Trivial accessors should be defined on a single line.",
+                Message = "Trivial accessors should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -456,7 +456,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3505",
-                Message = "Trivial accessors should be defined on a single line.",
+                Message = "Trivial accessors should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -466,7 +466,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3505",
-                Message = "Trivial accessors should be defined on a single line.",
+                Message = "Trivial accessors should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -554,7 +554,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3506",
-                Message = "Non-trivial accessors should not be defined on a single line.",
+                Message = "Non-trivial accessors should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -564,7 +564,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -574,7 +574,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3506",
-                Message = "Non-trivial accessors should not be defined on a single line.",
+                Message = "Non-trivial accessors should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -584,7 +584,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -594,7 +594,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3506",
-                Message = "Non-trivial accessors should not be defined on a single line.",
+                Message = "Non-trivial accessors should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -604,7 +604,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -614,7 +614,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3506",
-                Message = "Non-trivial accessors should not be defined on a single line.",
+                Message = "Non-trivial accessors should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -624,7 +624,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -675,7 +675,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3507",
-                Message = "Methods should not be defined on a single line.",
+                Message = "Methods should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -685,7 +685,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3507",
-                Message = "Methods should not be defined on a single line.",
+                Message = "Methods should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -737,7 +737,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3508",
-                Message = "Try statements should not be defined on a single line.",
+                Message = "Try statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -747,7 +747,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3510",
-                Message = "Catch clauses should begin on a new line.",
+                Message = "Catch clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -818,7 +818,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3509",
-                Message = "Non-trivial catch clauses should not be defined on a single line.",
+                Message = "Non-trivial catch clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -828,7 +828,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -838,7 +838,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3509",
-                Message = "Non-trivial catch clauses should not be defined on a single line.",
+                Message = "Non-trivial catch clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -848,7 +848,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -910,7 +910,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3510",
-                Message = "Catch clauses should begin on a new line.",
+                Message = "Catch clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -920,7 +920,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3510",
-                Message = "Catch clauses should begin on a new line.",
+                Message = "Catch clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -989,7 +989,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3511",
-                Message = "Finally clauses should not be defined on a single line.",
+                Message = "Finally clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -999,7 +999,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3511",
-                Message = "Finally clauses should not be defined on a single line.",
+                Message = "Finally clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1054,7 +1054,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3512",
-                Message = "Finally clauses should begin on a new line.",
+                Message = "Finally clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1109,7 +1109,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3513",
-                Message = "If statements should not be defined on a single line.",
+                Message = "If statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1119,7 +1119,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3513",
-                Message = "If statements should not be defined on a single line.",
+                Message = "If statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1129,7 +1129,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3514",
-                Message = "Else clauses should not be defined on a single line.",
+                Message = "Else clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1139,7 +1139,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3515",
-                Message = "Else clauses should begin on a new line.",
+                Message = "Else clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1193,7 +1193,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3514",
-                Message = "Else clauses should not be defined on a single line.",
+                Message = "Else clauses should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1248,7 +1248,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3515",
-                Message = "Else clauses should begin on a new line.",
+                Message = "Else clauses should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1296,7 +1296,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3516",
-                Message = "For statements should not be defined on a single line.",
+                Message = "For statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1344,7 +1344,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3517",
-                Message = "ForEach statements should not be defined on a single line.",
+                Message = "ForEach statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1392,7 +1392,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3518",
-                Message = "Switch statements should not be defined on a single line.",
+                Message = "Switch statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1440,7 +1440,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3519",
-                Message = "While statements should not be defined on a single line.",
+                Message = "While statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1489,7 +1489,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3520",
-                Message = "Do statements should not be defined on a single line.",
+                Message = "Do statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1538,7 +1538,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3521",
-                Message = "Non-empty using statements should not be defined on a single line.",
+                Message = "Non-empty using statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1586,7 +1586,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3522",
-                Message = "Fixed statements should not be defined on a single line.",
+                Message = "Fixed statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1634,7 +1634,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3523",
-                Message = "Lock statements should not be defined on a single line.",
+                Message = "Lock statements should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1707,7 +1707,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3524",
-                Message = "Non-trivial switch sections should not be defined on a single line.",
+                Message = "Non-trivial switch sections should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1717,7 +1717,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3539",
-                Message = "Non-trivial switch section statements should begin on a new line.",
+                Message = "Non-trivial switch section statements should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1727,7 +1727,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1737,7 +1737,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3524",
-                Message = "Non-trivial switch sections should not be defined on a single line.",
+                Message = "Non-trivial switch sections should not be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1747,7 +1747,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3539",
-                Message = "Non-trivial switch section statements should begin on a new line.",
+                Message = "Non-trivial switch section statements should begin on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1787,7 +1787,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1797,7 +1797,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1807,7 +1807,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1817,7 +1817,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1827,7 +1827,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3528",
-                Message = "Multiple statements should not be on the same line.",
+                Message = "Multiple statements should not be on the same line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1911,7 +1911,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3529",
-                Message = "LINQ query clauses should all be on the same line or separate lines.",
+                Message = "LINQ query clauses should all be on the same line or separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1921,7 +1921,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3529",
-                Message = "LINQ query clauses should all be on the same line or separate lines.",
+                Message = "LINQ query clauses should all be on the same line or separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1931,7 +1931,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3529",
-                Message = "LINQ query clauses should all be on the same line or separate lines.",
+                Message = "LINQ query clauses should all be on the same line or separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1941,7 +1941,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3529",
-                Message = "LINQ query clauses should all be on the same line or separate lines.",
+                Message = "LINQ query clauses should all be on the same line or separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1996,7 +1996,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2006,7 +2006,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2016,7 +2016,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2026,7 +2026,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2036,7 +2036,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2046,7 +2046,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3538",
-                Message = "Parameter declarations should be defined on a single line.",
+                Message = "Parameter declarations should be defined on a single line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

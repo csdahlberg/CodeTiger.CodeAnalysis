@@ -16,117 +16,117 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout;
 public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor NamespacesShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3500", "Namespaces should not be defined on a single line.",
-            "Namespaces should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3500", "Namespaces should not be defined on a single line",
+            "Namespaces should not be defined on a single line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor TypesShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3502", "Types should not be defined on a single line.",
-            "Types should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3502", "Types should not be defined on a single line",
+            "Types should not be defined on a single line", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor AutoPropertiesShouldBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3503", "Auto properties should be defined on a single line.",
-            "Auto properties should be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3503", "Auto properties should be defined on a single line",
+            "Auto properties should be defined on a single line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor NonAutoPropertiesShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3504", "Non-auto properties should not be defined on a single line.",
-            "Non-auto properties should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3504", "Non-auto properties should not be defined on a single line",
+            "Non-auto properties should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3505", "Trivial accessors should be defined on a single line.",
-            "Trivial accessors should be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3505", "Trivial accessors should be defined on a single line",
+            "Trivial accessors should be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor NonTrivialAccessorsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3506", "Non-trivial accessors should not be defined on a single line.",
-            "Non-trivial accessors should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3506", "Non-trivial accessors should not be defined on a single line",
+            "Non-trivial accessors should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MethodsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3507", "Methods should not be defined on a single line.",
-            "Methods should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3507", "Methods should not be defined on a single line",
+            "Methods should not be defined on a single line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor TryStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3508", "Try statements should not be defined on a single line.",
-            "Try statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3508", "Try statements should not be defined on a single line",
+            "Try statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonTrivialCatchClausesShouldNotBeDefinedOnASingleLineDescriptor = new DiagnosticDescriptor("CT3509",
-            "Non-trivial catch clauses should not be defined on a single line.",
-            "Non-trivial catch clauses should not be defined on a single line.", "CodeTiger.Layout",
+            "Non-trivial catch clauses should not be defined on a single line",
+            "Non-trivial catch clauses should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor CatchClausesShouldBeginOnANewLineDescriptor
-        = new DiagnosticDescriptor("CT3510", "Catch clauses should begin on a new line.",
-            "Catch clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3510", "Catch clauses should begin on a new line",
+            "Catch clauses should begin on a new line", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor FinallyClausesShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3511", "Finally clauses should not be defined on a single line.",
-            "Finally clauses should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3511", "Finally clauses should not be defined on a single line",
+            "Finally clauses should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor FinallyClausesShouldBeginOnANewLineDescriptor
-        = new DiagnosticDescriptor("CT3512", "Finally clauses should begin on a new line.",
-            "Finally clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3512", "Finally clauses should begin on a new line",
+            "Finally clauses should begin on a new line", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor IfStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3513", "If statements should not be defined on a single line.",
-            "If statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3513", "If statements should not be defined on a single line",
+            "If statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ElseClausesShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3514", "Else clauses should not be defined on a single line.",
-            "Else clauses should not be defined on a single line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3514", "Else clauses should not be defined on a single line",
+            "Else clauses should not be defined on a single line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor ElseClausesShouldBeginOnANewLineDescriptor
-        = new DiagnosticDescriptor("CT3515", "Else clauses should begin on a new line.",
-            "Else clauses should begin on a new line.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3515", "Else clauses should begin on a new line",
+            "Else clauses should begin on a new line", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ForStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3516", "For statements should not be defined on a single line.",
-            "For statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3516", "For statements should not be defined on a single line",
+            "For statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ForEachStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3517", "ForEach statements should not be defined on a single line.",
-            "ForEach statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3517", "ForEach statements should not be defined on a single line",
+            "ForEach statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor SwitchStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3518", "Switch statements should not be defined on a single line.",
-            "Switch statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3518", "Switch statements should not be defined on a single line",
+            "Switch statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor WhileStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3519", "While statements should not be defined on a single line.",
-            "While statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3519", "While statements should not be defined on a single line",
+            "While statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor DoStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3520", "Do statements should not be defined on a single line.",
-            "Do statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3520", "Do statements should not be defined on a single line",
+            "Do statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonEmptyUsingStatementsShouldNotBeDefinedOnASingleLineDescriptor = new DiagnosticDescriptor("CT3521",
-            "Non-empty using statements should not be defined on a single line.",
-            "Non-empty using statements should not be defined on a single line.", "CodeTiger.Layout",
+            "Non-empty using statements should not be defined on a single line",
+            "Non-empty using statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor FixedStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3522", "Fixed statements should not be defined on a single line.",
-            "Fixed statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3522", "Fixed statements should not be defined on a single line",
+            "Fixed statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor LockStatementsShouldNotBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3523", "Lock statements should not be defined on a single line.",
-            "Lock statements should not be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3523", "Lock statements should not be defined on a single line",
+            "Lock statements should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonTrivialSwitchSectionsShouldNotBeDefinedOnASingleLineDescriptor = new DiagnosticDescriptor("CT3524",
-            "Non-trivial switch sections should not be defined on a single line.",
-            "Non-trivial switch sections should not be defined on a single line.", "CodeTiger.Layout",
+            "Non-trivial switch sections should not be defined on a single line",
+            "Non-trivial switch sections should not be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MultipleStatementsShouldNotBeOnTheSameLineDescriptor
-        = new DiagnosticDescriptor("CT3528", "Multiple statements should not be on the same line.",
-            "Multiple statements should not be on the same line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3528", "Multiple statements should not be on the same line",
+            "Multiple statements should not be on the same line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor
         LinqQueryClausesShouldAllBeOnTheSameLineOrSeparateLinesDescriptor = new DiagnosticDescriptor("CT3529",
-            "LINQ query clauses should all be on the same line or separate lines.",
-            "LINQ query clauses should all be on the same line or separate lines.", "CodeTiger.Layout",
+            "LINQ query clauses should all be on the same line or separate lines",
+            "LINQ query clauses should all be on the same line or separate lines", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ParameterDeclarationsShouldBeDefinedOnASingleLineDescriptor
-        = new DiagnosticDescriptor("CT3538", "Parameter declarations should be defined on a single line.",
-            "Parameter declarations should be defined on a single line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3538", "Parameter declarations should be defined on a single line",
+            "Parameter declarations should be defined on a single line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonTrivialSwitchSectionStatementsShouldBeginOnANewLineDescriptor = new DiagnosticDescriptor("CT3539",
-            "Non-trivial switch section statements should begin on a new line.",
-            "Non-trivial switch section statements should begin on a new line.", "CodeTiger.Layout",
+            "Non-trivial switch section statements should begin on a new line",
+            "Non-trivial switch section statements should begin on a new line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

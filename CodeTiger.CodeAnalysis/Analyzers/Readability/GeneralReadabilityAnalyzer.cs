@@ -12,8 +12,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability;
 public class GeneralReadabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor EmptyStatementsShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT3100", "Empty statements should not be used.",
-            "Empty statements should not be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3100", "Empty statements should not be used",
+            "Empty statements should not be used", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
 
     /// <summary>
     /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.

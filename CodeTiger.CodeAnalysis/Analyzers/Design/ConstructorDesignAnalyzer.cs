@@ -14,11 +14,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor CopyConstructorsShouldNotBePublicDescriptor
-        = new DiagnosticDescriptor("CT1001", "Copy constructors should not be public.",
-            "Copy constructors should not be public.", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1001", "Copy constructors should not be public",
+            "Copy constructors should not be public", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ConstructorsForAbstractClassesShouldNotBePublicDescriptor
-        = new DiagnosticDescriptor("CT1013", "Constructors for abstract classes should not be public.",
-            "Constructors for abstract classes should not be public.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1013", "Constructors for abstract classes should not be public",
+            "Constructors for abstract classes should not be public", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

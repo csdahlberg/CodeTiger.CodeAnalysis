@@ -20,17 +20,17 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor TypesWithDisposableStateShouldImplementIDisposableDescriptor
-        = new DiagnosticDescriptor("CT2001", "Types with disposable state should implement IDisposable.",
-            "Types with disposable state should implement IDisposable.", "CodeTiger.Reliability",
+        = new DiagnosticDescriptor("CT2001", "Types with disposable state should implement IDisposable",
+            "Types with disposable state should implement IDisposable", "CodeTiger.Reliability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         TypesWithUnmanagedStateShouldImplementTheFullDisposePatternDescriptor = new DiagnosticDescriptor(
-            "CT2002", "Types with unmanaged state should implement the full dispose pattern.",
-            "Types with unmanaged state should implement the full dispose pattern.", "CodeTiger.Reliability",
+            "CT2002", "Types with unmanaged state should implement the full dispose pattern",
+            "Types with unmanaged state should implement the full dispose pattern", "CodeTiger.Reliability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor DestructorsShouldNotAccessManagedObjectsDescriptor
-        = new DiagnosticDescriptor("CT2003", "Destructors should not access managed objects.",
-            "Destructors should not access managed objects.", "CodeTiger.Reliability",
+        = new DiagnosticDescriptor("CT2003", "Destructors should not access managed objects",
+            "Destructors should not access managed objects", "CodeTiger.Reliability",
             DiagnosticSeverity.Warning, true);
 
     private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]

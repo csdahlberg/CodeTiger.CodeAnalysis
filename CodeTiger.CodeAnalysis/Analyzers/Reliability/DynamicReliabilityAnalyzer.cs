@@ -13,7 +13,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class DynamicReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor DynamicShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT2010", "Dynamic should not be used.", "Dynamic should not be used.",
+        = new DiagnosticDescriptor("CT2010", "Dynamic should not be used", "Dynamic should not be used",
             "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
 
     /// <summary>

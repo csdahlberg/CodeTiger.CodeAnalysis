@@ -15,8 +15,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage;
 public class DebugUsageAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor CallsToDebugAssertShouldIncludeAMessageDescriptor
-        = new DiagnosticDescriptor("CT2202", "Calls to the Debug.Assert method should include a message.",
-            "Calls to the Debug.Assert method should include a message.", "CodeTiger.Usage",
+        = new DiagnosticDescriptor("CT2202", "Calls to the Debug.Assert method should include a message",
+            "Calls to the Debug.Assert method should include a message", "CodeTiger.Usage",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

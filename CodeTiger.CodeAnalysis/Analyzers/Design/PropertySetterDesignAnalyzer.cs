@@ -15,8 +15,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class PropertySetterDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor PropertySettersShouldNotModifyMultipleValuesDescriptor
-        = new DiagnosticDescriptor("CT1006", "Property setters should not modify multiple values.",
-            "Property setters should not modify multiple values.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1006", "Property setters should not modify multiple values",
+            "Property setters should not modify multiple values", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

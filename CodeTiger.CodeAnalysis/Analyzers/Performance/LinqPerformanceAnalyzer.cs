@@ -14,8 +14,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Performance;
 public class LinqPerformanceAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor UnnecessaryWhereClausesShouldBeSimplifiedDescriptor
-        = new DiagnosticDescriptor("CT1802", "Unnecessary where clauses should be simplified.",
-            "Unnecessary where clauses should be simplified.", "CodeTiger.Performance", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1802", "Unnecessary where clauses should be simplified",
+            "Unnecessary where clauses should be simplified", "CodeTiger.Performance", DiagnosticSeverity.Warning,
             true);
 
     private static readonly string[] _linqMethodsWithPredicates = new[]

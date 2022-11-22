@@ -15,13 +15,13 @@ public class BinaryOperatorLayoutAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         MultiLineExpressionsShouldNotBeSplitAfterADotOrMemberAccessTokenDescriptor
         = new DiagnosticDescriptor("CT3530",
-            "Multi-line expressions should not be split after a dot or member access token.",
-            "Multi-line expressions should not be split after a dot or member access token.", "CodeTiger.Layout",
+            "Multi-line expressions should not be split after a dot or member access token",
+            "Multi-line expressions should not be split after a dot or member access token", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         MultiLineExpressionsShouldNotBeSplitAfterABinaryOperatorDescriptor = new DiagnosticDescriptor("CT3540",
-            "Multi-line expressions should not be split after a binary operator.",
-            "Multi-line expressions should not be split after a binary operator.", "CodeTiger.Layout",
+            "Multi-line expressions should not be split after a binary operator",
+            "Multi-line expressions should not be split after a binary operator", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

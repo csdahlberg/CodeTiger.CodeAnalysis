@@ -59,7 +59,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2001",
-                Message = "Types with disposable state should implement IDisposable.",
+                Message = "Types with disposable state should implement IDisposable",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -119,7 +119,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2002",
-                Message = "Types with unmanaged state should implement the full dispose pattern.",
+                Message = "Types with unmanaged state should implement the full dispose pattern",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -145,7 +145,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2002",
-                Message = "Types with unmanaged state should implement the full dispose pattern.",
+                Message = "Types with unmanaged state should implement the full dispose pattern",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

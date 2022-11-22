@@ -12,8 +12,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout;
 public class LineLengthLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor LinesShouldNotExceedTheMaximumLengthDescriptor
-        = new DiagnosticDescriptor("CT3531", "Lines should not exceed the maximum length of 115.",
-            "Lines should not exceed the maximum length of 115.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3531", "Lines should not exceed the maximum length of 115",
+            "Lines should not exceed the maximum length of 115", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

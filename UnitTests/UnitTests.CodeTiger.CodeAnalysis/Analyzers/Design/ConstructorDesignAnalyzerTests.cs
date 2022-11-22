@@ -40,7 +40,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1013",
-                Message = "Constructors for abstract classes should not be public.",
+                Message = "Constructors for abstract classes should not be public",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 16) }
             });

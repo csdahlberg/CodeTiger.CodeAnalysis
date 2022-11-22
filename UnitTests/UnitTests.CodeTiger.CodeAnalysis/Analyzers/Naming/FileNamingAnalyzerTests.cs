@@ -65,7 +65,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1701",
-                Message = "Source file names should use pascal casing.",
+                Message = "Source file names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -86,7 +86,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1701",
-                Message = "Source file names should use pascal casing.",
+                Message = "Source file names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -208,7 +208,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1729",
-                Message = "Source file names should match the primary type name.",
+                Message = "Source file names should match the primary type name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -232,7 +232,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1701",
-                Message = "Source file names should use pascal casing.",
+                Message = "Source file names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -256,7 +256,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1729",
-                Message = "Source file names should match the primary type name.",
+                Message = "Source file names should match the primary type name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -280,7 +280,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1729",
-                Message = "Source file names should match the primary type name.",
+                Message = "Source file names should match the primary type name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -318,7 +318,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1729",
-                Message = "Source file names should match the primary type name.",
+                Message = "Source file names should match the primary type name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -356,7 +356,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1729",
-                Message = "Source file names should match the primary type name.",
+                Message = "Source file names should match the primary type name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

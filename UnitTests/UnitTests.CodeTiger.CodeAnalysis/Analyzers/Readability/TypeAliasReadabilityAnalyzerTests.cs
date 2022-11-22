@@ -61,7 +61,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3101",
-                Message = "Built-in type aliases should be used.",
+                Message = "Built-in type aliases should be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -71,7 +71,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3101",
-                Message = "Built-in type aliases should be used.",
+                Message = "Built-in type aliases should be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

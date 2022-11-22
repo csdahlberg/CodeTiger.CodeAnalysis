@@ -17,8 +17,8 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         ExceptionsThrownWithinCatchBlocksShouldIncludeTheCaughtExceptionAsAnInnerExceptionDescriptor
         = new DiagnosticDescriptor("CT2200",
-            "Exceptions thrown within catch blocks should include the caught exception as an inner exception.",
-            "The caught exception{0} should be included as an inner exception.", "CodeTiger.Usage",
+            "Exceptions thrown within catch blocks should include the caught exception as an inner exception",
+            "The caught exception{0} should be included as an inner exception", "CodeTiger.Usage",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

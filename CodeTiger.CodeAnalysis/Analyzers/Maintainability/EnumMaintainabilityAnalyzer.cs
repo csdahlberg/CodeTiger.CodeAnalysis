@@ -19,8 +19,8 @@ public class EnumMaintainabilityAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         CompositeValuesInFlagsEnumerationsShouldShouldEqualACombinationOfOtherValuesDescriptor
         = new DiagnosticDescriptor("CT1505",
-            "Composite values in Flags enumerations should equal a combination of other values.",
-            "Composite values in Flags enumerations should equal a combination of other values.",
+            "Composite values in Flags enumerations should equal a combination of other values",
+            "Composite values in Flags enumerations should equal a combination of other values",
             "CodeTiger.Maintainability", DiagnosticSeverity.Warning, true);
 
     /// <summary>

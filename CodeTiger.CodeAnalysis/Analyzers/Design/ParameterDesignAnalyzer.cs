@@ -15,12 +15,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class ParameterDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor MethodsShouldNotExceedSevenParametersDescriptor
-        = new DiagnosticDescriptor("CT1003", "Methods should not exceed seven parameters.",
-            "Methods should not exceed seven parameters.", "CodeTiger.Design", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1003", "Methods should not exceed seven parameters",
+            "Methods should not exceed seven parameters", "CodeTiger.Design", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor ExtensionMethodsShouldUseTheThisParameterDescriptor
-        = new DiagnosticDescriptor("CT1020", "Extension methods should use the 'this' parameter.",
-            "Extension methods should use the 'this' parameter.", "CodeTiger.Design", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1020", "Extension methods should use the 'this' parameter",
+            "Extension methods should use the 'this' parameter", "CodeTiger.Design", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

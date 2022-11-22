@@ -13,7 +13,7 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability;
 public class RegionReadabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor RegionsShouldNotBeUsedDescriptor = new DiagnosticDescriptor(
-        "CT3109", "Regions should not be used.", "Regions should not be used.", "CodeTiger.Readability",
+        "CT3109", "Regions should not be used", "Regions should not be used", "CodeTiger.Readability",
         DiagnosticSeverity.Warning, true);
 
     /// <summary>

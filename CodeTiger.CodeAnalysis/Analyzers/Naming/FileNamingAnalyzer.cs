@@ -18,12 +18,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Naming;
 public class FileNamingAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor SourceFileNamesShouldUsePascalCasingDescriptor
-        = new DiagnosticDescriptor("CT1701", "Source file names should use pascal casing.",
-            "Source file names should use pascal casing.", "CodeTiger.Naming", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1701", "Source file names should use pascal casing",
+            "Source file names should use pascal casing", "CodeTiger.Naming", DiagnosticSeverity.Warning,
             true);
     internal static readonly DiagnosticDescriptor SourceFileNamesShouldMatchThePrimaryTypeNameDescriptor
-        = new DiagnosticDescriptor("CT1729", "Source file names should match the primary type name.",
-            "Source file names should match the primary type name.", "CodeTiger.Naming",
+        = new DiagnosticDescriptor("CT1729", "Source file names should match the primary type name",
+            "Source file names should match the primary type name", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
 
     private static readonly ReadOnlyCollection<string> _knownPartialFileNames

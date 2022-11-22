@@ -14,8 +14,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class ExceptionHandlingReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor EmptyCatchBlocksShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT2007", "Empty catch blocks should not be used.",
-            "Empty catch blocks should not be used.", "CodeTiger.Reliability", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT2007", "Empty catch blocks should not be used",
+            "Empty catch blocks should not be used", "CodeTiger.Reliability", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

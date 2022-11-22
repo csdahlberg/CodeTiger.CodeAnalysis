@@ -14,8 +14,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class EnumerationReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor CollectionsBeingIteratedOverShouldNotBeModifiedDescriptor
-        = new DiagnosticDescriptor("CT2000", "Collections being iterated over should not be modified.",
-            "Collections being iterated over should not be modified.", "CodeTiger.Reliability",
+        = new DiagnosticDescriptor("CT2000", "Collections being iterated over should not be modified",
+            "Collections being iterated over should not be modified", "CodeTiger.Reliability",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

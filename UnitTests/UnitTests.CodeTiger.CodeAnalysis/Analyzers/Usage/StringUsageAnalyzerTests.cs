@@ -64,7 +64,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2208",
-                Message = "Interpolated strings require a leading '$' character.",
+                Message = "Interpolated strings require a leading '$' character",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -112,7 +112,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2208",
-                Message = "Interpolated strings require a leading '$' character.",
+                Message = "Interpolated strings require a leading '$' character",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -158,7 +158,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2208",
-                Message = "Interpolated strings require a leading '$' character.",
+                Message = "Interpolated strings require a leading '$' character",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -204,7 +204,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2208",
-                Message = "Interpolated strings require a leading '$' character.",
+                Message = "Interpolated strings require a leading '$' character",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -252,7 +252,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2208",
-                Message = "Interpolated strings require a leading '$' character.",
+                Message = "Interpolated strings require a leading '$' character",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

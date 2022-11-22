@@ -31,7 +31,7 @@ namespace ClassLibrary2
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -41,7 +41,7 @@ namespace ClassLibrary2
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -51,7 +51,7 @@ namespace ClassLibrary2
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -103,7 +103,7 @@ namespace ClassLibrary1
             return new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -209,7 +209,7 @@ namespace ClassLibrary1
             return new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -300,7 +300,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -310,7 +310,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -320,7 +320,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -360,7 +360,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -370,7 +370,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -380,7 +380,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -420,7 +420,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -430,7 +430,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -440,7 +440,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -480,7 +480,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -490,7 +490,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -500,7 +500,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -575,7 +575,7 @@ namespace ClassLibrary1
             return new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -701,7 +701,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -711,7 +711,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -721,7 +721,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -731,7 +731,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -741,7 +741,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -751,7 +751,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -761,7 +761,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -771,7 +771,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3525",
-                Message = "Braces should not be omitted from code blocks.",
+                Message = "Braces should not be omitted from code blocks",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -833,7 +833,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -843,7 +843,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3501",
-                Message = "Braces for multi-line elements should be on a new line.",
+                Message = "Braces for multi-line elements should be on a new line",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

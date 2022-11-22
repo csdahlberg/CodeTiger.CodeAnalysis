@@ -62,7 +62,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1802",
-                Message = "Unnecessary where clauses should be simplified.",
+                Message = "Unnecessary where clauses should be simplified",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

@@ -52,7 +52,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
             new DiagnosticResult
             {
                 Id = "CT3531",
-                Message = "Lines should not exceed the maximum length of 115.",
+                Message = "Lines should not exceed the maximum length of 115",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -62,7 +62,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
             new DiagnosticResult
             {
                 Id = "CT3531",
-                Message = "Lines should not exceed the maximum length of 115.",
+                Message = "Lines should not exceed the maximum length of 115",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -72,7 +72,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
             new DiagnosticResult
             {
                 Id = "CT3531",
-                Message = "Lines should not exceed the maximum length of 115.",
+                Message = "Lines should not exceed the maximum length of 115",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -82,7 +82,7 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
             new DiagnosticResult
             {
                 Id = "CT3531",
-                Message = "Lines should not exceed the maximum length of 115.",
+                Message = "Lines should not exceed the maximum length of 115",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

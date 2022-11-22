@@ -14,11 +14,11 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout;
 public class AttributeLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor AttributesShouldBeDeclaredSeparatelyDescriptor
-        = new DiagnosticDescriptor("CT3526", "Attributes should be declared separately.",
-            "Attributes should be declared separately.", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3526", "Attributes should be declared separately",
+            "Attributes should be declared separately", "CodeTiger.Layout", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor AttributesShouldBeDeclaredOnSeparateLinesDescriptor
-        = new DiagnosticDescriptor("CT3527", "Attributes should be declared on separate lines.",
-            "Attributes should be declared on separate lines.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3527", "Attributes should be declared on separate lines",
+            "Attributes should be declared on separate lines", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

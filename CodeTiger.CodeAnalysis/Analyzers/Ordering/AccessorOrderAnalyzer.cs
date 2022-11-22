@@ -13,12 +13,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering;
 public class AccessorOrderAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor GetPropertyAccessorsShouldBeBeforeSetPropertyAccessorsDescriptor
-        = new DiagnosticDescriptor("CT3215", "Get property accessors should be before set property accessors.",
-            "Get property accessors should be before set property accessors.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3215", "Get property accessors should be before set property accessors",
+            "Get property accessors should be before set property accessors", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor AddEventAccessorsShouldBeBeforeRemoveEventAccessorsDescriptor
-        = new DiagnosticDescriptor("CT3216", "Add event accessors should be before remove event accessors.",
-            "Add event accessors should be before remove event accessors.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3216", "Add event accessors should be before remove event accessors",
+            "Add event accessors should be before remove event accessors", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

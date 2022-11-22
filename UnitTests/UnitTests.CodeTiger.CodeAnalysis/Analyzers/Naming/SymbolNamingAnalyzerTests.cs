@@ -48,7 +48,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1702",
-                Message = "Type names should use pascal casing.",
+                Message = "Type names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -58,7 +58,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1702",
-                Message = "Type names should use pascal casing.",
+                Message = "Type names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -68,7 +68,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1702",
-                Message = "Type names should use pascal casing.",
+                Message = "Type names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -112,7 +112,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1703",
-                Message = "Constant field names should use pascal casing.",
+                Message = "Constant field names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -122,7 +122,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1703",
-                Message = "Constant field names should use pascal casing.",
+                Message = "Constant field names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -132,7 +132,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1703",
-                Message = "Constant field names should use pascal casing.",
+                Message = "Constant field names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -177,7 +177,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1704",
-                Message = "Private field names should use camel casing with a leading underscore.",
+                Message = "Private field names should use camel casing with a leading underscore",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -187,7 +187,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1704",
-                Message = "Private field names should use camel casing with a leading underscore.",
+                Message = "Private field names should use camel casing with a leading underscore",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -197,7 +197,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1704",
-                Message = "Private field names should use camel casing with a leading underscore.",
+                Message = "Private field names should use camel casing with a leading underscore",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -242,7 +242,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1705",
-                Message = "Event names should use pascal casing.",
+                Message = "Event names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -252,7 +252,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1705",
-                Message = "Event names should use pascal casing.",
+                Message = "Event names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -262,7 +262,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1705",
-                Message = "Event names should use pascal casing.",
+                Message = "Event names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -308,7 +308,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1706",
-                Message = "Delegate names should use pascal casing.",
+                Message = "Delegate names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -318,7 +318,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1706",
-                Message = "Delegate names should use pascal casing.",
+                Message = "Delegate names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -328,7 +328,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1706",
-                Message = "Delegate names should use pascal casing.",
+                Message = "Delegate names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -338,7 +338,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1706",
-                Message = "Delegate names should use pascal casing.",
+                Message = "Delegate names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -392,7 +392,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1707",
-                Message = "Property names should use pascal casing.",
+                Message = "Property names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -402,7 +402,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1707",
-                Message = "Property names should use pascal casing.",
+                Message = "Property names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -412,7 +412,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1707",
-                Message = "Property names should use pascal casing.",
+                Message = "Property names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -422,7 +422,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1707",
-                Message = "Property names should use pascal casing.",
+                Message = "Property names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -448,7 +448,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1718",
-                Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                Message = "Property names should not be prefixed with 'Get' or 'Set'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -458,7 +458,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1718",
-                Message = "Property names should not be prefixed with 'Get' or 'Set'.",
+                Message = "Property names should not be prefixed with 'Get' or 'Set'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -504,7 +504,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1708",
-                Message = "Method names should use pascal casing.",
+                Message = "Method names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -514,7 +514,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1708",
-                Message = "Method names should use pascal casing.",
+                Message = "Method names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -524,7 +524,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1708",
-                Message = "Method names should use pascal casing.",
+                Message = "Method names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -534,7 +534,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1708",
-                Message = "Method names should use pascal casing.",
+                Message = "Method names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -578,7 +578,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1709",
-                Message = "Enumeration member names should use pascal casing.",
+                Message = "Enumeration member names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -588,7 +588,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1709",
-                Message = "Enumeration member names should use pascal casing.",
+                Message = "Enumeration member names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -598,7 +598,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1709",
-                Message = "Enumeration member names should use pascal casing.",
+                Message = "Enumeration member names should use pascal casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -683,7 +683,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -693,7 +693,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -703,7 +703,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -713,7 +713,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -723,7 +723,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -733,7 +733,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1710",
-                Message = "Variable names should use camel casing.",
+                Message = "Variable names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -763,7 +763,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -773,7 +773,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -783,7 +783,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -793,7 +793,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -820,7 +820,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -830,7 +830,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -840,7 +840,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -884,7 +884,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1712",
-                Message = "Parameter names should use camel casing.",
+                Message = "Parameter names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -894,7 +894,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1712",
-                Message = "Parameter names should use camel casing.",
+                Message = "Parameter names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -941,7 +941,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1712",
-                Message = "Parameter names should use camel casing.",
+                Message = "Parameter names should use camel casing",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -968,7 +968,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -978,7 +978,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -988,7 +988,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1713",
-                Message = "Hungarian notation should not be used.",
+                Message = "Hungarian notation should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1035,7 +1035,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1711",
-                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Message = "Interface names should use pascal casing prefixed with 'I'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1045,7 +1045,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1711",
-                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Message = "Interface names should use pascal casing prefixed with 'I'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1055,7 +1055,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1711",
-                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Message = "Interface names should use pascal casing prefixed with 'I'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1065,7 +1065,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1711",
-                Message = "Interface names should use pascal casing prefixed with 'I'.",
+                Message = "Interface names should use pascal casing prefixed with 'I'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1120,7 +1120,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1714",
-                Message = "Property names should not begin with the name of the containing type.",
+                Message = "Property names should not begin with the name of the containing type",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1130,7 +1130,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1714",
-                Message = "Property names should not begin with the name of the containing type.",
+                Message = "Property names should not begin with the name of the containing type",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1140,7 +1140,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1714",
-                Message = "Property names should not begin with the name of the containing type.",
+                Message = "Property names should not begin with the name of the containing type",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1150,7 +1150,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1714",
-                Message = "Property names should not begin with the name of the containing type.",
+                Message = "Property names should not begin with the name of the containing type",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1196,7 +1196,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1715",
-                Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                Message = "Generic type parameter names should use pascal casing prefixed with 'T'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1206,7 +1206,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1716",
-                Message = "Generic type parameter names should be descriptive.",
+                Message = "Generic type parameter names should be descriptive",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1216,7 +1216,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1717",
-                Message = "Generic type parameter names should not be suffixed with 'Type'.",
+                Message = "Generic type parameter names should not be suffixed with 'Type'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1226,7 +1226,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1715",
-                Message = "Generic type parameter names should use pascal casing prefixed with 'T'.",
+                Message = "Generic type parameter names should use pascal casing prefixed with 'T'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1250,7 +1250,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1719",
-                Message = "Type names should not be prefixed with 'Abstract'.",
+                Message = "Type names should not be prefixed with 'Abstract'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1277,7 +1277,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1720",
-                Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                Message = "Type names should not be prefixed or suffixed with 'Base'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1287,7 +1287,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1720",
-                Message = "Type names should not be prefixed or suffixed with 'Base'.",
+                Message = "Type names should not be prefixed or suffixed with 'Base'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1331,7 +1331,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1721",
-                Message = "Attribute type names should be suffixed with 'Attribute'.",
+                Message = "Attribute type names should be suffixed with 'Attribute'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1341,7 +1341,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1721",
-                Message = "Attribute type names should be suffixed with 'Attribute'.",
+                Message = "Attribute type names should be suffixed with 'Attribute'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1385,7 +1385,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1722",
-                Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                Message = "Non-attribute type names should not be suffixed with 'Attribute'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1395,7 +1395,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1722",
-                Message = "Non-attribute type names should not be suffixed with 'Attribute'.",
+                Message = "Non-attribute type names should not be suffixed with 'Attribute'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1439,7 +1439,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1723",
-                Message = "Exception type names should be suffixed with 'Exception'.",
+                Message = "Exception type names should be suffixed with 'Exception'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1449,7 +1449,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1723",
-                Message = "Exception type names should be suffixed with 'Exception'.",
+                Message = "Exception type names should be suffixed with 'Exception'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1493,7 +1493,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1724",
-                Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                Message = "Non-exception type names should not be suffixed with 'Exception'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1503,7 +1503,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1724",
-                Message = "Non-exception type names should not be suffixed with 'Exception'.",
+                Message = "Non-exception type names should not be suffixed with 'Exception'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1547,7 +1547,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1725",
-                Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                Message = "EventArgs type names should be suffixed with 'EventArgs'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1557,7 +1557,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1725",
-                Message = "EventArgs type names should be suffixed with 'EventArgs'.",
+                Message = "EventArgs type names should be suffixed with 'EventArgs'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1601,7 +1601,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1726",
-                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1611,7 +1611,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1726",
-                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'.",
+                Message = "Non-EventArgs type names should not be suffixed with 'EventArgs'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1658,7 +1658,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1727",
-                Message = "Methods returning a Task should be suffixed with 'Async'.",
+                Message = "Methods returning a Task should be suffixed with 'Async'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1668,7 +1668,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1727",
-                Message = "Methods returning a Task should be suffixed with 'Async'.",
+                Message = "Methods returning a Task should be suffixed with 'Async'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1714,7 +1714,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1728",
-                Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                Message = "Methods not returning a Task or void should not be suffixed with 'Async'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1724,7 +1724,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1728",
-                Message = "Methods not returning a Task or void should not be suffixed with 'Async'.",
+                Message = "Methods not returning a Task or void should not be suffixed with 'Async'",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1747,7 +1747,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1730",
-                Message = "Type names should not match their containing namespace name.",
+                Message = "Type names should not match their containing namespace name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1770,7 +1770,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1730",
-                Message = "Type names should not match their containing namespace name.",
+                Message = "Type names should not match their containing namespace name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1793,7 +1793,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1730",
-                Message = "Type names should not match their containing namespace name.",
+                Message = "Type names should not match their containing namespace name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1816,7 +1816,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1730",
-                Message = "Type names should not match their containing namespace name.",
+                Message = "Type names should not match their containing namespace name",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

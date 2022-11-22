@@ -44,7 +44,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT2203",
-                Message = "Environment.Exit should not be used.",
+                Message = "Environment.Exit should not be used",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

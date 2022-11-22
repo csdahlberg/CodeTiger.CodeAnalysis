@@ -17,46 +17,46 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering;
 public class MemberOrderAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor MembersShouldBeCorrectlyOrderedBasedOnMemberKindDescriptor
-        = new DiagnosticDescriptor("CT3200", "Members should be correctly ordered based on member kind.",
-            "All {0} members should be before any {1} members.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3200", "Members should be correctly ordered based on member kind",
+            "All {0} members should be before any {1} members", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ConstantFieldsShouldBeBeforeNonConstantFieldsDescriptor
-        = new DiagnosticDescriptor("CT3201", "Constant fields should be before non-constant fields.",
-            "Constant fields should be before non-constant fields.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3201", "Constant fields should be before non-constant fields",
+            "Constant fields should be before non-constant fields", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor StaticFieldsShouldBeBeforeInstanceFieldsDescriptor
-        = new DiagnosticDescriptor("CT3202", "Static fields should be before instance fields.",
-            "Static fields should be before instance fields.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3202", "Static fields should be before instance fields",
+            "Static fields should be before instance fields", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor ReadOnlyFieldsShouldBeBeforeMutableFieldsDescriptor
-        = new DiagnosticDescriptor("CT3203", "Read-only fields should be before mutable fields.",
-            "Read-only {0} fields should be before mutable {0} fields.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3203", "Read-only fields should be before mutable fields",
+            "Read-only {0} fields should be before mutable {0} fields", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor NonVolatileFieldsShouldBeBeforeVolatileFieldsDescriptor
-        = new DiagnosticDescriptor("CT3204", "Non-volatile fields should be before volatile fields.",
-            "Non-volatile {0} fields should be before volatile {0} fields.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3204", "Non-volatile fields should be before volatile fields",
+            "Non-volatile {0} fields should be before volatile {0} fields", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor StaticPropertiesShouldBeBeforeInstancePropertiesDescriptor
-        = new DiagnosticDescriptor("CT3205", "Static properties should be before instance properties.",
-            "Static properties should be before instance properties.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3205", "Static properties should be before instance properties",
+            "Static properties should be before instance properties", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         StaticConstructorsShouldBeBeforeInstanceConstructorsDescriptor
-        = new DiagnosticDescriptor("CT3206", "Static constructors should be before instance constructors.",
-            "Static constructors should be before instance constructors.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3206", "Static constructors should be before instance constructors",
+            "Static constructors should be before instance constructors", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor InstanceMethodsShouldBeBeforeStaticMethodsDescriptor
-        = new DiagnosticDescriptor("CT3207", "Instance methods should be before static methods.",
-            "Instance methods should be before static methods.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3207", "Instance methods should be before static methods",
+            "Instance methods should be before static methods", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NestedStaticClassesShouldShouldBeBeforeNestedInstanceClassesDescriptor
-        = new DiagnosticDescriptor("CT3208", "Nested static classes should be before nested instance classes.",
-            "Nested static classes should be before nested instance classes.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3208", "Nested static classes should be before nested instance classes",
+            "Nested static classes should be before nested instance classes", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MembersOfLikeKindShouldBeOrderedByDecreasingAccessibility
-        = new DiagnosticDescriptor("CT3209", "Members of like kind should be ordered by decreasing accessibility.",
-            "{0} members should be before {1} members of the same kind and with the same modifiers.",
+        = new DiagnosticDescriptor("CT3209", "Members of like kind should be ordered by decreasing accessibility",
+            "{0} members should be before {1} members of the same kind and with the same modifiers",
             "CodeTiger.Ordering", DiagnosticSeverity.Warning, true);
 
     /// <summary>

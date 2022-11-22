@@ -15,8 +15,8 @@ public class SuppressMessageAttributeUsageAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor SuppressMessageAttributeShouldIncludeJustificationDescriptor
         = new DiagnosticDescriptor("CT2201",
-            "Use of the SuppressMessage attribute should include justification.",
-            "Use of the SuppressMessage attribute should include justification.",
+            "Use of the SuppressMessage attribute should include justification",
+            "Use of the SuppressMessage attribute should include justification",
             "CodeTiger.Usage", DiagnosticSeverity.Warning, true);
 
     /// <summary>

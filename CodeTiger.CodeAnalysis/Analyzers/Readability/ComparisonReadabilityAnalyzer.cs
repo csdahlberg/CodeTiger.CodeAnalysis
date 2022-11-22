@@ -14,13 +14,13 @@ public class ComparisonReadabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         LiteralsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor = new DiagnosticDescriptor("CT3113",
-            "Literals should not be on the left side of comparison operators.",
-            "Literals should not be on the left side of comparison operators.", "CodeTiger.Readability",
+            "Literals should not be on the left side of comparison operators",
+            "Literals should not be on the left side of comparison operators", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         ConstantsShouldNotBeOnTheLeftSideOfComparisonOperatorsDescriptor = new DiagnosticDescriptor("CT3114",
-            "Constants should not be on the left side of comparison operators.",
-            "Constants should not be on the left side of comparison operators.", "CodeTiger.Readability",
+            "Constants should not be on the left side of comparison operators",
+            "Constants should not be on the left side of comparison operators", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

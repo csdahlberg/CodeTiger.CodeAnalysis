@@ -17,17 +17,17 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor
         = new DiagnosticDescriptor("CT1002",
-            "Members of base types should not be hidden except to return more specialized types.",
-            "Members of base types should not be hidden except to return more specialized types.",
+            "Members of base types should not be hidden except to return more specialized types",
+            "Members of base types should not be hidden except to return more specialized types",
             "CodeTiger.Design", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor
-        = new DiagnosticDescriptor("CT1011", "Default values of parameters should match any base definitions.",
-            "Default values of parameters should match any base definitions.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1011", "Default values of parameters should match any base definitions",
+            "Default values of parameters should match any base definitions", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         ParamsModifierOfOverriddenMethodShouldMatchAnyBaseDefinitionsDescriptor = new DiagnosticDescriptor(
-            "CT1019", "Params modifier of parameters should match any base definitions.",
-            "Params modifier of parameters should match any base definitions.", "CodeTiger.Design",
+            "CT1019", "Params modifier of parameters should match any base definitions",
+            "Params modifier of parameters should match any base definitions", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

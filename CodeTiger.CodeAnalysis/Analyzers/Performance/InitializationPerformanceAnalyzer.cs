@@ -16,7 +16,7 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         DoubleInitializationShouldBeAvoidedDescriptor
         = new DiagnosticDescriptor(
-            "CT1803", "Double initialization should be avoided.", "Double initialization should be avoided.",
+            "CT1803", "Double initialization should be avoided", "Double initialization should be avoided",
             "CodeTiger.Performance", DiagnosticSeverity.Warning, true);
 
     /// <summary>

@@ -44,35 +44,35 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1501",
-                Message = "Externally-accessible parameters should not have default values.",
+                Message = "Externally-accessible parameters should not have default values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 33) }
             },
             new DiagnosticResult
             {
                 Id = "CT1501",
-                Message = "Externally-accessible parameters should not have default values.",
+                Message = "Externally-accessible parameters should not have default values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 58) }
             },
             new DiagnosticResult
             {
                 Id = "CT1501",
-                Message = "Externally-accessible parameters should not have default values.",
+                Message = "Externally-accessible parameters should not have default values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 33) }
             },
             new DiagnosticResult
             {
                 Id = "CT1501",
-                Message = "Externally-accessible parameters should not have default values.",
+                Message = "Externally-accessible parameters should not have default values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 49) }
             },
             new DiagnosticResult
             {
                 Id = "CT1501",
-                Message = "Externally-accessible parameters should not have default values.",
+                Message = "Externally-accessible parameters should not have default values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 80) }
             });

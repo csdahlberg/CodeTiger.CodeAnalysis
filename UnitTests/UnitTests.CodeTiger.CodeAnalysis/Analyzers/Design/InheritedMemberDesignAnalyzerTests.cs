@@ -72,7 +72,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 24) }
             },
@@ -80,7 +80,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 27) }
             },
@@ -88,7 +88,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 16, 24) }
             },
@@ -96,7 +96,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 17, 27) }
             },
@@ -104,7 +104,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 21, 32) }
             },
@@ -112,7 +112,7 @@ namespace ClassLibrary1
             {
                 Id = "CT1002",
                 Message
-                    = "Members of base types should not be hidden except to return more specialized types.",
+                    = "Members of base types should not be hidden except to return more specialized types",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 22, 27) }
             });
@@ -174,63 +174,63 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 40) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 54) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 70) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 40) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 55) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 71) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 63) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 79) },
             });
@@ -264,63 +264,63 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 35) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 45) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 55) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 35) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 45) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 55) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 44) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 54) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 64) },
             });
@@ -354,63 +354,63 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 40) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 55) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 71) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 40) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 55) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 14, 82) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 64) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 18, 80) },
             });
@@ -459,35 +459,35 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 63) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 79) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 69) },
             });
@@ -515,35 +515,35 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 44) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 54) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 64) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 44) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 57) },
             });
@@ -571,35 +571,35 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 64) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 80) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 49) },
             },
             new DiagnosticResult
             {
                 Id = "CT1011",
-                Message = "Default values of parameters should match any base definitions.",
+                Message = "Default values of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 68) },
             });
@@ -658,28 +658,28 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 36) },
             },
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 54) },
             },
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 16, 36) },
             },
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 17, 46) },
             });
@@ -728,14 +728,14 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 45) },
             },
             new DiagnosticResult
             {
                 Id = "CT1019",
-                Message = "Params modifier of parameters should match any base definitions.",
+                Message = "Params modifier of parameters should match any base definitions",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 55) },
             });

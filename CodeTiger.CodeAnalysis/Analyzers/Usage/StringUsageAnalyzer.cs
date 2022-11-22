@@ -13,8 +13,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage;
 public sealed class StringUsageAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor InterpolatedStringsRequireLeadingDollarSignDescriptor
-        = new DiagnosticDescriptor("CT2208", "Interpolated strings require a leading '$' character.",
-            "Interpolated strings require a leading '$' character.", "CodeTiger.Usage",
+        = new DiagnosticDescriptor("CT2208", "Interpolated strings require a leading '$' character",
+            "Interpolated strings require a leading '$' character", "CodeTiger.Usage",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

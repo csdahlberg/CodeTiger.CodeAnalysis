@@ -37,7 +37,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1012",
-                Message = "Attribute classes should include an AttributeUsage attribute.",
+                Message = "Attribute classes should include an AttributeUsage attribute",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 4, 18) }
             });

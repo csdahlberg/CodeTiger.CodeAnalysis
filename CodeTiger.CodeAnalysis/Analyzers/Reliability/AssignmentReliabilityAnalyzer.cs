@@ -14,7 +14,7 @@ public class AssignmentReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         AssignmentResultsShouldNotBeUsedDescriptor = new DiagnosticDescriptor("CT2008",
-            "The result of an assignment should not be used.", "The result of an assignment should not be used.",
+            "The result of an assignment should not be used", "The result of an assignment should not be used",
             "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
 
     /// <summary>

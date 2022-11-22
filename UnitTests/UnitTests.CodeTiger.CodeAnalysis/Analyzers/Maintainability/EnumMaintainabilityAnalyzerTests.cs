@@ -70,21 +70,21 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1505",
-                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Message = "Composite values in Flags enumerations should equal a combination of other values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 10, 9) }
             },
             new DiagnosticResult
             {
                 Id = "CT1505",
-                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Message = "Composite values in Flags enumerations should equal a combination of other values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 11, 9) }
             },
             new DiagnosticResult
             {
                 Id = "CT1505",
-                Message = "Composite values in Flags enumerations should equal a combination of other values.",
+                Message = "Composite values in Flags enumerations should equal a combination of other values",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 12, 9) }
             });

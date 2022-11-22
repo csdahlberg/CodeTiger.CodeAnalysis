@@ -41,7 +41,7 @@ using System.Runtime;
             new DiagnosticResult
             {
                 Id = "CT3211",
-                Message = "Using directives for System namespaces should be before other namespaces.",
+                Message = "Using directives for System namespaces should be before other namespaces",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -51,7 +51,7 @@ using System.Runtime;
             new DiagnosticResult
             {
                 Id = "CT3211",
-                Message = "Using directives for System namespaces should be before other namespaces.",
+                Message = "Using directives for System namespaces should be before other namespaces",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -61,7 +61,7 @@ using System.Runtime;
             new DiagnosticResult
             {
                 Id = "CT3211",
-                Message = "Using directives for System namespaces should be before other namespaces.",
+                Message = "Using directives for System namespaces should be before other namespaces",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -71,7 +71,7 @@ using System.Runtime;
             new DiagnosticResult
             {
                 Id = "CT3211",
-                Message = "Using directives for System namespaces should be before other namespaces.",
+                Message = "Using directives for System namespaces should be before other namespaces",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -97,7 +97,7 @@ using Microsoft.Win32;";
             new DiagnosticResult
             {
                 Id = "CT3213",
-                Message = "Using directives should be ordered alphabetically.",
+                Message = "Using directives should be ordered alphabetically",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -126,7 +126,7 @@ using Microsoft.Win32;";
             new DiagnosticResult
             {
                 Id = "CT3214",
-                Message = "Using directives should not be separated by any lines.",
+                Message = "Using directives should not be separated by any lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -136,7 +136,7 @@ using Microsoft.Win32;";
             new DiagnosticResult
             {
                 Id = "CT3214",
-                Message = "Using directives should not be separated by any lines.",
+                Message = "Using directives should not be separated by any lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -146,7 +146,7 @@ using Microsoft.Win32;";
             new DiagnosticResult
             {
                 Id = "CT3214",
-                Message = "Using directives should not be separated by any lines.",
+                Message = "Using directives should not be separated by any lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -173,7 +173,7 @@ using Microsoft.Win32;";
             new DiagnosticResult
             {
                 Id = "CT3218",
-                Message = "Non-static using directives should be before static using directives.",
+                Message = "Non-static using directives should be before static using directives",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

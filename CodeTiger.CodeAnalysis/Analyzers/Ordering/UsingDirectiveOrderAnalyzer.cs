@@ -17,33 +17,33 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering;
 public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor
-        = new DiagnosticDescriptor("CT3210", "Using directives should be before namespace declarations.",
-            "Using directives should be before namespace declarations.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3210", "Using directives should be before namespace declarations",
+            "Using directives should be before namespace declarations", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         UsingNamespaceDirectivesForSystemNamespacesShouldBeBeforeOtherNamespacesDescriptor
         = new DiagnosticDescriptor("CT3211",
-            "Using directives for System namespaces should be before other namespaces.",
-            "Using directives for System namespaces should be before other namespaces.", "CodeTiger.Ordering",
+            "Using directives for System namespaces should be before other namespaces",
+            "Using directives for System namespaces should be before other namespaces", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         UsingNamespaceDirectivesShouldBeBeforeUsingAliasDirectivesDescriptor = new DiagnosticDescriptor(
-            "CT3212", "Using namespace directives should be before using alias directives.",
-            "Using namespace directives should be before using alias directives.", "CodeTiger.Ordering",
+            "CT3212", "Using namespace directives should be before using alias directives",
+            "Using namespace directives should be before using alias directives", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         UsingDirectivesShouldBeOrderedAlphabeticallyWithinGroupsDescriptor = new DiagnosticDescriptor("CT3213",
-            "Using directives should be ordered alphabetically.",
-            "Using directives should be ordered alphabetically.", "CodeTiger.Ordering",
+            "Using directives should be ordered alphabetically",
+            "Using directives should be ordered alphabetically", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor UsingDirectivesShouldNotBeSeparatedByAnyLinesDescriptor
-        = new DiagnosticDescriptor("CT3214", "Using directives should not be separated by any lines.",
-            "Using directives should not be separated by any lines.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3214", "Using directives should not be separated by any lines",
+            "Using directives should not be separated by any lines", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         NonStaticUsingDirectivesShouldBeBeforeStaticUsingDirectivesDescriptor = new DiagnosticDescriptor(
-            "CT3218", "Non-static using directives should be before static using directives.",
-            "Non-static using directives should be before static using directives.", "CodeTiger.Ordering",
+            "CT3218", "Non-static using directives should be before static using directives",
+            "Non-static using directives should be before static using directives", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

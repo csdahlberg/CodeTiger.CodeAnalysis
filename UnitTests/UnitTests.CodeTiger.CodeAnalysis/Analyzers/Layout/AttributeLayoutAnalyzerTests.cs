@@ -67,7 +67,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3526",
-                Message = "Attributes should be declared separately.",
+                Message = "Attributes should be declared separately",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -78,7 +78,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3526",
-                Message = "Attributes should be declared separately.",
+                Message = "Attributes should be declared separately",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -109,7 +109,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3527",
-                Message = "Attributes should be declared on separate lines.",
+                Message = "Attributes should be declared on separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -119,7 +119,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3527",
-                Message = "Attributes should be declared on separate lines.",
+                Message = "Attributes should be declared on separate lines",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

@@ -17,8 +17,8 @@ public class ParameterMaintainabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         ExternallyAccessibleParametersShouldNotHaveDefaultValuesDescriptor = new DiagnosticDescriptor(
-            "CT1501", "Externally-accessible parameters should not have default values.",
-            "Externally-accessible parameters should not have default values.", "CodeTiger.Maintainability",
+            "CT1501", "Externally-accessible parameters should not have default values",
+            "Externally-accessible parameters should not have default values", "CodeTiger.Maintainability",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

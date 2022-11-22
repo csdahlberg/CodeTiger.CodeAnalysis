@@ -13,8 +13,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout;
 public class CommaLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor CommasShouldBeOnTheSameLineAsThePrecedingElementDescriptor
-        = new DiagnosticDescriptor("CT3537", "Commas should be on the same line as the preceding element.",
-            "Commas should be on the same line as the preceding element.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3537", "Commas should be on the same line as the preceding element",
+            "Commas should be on the same line as the preceding element", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

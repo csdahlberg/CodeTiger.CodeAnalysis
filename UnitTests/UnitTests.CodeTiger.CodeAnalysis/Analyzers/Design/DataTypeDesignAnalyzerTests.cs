@@ -48,21 +48,21 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1014",
-                Message = "Externally-accessible members should not use tuples.",
+                Message = "Externally-accessible members should not use tuples",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 6, 19) }
             },
             new DiagnosticResult
             {
                 Id = "CT1014",
-                Message = "Externally-accessible members should not use tuples.",
+                Message = "Externally-accessible members should not use tuples",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 7, 30) }
             },
             new DiagnosticResult
             {
                 Id = "CT1014",
-                Message = "Externally-accessible members should not use tuples.",
+                Message = "Externally-accessible members should not use tuples",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[] { new DiagnosticResultLocation("Test0.cs", 8, 16) }
             });

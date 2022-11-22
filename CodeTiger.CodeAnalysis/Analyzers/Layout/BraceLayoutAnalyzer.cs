@@ -14,12 +14,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Layout;
 public class BraceLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor BracesForMultiLineElementsShouldBeOnANewLineDescriptor
-        = new DiagnosticDescriptor("CT3501", "Braces for multi-line elements should be on a new line.",
-            "Braces for multi-line elements should be on a new line.", "CodeTiger.Layout",
+        = new DiagnosticDescriptor("CT3501", "Braces for multi-line elements should be on a new line",
+            "Braces for multi-line elements should be on a new line", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor BracesShouldNotBeOmittedFromCodeBlocksDescriptor
-        = new DiagnosticDescriptor("CT3525", "Braces should not be omitted from code blocks.",
-            "Braces should not be omitted from code blocks.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3525", "Braces should not be omitted from code blocks",
+            "Braces should not be omitted from code blocks", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

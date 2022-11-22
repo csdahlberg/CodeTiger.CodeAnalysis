@@ -15,8 +15,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class DataTypeDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor ExternallyAccessibleMembersShouldNotUseTuplesDescriptor
-        = new DiagnosticDescriptor("CT1014", "Externally-accessible members should not use tuples.",
-            "Externally-accessible members should not use tuples.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1014", "Externally-accessible members should not use tuples",
+            "Externally-accessible members should not use tuples", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

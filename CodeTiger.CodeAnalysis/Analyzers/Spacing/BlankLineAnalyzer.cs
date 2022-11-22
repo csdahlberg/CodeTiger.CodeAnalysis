@@ -13,14 +13,14 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Spacing;
 public class BlankLineAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor FilesShouldNotBeginWithBlankLinesDescriptor
-        = new DiagnosticDescriptor("CT3000", "Files should not begin with blank lines.",
-            "Files should not begin with blank lines.", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3000", "Files should not begin with blank lines",
+            "Files should not begin with blank lines", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor FilesShouldEndWithABlankLineDescriptor
-        = new DiagnosticDescriptor("CT3001", "Files should end with a blank line.",
-            "Files should end with a blank line.", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3001", "Files should end with a blank line",
+            "Files should end with a blank line", "CodeTiger.Spacing", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor CodeShouldNotContainConsecutiveBlankLinesDescriptor
-        = new DiagnosticDescriptor("CT3002", "Code should not contain consecutive blank lines.",
-            "Code should not contain consecutive blank lines.", "CodeTiger.Spacing", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3002", "Code should not contain consecutive blank lines",
+            "Code should not contain consecutive blank lines", "CodeTiger.Spacing", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

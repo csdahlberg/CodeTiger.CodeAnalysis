@@ -15,27 +15,27 @@ public class ParenthesisLayoutAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor = new DiagnosticDescriptor(
-            "CT3532", "Opening parenthesis should be on the same line as the preceding keyword.",
-            "Opening parenthesis should be on the same line as the preceding keyword.", "CodeTiger.Layout",
+            "CT3532", "Opening parenthesis should be on the same line as the preceding keyword",
+            "Opening parenthesis should be on the same line as the preceding keyword", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor = new DiagnosticDescriptor(
-            "CT3533", "Opening parenthesis should be on the same line as the preceding identifier.",
-            "Opening parenthesis should be on the same line as the preceding identifier.", "CodeTiger.Layout",
+            "CT3533", "Opening parenthesis should be on the same line as the preceding identifier",
+            "Opening parenthesis should be on the same line as the preceding identifier", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingArgumentDescriptor = new DiagnosticDescriptor(
-            "CT3534", "Closing parenthesis should be on the same line as the preceding argument.",
-            "Closing parenthesis should be on the same line as the preceding argument.", "CodeTiger.Layout",
+            "CT3534", "Closing parenthesis should be on the same line as the preceding argument",
+            "Closing parenthesis should be on the same line as the preceding argument", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor = new DiagnosticDescriptor(
-            "CT3535", "Closing parenthesis should be on the same line as the preceding element.",
-            "Closing parenthesis should be on the same line as the preceding element.", "CodeTiger.Layout",
+            "CT3535", "Closing parenthesis should be on the same line as the preceding element",
+            "Closing parenthesis should be on the same line as the preceding element", "CodeTiger.Layout",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor EmptyParenthesesShouldBeOnTheSameLineDescriptor
-        = new DiagnosticDescriptor("CT3536", "Empty parentheses should be on the same line.",
-            "Empty parentheses should be on the same line.", "CodeTiger.Layout", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT3536", "Empty parentheses should be on the same line",
+            "Empty parentheses should be on the same line", "CodeTiger.Layout", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>

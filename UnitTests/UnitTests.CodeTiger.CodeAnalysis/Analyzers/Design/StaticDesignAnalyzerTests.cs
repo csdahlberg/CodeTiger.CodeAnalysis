@@ -67,7 +67,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1000",
-                Message = "Classes with all static members should be static.",
+                Message = "Classes with all static members should be static",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -92,7 +92,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1000",
-                Message = "Classes with all static members should be static.",
+                Message = "Classes with all static members should be static",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

@@ -46,7 +46,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1004",
-                Message = "Non-generic collections should not be held as state.",
+                Message = "Non-generic collections should not be held as state",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -56,7 +56,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1005",
-                Message = "Non-generic collections should not be exposed.",
+                Message = "Non-generic collections should not be exposed",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -66,7 +66,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1005",
-                Message = "Non-generic collections should not be exposed.",
+                Message = "Non-generic collections should not be exposed",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -76,7 +76,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1004",
-                Message = "Non-generic collections should not be held as state.",
+                Message = "Non-generic collections should not be held as state",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

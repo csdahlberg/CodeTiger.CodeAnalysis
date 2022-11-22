@@ -60,7 +60,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -70,7 +70,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -122,7 +122,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -132,7 +132,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -173,7 +173,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -183,7 +183,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -227,7 +227,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -237,7 +237,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -280,7 +280,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -290,7 +290,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -300,7 +300,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -346,7 +346,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -356,7 +356,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -366,7 +366,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -414,7 +414,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -424,7 +424,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -560,7 +560,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -570,7 +570,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -580,7 +580,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -590,7 +590,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -600,7 +600,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -610,7 +610,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -620,7 +620,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -630,7 +630,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -640,7 +640,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -650,7 +650,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -660,7 +660,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -670,7 +670,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -680,7 +680,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -690,7 +690,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -700,7 +700,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -710,7 +710,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -720,7 +720,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -730,7 +730,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -740,7 +740,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -750,7 +750,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -760,7 +760,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -770,7 +770,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -780,7 +780,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -790,7 +790,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -800,7 +800,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element.",
+                Message = "Commas should be on the same line as the preceding element",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

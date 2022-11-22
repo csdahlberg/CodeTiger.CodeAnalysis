@@ -13,20 +13,20 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability;
 public class UnnecessaryCodeReadabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor PositiveSignsShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT3105", "Positive signs should not be used.",
-            "Positive signs should not be used.", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT3105", "Positive signs should not be used",
+            "Positive signs should not be used", "CodeTiger.Readability", DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor StatementsShouldNotUseUnnecessaryParenthesisDescriptor
-        = new DiagnosticDescriptor("CT3106", "Statements should not use unnecessary parenthesis.",
-            "Statements should not use unnecessary parenthesis.", "CodeTiger.Readability",
+        = new DiagnosticDescriptor("CT3106", "Statements should not use unnecessary parenthesis",
+            "Statements should not use unnecessary parenthesis", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         AnonymousMethodsWithoutParametersShouldNotIncludeParenthesisDescriptor = new DiagnosticDescriptor(
-            "CT3107", "Anonymous methods without parameters should not include parenthesis.",
-            "Anonymous methods without parameters should not include parenthesis.", "CodeTiger.Readability",
+            "CT3107", "Anonymous methods without parameters should not include parenthesis",
+            "Anonymous methods without parameters should not include parenthesis", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor AttributesWithoutArgumentsShouldNotUseParenthesisDescriptor
-        = new DiagnosticDescriptor("CT3108", "Attributes without arguments should not use parenthesis.",
-            "Attributes without arguments should not use parenthesis.", "CodeTiger.Readability",
+        = new DiagnosticDescriptor("CT3108", "Attributes without arguments should not use parenthesis",
+            "Attributes without arguments should not use parenthesis", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

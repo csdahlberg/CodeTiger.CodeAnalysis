@@ -17,8 +17,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Ordering;
 public class DeclarationKeywordOrderAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor DeclarationKeywordsShouldBeCorrectlyOrdered
-        = new DiagnosticDescriptor("CT3217", "Declaration keywords should be correctly ordered.",
-            "The {0} keyword should be before the {1} in declarations.", "CodeTiger.Ordering",
+        = new DiagnosticDescriptor("CT3217", "Declaration keywords should be correctly ordered",
+            "The {0} keyword should be before the {1} in declarations", "CodeTiger.Ordering",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

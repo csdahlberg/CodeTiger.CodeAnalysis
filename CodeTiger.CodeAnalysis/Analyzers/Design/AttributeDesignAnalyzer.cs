@@ -16,8 +16,8 @@ public class AttributeDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         AttributeClassesShouldIncludeAnAttributeUsageAttributeDescriptor = new DiagnosticDescriptor("CT1012",
-            "Attribute classes should include an AttributeUsage attribute.",
-            "Attribute classes should include an AttributeUsage attribute.", "CodeTiger.Design",
+            "Attribute classes should include an AttributeUsage attribute",
+            "Attribute classes should include an AttributeUsage attribute", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

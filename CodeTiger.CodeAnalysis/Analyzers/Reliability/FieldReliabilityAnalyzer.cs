@@ -12,8 +12,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class FieldReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor MutableFieldsShouldBePrivateDescriptor
-        = new DiagnosticDescriptor("CT2009", "Mutable fields should be private.",
-            "Mutable fields should be private.", "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT2009", "Mutable fields should be private",
+            "Mutable fields should be private", "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
 
     /// <summary>
     /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.

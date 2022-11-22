@@ -59,7 +59,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -69,7 +69,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -79,7 +79,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -89,7 +89,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -99,7 +99,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -109,7 +109,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3113",
-                Message = "Literals should not be on the left side of comparison operators.",
+                Message = "Literals should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -177,7 +177,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -187,7 +187,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -197,7 +197,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -207,7 +207,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -217,7 +217,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -227,7 +227,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3114",
-                Message = "Constants should not be on the left side of comparison operators.",
+                Message = "Constants should not be on the left side of comparison operators",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

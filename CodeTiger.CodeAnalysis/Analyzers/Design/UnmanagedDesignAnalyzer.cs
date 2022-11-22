@@ -18,12 +18,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class UnmanagedDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor TypesWithoutUnmanagedStateShouldNotHaveAFinalizerDescriptor
-        = new DiagnosticDescriptor("CT1007", "Types without unmanaged state should not have a finalizer.",
-            "Types without unmanaged state should not have a finalizer.", "CodeTiger.Design",
+        = new DiagnosticDescriptor("CT1007", "Types without unmanaged state should not have a finalizer",
+            "Types without unmanaged state should not have a finalizer", "CodeTiger.Design",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor EmptyFinalizersShouldNotExistDescriptor
-        = new DiagnosticDescriptor("CT1008", "Empty finalizers should not exist.",
-            "Empty finalizers should not exist.", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT1008", "Empty finalizers should not exist",
+            "Empty finalizers should not exist", "CodeTiger.Design", DiagnosticSeverity.Warning, true);
 
     private static readonly string[] _metadataNamesOfUnmanagedTypes = new string[]
         {

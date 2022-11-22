@@ -13,8 +13,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Reliability;
 public class UnsafeReliabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor UnsafeCodeShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT2004", "Unsafe code should not be used.",
-            "Unsafe code should not be used.", "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT2004", "Unsafe code should not be used",
+            "Unsafe code should not be used", "CodeTiger.Reliability", DiagnosticSeverity.Warning, true);
 
     /// <summary>
     /// Gets a set of descriptors for the diagnostics that this analyzer is capable of producing.

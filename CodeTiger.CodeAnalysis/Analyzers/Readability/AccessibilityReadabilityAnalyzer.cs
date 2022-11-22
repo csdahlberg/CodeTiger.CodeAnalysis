@@ -15,12 +15,12 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Readability;
 public class AccessibilityReadabilityAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor TypesShouldHaveAccessModifierSpecifiedDescriptor
-        = new DiagnosticDescriptor("CT3103", "Types should have an access modifier specified.",
-            "Types should have an access modifier specified.", "CodeTiger.Readability",
+        = new DiagnosticDescriptor("CT3103", "Types should have an access modifier specified",
+            "Types should have an access modifier specified", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor MembersShouldHaveAccessModifierSpecifiedDescriptor
-        = new DiagnosticDescriptor("CT3104", "Members should have an access modifier specified.",
-            "Members should have an access modifier specified.", "CodeTiger.Readability",
+        = new DiagnosticDescriptor("CT3104", "Members should have an access modifier specified",
+            "Members should have an access modifier specified", "CodeTiger.Readability",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

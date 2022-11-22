@@ -88,7 +88,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3601",
-                Message = "Return values of externally accessible members should be documented.",
+                Message = "Return values of externally accessible members should be documented",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -98,7 +98,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3601",
-                Message = "Return values of externally accessible members should be documented.",
+                Message = "Return values of externally accessible members should be documented",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

@@ -62,7 +62,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1007",
-                Message = "Types without unmanaged state should not have a finalizer.",
+                Message = "Types without unmanaged state should not have a finalizer",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -91,7 +91,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT1008",
-                Message = "Empty finalizers should not exist.",
+                Message = "Empty finalizers should not exist",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

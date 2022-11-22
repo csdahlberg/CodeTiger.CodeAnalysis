@@ -104,7 +104,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -114,7 +114,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -124,7 +124,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -134,7 +134,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -144,7 +144,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -154,7 +154,7 @@ namespace ClassLibrary1.
             new DiagnosticResult
             {
                 Id = "CT3530",
-                Message = "Multi-line expressions should not be split after a dot or member access token.",
+                Message = "Multi-line expressions should not be split after a dot or member access token",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -225,7 +225,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -235,7 +235,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -306,7 +306,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -316,7 +316,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -387,7 +387,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -397,7 +397,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -468,7 +468,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -478,7 +478,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -549,7 +549,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -559,7 +559,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -630,7 +630,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -640,7 +640,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -711,7 +711,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -721,7 +721,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -792,7 +792,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -802,7 +802,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -873,7 +873,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -883,7 +883,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -954,7 +954,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -964,7 +964,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1035,7 +1035,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1045,7 +1045,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1116,7 +1116,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1126,7 +1126,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1197,7 +1197,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1207,7 +1207,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1278,7 +1278,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1288,7 +1288,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1359,7 +1359,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1369,7 +1369,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1440,7 +1440,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1450,7 +1450,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1521,7 +1521,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1531,7 +1531,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1602,7 +1602,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1612,7 +1612,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1683,7 +1683,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1693,7 +1693,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1764,7 +1764,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1774,7 +1774,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1845,7 +1845,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1855,7 +1855,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1930,7 +1930,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1940,7 +1940,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1950,7 +1950,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -1960,7 +1960,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2031,7 +2031,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2041,7 +2041,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2112,7 +2112,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2122,7 +2122,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2193,7 +2193,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2203,7 +2203,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2274,7 +2274,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2284,7 +2284,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2355,7 +2355,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2365,7 +2365,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2436,7 +2436,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2446,7 +2446,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2517,7 +2517,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2527,7 +2527,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2598,7 +2598,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2608,7 +2608,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2679,7 +2679,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2689,7 +2689,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2760,7 +2760,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2770,7 +2770,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2841,7 +2841,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2851,7 +2851,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2927,7 +2927,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2937,7 +2937,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
@@ -2947,7 +2947,7 @@ namespace ClassLibrary1
             new DiagnosticResult
             {
                 Id = "CT3540",
-                Message = "Multi-line expressions should not be split after a binary operator.",
+                Message = "Multi-line expressions should not be split after a binary operator",
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {

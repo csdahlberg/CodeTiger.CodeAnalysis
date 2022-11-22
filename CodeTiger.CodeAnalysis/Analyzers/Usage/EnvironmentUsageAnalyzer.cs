@@ -15,8 +15,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Usage;
 public class EnvironmentUsageAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor EnvironmentExitShouldNotBeUsedDescriptor
-        = new DiagnosticDescriptor("CT2203", "Environment.Exit should not be used.",
-            "Environment.Exit should not be used.", "CodeTiger.Usage", DiagnosticSeverity.Warning, true);
+        = new DiagnosticDescriptor("CT2203", "Environment.Exit should not be used",
+            "Environment.Exit should not be used", "CodeTiger.Usage", DiagnosticSeverity.Warning, true);
 
     /// <summary>
     /// Returns a set of descriptors for the diagnostics that this analyzer is capable of producing.

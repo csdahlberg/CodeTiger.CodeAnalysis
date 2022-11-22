@@ -19,13 +19,13 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor
         ParametersOfExternallyAccessibleMembersShouldBeDocumentedDescriptor = new DiagnosticDescriptor(
-            "CT3600", "Parameters of externally accessible members should be documented.",
-            "Parameters of externally accessible members should be documented.", "CodeTiger.Documentation",
+            "CT3600", "Parameters of externally accessible members should be documented",
+            "Parameters of externally accessible members should be documented", "CodeTiger.Documentation",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor
         ReturnValuesOfExternallyAccessibleMembersShouldBeDocumentedDescriptor = new DiagnosticDescriptor(
-            "CT3601", "Return values of externally accessible members should be documented.",
-            "Return values of externally accessible members should be documented.", "CodeTiger.Documentation",
+            "CT3601", "Return values of externally accessible members should be documented",
+            "Return values of externally accessible members should be documented", "CodeTiger.Documentation",
             DiagnosticSeverity.Warning, true);
 
     /// <summary>

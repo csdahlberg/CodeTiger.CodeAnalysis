@@ -14,8 +14,8 @@ namespace CodeTiger.CodeAnalysis.Analyzers.Design;
 public class StaticDesignAnalyzer : DiagnosticAnalyzer
 {
     internal static readonly DiagnosticDescriptor ClassesWithAllStaticMembersShouldBeStaticDescriptor
-        = new DiagnosticDescriptor("CT1000", "Classes with all static members should be static.",
-            "Classes with all static members should be static.", "CodeTiger.Design", DiagnosticSeverity.Warning,
+        = new DiagnosticDescriptor("CT1000", "Classes with all static members should be static",
+            "Classes with all static members should be static", "CodeTiger.Design", DiagnosticSeverity.Warning,
             true);
 
     /// <summary>
