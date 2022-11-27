@@ -75,7 +75,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     internal static readonly DiagnosticDescriptor
         GenericTypeParameterNamesShouldNotBeSuffixedWithTypeDescriptor = new DiagnosticDescriptor(
             "CT1717", "Generic type parameter names should not be suffixed with 'Type'.",
-            "Generic type parameter names should not be suffixed with 'Type'.", "CodeTiger.Name",
+            "Generic type parameter names should not be suffixed with 'Type'.", "CodeTiger.Naming",
             DiagnosticSeverity.Warning, true);
     internal static readonly DiagnosticDescriptor PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor
         = new DiagnosticDescriptor("CT1718", "Property names should not be prefixed with 'Get' or 'Set'.",
