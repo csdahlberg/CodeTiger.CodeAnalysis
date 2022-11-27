@@ -69,7 +69,7 @@ $configurations | Foreach-Object {
     
     Write-Host ""
     Write-Host "Running unit tests for CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
-    & $vstestPath @("$PSScriptRoot\Build\$_\netcoreapp3.1\UnitTests.CodeTiger.CodeAnalysis.dll", "/Parallel", "/Logger:Console;Verbosity=$verbosity")
+    & $vstestPath @("$PSScriptRoot\Build\$_\net7.0\UnitTests.CodeTiger.CodeAnalysis.dll", "/Parallel", "/Logger:Console;Verbosity=$verbosity")
     
     If ($LASTEXITCODE -ne 0)
     {
