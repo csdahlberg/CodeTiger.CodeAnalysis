@@ -19,21 +19,33 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		DebugWithVsix|Any CPU = DebugWithVsix|Any CPU
 		Release|Any CPU = Release|Any CPU
+		ReleaseWithVsix|Any CPU = ReleaseWithVsix|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.DebugWithVsix|Any CPU.ActiveCfg = Debug|Any CPU
+		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.DebugWithVsix|Any CPU.Build.0 = Debug|Any CPU
 		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.ReleaseWithVsix|Any CPU.ActiveCfg = Release|Any CPU
+		{493936FB-E4BE-49F4-84AC-3EA84D8C2155}.ReleaseWithVsix|Any CPU.Build.0 = Release|Any CPU
 		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.DebugWithVsix|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.DebugWithVsix|Any CPU.Build.0 = Debug|Any CPU
 		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.ReleaseWithVsix|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A0557F-9344-4C8F-821D-9AE708BD062D}.ReleaseWithVsix|Any CPU.Build.0 = Release|Any CPU
 		{21081813-F345-4BBC-A144-065AEE5455FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{21081813-F345-4BBC-A144-065AEE5455FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21081813-F345-4BBC-A144-065AEE5455FB}.DebugWithVsix|Any CPU.ActiveCfg = Debug|Any CPU
+		{21081813-F345-4BBC-A144-065AEE5455FB}.DebugWithVsix|Any CPU.Build.0 = Debug|Any CPU
 		{21081813-F345-4BBC-A144-065AEE5455FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{21081813-F345-4BBC-A144-065AEE5455FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21081813-F345-4BBC-A144-065AEE5455FB}.ReleaseWithVsix|Any CPU.ActiveCfg = Release|Any CPU
+		{21081813-F345-4BBC-A144-065AEE5455FB}.ReleaseWithVsix|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
