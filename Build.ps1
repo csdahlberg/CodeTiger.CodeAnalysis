@@ -9,7 +9,8 @@
 Param(
     [string] $Verbosity = "minimal", # The logging level to be used for dotnet, msbuild, and vstest
     [switch] $SkipTests = $false,
-    [switch] $SkipDebug = $false
+    [switch] $SkipDebug = $false,
+    [switch] $SkipVsix = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -226,46 +227,50 @@ if ([Environment]::Is64BitOperatingSystem)
     $ProgramFilesDir = [Environment]::GetFolderPath([Environment+SpecialFolder]::ProgramFiles)
 }
 
-if (-not [Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([Runtime.InteropServices.OSPlatform]::Windows)) {
-    throw "The VSIX project can only be built on Windows. Try running the script with the '-SkipVsix' switch."
+# If building the vsix project, find the msbuild and vstest paths
+if (-not $SkipVsix) {
+
+    if (-not [Runtime.InteropServices.RuntimeInformation]::IsOSPlatform([Runtime.InteropServices.OSPlatform]::Windows)) {
+        throw "The VSIX project can only be built on Windows. Try running the script with the '-SkipVsix' switch."
+    }
+    
+    if ([string]::IsNullOrWhiteSpace($ProgramFilesDir))
+    {
+        throw "The 32-bit Program Files folder could not be found"
+    }
+    
+    $vswherePath = [IO.Path]::Combine($ProgramFilesDir, "Microsoft Visual Studio", "Installer", "vswhere.exe")
+    if (-not [IO.File]::Exists($vswherePath))
+    {
+        throw "vswhere.exe could not be found"
+    }
+    
+    Write-Host "Using $vswherePath to find MSBuild.exe..." -ForegroundColor Cyan
+    
+    $vsInstallPath = & $vswherePath @("-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VSSDK", "-property", "installationPath")
+    if ([string]::IsNullOrWhiteSpace($vsInstallPath))
+    {
+        throw "No instances of Visual Studio with the ""Visual Studio extension development"" component could be found"
+    }
+    
+    Write-Host "Using Visual Studio installed at $vsInstallPath" -ForegroundColor Cyan
+    
+    $msbuildPath = [IO.Path]::Combine($vsInstallPath, "MSBuild", "Current", "Bin", "msbuild.exe")
+    if (-not [IO.File]::Exists($msbuildPath))
+    {
+        throw "MSBuild.exe was not found at $msbuildPath"
+    }
+    
+    Write-Host "Found MSBuild at $msbuildPath" -ForegroundColor Cyan
+    
+    $vstestPath = [IO.Path]::Combine($vsInstallPath, "Common7", "IDE", "Extensions", "TestPlatform", "vstest.console.exe")
+    if (-not [IO.File]::Exists($vstestPath))
+    {
+        throw "vstest.console.exe could not be found at $vstestPath"
+    }
+    
+    Write-Host "Found vstest.console.exe at $vstestPath" -ForegroundColor Cyan
 }
-
-if ([string]::IsNullOrWhiteSpace($ProgramFilesDir))
-{
-    throw "The 32-bit Program Files folder could not be found"
-}
-
-$vswherePath = [IO.Path]::Combine($ProgramFilesDir, "Microsoft Visual Studio", "Installer", "vswhere.exe")
-if (-not [IO.File]::Exists($vswherePath))
-{
-    throw "vswhere.exe could not be found"
-}
-
-Write-Host "Using $vswherePath to find MSBuild.exe..." -ForegroundColor Cyan
-
-$vsInstallPath = & $vswherePath @("-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VSSDK", "-property", "installationPath")
-if ([string]::IsNullOrWhiteSpace($vsInstallPath))
-{
-    throw "No instances of Visual Studio with the ""Visual Studio extension development"" component could be found"
-}
-
-Write-Host "Using Visual Studio installed at $vsInstallPath" -ForegroundColor Cyan
-
-$msbuildPath = [IO.Path]::Combine($vsInstallPath, "MSBuild", "Current", "Bin", "msbuild.exe")
-if (-not [IO.File]::Exists($msbuildPath))
-{
-    throw "MSBuild.exe was not found at $msbuildPath"
-}
-
-Write-Host "Found MSBuild at $msbuildPath" -ForegroundColor Cyan
-
-$vstestPath = [IO.Path]::Combine($vsInstallPath, "Common7", "IDE", "Extensions", "TestPlatform", "vstest.console.exe")
-if (-not [IO.File]::Exists($vstestPath))
-{
-    throw "vstest.console.exe could not be found at $vstestPath"
-}
-
-Write-Host "Found vstest.console.exe at $vstestPath" -ForegroundColor Cyan
 
 if ($SkipDebug) {
     $configurations = @("Release")
@@ -284,23 +289,31 @@ $roslynVersions | Foreach-Object {
 
         $slnPath = [IO.Path]::Combine($PSScriptRoot, "CodeTiger.CodeAnalysis.sln")
 
-        Write-Host "Building CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
-        & $msbuildPath @($slnPath, "-restore", "-verbosity:$Verbosity", "-property:Configuration=$($configuration)WithVsix", "-property:RoslynVersion=$roslynVersion")
-        
-        if ($LASTEXITCODE -ne 0)
-        {
-            throw "Building CodeTiger.CodeAnalysis.sln failed."
-        }
-        
-        if (-not $SkipTests) {
-            Write-Host ""
-            Write-Host "Running unit tests for CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
-            $testDllPath = [IO.Path]::Combine($PSScriptRoot, "Build", $configuration, "roslyn$roslynVersion", "net7.0", "UnitTests.CodeTiger.CodeAnalysis.dll")
-            & $vstestPath @($testDllPath, "/Parallel", "/Logger:Console;Verbosity=$verbosity")
+        if (-not $SkipVsix) {
+            Write-Host "Building CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
+            & $msbuildPath @($slnPath, "-restore", "-verbosity:$Verbosity", "-property:Configuration=$($configuration)WithVsix", "-property:RoslynVersion=$roslynVersion")
             
             if ($LASTEXITCODE -ne 0)
             {
-                throw "Unit testing CodeTiger.CodeAnalysis.sln failed."
+                throw "Building CodeTiger.CodeAnalysis.sln failed."
+            }
+            
+            if (-not $SkipTests) {
+                Write-Host ""
+                Write-Host "Running unit tests for CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
+                $testDllPath = [IO.Path]::Combine($PSScriptRoot, "Build", $configuration, "roslyn$roslynVersion", "net7.0", "UnitTests.CodeTiger.CodeAnalysis.dll")
+                & $vstestPath @($testDllPath, "/Parallel", "/Logger:Console;Verbosity=$verbosity")
+                
+                if ($LASTEXITCODE -ne 0)
+                {
+                    throw "Unit testing CodeTiger.CodeAnalysis.sln failed."
+                }
+            }
+        } else {
+            & dotnet @("test", $slnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+
+            if ($LASTEXITCODE -ne 0) {
+                throw "Building or testing CodeTiger.CodeAnalysis.sln failed."
             }
         }
     }
