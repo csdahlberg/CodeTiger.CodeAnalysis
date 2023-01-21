@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/01/nuspec.xsd">
+  <metadata minClientVersion="2.8">
+    <id>CodeTiger.CodeAnalysis</id>
+    <version>0.0.1-unofficial</version>
+    <title>CodeTiger Code Analysis</title>
+    <authors>Chris Dahlberg</authors>
+    <developmentDependency>true</developmentDependency>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE</license>
+    <icon>CodeTiger.png</icon>
+    <projectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</projectUrl>
+    <description>General purpose Roslyn-based static code analysis rules for C#.
+
+While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.</description>
+    <releaseNotes>This is an unofficial build that should not be distributed.</releaseNotes>
+    <copyright>Copyright 2015 © Chris Dahlberg</copyright>
+    <tags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</tags>
+    <repository type="git" url="https://github.com/csdahlberg/CodeTiger.CodeAnalysis.git" />
+  </metadata>
+  <files>
+    <file src="Build\Release\roslyn2.6\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn2.6\cs\CodeTiger.CodeAnalysis.dll" />
+    <file src="Build\Release\roslyn3.8\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn3.8\cs\CodeTiger.CodeAnalysis.dll" />
+    <file src="Build\Release\roslyn4.0\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn4.0\cs\CodeTiger.CodeAnalysis.dll" />
+    <file src="CodeTiger.CodeAnalysis\tools\install.ps1" target="tools\install.ps1" />
+    <file src="CodeTiger.CodeAnalysis\tools\uninstall.ps1" target="tools\uninstall.ps1" />
+    <file src="CodeTiger.png" target="CodeTiger.png" />
+    <file src="LICENSE" target="LICENSE" />
+  </files>
+</package>
