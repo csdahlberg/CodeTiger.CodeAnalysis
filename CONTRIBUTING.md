@@ -7,7 +7,7 @@
 ## 2. Do you have a question?
 
 The issue tracker is for **issues**, in other words, bugs and suggestions.
-If you have a *question*, please ask on [Gitter](https://gitter.im/csdahlberg/CodeTiger.CodeAnalysis).
+If you have a *question*, please ask on [Gitter](https://gitter.im/csdahlberg/CodeTiger.CodeAnalysis) or [start a discussion](https://github.com/csdahlberg/CodeTiger.CodeAnalysis/discussions) on GitHub.
 
 ## 3. Did you find a bug?
 

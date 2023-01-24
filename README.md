@@ -14,9 +14,10 @@ Clone the sources: `git clone https://github.com/csdahlberg/CodeTiger.CodeAnalys
 CodeTiger.CodeAnalysis is primarily developed using [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/). It can also be built using `msbuild`, `dotnet build`, or the `Build.ps1` script (with the `-SkipVsix` switch under linux).
 
 ## Contributing
+
 Before you contribute, please read through the [Contributing Guide](CONTRIBUTING.md).
 
-You are also encouraged to join the chat on [Gitter](https://gitter.im/csdahlberg/CodeTiger.CodeAnalysis) or start a discussion by filing an issue.
+You are also encouraged to join the chat on [Gitter](https://gitter.im/csdahlberg/CodeTiger.CodeAnalysis) or [start a discussion](https://github.com/csdahlberg/CodeTiger.CodeAnalysis/discussions) on GitHub.
 
 ## License
 
