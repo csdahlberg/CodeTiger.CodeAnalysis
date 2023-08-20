@@ -525,7 +525,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
         }
 
         const string baseText = "Base";
-        if (className.EndsWith(baseText, StringComparison.OrdinalIgnoreCase)
+        if (className.EndsWith(baseText, StringComparison.Ordinal)
             || (className.StartsWith(baseText, StringComparison.OrdinalIgnoreCase)
                 && NamingUtility.IsProbablyPascalCased(className.Substring(baseText.Length)) == true))
         {

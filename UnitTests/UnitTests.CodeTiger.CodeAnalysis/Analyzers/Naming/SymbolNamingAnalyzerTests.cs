@@ -1297,6 +1297,20 @@ namespace ClassLibrary1
     }
 
     [Fact]
+    public void TypesThatEndInLowercaseBaseDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
+namespace ClassLibrary1
+{
+    public class Database
+    {
+    }
+}";
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
     public void AttributeTypesWithNamesSuffixedWithAttributeDoNotProduceDiagnostics()
     {
         string code = @"using System;
