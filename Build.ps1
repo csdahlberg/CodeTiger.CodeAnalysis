@@ -44,7 +44,7 @@ if (-not $SkipVsix) {
     
     Write-Host "Using $vswherePath to find MSBuild.exe..." -ForegroundColor Cyan
     
-    $vsInstallPath = & $vswherePath @("-latest", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VSSDK", "-property", "installationPath")
+    $vsInstallPath = & $vswherePath @("-latest", "-prerelease", "-products", "*", "-requires", "Microsoft.VisualStudio.Component.VSSDK", "-property", "installationPath")
     if ([string]::IsNullOrWhiteSpace($vsInstallPath))
     {
         throw "No instances of Visual Studio with the ""Visual Studio extension development"" component could be found"
