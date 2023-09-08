@@ -6,11 +6,12 @@
     all code in the CodeTiger.CodeAnalysis product. This script can be used to verify that changes will pass
     automated checks performed for pull requests.
 #>
-Param(
+param(
     [string] $Verbosity = "minimal", # The logging level to be used for dotnet, msbuild, and vstest
     [switch] $SkipTests = $false,
     [switch] $SkipDebug = $false,
-    [switch] $SkipVsix = $false
+    [switch] $SkipVsix = $false,
+    [switch] $CleanBeforeBuilding = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -87,6 +88,12 @@ $roslynVersions | Foreach-Object {
         $slnPath = [IO.Path]::Combine($PSScriptRoot, "CodeTiger.CodeAnalysis.sln")
 
         if (-not $SkipVsix) {
+
+            if ($CleanBeforeBuilding) {
+                Write-Host "Cleaning CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
+                & $msbuildPath @($slnPath, "-t:Clean", "-verbosity:$Verbosity", "-property:Configuration=$($configuration)WithVsix", "-property:RoslynVersion=$roslynVersion")
+            }
+
             Write-Host "Building CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
             & $msbuildPath @($slnPath, "-restore", "-verbosity:$Verbosity", "-property:Configuration=$($configuration)WithVsix", "-property:RoslynVersion=$roslynVersion")
             
@@ -107,7 +114,16 @@ $roslynVersions | Foreach-Object {
                 }
             }
         } else {
-            & dotnet @("test", $slnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+            
+            if ($CleanBeforeBuilding) {
+                & dotnet @("clean", $slnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+            }
+
+            if (-not $SkipTests) {
+                & dotnet @("test", $slnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+            } else {
+                & dotnet @("build", $slnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+            }
 
             if ($LASTEXITCODE -ne 0) {
                 throw "Building or testing CodeTiger.CodeAnalysis.sln failed."
