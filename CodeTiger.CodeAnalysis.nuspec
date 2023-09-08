@@ -7,14 +7,17 @@
     <authors>Chris Dahlberg</authors>
     <developmentDependency>true</developmentDependency>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="file">LICENSE</license>
+    <license type="expression">MIT</license>
+    <!-- As of 2023-09-07, pushing packages without a licenseUrl results in this error:
+        To provide a better experience for older clients when a license expression is specified, <licenseUrl> must be set to 'https://licenses.nuget.org/MIT'. https://aka.ms/invalidNuGetLicenseUrl -->
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
     <icon>CodeTiger.png</icon>
     <projectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</projectUrl>
     <description>General purpose Roslyn-based static code analysis rules for C#.
 
 While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.</description>
     <releaseNotes>This is an unofficial build that should not be distributed.</releaseNotes>
-    <copyright>Copyright 2015 © Chris Dahlberg</copyright>
+    <copyright>Copyright © 2015-2023 Chris Dahlberg</copyright>
     <tags>C# Static Code Analysis Roslyn Analyzers Style Format Formatting StyleCop FxCop</tags>
     <repository type="git" url="https://github.com/csdahlberg/CodeTiger.CodeAnalysis.git" />
   </metadata>
@@ -25,6 +28,5 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     <file src="CodeTiger.CodeAnalysis\tools\install.ps1" target="tools\install.ps1" />
     <file src="CodeTiger.CodeAnalysis\tools\uninstall.ps1" target="tools\uninstall.ps1" />
     <file src="CodeTiger.png" target="CodeTiger.png" />
-    <file src="LICENSE" target="LICENSE" />
   </files>
 </package>
