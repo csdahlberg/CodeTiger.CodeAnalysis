@@ -431,6 +431,80 @@ namespace ClassLibrary1
             });
     }
 
+#if ROSLYN3_8_OR_HIGHER
+    [Fact]
+    public void RecordPropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
+    {
+        string code = @"using System;
+namespace ClassLibrary1
+{
+    public record Class1(
+        object One,
+        bool Two,
+        int Three,
+        object Four);
+}";
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void RecordPropertiesWithNonPascalCasedNamesProduceDiagnostics()
+    {
+        string code = @"using System;
+namespace ClassLibrary1
+{
+    public record Class1(
+        object one,
+        bool _two,
+        int _Three,
+        object FOUR);
+}";
+
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 5, 16)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 6, 14)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 7, 13)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT1707",
+                Message = "Property names should use pascal casing",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 8, 16)
+                }
+            });
+    }
+#endif
+
     [Fact]
     public void PropertiesWithNamesPrefixedWithGetOrSetProduceDiagnostics()
     {

@@ -179,9 +179,14 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
 
         context.ConfigureGeneratedCodeAnalysis(GeneratedCodeAnalysisFlags.None);
         context.EnableConcurrentExecution();
-
+#if ROSLYN_38_OR_HIGHER
         context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
-            SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration);
+            SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration, SyntaxKind.InterfaceDeclaration,
+            SyntaxKind.RecordDeclaration);
+#else
+        context.RegisterSyntaxNodeAction(AnalyzeTypeName, SyntaxKind.ClassDeclaration,
+            SyntaxKind.StructDeclaration, SyntaxKind.EnumDeclaration, SyntaxKind.InterfaceDeclaration);
+#endif
         context.RegisterSyntaxNodeAction(AnalyzeFieldName, SyntaxKind.FieldDeclaration);
         context.RegisterSyntaxNodeAction(AnalyzeFieldNameForHungarianNotation, SyntaxKind.FieldDeclaration);
         context.RegisterSyntaxNodeAction(AnalyzeEventFieldName, SyntaxKind.EventFieldDeclaration);
@@ -449,11 +454,38 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     {
         var parameterNode = (ParameterSyntax)context.Node;
 
-        if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false
-            && !IsAllowableDiscard())
+        if (parameterNode.IsInRecordDeclaration())
         {
-            context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
-                parameterNode.Identifier.GetLocation()));
+            // In record declarations, parameters represent the properties on the type.
+            if (NamingUtility.IsProbablyPascalCased(parameterNode.Identifier.ValueText) == false)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(PropertyNamesShouldUsePascalCasingDescriptor,
+                    parameterNode.Identifier.GetLocation()));
+            }
+
+            if (parameterNode.Identifier.ValueText.StartsWith("Get", StringComparison.OrdinalIgnoreCase)
+                || parameterNode.Identifier.ValueText.StartsWith("Set", StringComparison.OrdinalIgnoreCase))
+            {
+                string propertyNameWithoutPrefix = parameterNode.Identifier.ValueText.Substring(3);
+
+                if (NamingUtility.IsProbablyPascalCased(propertyNameWithoutPrefix) == true)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        PropertyNamesShouldNotBePrefixedWithGetOrSetDescriptor,
+                        parameterNode.Identifier.GetLocation()));
+                }
+            }
+
+            AnalyzeRecordPropertyNameForPrefixMatchingParentName(context, parameterNode);
+        }
+        else
+        {
+            if (NamingUtility.IsProbablyCamelCased(parameterNode.Identifier.ValueText) == false
+                && !IsAllowableDiscard())
+            {
+                context.ReportDiagnostic(Diagnostic.Create(ParameterNamesShouldUseCamelCasingDescriptor,
+                    parameterNode.Identifier.GetLocation()));
+            }
         }
 
         if (NamingUtility.IsProbablyHungarianNotation(parameterNode.Identifier.ValueText) == true)
@@ -473,6 +505,31 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
                     return false;
             }
         }
+    }
+
+    private static void AnalyzeRecordPropertyNameForPrefixMatchingParentName(SyntaxNodeAnalysisContext context,
+        ParameterSyntax parameterNode)
+    {
+        var parentIdentifier = ((BaseTypeDeclarationSyntax)parameterNode.Parent.Parent)
+            .Identifier;
+        if (!parameterNode.Identifier.ValueText
+            .StartsWith(parentIdentifier.ValueText, StringComparison.OrdinalIgnoreCase))
+        {
+            // The property name does not start with the name of the containing type, so it is not a violation
+            return;
+        }
+
+        if (parameterNode.Identifier.ValueText.Length > parentIdentifier.ValueText.Length
+            && !char.IsUpper(parameterNode.Identifier.ValueText[parentIdentifier.ValueText.Length]))
+        {
+            // The property name starts with the name of the containing type, but it appears to be a longer word
+            // that starts with the same characters. For example, a "RunnerId" property in a "Run" type.
+            return;
+        }
+
+        context.ReportDiagnostic(Diagnostic.Create(
+            PropertyNamesShouldNotBeginWithTheNameOfTheContainingingTypeDescriptor,
+            parameterNode.Identifier.GetLocation()));
     }
 
     private static void AnalyzeGenericTypeParameterName(SyntaxNodeAnalysisContext context)
