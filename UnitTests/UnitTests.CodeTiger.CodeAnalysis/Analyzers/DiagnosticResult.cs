@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System;
+using Microsoft.CodeAnalysis;
 
 namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers;
 
@@ -11,7 +12,7 @@ public struct DiagnosticResult
 
     public DiagnosticResultLocation[] Locations
     {
-        get => _locations ??= new DiagnosticResultLocation[0];
+        get => _locations ??= Array.Empty<DiagnosticResultLocation>();
         set => _locations = value;
     }
 

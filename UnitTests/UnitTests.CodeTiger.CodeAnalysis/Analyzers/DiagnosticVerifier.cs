@@ -289,7 +289,7 @@ public abstract class DiagnosticVerifier
     private static void VerifyDiagnosticResults(IEnumerable<Diagnostic> actualResults,
         DiagnosticAnalyzer analyzer, params DiagnosticResult[] expectedResults)
     {
-        int expectedCount = expectedResults.Count();
+        int expectedCount = expectedResults.Length;
         int actualCount = actualResults.Count();
 
         if (expectedCount != actualCount)
@@ -464,6 +464,7 @@ public abstract class DiagnosticVerifier
                 }
             }
         }
+
         return builder.ToString();
     }
 

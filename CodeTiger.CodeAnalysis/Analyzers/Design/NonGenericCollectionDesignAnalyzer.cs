@@ -193,25 +193,24 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
     {
         TypeSyntax memberTypeSyntax;
 
-        switch (member.Kind())
+        if (member.Kind() == SyntaxKind.FieldDeclaration)
         {
-            case SyntaxKind.FieldDeclaration:
-                memberTypeSyntax = ((FieldDeclarationSyntax)member).Declaration.Type;
-                break;
-            case SyntaxKind.PropertyDeclaration:
-                {
-                    var propertyNode = (PropertyDeclarationSyntax)member;
-                    if (propertyNode.ExpressionBody != null
-                        || propertyNode.AccessorList?.Accessors.Any(x => x.Body != null) == true)
-                    {
-                        return false;
-                    }
-
-                    memberTypeSyntax = propertyNode.Type;
-                }
-                break;
-            default:
+            memberTypeSyntax = ((FieldDeclarationSyntax)member).Declaration.Type;
+        }
+        else if (member.Kind() == SyntaxKind.PropertyDeclaration)
+        {
+            var propertyNode = (PropertyDeclarationSyntax)member;
+            if (propertyNode.ExpressionBody != null
+                || propertyNode.AccessorList?.Accessors.Any(x => x.Body != null) == true)
+            {
                 return false;
+            }
+
+            memberTypeSyntax = propertyNode.Type;
+        }
+        else
+        {
+            return false;
         }
 
         return IsOrIncludesNonGenericCollection(context, memberTypeSyntax);

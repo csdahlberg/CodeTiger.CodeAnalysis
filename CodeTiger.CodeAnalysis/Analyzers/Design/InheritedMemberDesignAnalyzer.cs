@@ -95,24 +95,26 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                 .Where(x => AreParameterTypesEqual(method.Parameters, x.Parameters))
                 .ToList();
 
-            switch (matchingBaseMethods.Count)
+            // If there are multiple base methods with the same signature, stop analysis.
+            if (matchingBaseMethods.Count > 1)
             {
-                case 0:
-                    break;
-                case 1:
-                    var matchingBaseMethod = matchingBaseMethods.Single();
-                    if (!SymbolEqualityComparer.Default.Equals(method.ReturnType, objectType)
-                        && !method.ReturnType.IsSubclassOf(matchingBaseMethod.ReturnType)
-                        && !method.ReturnType.AllInterfaces
-                            .Contains(matchingBaseMethod.ReturnType, SymbolEqualityComparer.Default))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
-                            methodDeclaration.Identifier.GetLocation()));
-                    }
-                    return;
-                default:
-                    return;
+                return;
+            }
+
+            if (matchingBaseMethods.Count == 1)
+            {
+                var matchingBaseMethod = matchingBaseMethods.Single();
+                if (!SymbolEqualityComparer.Default.Equals(method.ReturnType, objectType)
+                    && !method.ReturnType.IsSubclassOf(matchingBaseMethod.ReturnType)
+                    && !method.ReturnType.AllInterfaces
+                        .Contains(matchingBaseMethod.ReturnType, SymbolEqualityComparer.Default))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                        methodDeclaration.Identifier.GetLocation()));
+                }
+
+                return;
             }
 
             baseType = baseType.BaseType;
@@ -140,23 +142,25 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                 .Where(x => AreParameterTypesEqual(property.Parameters, x.Parameters))
                 .ToList();
 
-            switch (matchingBaseProperties.Count)
+            // If there are multiple base properties with the same signature, stop analysis.
+            if (matchingBaseProperties.Count > 1)
             {
-                case 0:
-                    break;
-                case 1:
-                    var matchingBaseProperty = matchingBaseProperties.Single();
-                    if (!property.Type.IsSubclassOf(matchingBaseProperty.Type)
-                        && !property.Type.AllInterfaces
-                            .Contains(matchingBaseProperty.Type, SymbolEqualityComparer.Default))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
-                            propertyDeclaration.Identifier.GetLocation()));
-                    }
-                    return;
-                default:
-                    return;
+                return;
+            }
+
+            if (matchingBaseProperties.Count == 1)
+            {
+                var matchingBaseProperty = matchingBaseProperties.Single();
+                if (!property.Type.IsSubclassOf(matchingBaseProperty.Type)
+                    && !property.Type.AllInterfaces
+                        .Contains(matchingBaseProperty.Type, SymbolEqualityComparer.Default))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                        propertyDeclaration.Identifier.GetLocation()));
+                }
+
+                return;
             }
 
             baseType = baseType.BaseType;
@@ -261,25 +265,25 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                 .OfType<IFieldSymbol>()
                 .ToList();
 
-            switch (matchingBaseFields.Count)
+            // If there are multiple base fields with the same signature, stop analysis.
+            if (matchingBaseFields.Count > 1)
             {
-                case 0:
-                    break;
-                case 1:
-                    var matchingBaseField = matchingBaseFields.Single();
+                return;
+            }
 
-                    if (!fieldDeclarationType.IsSubclassOf(matchingBaseField.Type)
-                        && !fieldDeclarationType.AllInterfaces
-                            .Contains(matchingBaseField.Type, SymbolEqualityComparer.Default))
-                    {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
-                            fieldVariable.Identifier.GetLocation()));
-                        return;
-                    }
-                    break;
-                default:
+            if (matchingBaseFields.Count == 1)
+            {
+                var matchingBaseField = matchingBaseFields.Single();
+
+                if (!fieldDeclarationType.IsSubclassOf(matchingBaseField.Type)
+                    && !fieldDeclarationType.AllInterfaces
+                        .Contains(matchingBaseField.Type, SymbolEqualityComparer.Default))
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        MembersOfBaseTypesShouldNotBeHiddenExceptToReturnMoreSpecializedTypesDescriptor,
+                        fieldVariable.Identifier.GetLocation()));
                     return;
+                }
             }
 
             baseType = baseType.BaseType;

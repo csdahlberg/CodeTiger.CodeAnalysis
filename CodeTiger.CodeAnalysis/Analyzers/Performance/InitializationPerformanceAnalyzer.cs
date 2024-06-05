@@ -119,8 +119,9 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                         {
                             return baseMethodDeclarationNode.Body;
                         }
+
+                        break;
                     }
-                    break;
                 case SyntaxKind.SimpleLambdaExpression:
                     {
                         var simpleLambdaExpressionNode = (SimpleLambdaExpressionSyntax)containingNode;
@@ -128,8 +129,9 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                         {
                             return simpleLambdaExpressionNode.Body;
                         }
+
+                        break;
                     }
-                    break;
                 case SyntaxKind.ParenthesizedLambdaExpression:
                     {
                         var parenthesizedLambdaExpressionNode
@@ -138,8 +140,9 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                         {
                             return parenthesizedLambdaExpressionNode.Body;
                         }
+
+                        break;
                     }
-                    break;
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
@@ -151,8 +154,9 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                         {
                             return accessorDeclarationNode.Body;
                         }
+
+                        break;
                     }
-                    break;
                 case SyntaxKind.ClassDeclaration:
                 case SyntaxKind.StructDeclaration:
                     return null;

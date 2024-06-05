@@ -86,26 +86,26 @@ public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var node in root.ChildNodes())
         {
-            switch (node.Kind())
+            if (node.Kind() == SyntaxKind.UsingDirective)
             {
-                case SyntaxKind.UsingDirective:
-                    if (wasNamespaceEncountered)
-                    {
-                        // The using directive appears after a namespace declaration
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor, node.GetLocation()));
-                    }
-                    break;
-                case SyntaxKind.NamespaceDeclaration:
-                    foreach (var nestedUsingDirective in node.DescendantNodes().OfType<UsingDirectiveSyntax>())
-                    {
-                        // The using directive appears within a namespace declaration
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor,
-                            nestedUsingDirective.GetLocation()));
-                    }
-                    wasNamespaceEncountered = true;
-                    break;
+                if (wasNamespaceEncountered)
+                {
+                    // The using directive appears after a namespace declaration
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor, node.GetLocation()));
+                }
+            }
+            else if (node.Kind() == SyntaxKind.NamespaceDeclaration)
+            {
+                foreach (var nestedUsingDirective in node.DescendantNodes().OfType<UsingDirectiveSyntax>())
+                {
+                    // The using directive appears within a namespace declaration
+                    context.ReportDiagnostic(Diagnostic.Create(
+                        UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor,
+                        nestedUsingDirective.GetLocation()));
+                }
+
+                wasNamespaceEncountered = true;
             }
         }
     }
