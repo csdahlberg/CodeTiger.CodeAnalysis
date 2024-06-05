@@ -7,6 +7,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
 
 public class BinaryOperatorLayoutAnalyzerTests : DiagnosticVerifier
 {
+    protected override bool CompilationAllowsUnsafeCode => true;
+
     [Fact]
     public void SingleLineExpressionsDoNotProduceDiagnostics()
     {
@@ -576,10 +578,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 < 2;
+        public bool IsYoung { get; set; } = 1 < 200;
         public void DoSomething()
         {
-            int nextAge = Age < 1;
+            bool isYoung = 1 < 200;
         }
     }
 }";
@@ -595,12 +597,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            < 2;
+        public bool IsYoung { get; set; } = 1
+            < 200;
         public void DoSomething()
         {
-            int nextAge = Age
-                < 1;
+            bool isYoung = 1
+                < 200;
         }
     }
 }";
@@ -616,12 +618,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 <
-            2;
+        public bool IsYoung { get; set; } = 1 <
+            200;
         public void DoSomething()
         {
-            int nextAge = Age <
-                1;
+            bool isYoung = 1 <
+                200;
         }
     }
 }";
@@ -634,7 +636,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 47)
                 }
             },
             new DiagnosticResult
@@ -644,7 +646,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 30)
                 }
             });
     }
@@ -657,10 +659,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 > 2;
+        public bool IsOld { get; set; } = 1 > 200;
         public void DoSomething()
         {
-            int nextAge = Age > 1;
+            bool isOld = 1 > 200;
         }
     }
 }";
@@ -676,12 +678,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            > 2;
+        public bool IsOld { get; set; } = 1
+            > 200;
         public void DoSomething()
         {
-            int nextAge = Age
-                > 1;
+            bool isOld = 1
+                > 200;
         }
     }
 }";
@@ -697,12 +699,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 >
-            2;
+        public bool IsOld { get; set; } = 1 >
+            200;
         public void DoSomething()
         {
-            int nextAge = Age >
-                1;
+            bool isOld = 1 >
+                200;
         }
     }
 }";
@@ -715,7 +717,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 45)
                 }
             },
             new DiagnosticResult
@@ -725,7 +727,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 28)
                 }
             });
     }
@@ -738,10 +740,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 <= 2;
+        public bool IsYoung { get; set; } = 1 <= 200;
         public void DoSomething()
         {
-            int nextAge = Age <= 1;
+            bool isYoung = 1 <= 200;
         }
     }
 }";
@@ -757,12 +759,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            <= 2;
+        public bool IsYoung { get; set; } = 1
+            <= 200;
         public void DoSomething()
         {
-            int nextAge = Age
-                <= 1;
+            bool isYoung = 1
+                <= 200;
         }
     }
 }";
@@ -778,12 +780,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 <=
-            2;
+        public bool IsYoung { get; set; } = 1 <=
+            200;
         public void DoSomething()
         {
-            int nextAge = Age <=
-                1;
+            bool isYoung = 1 <=
+                200;
         }
     }
 }";
@@ -796,7 +798,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 47)
                 }
             },
             new DiagnosticResult
@@ -806,7 +808,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 30)
                 }
             });
     }
@@ -819,10 +821,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 >= 2;
+        public bool IsOld { get; set; } = 1 >= 200;
         public void DoSomething()
         {
-            int nextAge = Age >= 1;
+            bool isOld = 1 >= 200;
         }
     }
 }";
@@ -838,12 +840,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            >= 2;
+        public bool IsOld { get; set; } = 1
+            >= 200;
         public void DoSomething()
         {
-            int nextAge = Age
-                >= 1;
+            bool isOld = 1
+                >= 200;
         }
     }
 }";
@@ -859,12 +861,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 >=
-            2;
+        public bool IsOld { get; set; } = 1 >=
+            200;
         public void DoSomething()
         {
-            int nextAge = Age >=
-                1;
+            bool isOld = 1 >=
+                200;
         }
     }
 }";
@@ -877,7 +879,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 45)
                 }
             },
             new DiagnosticResult
@@ -887,7 +889,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 28)
                 }
             });
     }
@@ -900,10 +902,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 == 2;
+        public bool IsTwo { get; set; } = 1 == 2;
         public void DoSomething()
         {
-            int nextAge = Age == 1;
+            bool isTwo = 1 == 2;
         }
     }
 }";
@@ -919,11 +921,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public bool IsTwo { get; set; } = 1
             == 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            bool isTwo = 1
                 == 1;
         }
     }
@@ -940,12 +942,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 ==
+        public bool IsTwo { get; set; } = 1 ==
             2;
         public void DoSomething()
         {
-            int nextAge = Age ==
-                1;
+            bool isTwo = 1 ==
+                2;
         }
     }
 }";
@@ -958,7 +960,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 45)
                 }
             },
             new DiagnosticResult
@@ -968,7 +970,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 28)
                 }
             });
     }
@@ -981,10 +983,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 != 2;
+        public bool IsNotTwo { get; set; } = 1 != 2;
         public void DoSomething()
         {
-            int nextAge = Age != 1;
+            bool isNotTwo = 1 != 2;
         }
     }
 }";
@@ -1000,12 +1002,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public bool IsNotTwo { get; set; } = 1
             != 2;
         public void DoSomething()
         {
-            int nextAge = Age
-                != 1;
+            bool isNotTwo = 1
+                != 2;
         }
     }
 }";
@@ -1021,12 +1023,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 !=
+        public bool IsNotTwo { get; set; } = 1 !=
             2;
         public void DoSomething()
         {
-            int nextAge = Age !=
-                1;
+            bool isNotTwo = 1 !=
+                2;
         }
     }
 }";
@@ -1039,7 +1041,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 48)
                 }
             },
             new DiagnosticResult
@@ -1143,10 +1145,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 as int;
+        public static string _name;
+        public string Name { get; set; } = _name as string;
         public void DoSomething()
         {
-            int nextAge = Age as int;
+            string name = Name as string;
         }
     }
 }";
@@ -1162,12 +1165,13 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            as int;
+        public static string _name;
+        public string Name { get; set; } = _name
+            as string;
         public void DoSomething()
         {
-            int nextAge = Age
-                as int;
+            string name = Name
+                as string;
         }
     }
 }";
@@ -1183,12 +1187,13 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 as
-            int;
+        public static string _name;
+        public string Name { get; set; } = _name as
+            string;
         public void DoSomething()
         {
-            int nextAge = Age as
-                int;
+            string name = Name as
+                string;
         }
     }
 }";
@@ -1201,7 +1206,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 50)
                 }
             },
             new DiagnosticResult
@@ -1211,7 +1216,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -1548,10 +1553,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 && 2;
+        public bool IsSchrödinger { get; set; } = true && false;
         public void DoSomething()
         {
-            int nextAge = Age && 1;
+            bool isSchrödinger = true && false;
         }
     }
 }";
@@ -1567,12 +1572,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            && 2;
+        public bool IsSchrödinger { get; set; } = true
+            && false;
         public void DoSomething()
         {
-            int nextAge = Age
-                && 1;
+            bool isSchrödinger = true
+                && false;
         }
     }
 }";
@@ -1588,12 +1593,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 &&
-            2;
+        public bool IsSchrödinger { get; set; } = true &&
+            false;
         public void DoSomething()
         {
-            int nextAge = Age &&
-                1;
+            bool isSchrödinger = true &&
+                false;
         }
     }
 }";
@@ -1606,7 +1611,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 56)
                 }
             },
             new DiagnosticResult
@@ -1616,7 +1621,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 39)
                 }
             });
     }
@@ -1629,10 +1634,10 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 || 2;
+        public bool IsEither { get; set; } = true || false;
         public void DoSomething()
         {
-            int nextAge = Age || 1;
+            bool isEither = true || false;
         }
     }
 }";
@@ -1648,12 +1653,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
-            || 2;
+        public bool IsEither { get; set; } = true
+            || false;
         public void DoSomething()
         {
-            int nextAge = Age
-                || 1;
+            bool isEither = true
+                || false;
         }
     }
 }";
@@ -1669,12 +1674,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 ||
-            2;
+        public bool IsEither { get; set; } = true ||
+            false;
         public void DoSomething()
         {
-            int nextAge = Age ||
-                1;
+            bool isEither = true ||
+                false;
         }
     }
 }";
@@ -1687,7 +1692,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 6, 51)
                 }
             },
             new DiagnosticResult
@@ -1697,7 +1702,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 10, 34)
                 }
             });
     }
@@ -1977,10 +1982,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 = 2;
+        private static int _age;
+        public int Age { get; set; } = _age = 2;
         public void DoSomething()
         {
-            int nextAge = Age = 1;
+            int nextAge = _age = 1;
         }
     }
 }";
@@ -1996,11 +2002,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             = 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            int nextAge = _age
                 = 1;
         }
     }
@@ -2017,11 +2024,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 =
+        private static int _age;
+        public int Age { get; set; } = _age =
             2;
         public void DoSomething()
         {
-            int nextAge = Age =
+            int nextAge = _age =
                 1;
         }
     }
@@ -2035,7 +2043,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2045,7 +2053,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -2058,7 +2066,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 += 2;
+        public static int _age;
+        public int Age { get; set; } = _age += 2;
         public void DoSomething()
         {
             int nextAge = Age += 1;
@@ -2077,7 +2086,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public static int _age;
+        public int Age { get; set; } = _age
             += 2;
         public void DoSomething()
         {
@@ -2098,7 +2108,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 +=
+        public static int _age;
+        public int Age { get; set; } = _age +=
             2;
         public void DoSomething()
         {
@@ -2116,7 +2127,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2126,7 +2137,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2139,10 +2150,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 -= 2;
+        private static int _age;
+        public int Age { get; set; } = _age -= 2;
         public void DoSomething()
         {
-            int nextAge = Age -= 1;
+            int nextAge = _age -= 1;
         }
     }
 }";
@@ -2158,11 +2170,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             -= 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            int nextAge = _age
                 -= 1;
         }
     }
@@ -2179,11 +2192,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 -=
+        private static int _age;
+        public int Age { get; set; } = _age -=
             2;
         public void DoSomething()
         {
-            int nextAge = Age -=
+            int nextAge = _age -=
                 1;
         }
     }
@@ -2197,7 +2211,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2207,7 +2221,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -2220,7 +2234,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 *= 2;
+        private static int _age;
+        public int Age { get; set; } = _age *= 2;
         public void DoSomething()
         {
             int nextAge = Age *= 1;
@@ -2239,7 +2254,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             *= 2;
         public void DoSomething()
         {
@@ -2260,7 +2276,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 *=
+        private static int _age;
+        public int Age { get; set; } = _age *=
             2;
         public void DoSomething()
         {
@@ -2278,7 +2295,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2288,7 +2305,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2301,7 +2318,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 /= 2;
+        public static int _age;
+        public int Age { get; set; } = _age /= 2;
         public void DoSomething()
         {
             int nextAge = Age /= 1;
@@ -2320,7 +2338,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public static int _age;
+        public int Age { get; set; } = _age
             /= 2;
         public void DoSomething()
         {
@@ -2341,7 +2360,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 /=
+        public static int _age;
+        public int Age { get; set; } = _age /=
             2;
         public void DoSomething()
         {
@@ -2359,7 +2379,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2369,7 +2389,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2382,7 +2402,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 %= 2;
+        public static int _age;
+        public int Age { get; set; } = _age %= 2;
         public void DoSomething()
         {
             int nextAge = Age %= 1;
@@ -2401,7 +2422,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public static int _age;
+        public int Age { get; set; } = _age
             %= 2;
         public void DoSomething()
         {
@@ -2422,7 +2444,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 %=
+        public static int _age;
+        public int Age { get; set; } = _age %=
             2;
         public void DoSomething()
         {
@@ -2440,7 +2463,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2450,7 +2473,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2463,7 +2486,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 &= 2;
+        public static int _age;
+        public int Age { get; set; } = _age &= 2;
         public void DoSomething()
         {
             int nextAge = Age &= 1;
@@ -2482,7 +2506,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        public static int _age;
+        public int Age { get; set; } = _age
             &= 2;
         public void DoSomething()
         {
@@ -2503,7 +2528,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 &=
+        public static int _age;
+        public int Age { get; set; } = _age &=
             2;
         public void DoSomething()
         {
@@ -2521,7 +2547,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2531,7 +2557,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2544,10 +2570,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 |= 2;
+        private static int _age;
+        public int Age { get; set; } = _age |= 2;
         public void DoSomething()
         {
-            int nextAge = Age |= 1;
+            int nextAge = _age |= 1;
         }
     }
 }";
@@ -2563,11 +2590,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             |= 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            int nextAge = _age
                 |= 1;
         }
     }
@@ -2584,11 +2612,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 |=
+        private static int _age;
+        public int Age { get; set; } = _age |=
             2;
         public void DoSomething()
         {
-            int nextAge = Age |=
+            int nextAge = _age |=
                 1;
         }
     }
@@ -2602,7 +2631,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2612,7 +2641,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -2625,7 +2654,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 ^= 2;
+        private static int _age;
+        public int Age { get; set; } = _age ^= 2;
         public void DoSomething()
         {
             int nextAge = Age ^= 1;
@@ -2644,7 +2674,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             ^= 2;
         public void DoSomething()
         {
@@ -2665,7 +2696,8 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 ^=
+        private static int _age;
+        public int Age { get; set; } = _age ^=
             2;
         public void DoSomething()
         {
@@ -2683,7 +2715,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2693,7 +2725,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 31)
                 }
             });
     }
@@ -2706,10 +2738,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 <<= 2;
+        private static int _age;
+        public int Age { get; set; } = _age <<= 2;
         public void DoSomething()
         {
-            int nextAge = Age <<= 1;
+            int nextAge = _age <<= 1;
         }
     }
 }";
@@ -2725,11 +2758,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             <<= 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            int nextAge = _age
                 <<= 1;
         }
     }
@@ -2746,11 +2780,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 <<=
+        private static int _age;
+        public int Age { get; set; } = _age <<=
             2;
         public void DoSomething()
         {
-            int nextAge = Age <<=
+            int nextAge = _age <<=
                 1;
         }
     }
@@ -2764,7 +2799,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2774,7 +2809,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -2787,10 +2822,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 >>= 2;
+        private static int _age;
+        public int Age { get; set; } = _age >>= 2;
         public void DoSomething()
         {
-            int nextAge = Age >>= 1;
+            int nextAge = _age >>= 1;
         }
     }
 }";
@@ -2806,11 +2842,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1
+        private static int _age;
+        public int Age { get; set; } = _age
             >>= 2;
         public void DoSomething()
         {
-            int nextAge = Age
+            int nextAge = _age
                 >>= 1;
         }
     }
@@ -2827,11 +2864,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public int Age { get; set; } = 1 >>=
+        private static int _age;
+        public int Age { get; set; } = _age >>=
             2;
         public void DoSomething()
         {
-            int nextAge = Age >>=
+            int nextAge = _age >>=
                 1;
         }
     }
@@ -2845,7 +2883,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 42)
+                    new DiagnosticResultLocation("Test0.cs", 7, 45)
                 }
             },
             new DiagnosticResult
@@ -2855,7 +2893,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 31)
+                    new DiagnosticResultLocation("Test0.cs", 11, 32)
                 }
             });
     }
@@ -2872,7 +2910,7 @@ namespace ClassLibrary1
         public void DoSomething()
         {
             GetAge = (i) => i;
-            Func<int> getNextAge = () => Age + 1;
+            Func<int> getNextAge = () => 1;
         }
     }
 }";
@@ -2895,7 +2933,7 @@ namespace ClassLibrary1
             GetAge = (i)
                 => i;
             Func<int> getNextAge = ()
-                => Age + 1;
+                => 1;
         }
     }
 }";
@@ -2918,7 +2956,7 @@ namespace ClassLibrary1
             GetAge = (i) =>
                 i;
             Func<int> getNextAge = () =>
-                Age + 1;
+                1;
         }
     }
 }";
@@ -2969,10 +3007,10 @@ namespace ClassLibrary1
         public void DoSomething()
         {
             GetAge = (i) =>
-                { i; };
+                { return i; };
             Func<int> getNextAge = () =>
             {
-                Age + 1;
+                return 1;
             };
         }
     }

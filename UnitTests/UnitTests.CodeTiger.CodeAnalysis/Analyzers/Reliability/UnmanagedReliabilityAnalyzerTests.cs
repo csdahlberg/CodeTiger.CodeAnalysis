@@ -16,7 +16,7 @@ namespace ClassLibrary1
     public class Thing : IDisposable
     {
         private IDisposable _disposable;
-        public ~Thing() { Dispose(false); }
+        ~Thing() { Dispose(false); }
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool isDisposing) { }
     }
@@ -51,7 +51,7 @@ namespace ClassLibrary1
     public class Thing
     {
         private IDisposable _disposable;
-        public ~Thing() { }
+        ~Thing() { }
     }
 }";
 
@@ -92,7 +92,7 @@ namespace ClassLibrary1
     public class Thing : IDisposable
     {
         private IntPtr _unmanagedHandle;
-        public ~Thing() { Dispose(false); }
+        ~Thing() { Dispose(false); }
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool isDisposing) { }
     }
@@ -137,7 +137,7 @@ namespace ClassLibrary1
     public class Thing
     {
         private IntPtr _unmanagedHandle;
-        public ~Thing() { }
+        ~Thing() { }
     }
 }";
 

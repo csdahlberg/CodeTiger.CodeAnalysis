@@ -342,7 +342,7 @@ namespace ClassLibrary1
     }
     public struct ThingStruct : IThing
     {
-        public void SetValue(bool flag = false, int i = int.MaxValue, string str = string.Empty) { }
+        public void SetValue(bool flag = false, int i = int.MaxValue, string str = null) { }
     }
     public abstract class OtherThingClass : IThing
     {
@@ -422,7 +422,7 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
-    public class ThingClass : IThing
+    public abstract class ThingClass
     {
         public abstract void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"");
         public virtual void SetValue(bool flag, string str = default) { }
@@ -443,7 +443,7 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
-    public class ThingClass : IThing
+    public abstract class ThingClass
     {
         public abstract void SetValue(bool flag, int i, string str);
         public virtual void SetValue(bool flag, string str) { }
@@ -499,7 +499,7 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
-    public class ThingClass : IThing
+    public abstract class ThingClass
     {
         public abstract void SetValue(bool flag = true, int i = 0, string str = default);
         public virtual void SetValue(bool flag = false, string str = """") { }
@@ -555,7 +555,7 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
-    public class ThingClass : IThing
+    public abstract class ThingClass
     {
         public abstract void SetValue(bool flag = true, int i = 0, string str = default);
         public virtual void SetValue(bool flag = false, string str = ""foo"") { }

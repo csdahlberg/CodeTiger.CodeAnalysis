@@ -29,6 +29,7 @@ namespace ClassLibrary1
 {
     public class Class1 : IDisposable
     {
+        public void Dispose() { }
         public static void DoSomething() { }
     }
 }";
@@ -39,11 +40,12 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithBaseClassAndWithStaticMethodDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
+        string code = @"using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     public class Class1 : Task
     {
+        public Class1() : base(() => { }) { }
         public static void DoSomething() { }
     }
 }";

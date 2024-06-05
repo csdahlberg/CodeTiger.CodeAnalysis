@@ -214,7 +214,7 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        public event Action One();
+        public event Action One;
         protected event Action Two;
         internal event Action Three;
         private event Action Four;
@@ -440,7 +440,7 @@ namespace ClassLibrary1
     public class Class1
     {
         public string GetName { get; }
-        private string SetName { set; }
+        private string SetName { get; set; }
     }
 }";
 
@@ -958,9 +958,9 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        object _oVariable = new object();
+        static object _oVariable = new object();
         int nVariable = 13;
-        string strVariable = oVariable == null ? 12.ToString() : nVariable.ToString();
+        string strVariable = _oVariable == null ? 12.ToString() : _oVariable.ToString();
     }
 }";
 
@@ -972,7 +972,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 16)
+                    new DiagnosticResultLocation("Test0.cs", 6, 23)
                 }
             },
             new DiagnosticResult
@@ -1112,7 +1112,7 @@ namespace ClassLibrary1
             get { return 3; }
             set { }
         }
-        private object Class1FOUR => one;
+        private object Class1FOUR => Class1One;
     }
 }";
 
@@ -1167,7 +1167,7 @@ namespace ClassLibrary1
 {
     public class Class1<T, TFactory>
     {
-        public TOut DoSomething<TIn, TOut>(TIn in)
+        public TOut DoSomething<TIn, TOut>(TIn input)
         {
             return default(TOut);
         }
@@ -1185,7 +1185,7 @@ namespace ClassLibrary1
 {
     public class Class1<t, TFac>
     {
-        public Tout DoSomething<TInType, Tout>(TInType in)
+        public Tout DoSomething<TInType, Tout>(TInType input)
         {
             return default(Tout);
         }
@@ -1701,7 +1701,7 @@ namespace ClassLibrary1
     public class TestClass
     {
         public bool DoSomething() { return true; }
-        protected bool DoSomething2() { }
+        protected bool DoSomething2() { return true; }
         private void DoSomething3() { }
     }
 }";
@@ -1719,7 +1719,7 @@ namespace ClassLibrary1
     public class TestClass
     {
         public bool DoSomethingAsync() { return true; }
-        protected bool DoSomething2Async() { }
+        protected bool DoSomething2Async() { return true; }
         private void DoSomething3Async() { }
     }
 }";

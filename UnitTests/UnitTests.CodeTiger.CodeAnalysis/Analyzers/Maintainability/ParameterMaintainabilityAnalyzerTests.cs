@@ -13,7 +13,7 @@ public class ParameterMaintainabilityAnalyzerTests : DiagnosticVerifier
         string code = @"using System;
 namespace ClassLibrary1
 {
-    enum Color { None, Red }
+    public enum Color { None, Red }
     public class Thing
     {
         public void DoSomething(Color color = Color.None, Color color2 = default(Color), Color? color3 = null) { }
@@ -31,12 +31,11 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
-    enum Color { None, Red }
+    public enum Color { None, Red }
     public class Thing
     {
         public void DoSomething(Color color = Color.Red, Color color2 = (Color)3) { }
         public void DoSomething(byte value = 1, ulong value2 = ulong.MaxValue, bool flag = true) { }
-        public void DoSomething(
     }
 }";
 

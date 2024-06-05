@@ -11,6 +11,8 @@ public class LinqPerformanceAnalyzerTests : DiagnosticVerifier
     public void WhereClauseDoesNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Thing
@@ -29,6 +31,8 @@ namespace ClassLibrary1
     public void WhereClauseFollowedByMethodWithPredicateDoesNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Thing
@@ -47,6 +51,8 @@ namespace ClassLibrary1
     public void WhereClauseFollowedByMethodWithoutPredicateProducesDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Thing
@@ -66,7 +72,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 27)
+                    new DiagnosticResultLocation("Test0.cs", 10, 27)
                 }
             });
     }

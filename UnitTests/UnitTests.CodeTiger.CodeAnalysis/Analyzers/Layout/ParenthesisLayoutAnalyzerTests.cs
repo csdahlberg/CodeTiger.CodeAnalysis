@@ -7,6 +7,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
 
 public class ParenthesisLayoutAnalyzerTests : DiagnosticVerifier
 {
+    protected override bool CompilationAllowsUnsafeCode => true;
+
     [Fact]
     public void ConstructorInitializersWithParenthesisOnSameLineDoNotProduceDiagnostic()
     {
@@ -20,7 +22,7 @@ namespace ClassLibrary1
         }
     }
 
-    public class Class2
+    public class Class2 : Class1
     {
         public Class2()
             : this(false)
@@ -50,7 +52,7 @@ namespace ClassLibrary1
         }
     }
 
-    public class Class2
+    public class Class2 : Class1
     {
         public Class2()
             : this
@@ -102,7 +104,7 @@ namespace ClassLibrary1
         }
     }
 
-    public class Class2
+    public class Class2 : Class1
     {
         public Class2()
             : this(false
@@ -145,6 +147,7 @@ namespace ClassLibrary1
     public void CatchClausWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.IO;
 namespace ClassLibrary1
 {
     public class Class1
@@ -171,6 +174,7 @@ namespace ClassLibrary1
     public void CatchClauseWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.IO;
 namespace ClassLibrary1
 {
     public class Class1
@@ -200,7 +204,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 12, 13)
+                    new DiagnosticResultLocation("Test0.cs", 13, 13)
                 }
             },
             new DiagnosticResult
@@ -210,7 +214,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 16, 13)
+                    new DiagnosticResultLocation("Test0.cs", 17, 13)
                 }
             });
     }
@@ -219,6 +223,7 @@ namespace ClassLibrary1
     public void CatchClauseWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.IO;
 namespace ClassLibrary1
 {
     public class Class1
@@ -248,7 +253,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 12, 17)
+                    new DiagnosticResultLocation("Test0.cs", 13, 17)
                 }
             },
             new DiagnosticResult
@@ -258,7 +263,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 16, 17)
+                    new DiagnosticResultLocation("Test0.cs", 17, 17)
                 }
             });
     }
@@ -347,10 +352,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
+        private int _age;
         public unsafe void DoSomething()
         {
-            var thing = new BaseClass();
-            fixed (int* age = &thing.Age)
+            var thing = new Class1();
+            fixed (int* age = &thing._age)
             {
             }
         }
@@ -368,11 +374,12 @@ namespace ClassLibrary1
 {
     public class Class1
     {
+        private int _age;
         public unsafe void DoSomething()
         {
-            var thing = new BaseClass();
+            var thing = new Class1();
             fixed
-                (int* age = &thing.Age)
+                (int* age = &thing._age)
             {
             }
         }
@@ -387,7 +394,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                    new DiagnosticResultLocation("Test0.cs", 11, 17)
                 }
             });
     }
@@ -400,10 +407,11 @@ namespace ClassLibrary1
 {
     public class Class1
     {
+        private int _age;
         public unsafe void DoSomething()
         {
-            var thing = new BaseClass();
-            fixed (int* age = &thing.Age
+            var thing = new Class1();
+            fixed (int* age = &thing._age
                 )
             {
             }
@@ -419,7 +427,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 17)
+                    new DiagnosticResultLocation("Test0.cs", 11, 17)
                 }
             });
     }
@@ -510,6 +518,7 @@ namespace ClassLibrary1
     public void ForEachStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -530,6 +539,7 @@ namespace ClassLibrary1
     public void ForEachStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -552,7 +562,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
                 }
             });
     }
@@ -561,6 +571,7 @@ namespace ClassLibrary1
     public void ForEachStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -583,7 +594,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 9, 17)
+                    new DiagnosticResultLocation("Test0.cs", 10, 17)
                 }
             });
     }
@@ -1275,7 +1286,7 @@ namespace ClassLibrary1
         {
             var time = DateTime.Now.AddMinutes(5);
             int min = Math.Min(1, 2);
-            string intName = nameof(int);
+            string intName = nameof(Int32);
         }
     }
 }";
@@ -1298,7 +1309,7 @@ namespace ClassLibrary1
             int min = Math.Min
                 (1, 2);
             string intName = nameof
-                (int);
+                (Int32);
         }
     }
 }";
@@ -1350,7 +1361,7 @@ namespace ClassLibrary1
                 );
             int min = Math.Min(1, 2
                 );
-            string intName = nameof(int
+            string intName = nameof(Int32
                 );
         }
     }
@@ -1500,7 +1511,7 @@ namespace ClassLibrary1
     {
         public void DoSomething()
         {
-            var time = (DateTime)null;
+            var time = (DateTime?)null;
             int min = (int)(new int());
         }
     }
@@ -1519,7 +1530,7 @@ namespace ClassLibrary1
     {
         public void DoSomething()
         {
-            var time = (DateTime
+            var time = (DateTime?
                 )null;
             int min = (int
                 )(new int());
@@ -1830,7 +1841,7 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        private Func<string, bool> _isValidFunc = (
+        private Func<bool> _isValidFunc = (
             ) => true;
         public void DoSomething()
         {

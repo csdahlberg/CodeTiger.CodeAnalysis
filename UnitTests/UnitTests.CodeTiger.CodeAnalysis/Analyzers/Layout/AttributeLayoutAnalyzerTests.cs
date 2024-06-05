@@ -1,4 +1,5 @@
-﻿using CodeTiger.CodeAnalysis.Analyzers.Layout;
+﻿using System.Reflection;
+using CodeTiger.CodeAnalysis.Analyzers.Layout;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Xunit;
@@ -11,6 +12,7 @@ public class AttributeLayoutAnalyzerTests : DiagnosticVerifier
     public void AttributesDeclaredSeparatelyDoNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Reflection;
 namespace ClassLibrary1
 {
     [Obsolete]
@@ -19,7 +21,7 @@ namespace ClassLibrary1
     {
         [Obsolete]
         [CLSCompliant(false)]
-        public void DoSomething([Obsolete] string value)
+        public void DoSomething([Obfuscation] string value)
         {
         }
     }
@@ -32,12 +34,13 @@ namespace ClassLibrary1
     public void AttributesDeclaredTogetherForParametersDoNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Reflection;
 namespace ClassLibrary1
 {
     public class Class1
     {
-        public void DoSomething([Obsolete, CLSCompliant(false)] string value1,
-            [Obsolete] [CLSCompliant(false)] string value2)
+        public void DoSomething([Obfuscation, CLSCompliant(false)] string value1,
+            [Obfuscation] [CLSCompliant(false)] string value2)
         {
         }
     }

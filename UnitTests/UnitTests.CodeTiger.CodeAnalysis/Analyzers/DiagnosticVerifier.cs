@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -20,24 +22,18 @@ public abstract class DiagnosticVerifier
     private const string CSharpDefaultFileExt = "cs";
     private const string TestProjectName = "TestProject";
 
-    private static readonly MetadataReference _corlibReference
-        = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-    private static readonly MetadataReference _systemCoreReference
-        = MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location);
-    private static readonly MetadataReference _csharpSymbolsReference
-        = MetadataReference.CreateFromFile(typeof(CSharpCompilation).Assembly.Location);
-    private static readonly MetadataReference _codeAnalysisReference
-        = MetadataReference.CreateFromFile(typeof(Compilation).Assembly.Location);
+    private static readonly ImmutableArray<MetadataReference> _metadataReferences = CreateMetadataReferences();
 
     protected virtual DocumentationMode DocumentationMode => DocumentationMode.Parse;
+
+    protected virtual OutputKind CompilationOutputKind => OutputKind.DynamicallyLinkedLibrary;
+
+    protected virtual bool CompilationAllowsUnsafeCode => false;
 
     /// <summary>
     /// Get the CSharp analyzer being tested - to be implemented in non-abstract class
     /// </summary>
-    protected virtual DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer()
-    {
-        throw new NotImplementedException();
-    }
+    protected abstract DiagnosticAnalyzer GetCSharpDiagnosticAnalyzer();
 
     /// <summary>
     /// Called to test a C# DiagnosticAnalyzer when applied on the single inputted string as a source
@@ -195,22 +191,30 @@ public abstract class DiagnosticVerifier
     {
         var projectId = ProjectId.CreateNewId(debugName: TestProjectName);
 
-        var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode);
+        var parseOptions = new CSharpParseOptions(documentationMode: DocumentationMode,
+            languageVersion: LanguageVersion.Latest);
+        var compilationOptions = new CSharpCompilationOptions(CompilationOutputKind,
+            allowUnsafe: CompilationAllowsUnsafeCode);
         var projectInfo = ProjectInfo.Create(projectId, VersionStamp.Default, TestProjectName, TestProjectName,
-            LanguageNames.CSharp, parseOptions: parseOptions);
+            LanguageNames.CSharp, parseOptions: parseOptions, compilationOptions: compilationOptions);
         var solution = new AdhocWorkspace()
             .CurrentSolution
             .AddProject(projectInfo)
-            .AddMetadataReference(projectId, _corlibReference)
-            .AddMetadataReference(projectId, _systemCoreReference)
-            .AddMetadataReference(projectId, _csharpSymbolsReference)
-            .AddMetadataReference(projectId, _codeAnalysisReference);
-
+            .AddMetadataReferences(projectId, _metadataReferences);
         foreach (var source in sources)
         {
             var documentId = DocumentId.CreateNewId(projectId, debugName: source.Item1);
             solution = solution.AddDocument(documentId, source.Item1, SourceText.From(source.Item2));
         }
+
+        var diagnostics = solution.Projects.First().GetCompilationAsync().Result.GetDiagnostics();
+        var errors = diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error);
+        if (errors.Any())
+        {
+            throw new Exception("Compilation failed due to errors:" + Environment.NewLine
+                + string.Join(Environment.NewLine, errors));
+        }
+
         return solution.GetProject(projectId);
     }
 
@@ -472,5 +476,30 @@ public abstract class DiagnosticVerifier
             .Select((source, index) => Tuple.Create($"{fileNamePrefix}{index}.{fileExt}", source))
             .ToArray();
         return namedSources;
+    }
+
+    private static ImmutableArray<MetadataReference> CreateMetadataReferences()
+    {
+        var assemblyLocations = new List<string>
+        {
+            typeof(object).Assembly.Location,
+            typeof(Console).Assembly.Location,
+            typeof(Enumerable).Assembly.Location,
+            typeof(IEnumerable<>).Assembly.Location,
+            typeof(ConcurrentDictionary<,>).Assembly.Location,
+            typeof(CSharpCompilation).Assembly.Location,
+            typeof(Compilation).Assembly.Location,
+        };
+
+        foreach (var backupReference in Assembly.GetEntryAssembly().GetReferencedAssemblies())
+        {
+            assemblyLocations.Add(Assembly.Load(backupReference).Location);
+        }
+
+        return assemblyLocations
+            .Distinct()
+            .Select(x => MetadataReference.CreateFromFile(x))
+            .AsEnumerable<MetadataReference>()
+            .ToImmutableArray();
     }
 }

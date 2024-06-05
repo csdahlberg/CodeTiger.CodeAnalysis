@@ -7,6 +7,8 @@ namespace UnitTests.CodeTiger.CodeAnalysis.Analyzers.Layout;
 
 public class SingleLineLayoutAnalyzerTests : DiagnosticVerifier
 {
+    protected override bool CompilationAllowsUnsafeCode => true;
+
     [Fact]
     public void NamespaceDeclarationOnSingleLineProducesDiagnostic()
     {
@@ -386,9 +388,7 @@ namespace ClassLibrary1
         }
         public event EventHandler TestEvent
         {
-            [CLSCompliant(true)]
             add { _testEvent += value; }
-            [CLSCompliant(true)]
             remove { _testEvent -= value; }
         }
     }
@@ -954,7 +954,6 @@ namespace ClassLibrary1
                 {
                     throw new Exception();
                 }
-                return;
             }
         }
     }
@@ -1309,6 +1308,7 @@ namespace ClassLibrary1
     public void ForEachStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1329,6 +1329,7 @@ namespace ClassLibrary1
     public void ForEachStatementOnSingleLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1348,7 +1349,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    new DiagnosticResultLocation("Test0.cs", 9, 13)
                 }
             });
     }
@@ -1502,6 +1503,7 @@ namespace ClassLibrary1
     public void NonEmptyUsingStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1523,6 +1525,7 @@ namespace ClassLibrary1
     public void NonEmptyUsingStatementOnSingleLineProducesDiagnostic()
     {
         string code = @"using System;
+using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1542,7 +1545,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    new DiagnosticResultLocation("Test0.cs", 9, 13)
                 }
             });
     }
@@ -1842,6 +1845,7 @@ namespace ClassLibrary1
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1863,6 +1867,7 @@ namespace ClassLibrary1
     public void LinqQueriesWithAllPartsOnDifferentLinesDoNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1887,6 +1892,7 @@ namespace ClassLibrary1
     public void LinqQueriesWithSomePartsOnTheSameLineProduceDiagnostics()
     {
         string code = @"using System;
+using System.Linq;
 namespace ClassLibrary1
 {
     public class Class1
@@ -1915,7 +1921,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 27)
+                    new DiagnosticResultLocation("Test0.cs", 9, 27)
                 }
             },
             new DiagnosticResult
@@ -1925,7 +1931,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 11, 23)
+                    new DiagnosticResultLocation("Test0.cs", 12, 23)
                 }
             },
             new DiagnosticResult
@@ -1935,7 +1941,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 14, 27)
+                    new DiagnosticResultLocation("Test0.cs", 15, 27)
                 }
             },
             new DiagnosticResult
@@ -1945,7 +1951,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 16, 23)
+                    new DiagnosticResultLocation("Test0.cs", 17, 23)
                 }
             });
     }

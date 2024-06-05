@@ -196,6 +196,7 @@ namespace ClassLibrary1
     public void TypeParameterConstraintClausesWithCommasOnSameLineDoNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1<TFirst, TSecond, TThird>
@@ -212,6 +213,7 @@ namespace ClassLibrary1
     public void TypeParameterConstraintClausesWithCommasOnNewLinesProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1<TFirst, TSecond, TThird>
@@ -231,7 +233,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 6, 13)
+                    new DiagnosticResultLocation("Test0.cs", 7, 13)
                 }
             },
             new DiagnosticResult
@@ -241,7 +243,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 13)
+                    new DiagnosticResultLocation("Test0.cs", 9, 13)
                 }
             });
     }
@@ -254,7 +256,7 @@ namespace ClassLibrary1
 {
     public class Class1
     {
-        Tuple<int, string, object> values = Tuple.Create<int, string, object>(1, "", null);
+        Tuple<int, string, object> values = Tuple.Create<int, string, object>(1, """", null);
     }
 }";
 
@@ -272,7 +274,7 @@ namespace ClassLibrary1
         Tuple<int, string
             , object> values = Tuple.Create<int
             , string
-            , object>(1, "", null);
+            , object>(1, """", null);
     }
 }";
 
@@ -385,7 +387,7 @@ namespace ClassLibrary1
     {
         public void DoSomething()
         {
-            var x = 1, y = 2, z = 3;
+            int x = 1, y = 2, z = 3;
         }
     }
 }";
@@ -403,7 +405,7 @@ namespace ClassLibrary1
     {
         public void DoSomething()
         {
-            var x = 1
+            int x = 1
                 , y = 2
                 , z = 3;
         }
@@ -437,6 +439,7 @@ namespace ClassLibrary1
     public void InitializerExpressionsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1
@@ -493,6 +496,7 @@ namespace ClassLibrary1
     public void InitializerExpressionsWithCommasOnNewLinesProduceDiagnostic()
     {
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1
@@ -564,16 +568,6 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 9, 17)
-                }
-            },
-            new DiagnosticResult
-            {
-                Id = "CT3537",
-                Message = "Commas should be on the same line as the preceding element",
-                Severity = DiagnosticSeverity.Warning,
-                Locations = new[]
-                {
                     new DiagnosticResultLocation("Test0.cs", 10, 17)
                 }
             },
@@ -584,7 +578,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 14, 17)
+                    new DiagnosticResultLocation("Test0.cs", 11, 17)
                 }
             },
             new DiagnosticResult
@@ -614,7 +608,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 19, 17)
+                    new DiagnosticResultLocation("Test0.cs", 17, 17)
                 }
             },
             new DiagnosticResult
@@ -634,7 +628,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 24, 17)
+                    new DiagnosticResultLocation("Test0.cs", 21, 17)
                 }
             },
             new DiagnosticResult
@@ -664,7 +658,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 31, 17)
+                    new DiagnosticResultLocation("Test0.cs", 27, 17)
                 }
             },
             new DiagnosticResult
@@ -694,7 +688,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 38, 21)
+                    new DiagnosticResultLocation("Test0.cs", 34, 17)
                 }
             },
             new DiagnosticResult
@@ -704,7 +698,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 39, 17)
+                    new DiagnosticResultLocation("Test0.cs", 39, 21)
                 }
             },
             new DiagnosticResult
@@ -714,7 +708,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 40, 21)
+                    new DiagnosticResultLocation("Test0.cs", 40, 17)
                 }
             },
             new DiagnosticResult
@@ -724,7 +718,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 41, 17)
+                    new DiagnosticResultLocation("Test0.cs", 41, 21)
                 }
             },
             new DiagnosticResult
@@ -734,7 +728,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 42, 21)
+                    new DiagnosticResultLocation("Test0.cs", 42, 17)
                 }
             },
             new DiagnosticResult
@@ -744,7 +738,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 43, 17)
+                    new DiagnosticResultLocation("Test0.cs", 43, 21)
                 }
             },
             new DiagnosticResult
@@ -754,7 +748,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 49, 21)
+                    new DiagnosticResultLocation("Test0.cs", 44, 17)
                 }
             },
             new DiagnosticResult
@@ -764,7 +758,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 51, 17)
+                    new DiagnosticResultLocation("Test0.cs", 50, 21)
                 }
             },
             new DiagnosticResult
@@ -774,7 +768,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 53, 21)
+                    new DiagnosticResultLocation("Test0.cs", 52, 17)
                 }
             },
             new DiagnosticResult
@@ -784,7 +778,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 55, 17)
+                    new DiagnosticResultLocation("Test0.cs", 54, 21)
                 }
             },
             new DiagnosticResult
@@ -794,7 +788,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 57, 21)
+                    new DiagnosticResultLocation("Test0.cs", 56, 17)
                 }
             },
             new DiagnosticResult
@@ -804,7 +798,17 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 59, 17)
+                    new DiagnosticResultLocation("Test0.cs", 58, 21)
+                }
+            },
+            new DiagnosticResult
+            {
+                Id = "CT3537",
+                Message = "Commas should be on the same line as the preceding element",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 60, 17)
                 }
             });
     }

@@ -64,6 +64,7 @@ namespace ClassLibrary2
     public void InitializerExpressionsWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1
@@ -71,7 +72,7 @@ namespace ClassLibrary1
         private object _obj = new object { };
         private object _anon = new { Name = """" };
         private List<string> _list = new List<string> { """" };
-        public Dictionary<string, int> _dictionary = new Dictionary { { """", 0 } };
+        public Dictionary<string, int> _dictionary = new Dictionary<string, int> { { """", 0 } };
 
         public void DoSomething()
         {
@@ -81,7 +82,7 @@ namespace ClassLibrary1
             {
                 """"
             };
-            var dictionary = new Dictionary
+            var dictionary = new Dictionary<string, int>
             {
                 {
                     """",
@@ -113,6 +114,7 @@ namespace ClassLibrary1
         }
 
         string code = @"using System;
+using System.Collections.Generic;
 namespace ClassLibrary1
 {
     public class Class1
@@ -123,7 +125,7 @@ namespace ClassLibrary1
         };
         private List<string> _list = new List<string> {
             """" };
-        public Dictionary<string, int> _dictionary = new Dictionary { {
+        public Dictionary<string, int> _dictionary = new Dictionary<string, int> { {
             """", 0 } };
 
         public void DoSomething()
@@ -135,7 +137,7 @@ namespace ClassLibrary1
             var list = new List<string>
             {
                 """" };
-            var dictionary = new Dictionary {
+            var dictionary = new Dictionary<string, int> {
                 { """",
                     0
                 } };
@@ -144,23 +146,23 @@ namespace ClassLibrary1
 }";
 
         VerifyCSharpDiagnostic(code,
-            CreateResult(6, 42),
-            CreateResult(8, 36),
-            CreateResult(10, 55),
-            CreateResult(11, 16),
-            CreateResult(12, 69),
-            CreateResult(12, 71),
-            CreateResult(13, 19),
-            CreateResult(13, 21),
-            CreateResult(18, 13),
-            CreateResult(18, 15),
-            CreateResult(20, 13),
-            CreateResult(20, 25),
-            CreateResult(23, 20),
-            CreateResult(24, 45),
-            CreateResult(25, 17),
-            CreateResult(27, 17),
-            CreateResult(27, 19));
+            CreateResult(7, 42),
+            CreateResult(9, 36),
+            CreateResult(11, 55),
+            CreateResult(12, 16),
+            CreateResult(13, 82),
+            CreateResult(13, 84),
+            CreateResult(14, 19),
+            CreateResult(14, 21),
+            CreateResult(19, 13),
+            CreateResult(19, 15),
+            CreateResult(21, 13),
+            CreateResult(21, 25),
+            CreateResult(24, 20),
+            CreateResult(25, 58),
+            CreateResult(26, 17),
+            CreateResult(28, 17),
+            CreateResult(28, 19));
     }
 
     [Fact]
@@ -510,35 +512,6 @@ namespace ClassLibrary1
     }
 
     [Fact]
-    public void AccessorListsWithValidBraceLayoutsDoNotProduceDiagnostics()
-    {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        [CLSCompliant(false)]
-        public string Name { get; set; }
-        [CLSCompliant(false)]
-        public int Age
-        {
-            get { return 1; }
-        }
-        [CLSCompliant(false)]
-        public event EventHandler OnSomething
-        {
-            add { }
-            remove
-            {
-            }
-        }
-    }
-}";
-
-        VerifyCSharpDiagnostic(code);
-    }
-
-    [Fact]
     public void AccessorsWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
         string code = @"using System;
@@ -549,14 +522,11 @@ namespace ClassLibrary1
         public string Name { get; set; }
         public int Age
         {
-            [CLSCompliant(false)]
             get { return 1; }
         }
         public event EventHandler OnSomething
         {
-            [CLSCompliant(false)]
             add { }
-            [CLSCompliant(false)]
             remove
             {
             }
@@ -587,6 +557,8 @@ namespace ClassLibrary1
         string code = @"using System;
 namespace ClassLibrary1
 {
+    public class Thing
+    {
         public string Name {
             get; set; }
         public int Age
@@ -599,18 +571,19 @@ namespace ClassLibrary1
             remove
             { }
         }
+    }
 }";
 
         VerifyCSharpDiagnostic(code,
-            CreateResult(4, 28),
-            CreateResult(5, 23),
-            CreateResult(7, 9),
-            CreateResult(7, 15),
-            CreateResult(8, 9),
-            CreateResult(8, 11),
-            CreateResult(11, 17),
-            CreateResult(14, 13),
-            CreateResult(14, 15));
+            CreateResult(6, 28),
+            CreateResult(7, 23),
+            CreateResult(9, 9),
+            CreateResult(9, 15),
+            CreateResult(10, 9),
+            CreateResult(10, 11),
+            CreateResult(13, 17),
+            CreateResult(16, 13),
+            CreateResult(16, 15));
     }
 
     [Fact]
@@ -815,6 +788,7 @@ namespace ClassLibrary1
     public void MethodArgumentsWithInvalidBraceLayoutsProduceDiagnostics()
     {
         string code = @"using System;
+using System.Threading.Tasks;
 namespace ClassLibrary1
 {
     public class Class1
@@ -837,7 +811,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 8, 28)
+                    new DiagnosticResultLocation("Test0.cs", 9, 28)
                 }
             },
             new DiagnosticResult
@@ -847,7 +821,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 10, 34)
+                    new DiagnosticResultLocation("Test0.cs", 11, 34)
                 }
             });
     }
