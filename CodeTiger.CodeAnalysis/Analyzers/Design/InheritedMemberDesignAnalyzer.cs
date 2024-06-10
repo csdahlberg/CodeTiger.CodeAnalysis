@@ -74,6 +74,10 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var method = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+        if (method is null)
+        {
+            return;
+        }
 
         var objectType = context.Compilation.GetSpecialType(SpecialType.System_Object);
 
@@ -131,6 +135,10 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var property = context.SemanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+        if (property is null)
+        {
+            return;
+        }
 
         var baseType = property.ContainingType.BaseType;
 
@@ -178,10 +186,18 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
 
         var fieldDeclarationType = context.SemanticModel
             .GetTypeInfo(fieldDeclaration.Declaration.Type, context.CancellationToken).Type;
+        if (fieldDeclarationType is null)
+        {
+            return;
+        }
 
         foreach (var fieldVariable in fieldDeclaration.Declaration.Variables)
         {
             var field = context.SemanticModel.GetDeclaredSymbol(fieldVariable, context.CancellationToken);
+            if (field is null)
+            {
+                continue;
+            }
 
             AnalyzeFieldForHidingOfBaseImplementation(context, fieldDeclarationType, fieldVariable, field);
         }
@@ -192,8 +208,12 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
         
         var method = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+        if (method is null)
+        {
+            return;
+        }
 
-        if (method.IsOverride)
+        if (method.IsOverride && method.OverriddenMethod is not null)
         {
             AnalyzeParametersForKeywords(context, methodDeclaration, method, method.OverriddenMethod);
         }
@@ -228,13 +248,13 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
                 {
                     context.ReportDiagnostic(
                         Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
-                        methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
+                        methodDeclaration.ParameterList.Parameters[i].Default?.GetLocation()));
                 }
                 else if (!Equals(parameter.ExplicitDefaultValue, baseParameter.ExplicitDefaultValue))
                 {
                     context.ReportDiagnostic(
                         Diagnostic.Create(DefaultValuesOfParametersShouldMatchAnyBaseDefinitionsDescriptor,
-                        methodDeclaration.ParameterList.Parameters[i].Default.GetLocation()));
+                        methodDeclaration.ParameterList.Parameters[i].Default?.GetLocation()));
                 }
             }
             else if (baseParameter.HasExplicitDefaultValue)

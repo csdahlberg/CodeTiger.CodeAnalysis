@@ -91,7 +91,7 @@ public class ThreadingReliabilityAnalyzer : DiagnosticAnalyzer
 
         foreach (var node in root.DescendantNodes())
         {
-            SyntaxNode lockObjectNode;
+            SyntaxNode? lockObjectNode;
 
             switch (node.Kind())
             {

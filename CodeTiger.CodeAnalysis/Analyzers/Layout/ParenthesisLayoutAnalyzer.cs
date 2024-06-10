@@ -132,7 +132,7 @@ public class ParenthesisLayoutAnalyzer : DiagnosticAnalyzer
 
         if (node.Declaration != null && node.Declaration.CloseParenToken != default(SyntaxToken))
         {
-            Location precedingTokenLocation;
+            Location? precedingTokenLocation;
             if (node.Declaration.Identifier != default(SyntaxToken))
             {
                 precedingTokenLocation = node.Declaration.Identifier.GetLocation();
@@ -172,7 +172,7 @@ public class ParenthesisLayoutAnalyzer : DiagnosticAnalyzer
         AnalyzeParenthesis(context, node.FixedKeyword.GetLocation(), node.OpenParenToken,
             OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
 
-        AnalyzeParenthesis(context, node.Declaration?.GetLocation(), node.CloseParenToken,
+        AnalyzeParenthesis(context, node.Declaration.GetLocation(), node.CloseParenToken,
             ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
     }
 
@@ -280,10 +280,18 @@ public class ParenthesisLayoutAnalyzer : DiagnosticAnalyzer
         AnalyzeParenthesis(context, node.UsingKeyword.GetLocation(), node.OpenParenToken,
             OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingKeywordDescriptor);
 
-        if (node.Declaration != null || node.Expression != null)
+        Location? declarationOrExpressionLocation = null;
+        if (node.Declaration != null)
         {
-            var declarationOrExpressionLocation = node.Declaration?.GetLocation()
-                ?? node.Expression.GetLocation();
+            declarationOrExpressionLocation = node.Declaration?.GetLocation();
+        }
+        else if (node.Expression != null)
+        {
+            declarationOrExpressionLocation = node.Expression.GetLocation();
+        }
+
+        if (declarationOrExpressionLocation is not null)
+        {
             AnalyzeParenthesis(context, declarationOrExpressionLocation, node.CloseParenToken,
                 ClosingParenthesisShouldBeOnTheSameLineAsThePrecedingElementDescriptor);
         }
@@ -348,7 +356,7 @@ public class ParenthesisLayoutAnalyzer : DiagnosticAnalyzer
 
         if (node.ArgumentList != null && node.ArgumentList.OpenParenToken != default(SyntaxToken))
         {
-            AnalyzeParenthesis(context, node.Type?.GetLocation(), node.ArgumentList.OpenParenToken,
+            AnalyzeParenthesis(context, node.Type.GetLocation(), node.ArgumentList.OpenParenToken,
                 OpeningParenthesisShouldBeOnTheSameLineAsThePrecedingIdentifierDescriptor);
         }
 

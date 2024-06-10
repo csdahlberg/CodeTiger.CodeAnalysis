@@ -320,7 +320,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
             }
         }
 
-        switch (propertyDeclarationNode.Parent.Kind())
+        switch (propertyDeclarationNode.Parent?.Kind())
         {
             case SyntaxKind.ClassDeclaration:
             case SyntaxKind.StructDeclaration:
@@ -333,8 +333,13 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     private static void AnalyzePropertyNameForPrefixMatchingParentName(SyntaxNodeAnalysisContext context,
         PropertyDeclarationSyntax propertyDeclarationNode)
     {
-        var parentIdentifier = ((BaseTypeDeclarationSyntax)propertyDeclarationNode.Parent)
-            .Identifier;
+        var parent = ((BaseTypeDeclarationSyntax?)propertyDeclarationNode.Parent);
+        if (parent is null)
+        {
+            return;
+        }
+
+        var parentIdentifier = parent.Identifier;
         if (!propertyDeclarationNode.Identifier.ValueText
             .StartsWith(parentIdentifier.ValueText, StringComparison.OrdinalIgnoreCase))
         {
@@ -366,13 +371,18 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeMethodName(SyntaxNodeAnalysisContext context)
     {
         var methodDeclarationNode = (MethodDeclarationSyntax)context.Node;
-        var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode,
-            context.CancellationToken);
 
         if (NamingUtility.IsProbablyPascalCased(methodDeclarationNode.Identifier.ValueText) == false)
         {
             context.ReportDiagnostic(Diagnostic.Create(MethodNamesShouldUsePascalCasingDescriptor,
                 methodDeclarationNode.Identifier.GetLocation()));
+        }
+
+        var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(methodDeclarationNode,
+            context.CancellationToken);
+        if (methodDeclaration is null)
+        {
+            return;
         }
 
         AnalyzeMethodNameForAsyncSuffix(context, methodDeclarationNode, methodDeclaration);
@@ -381,11 +391,15 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeMethodNameForAsyncSuffix(SyntaxNodeAnalysisContext context,
         MethodDeclarationSyntax methodDeclarationNode, IMethodSymbol methodDeclaration)
     {
-        const string asyncText = "Async";
         var taskType = context.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
+        if (taskType is null)
+        {
+            return;
+        }
+
         bool returnsTaskType = methodDeclaration.ReturnType.IsSameOrSubclassOf(taskType)
             || methodDeclaration.ReturnType.IsConstrainedTo(taskType);
-        bool hasAsyncSuffix = methodDeclaration.Name.EndsWith(asyncText, StringComparison.OrdinalIgnoreCase);
+        bool hasAsyncSuffix = methodDeclaration.Name.EndsWith("Async", StringComparison.OrdinalIgnoreCase);
         if (returnsTaskType)
         {
             if (!hasAsyncSuffix)
@@ -496,7 +510,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
 
         bool IsAllowableDiscard()
         {
-            switch (parameterNode.Parent.Kind())
+            switch (parameterNode.Parent?.Kind())
             {
                 case SyntaxKind.ParenthesizedLambdaExpression:
                 case SyntaxKind.SimpleLambdaExpression:
@@ -510,8 +524,13 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeRecordPropertyNameForPrefixMatchingParentName(SyntaxNodeAnalysisContext context,
         ParameterSyntax parameterNode)
     {
-        var parentIdentifier = ((BaseTypeDeclarationSyntax)parameterNode.Parent.Parent)
-            .Identifier;
+        var parent = (BaseTypeDeclarationSyntax?)parameterNode.Parent?.Parent;
+        if (parent is null)
+        {
+            return;
+        }
+
+        var parentIdentifier = parent.Identifier;
         if (!parameterNode.Identifier.ValueText
             .StartsWith(parentIdentifier.ValueText, StringComparison.OrdinalIgnoreCase))
         {
@@ -571,6 +590,11 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
         var classDeclarationNode = (ClassDeclarationSyntax)context.Node;
         var classDeclaration = context.SemanticModel.GetDeclaredSymbol(classDeclarationNode,
             context.CancellationToken);
+        if (classDeclaration is null)
+        {
+            return;
+        }
+
         string className = classDeclarationNode.Identifier.ValueText;
 
         const string abstractText = "Abstract";
@@ -601,6 +625,11 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     {
         const string attributeText = "Attribute";
         var attributeType = context.Compilation.GetTypeByMetadataName(typeof(Attribute).FullName);
+        if (attributeType is null)
+        {
+            return;
+        }
+
         bool isAttributeType = classDeclaration.IsSubclassOf(attributeType);
         bool hasAttributeSuffix = classDeclaration.Name
             .EndsWith(attributeText, StringComparison.OrdinalIgnoreCase);
@@ -626,6 +655,11 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     {
         const string exceptionText = "Exception";
         var exceptionType = context.Compilation.GetTypeByMetadataName(typeof(Exception).FullName);
+        if (exceptionType is null)
+        {
+            return;
+        }
+
         bool isExceptionType = classDeclaration.IsSubclassOf(exceptionType);
         bool hasExceptionSuffix = classDeclaration.Name
             .EndsWith(exceptionText, StringComparison.OrdinalIgnoreCase);
@@ -650,8 +684,13 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
         ClassDeclarationSyntax classDeclarationNode, INamedTypeSymbol classDeclaration)
     {
         const string eventArgsText = "EventArgs";
-        var exceptionType = context.Compilation.GetTypeByMetadataName(typeof(EventArgs).FullName);
-        bool isEventArgsType = classDeclaration.IsSubclassOf(exceptionType);
+        var eventArgsType = context.Compilation.GetTypeByMetadataName(typeof(EventArgs).FullName);
+        if (eventArgsType is null)
+        {
+            return;
+        }
+
+        bool isEventArgsType = classDeclaration.IsSubclassOf(eventArgsType);
         bool hasEventArgsSuffix = classDeclaration.Name
             .EndsWith(eventArgsText, StringComparison.OrdinalIgnoreCase);
         if (isEventArgsType)
@@ -677,9 +716,9 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
         var containingNode = context.Node.Parent;
         if (containingNode?.Kind() == SyntaxKind.NamespaceDeclaration)
         {
-            var containingNamespaceDeclarationNode = (NamespaceDeclarationSyntax)context.Node.Parent;
+            var containingNamespaceDeclarationNode = (NamespaceDeclarationSyntax?)context.Node.Parent;
             if (string.Equals(typeIdentifier.ValueText,
-                containingNamespaceDeclarationNode.Name.GetUnqualifiedName()?.Identifier.ValueText,
+                containingNamespaceDeclarationNode?.Name.GetUnqualifiedName()?.Identifier.ValueText,
                 StringComparison.Ordinal))
             {
                 context.ReportDiagnostic(Diagnostic.Create(

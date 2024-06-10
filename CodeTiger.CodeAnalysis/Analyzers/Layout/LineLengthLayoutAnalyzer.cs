@@ -43,11 +43,18 @@ public class LineLengthLayoutAnalyzer : DiagnosticAnalyzer
 
         foreach (var line in text.Lines)
         {
+            var lineText = line.Text;
+            if (lineText is null)
+            {
+                return;
+            }
+
             int lineColumns = 0;
             int firstCharacterExceedingMaxLength = -1;
+
             for (int i = line.Span.Start; i < line.Span.End; i += 1)
             {
-                if (line.Text[i] == '\t')
+                if (lineText[i] == '\t')
                 {
                     lineColumns += 4;
                 }

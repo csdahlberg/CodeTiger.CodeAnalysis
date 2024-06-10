@@ -11,9 +11,9 @@ internal static class NamingUtility
         "b", "c", "d", "f", "i", "l", "li", "n", "o", "p", "s", "si", "str", "sz", "ui", "ul"
     };
 
-    public static bool? IsProbablyHungarianNotation(string value)
+    public static bool? IsProbablyHungarianNotation(string? value)
     {
-        if (string.IsNullOrEmpty(value))
+        if (value is null || string.IsNullOrEmpty(value))
         {
             return null;
         }
@@ -36,9 +36,9 @@ internal static class NamingUtility
         return false;
     }
 
-    public static bool? IsProbablyPascalCased(string value, bool isGenericTypeArityAllowed = false)
+    public static bool? IsProbablyPascalCased(string? value, bool isGenericTypeArityAllowed = false)
     {
-        if (string.IsNullOrEmpty(value))
+        if (value is null || string.IsNullOrEmpty(value))
         {
             return null;
         }

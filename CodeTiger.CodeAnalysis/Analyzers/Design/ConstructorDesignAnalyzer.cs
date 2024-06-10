@@ -49,6 +49,10 @@ public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
         var node = (ConstructorDeclarationSyntax)context.Node;
 
         var constructor = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+        if (constructor is null)
+        {
+            return;
+        }
 
         if (IsProbablyCopyConstructor(context, node, constructor)
             && constructor.DeclaredAccessibility == Accessibility.Public)
@@ -74,7 +78,7 @@ public class ConstructorDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var parameterSymbol = constructorSymbol.Parameters.Single();
-        if (!SymbolEqualityComparer.Default.Equals(parameterSymbol?.Type, constructorSymbol.ContainingType))
+        if (!SymbolEqualityComparer.Default.Equals(parameterSymbol.Type, constructorSymbol.ContainingType))
         {
             return false;
         }

@@ -91,7 +91,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
     {
         var symbol = context.SemanticModel.GetDeclaredSymbol(context.Node, context.CancellationToken);
 
-        return symbol.IsExternallyAccessible();
+        return symbol?.IsExternallyAccessible() == true;
     }
 
     private static bool HasParameters(SyntaxNode node)
@@ -175,7 +175,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
 
         try
         {
-            string documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
+            string? documentationXml = symbol?.GetDocumentationCommentXml(null, true, context.CancellationToken);
 
             // If the documentation does not exists, ignore it for this diagnostic.
             if (string.IsNullOrWhiteSpace(documentationXml))
@@ -201,7 +201,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
 
         try
         {
-            string documentationXml = symbol.GetDocumentationCommentXml(null, true, context.CancellationToken);
+            string? documentationXml = symbol?.GetDocumentationCommentXml(null, true, context.CancellationToken);
 
             // If the documentation does not exists, ignore it for this diagnostic.
             if (string.IsNullOrWhiteSpace(documentationXml))

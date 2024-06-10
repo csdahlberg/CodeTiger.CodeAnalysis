@@ -166,15 +166,20 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
                 {
                     var symbolInfo = context.SemanticModel.GetDeclaredSymbol(fieldMemberVariable,
                         context.CancellationToken);
-
-                    AnalyzeSymbolOrderBasedOnAccessibility(fieldMember, symbolInfo, context,
-                        encounteredKinds);
+                    if (symbolInfo is not null)
+                    {
+                        AnalyzeSymbolOrderBasedOnAccessibility(fieldMember, symbolInfo, context,
+                            encounteredKinds);
+                    }
                 }
             }
             else if (member.Kind() != SyntaxKind.IncompleteMember)
             {
                 var symbolInfo = context.SemanticModel.GetDeclaredSymbol(member, context.CancellationToken);
-                AnalyzeSymbolOrderBasedOnAccessibility(member, symbolInfo, context, encounteredKinds);
+                if (symbolInfo is not null)
+                {
+                    AnalyzeSymbolOrderBasedOnAccessibility(member, symbolInfo, context, encounteredKinds);
+                }
             }
         }
     }

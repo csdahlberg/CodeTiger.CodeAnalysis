@@ -49,6 +49,11 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
         {
             var variableSymbol = context.SemanticModel
                 .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
+            if (variableSymbol is null)
+            {
+                continue;
+            }
+
             var containingNode = GetContainingCodeBlockNode(context, variableSymbol);
             if (containingNode != null)
             {
@@ -58,7 +63,7 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                     .Single(x => x.DescendantNodes().Contains(variableDeclarator));
 
                 // Get the first statement after the declarator that include the variable
-                StatementSyntax statementIncludingVariable = null;
+                StatementSyntax? statementIncludingVariable = null;
                 foreach (var statementNode in containingNode.ChildNodes()
                     .OfType<StatementSyntax>()
                     .SkipWhile(x => x != statementContainingDeclarator)
@@ -81,23 +86,26 @@ public class InitializationPerformanceAnalyzer : DiagnosticAnalyzer
                     var currentStatementDataFlowAnalysis = context.SemanticModel
                         .AnalyzeDataFlow(statementIncludingVariable);
                     
-                    if (currentStatementDataFlowAnalysis.AlwaysAssigned.Contains(variableSymbol)
+                    if (currentStatementDataFlowAnalysis?.AlwaysAssigned.Contains(variableSymbol) == true
                         && !currentStatementDataFlowAnalysis.ReadInside.Contains(variableSymbol))
                     {
-                        context.ReportDiagnostic(Diagnostic.Create(
-                            DoubleInitializationShouldBeAvoidedDescriptor,
-                            variableDeclarator.Initializer.GetLocation()));
+                        context.ReportDiagnostic(Diagnostic.Create(DoubleInitializationShouldBeAvoidedDescriptor,
+                            variableDeclarator.Initializer?.GetLocation()));
                     }
                 }
             }
         }
     }
 
-    private static SyntaxNode GetContainingCodeBlockNode(SemanticModelAnalysisContext context,
-        ISymbol variableSymbol)
+    private static SyntaxNode? GetContainingCodeBlockNode(SemanticModelAnalysisContext context,
+        ISymbol? variableSymbol)
     {
         var containingNodes = variableSymbol?.ContainingSymbol?.DeclaringSyntaxReferences
             .Select(x => x.GetSyntax(context.CancellationToken));
+        if (containingNodes is null)
+        {
+            return null;
+        }
 
         foreach (var containingNode in containingNodes)
         {

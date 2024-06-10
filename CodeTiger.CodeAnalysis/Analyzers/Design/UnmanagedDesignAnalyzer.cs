@@ -72,7 +72,7 @@ public class UnmanagedDesignAnalyzer : DiagnosticAnalyzer
             var destructor = (DestructorDeclarationSyntax)typeDeclaration.Members
                 .FirstOrDefault(x => x.Kind() == SyntaxKind.DestructorDeclaration);
 
-            if (destructor != null)
+            if (destructor?.Body != null)
             {
                 if (!destructor.Body.ChildNodes().OfType<StatementSyntax>().Any())
                 {

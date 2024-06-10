@@ -107,7 +107,7 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
         var propertySymbol = context.SemanticModel
             .GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
-        if (!propertySymbol.IsExternallyAccessible())
+        if (propertySymbol?.IsExternallyAccessible() != true)
         {
             return;
         }
@@ -125,7 +125,7 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
         var methodSymbol = context.SemanticModel
             .GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-        if (!methodSymbol.IsExternallyAccessible())
+        if (methodSymbol?.IsExternallyAccessible() != true)
         {
             return;
         }
@@ -138,7 +138,7 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
 
         foreach (var parameter in methodDeclaration.ParameterList.Parameters)
         {
-            if (IsOrIncludesNonGenericCollection(context, parameter.Type))
+            if (parameter.Type is { } parameterType && IsOrIncludesNonGenericCollection(context, parameterType))
             {
                 context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
                     parameter.Type.GetLocation()));
@@ -152,14 +152,14 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
         var constructorSymbol = context.SemanticModel
             .GetDeclaredSymbol(constructorDeclaration, context.CancellationToken);
 
-        if (!constructorSymbol.IsExternallyAccessible())
+        if (constructorSymbol?.IsExternallyAccessible() != true)
         {
             return;
         }
 
         foreach (var parameter in constructorDeclaration.ParameterList.Parameters)
         {
-            if (IsOrIncludesNonGenericCollection(context, parameter.Type))
+            if (parameter.Type is { } parameterType &&  IsOrIncludesNonGenericCollection(context, parameterType))
             {
                 context.ReportDiagnostic(Diagnostic.Create(NonGenericCollectionsShouldNotBeExposedDescriptor,
                     parameter.Type.GetLocation()));
@@ -175,7 +175,7 @@ public class NonGenericCollectionDesignAnalyzer : DiagnosticAnalyzer
             var fieldSymbol = context.SemanticModel
                 .GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
 
-            if (!fieldSymbol.IsExternallyAccessible())
+            if (fieldSymbol?.IsExternallyAccessible() != true)
             {
                 return;
             }

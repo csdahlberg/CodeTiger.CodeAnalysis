@@ -59,7 +59,7 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
             .Distinct();
         foreach (var nestedThrow in nestedThrows.Where(x => x?.Expression != null))
         {
-            AnalyzeThrowExpressionWithinCatchDeclaration(context, nestedThrow.Expression);
+            AnalyzeThrowExpressionWithinCatchDeclaration(context, nestedThrow.Expression!);
         }
     }
 
@@ -67,18 +67,22 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
         ExpressionSyntax throwExpression)
     {
         var caughtExceptionIdentifier = GetCaughtExceptionIdentifier(throwExpression);
+        if (caughtExceptionIdentifier is null)
+        {
+            return;
+        }
 
         // Ignore exceptions that are rethrown by explicitly including the caught exception (e.g. "throw ex;"),
         // since they will be identified by CA2200.
-        if (!string.IsNullOrEmpty(caughtExceptionIdentifier?.ValueText)
+        if (!string.IsNullOrEmpty(caughtExceptionIdentifier.Value.ValueText)
             && IsRethrowWithExplicitArgument(throwExpression, caughtExceptionIdentifier.Value))
         {
             return;
         }
 
-        if (!IncludesCaughtException(context, throwExpression, caughtExceptionIdentifier))
+        if (IncludesCaughtException(context, throwExpression, caughtExceptionIdentifier) == false)
         {
-            string caughtExceptionText = !string.IsNullOrEmpty(caughtExceptionIdentifier?.ValueText)
+            string caughtExceptionText = !string.IsNullOrEmpty(caughtExceptionIdentifier.Value.ValueText)
                 ? string.Format(CultureInfo.CurrentCulture, " '{0}'", caughtExceptionIdentifier.Value.ValueText)
                 : string.Empty;
 
@@ -105,7 +109,7 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
         return false;
     }
 
-    private static bool IncludesCaughtException(SemanticModelAnalysisContext context,
+    private static bool? IncludesCaughtException(SemanticModelAnalysisContext context,
         ExpressionSyntax throwExpression, SyntaxToken? caughtExceptionIdentifier)
     {
         if (!caughtExceptionIdentifier.HasValue)
@@ -133,10 +137,15 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
         return null;
     }
 
-    private static bool IsIdentifierReadByExpression(SemanticModelAnalysisContext context, SyntaxToken identifier,
+    private static bool? IsIdentifierReadByExpression(SemanticModelAnalysisContext context, SyntaxToken identifier,
         ExpressionSyntax expression)
     {
         var expressionDataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(expression);
+
+        if (expressionDataFlowAnalysis is null)
+        {
+            return null;
+        }
 
         // See if the identifier is used directly as part of the expression.
         foreach (var readInside in expressionDataFlowAnalysis.ReadInside)
@@ -157,10 +166,14 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
                 }
 
                 var variableDeclarator = (VariableDeclaratorSyntax)declaringReferenceNode;
-                if (variableDeclarator.Initializer?.Value != null
-                    && IsIdentifierReadByExpression(context, identifier, variableDeclarator.Initializer.Value))
+                if (variableDeclarator.Initializer?.Value != null)
                 {
-                    return true;
+                    bool? isIdentifierReadByExpression = IsIdentifierReadByExpression(context, identifier,
+                        variableDeclarator.Initializer.Value);
+                    if (isIdentifierReadByExpression == true)
+                    {
+                        return true;
+                    }
                 }
             }
         }

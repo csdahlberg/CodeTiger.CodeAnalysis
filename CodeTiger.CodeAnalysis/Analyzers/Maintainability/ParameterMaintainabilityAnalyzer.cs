@@ -49,7 +49,7 @@ public class ParameterMaintainabilityAnalyzer : DiagnosticAnalyzer
         var node = (BaseMethodDeclarationSyntax)context.Node;
 
         var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
-        if (methodDeclaration.IsExternallyAccessible())
+        if (methodDeclaration?.IsExternallyAccessible() == true)
         {
             foreach (var parameter in methodDeclaration.Parameters.Where(x => x.HasExplicitDefaultValue))
             {
@@ -66,7 +66,7 @@ public class ParameterMaintainabilityAnalyzer : DiagnosticAnalyzer
         }
     }
 
-    private static bool IsDefaultValueAllowed(object defaultValue, ITypeSymbol type)
+    private static bool IsDefaultValueAllowed(object? defaultValue, ITypeSymbol type)
     {
         if (defaultValue == null)
         {

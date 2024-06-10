@@ -100,7 +100,7 @@ public class BraceLayoutAnalyzer : DiagnosticAnalyzer
         {
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.Initializer.OpenBraceToken,
                 node.Initializer.CloseBraceToken, context,
-                isForArgument: node.Parent.Kind() == SyntaxKind.Argument);
+                isForArgument: node.Parent?.Kind() == SyntaxKind.Argument);
         }
     }
 

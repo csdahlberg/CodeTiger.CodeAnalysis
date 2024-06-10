@@ -282,11 +282,17 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
     {
         var node = (AccessorDeclarationSyntax)context.Node;
 
+        var nodeBody = node.Body;
+        if (nodeBody is null)
+        {
+            return;
+        }
+
         var accessorLineSpan = Location
             .Create(context.Node.SyntaxTree, TextSpan.FromBounds(node.Keyword.SpanStart, node.Span.End))
             .GetLineSpan();
 
-        if (IsAccessorTrivial(node.Body))
+        if (IsAccessorTrivial(nodeBody))
         {
             if (accessorLineSpan.Span.Start.Line != accessorLineSpan.Span.End.Line)
             {
@@ -294,7 +300,7 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
                     TrivialAccessorsShouldBeDefinedOnASingleLineDescriptor, node.Keyword.GetLocation()));
             }
         }
-        else if (IsAccessorNonTrivial(node.Body))
+        else if (IsAccessorNonTrivial(nodeBody))
         {
             if (accessorLineSpan.Span.Start.Line == accessorLineSpan.Span.End.Line)
             {
@@ -691,7 +697,7 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
             return false;
         }
 
-        if (body?.Statements.Count > 1)
+        if (body.Statements.Count > 1)
         {
             return true;
         }

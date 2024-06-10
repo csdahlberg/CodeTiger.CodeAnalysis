@@ -55,7 +55,10 @@ public class DataTypeDesignAnalyzer : DiagnosticAnalyzer
             {
                 foreach (var parameterNode in node.ParameterList.Parameters)
                 {
-                    AnalyzeExternallyAccessibleTypeForTuples(context, parameterNode.Type);
+                    if (parameterNode.Type is not null)
+                    {
+                        AnalyzeExternallyAccessibleTypeForTuples(context, parameterNode.Type);
+                    }
                 }
             }
         }

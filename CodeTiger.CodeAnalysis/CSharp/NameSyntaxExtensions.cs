@@ -4,7 +4,7 @@ namespace CodeTiger.CodeAnalysis.CSharp;
 
 internal static class NameSyntaxExtensions
 {
-    public static SimpleNameSyntax GetUnqualifiedName(this NameSyntax name)
+    public static SimpleNameSyntax? GetUnqualifiedName(this NameSyntax name)
     {
         if (name is SimpleNameSyntax simpleNameSyntax)
         {

@@ -68,6 +68,10 @@ public class ParameterDesignAnalyzer : DiagnosticAnalyzer
         }
 
         var methodDeclaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+        if (methodDeclaration is null)
+        {
+            return;
+        }
 
         if (methodDeclaration.IsExtensionMethod)
         {
@@ -75,10 +79,26 @@ public class ParameterDesignAnalyzer : DiagnosticAnalyzer
                 .Single(x => x.Modifiers.Any(SyntaxKind.ThisKeyword));
             var thisParameter = context.SemanticModel
                 .GetDeclaredSymbol(thisParameterNode, context.CancellationToken);
+            if (thisParameter is null)
+            {
+                return;
+            }
 
-            var dataFlow = node.Body != null
-                ? context.SemanticModel.AnalyzeDataFlow(node.Body)
-                : context.SemanticModel.AnalyzeDataFlow(node.ExpressionBody);
+            DataFlowAnalysis? dataFlow = null;
+
+            if (node.Body is not null)
+            {
+                dataFlow = context.SemanticModel.AnalyzeDataFlow(node.Body);
+            }
+            else if (node.ExpressionBody is not null)
+            {
+                dataFlow = context.SemanticModel.AnalyzeDataFlow(node.ExpressionBody);
+            }
+
+            if (dataFlow is null)
+            {
+                return;
+            }
 
             if (!dataFlow.ReadInside.Contains(thisParameter)
                 && !dataFlow.WrittenInside.Contains(thisParameter))

@@ -101,7 +101,7 @@ public class AssignmentReliabilityAnalyzer : DiagnosticAnalyzer
         if (initializer?.Value != null)
         {
             AnalyzeExpressionForAssignmentReliability(context, initializer.Value,
-                variableDeclarator.Initializer.EqualsToken.GetLocation());
+                initializer.EqualsToken.GetLocation());
         }
     }
 

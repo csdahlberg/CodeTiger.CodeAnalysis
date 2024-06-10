@@ -4,6 +4,7 @@
     <TargetFramework Condition="'$(RoslynVersion)'=='2.6'">netstandard1.3</TargetFramework>
     <TargetFramework Condition="'$(RoslynVersion)'!='2.6'">netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <MinClientVersion>2.8</MinClientVersion>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -70,6 +71,10 @@ While not intended to be an exact replacement for StyleCop, many of the individu
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="$(RoslynPackageVersion)" PrivateAssets="all" />
+    <PackageReference Include="Nullable" Version="1.3.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Update="NETStandard.Library" PrivateAssets="all" />
   </ItemGroup>
 

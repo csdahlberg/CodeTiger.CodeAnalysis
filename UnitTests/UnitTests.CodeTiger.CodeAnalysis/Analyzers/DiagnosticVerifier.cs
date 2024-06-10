@@ -207,15 +207,15 @@ public abstract class DiagnosticVerifier
             solution = solution.AddDocument(documentId, source.Item1, SourceText.From(source.Item2));
         }
 
-        var diagnostics = solution.Projects.First().GetCompilationAsync().Result.GetDiagnostics();
-        var errors = diagnostics.Where(x => x.Severity == DiagnosticSeverity.Error);
-        if (errors.Any())
+        var diagnostics = solution.Projects.First().GetCompilationAsync().Result?.GetDiagnostics();
+        var errors = diagnostics?.Where(x => x.Severity == DiagnosticSeverity.Error);
+        if (errors?.Any() == true)
         {
             throw new Exception("Compilation failed due to errors:" + Environment.NewLine
                 + string.Join(Environment.NewLine, errors));
         }
 
-        return solution.GetProject(projectId);
+        return solution.GetProject(projectId)!;
     }
 
     /// <summary>
@@ -237,8 +237,8 @@ public abstract class DiagnosticVerifier
         var diagnostics = new List<Diagnostic>();
         foreach (var project in projects)
         {
-            var compilationWithAnalyzers = project.GetCompilationAsync().Result
-                .WithAnalyzers(ImmutableArray.Create(analyzer));
+            var compilation = project.GetCompilationAsync().Result;
+            var compilationWithAnalyzers = compilation!.WithAnalyzers(ImmutableArray.Create(analyzer));
             var diags = compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync().Result;
             foreach (var diag in diags)
             {
@@ -441,10 +441,11 @@ public abstract class DiagnosticVerifier
                             $"Test base does not currently handle diagnostics in metadata locations."
                             + " Diagnostic in metadata: {diagnostics[i]}\r\n");
 
-                        string resultMethodName = diagnostics[i].Location.SourceTree.FilePath.EndsWith(".cs")
+                        var sourceTree = location.SourceTree;
+                        string resultMethodName = sourceTree is null || sourceTree.FilePath.EndsWith(".cs") == true
                             ? "GetCSharpResultAt"
                             : "GetBasicResultAt";
-                        var linePosition = diagnostics[i].Location.GetLineSpan().StartLinePosition;
+                        var linePosition = location.GetLineSpan().StartLinePosition;
 
                         builder.AppendFormat("{0}({1}, {2}, {3}.{4})",
                             resultMethodName,
@@ -492,7 +493,7 @@ public abstract class DiagnosticVerifier
             typeof(Compilation).Assembly.Location,
         };
 
-        foreach (var backupReference in Assembly.GetEntryAssembly().GetReferencedAssemblies())
+        foreach (var backupReference in Assembly.GetEntryAssembly()!.GetReferencedAssemblies())
         {
             assemblyLocations.Add(Assembly.Load(backupReference).Location);
         }

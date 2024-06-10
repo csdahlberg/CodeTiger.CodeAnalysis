@@ -44,7 +44,7 @@ public class StaticDesignAnalyzer : DiagnosticAnalyzer
         var node = (ClassDeclarationSyntax)context.Node;
         var classTypeSymbol = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
 
-        if (classTypeSymbol.IsAbstract || classTypeSymbol.IsStatic)
+        if (classTypeSymbol is null || classTypeSymbol.IsAbstract || classTypeSymbol.IsStatic)
         {
             // The class is abstract or already static, and so cannot be made static
             return;

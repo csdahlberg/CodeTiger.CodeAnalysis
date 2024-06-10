@@ -7,7 +7,15 @@ internal static class TypeSymbolExtensions
 {
     public static bool IsSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
     {
-        return IsSameOrSubclassOf(type.BaseType, otherType);
+        // Consider all other types a subclass of System.Object
+        if (otherType.SpecialType == SpecialType.System_Object)
+        {
+            return true;
+        }
+
+        var baseType = type.BaseType;
+
+        return baseType is not null && IsSameOrSubclassOf(baseType, otherType);
     }
 
     public static bool IsSameOrSubclassOf(this ITypeSymbol type, ITypeSymbol otherType)
@@ -18,9 +26,11 @@ internal static class TypeSymbolExtensions
             return true;
         }
 
-        while (type != null)
+        var currentType = type;
+
+        while (currentType != null)
         {
-            if (SymbolEqualityComparer.Default.Equals(type, otherType))
+            if (SymbolEqualityComparer.Default.Equals(currentType, otherType))
             {
                 return true;
             }
@@ -28,13 +38,13 @@ internal static class TypeSymbolExtensions
             if (otherType.Kind == SymbolKind.TypeParameter)
             {
                 var otherTypeParameter = (ITypeParameterSymbol)otherType;
-                if (otherTypeParameter.ConstraintTypes.Any(type.Equals))
+                if (otherTypeParameter.ConstraintTypes.Any(currentType.Equals))
                 {
                     return true;
                 }
             }
 
-            type = type.BaseType;
+            currentType = currentType.BaseType;
         }
 
         return false;

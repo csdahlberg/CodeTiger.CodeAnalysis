@@ -64,8 +64,8 @@ public class AttributeLayoutAnalyzer : DiagnosticAnalyzer
                 node.Attributes[0].GetLocation(), node.Attributes.Skip(1).Select(x => x.GetLocation())));
         }
 
-        var attributeListsForSameParent = node.Parent.ChildNodes().OfType<AttributeListSyntax>().ToList();
-        if (attributeListsForSameParent.Count > 1)
+        var attributeListsForSameParent = node.Parent?.ChildNodes().OfType<AttributeListSyntax>().ToList();
+        if (attributeListsForSameParent?.Count > 1)
         {
             int nodeStartLine = node.GetLocation().GetLineSpan().StartLinePosition.Line;
             if (attributeListsForSameParent.Any(x => x.SpanStart < node.SpanStart

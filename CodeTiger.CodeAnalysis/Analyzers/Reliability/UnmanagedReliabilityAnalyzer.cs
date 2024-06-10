@@ -81,8 +81,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
     {
         var root = context.SemanticModel.SyntaxTree.GetRoot(context.CancellationToken);
 
-        var disposableType = context.SemanticModel.Compilation
-            .GetTypeByMetadataName(typeof(IDisposable).FullName);
+        var disposableType = context.SemanticModel.Compilation.GetSpecialType(SpecialType.System_IDisposable);
 
         foreach (var typeDeclaration in root.DescendantNodes().OfType<TypeDeclarationSyntax>())
         {
@@ -132,8 +131,8 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
 
         foreach (var node in destructorDeclaration.DescendantNodes())
         {
-            SyntaxNode accessedNode;
-            ISymbol accessedSymbol;
+            SyntaxNode? accessedNode;
+            ISymbol? accessedSymbol;
 
             switch (node.Kind())
             {
@@ -236,7 +235,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
     {
         var typeSymbol = context.SemanticModel.GetTypeInfo(type, context.CancellationToken).Type;
 
-        if (!IsTypeDisposable(disposableType, typeSymbol))
+        if (typeSymbol is null || !IsTypeDisposable(disposableType, typeSymbol))
         {
             return false;
         }
@@ -267,7 +266,7 @@ public class UnmanagedReliabilityAnalyzer : DiagnosticAnalyzer
         var typeSymbol = context.SemanticModel
             .GetDeclaredSymbol(typeDeclaration, context.CancellationToken);
 
-        return IsTypeDisposable(disposableType, typeSymbol);
+        return typeSymbol is not null && IsTypeDisposable(disposableType, typeSymbol);
     }
 
     private static bool IsTypeDisposable(INamedTypeSymbol disposableType, ITypeSymbol typeSymbol)

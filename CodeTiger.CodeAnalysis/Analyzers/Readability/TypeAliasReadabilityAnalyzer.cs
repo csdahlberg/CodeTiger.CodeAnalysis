@@ -112,14 +112,16 @@ public class TypeAliasReadabilityAnalyzer : DiagnosticAnalyzer
 
     private static bool IsInDocumentationComment(SyntaxNode node)
     {
-        while (node != null)
+        var currentNode = node;
+
+        while (currentNode != null)
         {
-            if (SyntaxFacts.IsDocumentationCommentTrivia(node.Kind()))
+            if (SyntaxFacts.IsDocumentationCommentTrivia(currentNode.Kind()))
             {
                 return true;
             }
 
-            node = node.Parent;
+            currentNode = currentNode.Parent;
         }
 
         return false;

@@ -51,7 +51,7 @@ public class EnumMaintainabilityAnalyzer : DiagnosticAnalyzer
 
         var enumDeclaration = context.SemanticModel.GetDeclaredSymbol(node, context.CancellationToken);
 
-        if (!HasFlagsAttribute(context, enumDeclaration))
+        if (enumDeclaration is null || !HasFlagsAttribute(context, enumDeclaration))
         {
             return;
         }
@@ -60,7 +60,7 @@ public class EnumMaintainabilityAnalyzer : DiagnosticAnalyzer
 
         foreach (var enumValue in enumValues)
         {
-            if (IsProbablyInvalidValue(enumValue.ConstantValue, enumValues))
+            if (enumValue.ConstantValue is { } value && IsProbablyInvalidValue(value, enumValues))
             {
                 context.ReportDiagnostic(Diagnostic.Create(
                     CompositeValuesInFlagsEnumerationsShouldShouldEqualACombinationOfOtherValuesDescriptor,

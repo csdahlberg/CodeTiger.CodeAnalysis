@@ -130,7 +130,7 @@ public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
         bool wasAliasDirectiveEncountered = false;
         bool wasStaticUsingDirectiveEncountered = false;
 
-        UsingDirectiveSyntax previousUsingDirectiveNode = null;
+        UsingDirectiveSyntax? previousUsingDirectiveNode = null;
 
         foreach (var node in root.ChildNodes().OfType<UsingDirectiveSyntax>())
         {
@@ -239,7 +239,7 @@ public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
         }
 
         string GetTextForSorting(UsingDirectiveSyntax usingDirectiveNode)
-            => usingDirectiveNode?.Alias?.ToString() + usingDirectiveNode.Name.ToString();
+            => usingDirectiveNode.Alias?.ToString() + usingDirectiveNode.Name.ToString();
         int CompareCaseInsensitive(string first, string second)
             => string.Compare(first, second, StringComparison.OrdinalIgnoreCase);
     }
