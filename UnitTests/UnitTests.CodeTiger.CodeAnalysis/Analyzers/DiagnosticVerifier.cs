@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -491,6 +492,7 @@ public abstract class DiagnosticVerifier
             typeof(ConcurrentDictionary<,>).Assembly.Location,
             typeof(CSharpCompilation).Assembly.Location,
             typeof(Compilation).Assembly.Location,
+            typeof(ExpandoObject).Assembly.Location,
         };
 
         foreach (var backupReference in Assembly.GetEntryAssembly()!.GetReferencedAssemblies())

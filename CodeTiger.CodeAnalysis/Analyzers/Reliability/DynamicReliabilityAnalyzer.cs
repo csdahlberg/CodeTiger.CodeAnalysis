@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -47,11 +48,126 @@ public class DynamicReliabilityAnalyzer : DiagnosticAnalyzer
                 .GetSymbolInfo(identifierName, context.CancellationToken).Symbol;
             var typeSymbol = identifierSymbol as ITypeSymbol;
 
-            if (typeSymbol?.TypeKind == TypeKind.Dynamic)
+            if (typeSymbol?.TypeKind == TypeKind.Dynamic && !IsInherited(context, identifierName.Parent))
             {
                 context.ReportDiagnostic(Diagnostic.Create(DynamicShouldNotBeUsedDescriptor,
                     identifierName.Identifier.GetLocation()));
             }
         }
+    }
+
+    private static bool IsInherited(SyntaxNodeAnalysisContext context, SyntaxNode? parentNode)
+    {
+        if (parentNode is null)
+        {
+            return false;
+        }
+
+        // For parameters, try to get the containing method or property
+        while ((parentNode.Kind() == SyntaxKind.Parameter || parentNode.Kind() == SyntaxKind.ParameterList)
+            && parentNode.Parent is not null)
+        {
+            parentNode = parentNode.Parent;
+        }
+
+        if (parentNode.Kind() == SyntaxKind.MethodDeclaration)
+        {
+            var parentMethodNode = (MethodDeclarationSyntax)parentNode;
+            var parentMethod = context.SemanticModel
+                .GetDeclaredSymbol(parentMethodNode, context.CancellationToken);
+            if (parentMethod is null)
+            {
+                return false;
+            }
+
+            if (IsInherited(parentMethod, parentMethod.ContainingType.BaseType)
+                || parentMethod.ContainingType.AllInterfaces.Any(x => IsInherited(parentMethod, x)))
+            {
+                return true;
+            }
+        }
+        else if (parentNode.Kind() == SyntaxKind.PropertyDeclaration)
+        {
+            var parentPropertyNode = (PropertyDeclarationSyntax)parentNode;
+            var parentProperty = context.SemanticModel
+                .GetDeclaredSymbol(parentPropertyNode, context.CancellationToken);
+            if (parentProperty is null)
+            {
+                return false;
+            }
+
+            if (IsInherited(parentProperty, parentProperty.ContainingType.BaseType)
+                || parentProperty.ContainingType.AllInterfaces.Any(x => IsInherited(parentProperty, x)))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsInherited(IMethodSymbol method, ITypeSymbol? baseTypeOrInterface)
+    {
+        var baseType = baseTypeOrInterface;
+
+        while (baseType != null)
+        {
+            var matchingBaseMethods = baseType.GetMembers(method.Name)
+                .Where(x => x.Kind == SymbolKind.Method)
+                .OfType<IMethodSymbol>()
+                .Where(x => AreParameterTypesEqual(method.Parameters, x.Parameters))
+                .ToList();
+
+            if (matchingBaseMethods.Count >= 1)
+            {
+                return true;
+            }
+
+            baseType = baseType.BaseType;
+        }
+
+        return false;
+    }
+
+    private static bool IsInherited(IPropertySymbol property, ITypeSymbol? baseTypeOrInterface)
+    {
+        var baseType = baseTypeOrInterface;
+
+        while (baseType != null)
+        {
+            var matchingBaseProperties = baseType.GetMembers(property.Name)
+                .Where(x => x.Kind == SymbolKind.Property)
+                .OfType<IPropertySymbol>()
+                .Where(x => AreParameterTypesEqual(property.Parameters, x.Parameters))
+                .ToList();
+
+            if (matchingBaseProperties.Count >= 1)
+            {
+                return true;
+            }
+
+            baseType = baseType.BaseType;
+        }
+
+        return false;
+    }
+
+    private static bool AreParameterTypesEqual(ImmutableArray<IParameterSymbol> firstParameters,
+        ImmutableArray<IParameterSymbol> secondParameters)
+    {
+        if (firstParameters.Length != secondParameters.Length)
+        {
+            return false;
+        }
+
+        for (int i = 0; i < firstParameters.Length; i++)
+        {
+            if (!SymbolEqualityComparer.Default.Equals(firstParameters[i].Type, secondParameters[i].Type))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
