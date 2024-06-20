@@ -10,16 +10,18 @@ public class UsingDirectiveOrderAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ValidUsingDirectivesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
-using System.Collections.Generic;
-#if !PORTABLE
-using System.Reflection;
-#else
-using System.Runtime;
-#endif
-using Microsoft.Win32;
-using static System.Threading.Tasks.Task;";
+        string code = """
+            using System;
+            using System.Collections;
+            using System.Collections.Generic;
+            #if !PORTABLE
+            using System.Reflection;
+            #else
+            using System.Runtime;
+            #endif
+            using Microsoft.Win32;
+            using static System.Threading.Tasks.Task;
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -27,15 +29,17 @@ using static System.Threading.Tasks.Task;";
     [Fact]
     public void UsingDirectivesWithNonSystemDirectivesFirstProduceDiagnostics()
     {
-        string code = @"using Microsoft.Win32;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-#if !PORTABLE
-using System.Reflection;
-#else
-using System.Runtime;
-#endif";
+        string code = """
+            using Microsoft.Win32;
+            using System;
+            using System.Collections;
+            using System.Collections.Generic;
+            #if !PORTABLE
+            using System.Reflection;
+            #else
+            using System.Runtime;
+            #endif
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -83,15 +87,17 @@ using System.Runtime;
     [Fact]
     public void UsingDirectivesNotSortedAlphabeticallyProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
-#if !PORTABLE
-using System.Reflection;
-#else
-using System.Runtime;
-#endif
-using System.Collections.Generic;
-using Microsoft.Win32;";
+        string code = """
+            using System;
+            using System.Collections;
+            #if !PORTABLE
+            using System.Reflection;
+            #else
+            using System.Runtime;
+            #endif
+            using System.Collections.Generic;
+            using Microsoft.Win32;
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -109,18 +115,20 @@ using Microsoft.Win32;";
     [Fact]
     public void UsingDirectivesSeparatedByBlankLinesProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
+        string code = """
+            using System;
+            using System.Collections;
 
-using System.Collections.Generic;
+            using System.Collections.Generic;
 
-#if !PORTABLE
-using System.Reflection;
-#else
-using System.Runtime;
-#endif
+            #if !PORTABLE
+            using System.Reflection;
+            #else
+            using System.Runtime;
+            #endif
 
-using Microsoft.Win32;";
+            using Microsoft.Win32;
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -158,16 +166,18 @@ using Microsoft.Win32;";
     [Fact]
     public void NonStaticUsingDirectivesAfterStaticUsingDirectiveProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
-using System.Collections.Generic;
-#if !PORTABLE
-using System.Reflection;
-#else
-using System.Runtime;
-#endif
-using static System.Threading.Tasks.Task;
-using Microsoft.Win32;";
+        string code = """
+            using System;
+            using System.Collections;
+            using System.Collections.Generic;
+            #if !PORTABLE
+            using System.Reflection;
+            #else
+            using System.Runtime;
+            #endif
+            using static System.Threading.Tasks.Task;
+            using Microsoft.Win32;
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

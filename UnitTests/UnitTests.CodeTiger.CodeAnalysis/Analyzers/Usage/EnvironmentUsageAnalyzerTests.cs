@@ -10,17 +10,19 @@ public class EnvironmentUsageAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void CallingMethodOtherThanExitDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            Environment.ExpandEnvironmentVariables(""%userprofile%"");
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        Environment.ExpandEnvironmentVariables("%userprofile%");
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -28,17 +30,19 @@ namespace ClassLibrary1
     [Fact]
     public void CallingExitProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            Environment.Exit(0);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        Environment.Exit(0);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

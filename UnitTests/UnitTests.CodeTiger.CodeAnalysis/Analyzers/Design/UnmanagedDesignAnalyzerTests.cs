@@ -10,13 +10,15 @@ public class UnmanagedDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ClassWithNoMembersDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -24,19 +26,21 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithUnmanagedMemberAndFinalizerDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private IntPtr _unmanagedState;
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private IntPtr _unmanagedState;
 
-        ~Class1()
-        {
-            _unmanagedState.ToString();
-        }
-    }
-}";
+                    ~Class1()
+                    {
+                        _unmanagedState.ToString();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -44,19 +48,21 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithoutUnmanagedMemberAndFinalizerProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private object _thing;
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private object _thing;
 
-        ~Class1()
-        {
-            _thing.ToString();
-        }
-    }
-}";
+                    ~Class1()
+                    {
+                        _thing.ToString();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -74,18 +80,20 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithEmptyFinalizerProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private IntPtr _unmanagedState;
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private IntPtr _unmanagedState;
 
-        ~Class1()
-        {
-        }
-    }
-}";
+                    ~Class1()
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

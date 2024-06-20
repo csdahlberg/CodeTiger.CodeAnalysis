@@ -10,19 +10,21 @@ public class EnumMaintainabilityAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void EnumValuesForNonFlagsEnumsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Color
-    {
-        None,
-        Red = 4,
-        Yellow = 8,
-        Blue = 5,
-        Orange = Red | Yellow | 2,
-        Green = 24,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Color
+                {
+                    None,
+                    Red = 4,
+                    Yellow = 8,
+                    Blue = 5,
+                    Orange = Red | Yellow | 2,
+                    Green = 24,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -30,20 +32,22 @@ namespace ClassLibrary1
     [Fact]
     public void EnumValuesForFlagsEnumsThatAreSingleBitsOrCombinationsOfOtherValuesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    [Flags]
-    public enum Color
-    {
-        None,
-        Red = 4,
-        Yellow = 8,
-        Blue = 16,
-        Orange = Red | Yellow,
-        Green = 24,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                [Flags]
+                public enum Color
+                {
+                    None,
+                    Red = 4,
+                    Yellow = 8,
+                    Blue = 16,
+                    Orange = Red | Yellow,
+                    Green = 24,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -51,20 +55,22 @@ namespace ClassLibrary1
     [Fact]
     public void EnumValuesForFlagsEnumsThatAreNotSingleBitsOrCombinationsOfOtherValuesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    [Flags]
-    public enum Color
-    {
-        None,
-        Red = 4,
-        Yellow = 8,
-        Blue = 5,
-        Orange = Red | Yellow | 2,
-        Green = 24,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                [Flags]
+                public enum Color
+                {
+                    None,
+                    Red = 4,
+                    Yellow = 8,
+                    Blue = 5,
+                    Orange = Red | Yellow | 2,
+                    Green = 24,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

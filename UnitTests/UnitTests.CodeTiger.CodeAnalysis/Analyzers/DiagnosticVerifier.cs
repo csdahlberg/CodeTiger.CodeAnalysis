@@ -301,7 +301,13 @@ public abstract class DiagnosticVerifier
 
             Assert.True(false,
                 string.Format("Mismatch between number of diagnostics returned, expected \"{0}\" actual \"{1}"
-                + "\"\r\n\r\nDiagnostics:\r\n{2}\r\n", expectedCount, actualCount, diagnosticsOutput));
+                + """
+                "
+
+                Diagnostics:
+                {2}
+
+                """, expectedCount, actualCount, diagnosticsOutput));
         }
 
         for (int i = 0; i < expectedResults.Length; i++)
@@ -314,7 +320,12 @@ public abstract class DiagnosticVerifier
                 if (actual.Location != Location.None)
                 {
                     Assert.True(false,
-                        string.Format("Expected:\nA project diagnostic with No location\nActual:\n{0}",
+                        string.Format("""
+                            Expected:
+                            A project diagnostic with No location
+                            Actual:
+                            {0}
+                            """,
                         FormatDiagnostics(analyzer, actual)));
                 }
             }
@@ -327,7 +338,11 @@ public abstract class DiagnosticVerifier
                 {
                     Assert.True(false,
                         string.Format(
-                            "Expected {0} additional locations but got {1} for Diagnostic:\r\n    {2}\r\n",
+                            """
+                            Expected {0} additional locations but got {1} for Diagnostic:
+                                {2}
+
+                            """,
                             expected.Locations.Length - 1, additionalLocations.Length,
                             FormatDiagnostics(analyzer, actual)));
                 }
@@ -343,23 +358,45 @@ public abstract class DiagnosticVerifier
             {
                 Assert.True(false,
                     string.Format(
-                        "Expected diagnostic id to be \"{0}\" was \"{1}\"\r\n\r\nDiagnostic:\r\n    {2}\r\n",
+                        """
+                        Expected diagnostic id to be "{0}" was "{1}"
+
+                        Diagnostic:
+                            {2}
+
+                        """,
                         expected.Id, actual.Id, FormatDiagnostics(analyzer, actual)));
             }
 
             if (actual.Severity != expected.Severity)
             {
                 Assert.True(false,
-                    string.Format("Expected diagnostic severity to be \"{0}\" was \"{1}\"\r\n\r\nDiagnostic:"
-                        + "\r\n    {2}\r\n", expected.Severity, actual.Severity,
+                    string.Format("""
+                        Expected diagnostic severity to be "{0}" was "{1}"
+
+                        Diagnostic:
+                        """
+                        + """
+
+                            {2}
+
+                        """, expected.Severity, actual.Severity,
                         FormatDiagnostics(analyzer, actual)));
             }
 
             if (actual.GetMessage() != expected.Message)
             {
                 Assert.True(false,
-                    string.Format("Expected diagnostic message to be \"{0}\" was \"{1}\"\r\n\r\nDiagnostic:"
-                    + "\r\n    {2}\r\n", expected.Message, actual.GetMessage(),
+                    string.Format("""
+                        Expected diagnostic message to be "{0}" was "{1}"
+
+                        Diagnostic:
+                        """
+                    + """
+
+                        {2}
+
+                    """, expected.Message, actual.GetMessage(),
                     FormatDiagnostics(analyzer, actual)));
             }
         }
@@ -380,8 +417,16 @@ public abstract class DiagnosticVerifier
 
         Assert.True(actualSpan.Path == expected.Path
             || (actualSpan.Path?.Contains("Test0.") == true && expected.Path?.Contains("Test.") == true),
-            string.Format("Expected diagnostic to be in file \"{0}\" was actually in file \"{1}\"\r\n\r\n"
-                + "Diagnostic:\r\n    {2}\r\n", expected.Path, actualSpan.Path,
+            string.Format("""
+                Expected diagnostic to be in file "{0}" was actually in file "{1}"
+
+
+                """
+                + """
+                Diagnostic:
+                    {2}
+
+                """, expected.Path, actualSpan.Path,
                 FormatDiagnostics(analyzer, diagnostic)));
 
         var actualLinePosition = actualSpan.StartLinePosition;
@@ -392,8 +437,16 @@ public abstract class DiagnosticVerifier
             if (actualLinePosition.Line + 1 != expected.Line)
             {
                 Assert.True(false,
-                    string.Format("Expected diagnostic to be on line \"{0}\" was actually on line \"{1}\"\r\n"
-                        + "\r\nDiagnostic:\r\n    {2}\r\n", expected.Line, actualLinePosition.Line + 1,
+                    string.Format("""
+                        Expected diagnostic to be on line "{0}" was actually on line "{1}"
+
+                        """
+                        + """
+
+                        Diagnostic:
+                            {2}
+
+                        """, expected.Line, actualLinePosition.Line + 1,
                         FormatDiagnostics(analyzer, diagnostic)));
             }
         }
@@ -405,7 +458,13 @@ public abstract class DiagnosticVerifier
             {
                 Assert.True(false,
                     string.Format("Expected diagnostic to start at column \"{0}\" was actually at column "
-                        + "\"{1}\"\r\n\r\nDiagnostic:\r\n    {2}\r\n", expected.Column,
+                        + """
+                        "{1}"
+
+                        Diagnostic:
+                            {2}
+
+                        """, expected.Column,
                         actualLinePosition.Character + 1, FormatDiagnostics(analyzer, diagnostic)));
             }
         }
@@ -440,7 +499,10 @@ public abstract class DiagnosticVerifier
                     {
                         Assert.True(location.IsInSource,
                             $"Test base does not currently handle diagnostics in metadata locations."
-                            + " Diagnostic in metadata: {diagnostics[i]}\r\n");
+                            + """
+                             Diagnostic in metadata: {diagnostics[i]}
+
+                            """);
 
                         var sourceTree = location.SourceTree;
                         string resultMethodName = sourceTree is null || sourceTree.FilePath.EndsWith(".cs") == true

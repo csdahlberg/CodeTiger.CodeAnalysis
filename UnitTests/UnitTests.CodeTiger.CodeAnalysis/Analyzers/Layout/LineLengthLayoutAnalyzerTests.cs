@@ -12,17 +12,19 @@ public class LineLengthLayoutAnalyzerTests : DiagnosticVerifier
     {
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
-        string code = @"using System;
-namespace ClassLibrary1.Namespace0000000000000000000000000000000000000000000000000000000000000000000000000000000000
-{
-    public class Class111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-    {
-        public void DoSomething()
-        {
-            Console.WriteLine(""                                                                                 "");
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1.Namespace0000000000000000000000000000000000000000000000000000000000000000000000000000000000
+            {
+                public class Class111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                {
+                    public void DoSomething()
+                    {
+                        Console.WriteLine("                                                                                 ");
+                    }
+                }
+            }
+            """;
 #pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 
@@ -34,17 +36,19 @@ namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000
     {
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
-        string code = @"using System;
-namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000000000000000000000000000000000000000
-{
-    public class Class1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
-    {
-        public void DoSomething22222222222222222222222222222222222222222222222222222222222222222222222222222222222()
-        {
-            Console.WriteLine(""                                                                                  "");
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1.Namespace00000000000000000000000000000000000000000000000000000000000000000000000000000000000
+            {
+                public class Class1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+                {
+                    public void DoSomething22222222222222222222222222222222222222222222222222222222222222222222222222222222222()
+                    {
+                        Console.WriteLine("                                                                                  ");
+                    }
+                }
+            }
+            """;
 #pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 

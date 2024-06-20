@@ -10,17 +10,19 @@ public class UnmanagedReliabilityAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ClassWithDisposableStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing : IDisposable
-    {
-        private IDisposable _disposable;
-        ~Thing() { Dispose(false); }
-        public void Dispose() { Dispose(true); }
-        protected virtual void Dispose(bool isDisposing) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing : IDisposable
+                {
+                    private IDisposable _disposable;
+                    ~Thing() { Dispose(false); }
+                    public void Dispose() { Dispose(true); }
+                    protected virtual void Dispose(bool isDisposing) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -28,16 +30,18 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithDisposableStateWithoutADestructorDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing : IDisposable
-    {
-        private IDisposable _disposable;
-        public void Dispose() { Dispose(true); }
-        protected virtual void Dispose(bool isDisposing) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing : IDisposable
+                {
+                    private IDisposable _disposable;
+                    public void Dispose() { Dispose(true); }
+                    protected virtual void Dispose(bool isDisposing) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -45,15 +49,17 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithDisposableStateThatDoesNotImplementIDisposableProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        private IDisposable _disposable;
-        ~Thing() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private IDisposable _disposable;
+                    ~Thing() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -71,14 +77,16 @@ namespace ClassLibrary1
     [Fact]
     public void StructWithDisposableStateDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public struct Thing
-    {
-        private IDisposable _disposable;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public struct Thing
+                {
+                    private IDisposable _disposable;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -86,17 +94,19 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithUnmanagedStateAndTheFullDisposePatternDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing : IDisposable
-    {
-        private IntPtr _unmanagedHandle;
-        ~Thing() { Dispose(false); }
-        public void Dispose() { Dispose(true); }
-        protected virtual void Dispose(bool isDisposing) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing : IDisposable
+                {
+                    private IntPtr _unmanagedHandle;
+                    ~Thing() { Dispose(false); }
+                    public void Dispose() { Dispose(true); }
+                    protected virtual void Dispose(bool isDisposing) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -104,16 +114,18 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithUnmanagedStateWithoutADestructorProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing : IDisposable
-    {
-        private IntPtr _unmanagedHandle;
-        public void Dispose() { Dispose(true); }
-        protected virtual void Dispose(bool isDisposing) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing : IDisposable
+                {
+                    private IntPtr _unmanagedHandle;
+                    public void Dispose() { Dispose(true); }
+                    protected virtual void Dispose(bool isDisposing) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -131,15 +143,17 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithUnmanagedStateThatDoesNotImplementIDisposableProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        private IntPtr _unmanagedHandle;
-        ~Thing() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private IntPtr _unmanagedHandle;
+                    ~Thing() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -157,14 +171,16 @@ namespace ClassLibrary1
     [Fact]
     public void StructWithUnmanagedStateDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public struct Thing
-    {
-        private IntPtr _unmanagedHandle;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public struct Thing
+                {
+                    private IntPtr _unmanagedHandle;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }

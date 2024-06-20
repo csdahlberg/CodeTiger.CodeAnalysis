@@ -11,21 +11,23 @@ public class AttributeLayoutAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void AttributesDeclaredSeparatelyDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Reflection;
-namespace ClassLibrary1
-{
-    [Obsolete]
-    [CLSCompliant(false)]
-    public class Class1
-    {
-        [Obsolete]
-        [CLSCompliant(false)]
-        public void DoSomething([Obfuscation] string value)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Reflection;
+            namespace ClassLibrary1
+            {
+                [Obsolete]
+                [CLSCompliant(false)]
+                public class Class1
+                {
+                    [Obsolete]
+                    [CLSCompliant(false)]
+                    public void DoSomething([Obfuscation] string value)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -33,18 +35,20 @@ namespace ClassLibrary1
     [Fact]
     public void AttributesDeclaredTogetherForParametersDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Reflection;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething([Obfuscation, CLSCompliant(false)] string value1,
-            [Obfuscation] [CLSCompliant(false)] string value2)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Reflection;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething([Obfuscation, CLSCompliant(false)] string value1,
+                        [Obfuscation] [CLSCompliant(false)] string value2)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -52,19 +56,21 @@ namespace ClassLibrary1
     [Fact]
     public void AttributesDeclaredInSameAttributeListProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    [Obsolete, CLSCompliant(false)]
-    public class Class1
-    {
-        [Obsolete, CLSCompliant(false)]
-        public void DoSomething()
-        {
-        }
-    }
-}
-";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                [Obsolete, CLSCompliant(false)]
+                public class Class1
+                {
+                    [Obsolete, CLSCompliant(false)]
+                    public void DoSomething()
+                    {
+                    }
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -94,19 +100,21 @@ namespace ClassLibrary1
     [Fact]
     public void AttributesDeclaredOnSameLineProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    [Obsolete][CLSCompliant(false)]
-    public class Class1
-    {
-        [Obsolete][CLSCompliant(false)]
-        public void DoSomething()
-        {
-        }
-    }
-}
-";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                [Obsolete][CLSCompliant(false)]
+                public class Class1
+                {
+                    [Obsolete][CLSCompliant(false)]
+                    public void DoSomething()
+                    {
+                    }
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

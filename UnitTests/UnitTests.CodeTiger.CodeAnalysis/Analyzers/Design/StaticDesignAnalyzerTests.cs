@@ -10,13 +10,15 @@ public class StaticDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ClassWithNoMembersDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -24,15 +26,17 @@ namespace ClassLibrary1
     [Fact]
     public void ClassImplementingInterfaceAndWithStaticMethodDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1 : IDisposable
-    {
-        public void Dispose() { }
-        public static void DoSomething() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1 : IDisposable
+                {
+                    public void Dispose() { }
+                    public static void DoSomething() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -40,15 +44,17 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithBaseClassAndWithStaticMethodDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1 : Task
-    {
-        public Class1() : base(() => { }) { }
-        public static void DoSomething() { }
-    }
-}";
+        string code = """
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1 : Task
+                {
+                    public Class1() : base(() => { }) { }
+                    public static void DoSomething() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -56,14 +62,16 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithStaticMethodProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public static void DoSomething() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public static void DoSomething() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -81,14 +89,16 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithStaticPropertyProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public static bool IsTrue => true;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public static bool IsTrue => true;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

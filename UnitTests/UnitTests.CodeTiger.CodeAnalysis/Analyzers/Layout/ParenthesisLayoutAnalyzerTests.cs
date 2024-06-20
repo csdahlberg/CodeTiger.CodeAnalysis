@@ -12,29 +12,31 @@ public class ParenthesisLayoutAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ConstructorInitializersWithParenthesisOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(bool flag)
-        {
-        }
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(bool flag)
+                    {
+                    }
+                }
 
-    public class Class2 : Class1
-    {
-        public Class2()
-            : this(false)
-        {
-        }
+                public class Class2 : Class1
+                {
+                    public Class2()
+                        : this(false)
+                    {
+                    }
 
-        public Class2(bool flag)
-            : base(flag)
-        {
-        }
-    }
-}";
+                    public Class2(bool flag)
+                        : base(flag)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -42,31 +44,33 @@ namespace ClassLibrary1
     [Fact]
     public void ConstructorInitializersWithOpenParenthesisOnNewLineProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(bool flag)
-        {
-        }
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(bool flag)
+                    {
+                    }
+                }
 
-    public class Class2 : Class1
-    {
-        public Class2()
-            : this
-                (false)
-        {
-        }
+                public class Class2 : Class1
+                {
+                    public Class2()
+                        : this
+                            (false)
+                    {
+                    }
 
-        public Class2(bool flag)
-            : base
-                (flag)
-        {
-        }
-    }
-}";
+                    public Class2(bool flag)
+                        : base
+                            (flag)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -94,31 +98,33 @@ namespace ClassLibrary1
     [Fact]
     public void ConstructorInitializersWithCloseParenthesisOnNewLineProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(bool flag)
-        {
-        }
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(bool flag)
+                    {
+                    }
+                }
 
-    public class Class2 : Class1
-    {
-        public Class2()
-            : this(false
-                )
-        {
-        }
+                public class Class2 : Class1
+                {
+                    public Class2()
+                        : this(false
+                            )
+                    {
+                    }
 
-        public Class2(bool flag)
-            : base(flag
-                )
-        {
-        }
-    }
-}";
+                    public Class2(bool flag)
+                        : base(flag
+                            )
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -146,26 +152,28 @@ namespace ClassLibrary1
     [Fact]
     public void CatchClausWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.IO;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            using System.IO;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch (FileNotFoundException)
+                        {
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
             }
-            catch (FileNotFoundException)
-            {
-            }
-            catch (Exception ex)
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -173,28 +181,30 @@ namespace ClassLibrary1
     [Fact]
     public void CatchClauseWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.IO;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            using System.IO;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch
+                        (FileNotFoundException)
+                        {
+                        }
+                        catch
+                        (Exception ex)
+                        {
+                        }
+                    }
+                }
             }
-            catch
-            (FileNotFoundException)
-            {
-            }
-            catch
-            (Exception ex)
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -222,28 +232,30 @@ namespace ClassLibrary1
     [Fact]
     public void CatchClauseWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.IO;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            using System.IO;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch (FileNotFoundException
+                            )
+                        {
+                        }
+                        catch (Exception ex
+                            )
+                        {
+                        }
+                    }
+                }
             }
-            catch (FileNotFoundException
-                )
-            {
-            }
-            catch (Exception ex
-                )
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -271,17 +283,19 @@ namespace ClassLibrary1
     [Fact]
     public void DefaultExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int i = default(int);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        int i = default(int);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -289,18 +303,20 @@ namespace ClassLibrary1
     [Fact]
     public void DefaultExpressionWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int i = default
-                (int);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        int i = default
+                            (int);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -318,18 +334,20 @@ namespace ClassLibrary1
     [Fact]
     public void DefaultExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int i = default(int
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        int i = default(int
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -347,21 +365,23 @@ namespace ClassLibrary1
     [Fact]
     public void FixedStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private int _age;
-        public unsafe void DoSomething()
-        {
-            var thing = new Class1();
-            fixed (int* age = &thing._age)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    private int _age;
+                    public unsafe void DoSomething()
+                    {
+                        var thing = new Class1();
+                        fixed (int* age = &thing._age)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -369,22 +389,24 @@ namespace ClassLibrary1
     [Fact]
     public void FixedStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private int _age;
-        public unsafe void DoSomething()
-        {
-            var thing = new Class1();
-            fixed
-                (int* age = &thing._age)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    private int _age;
+                    public unsafe void DoSomething()
+                    {
+                        var thing = new Class1();
+                        fixed
+                            (int* age = &thing._age)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -402,22 +424,24 @@ namespace ClassLibrary1
     [Fact]
     public void FixedStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private int _age;
-        public unsafe void DoSomething()
-        {
-            var thing = new Class1();
-            fixed (int* age = &thing._age
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    private int _age;
+                    public unsafe void DoSomething()
+                    {
+                        var thing = new Class1();
+                        fixed (int* age = &thing._age
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -435,19 +459,21 @@ namespace ClassLibrary1
     [Fact]
     public void ForStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            for (int i = 0; i < 10; i += 1)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        for (int i = 0; i < 10; i += 1)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -455,20 +481,22 @@ namespace ClassLibrary1
     [Fact]
     public void ForStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            for
-                (int i = 0; i < 10; i += 1)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        for
+                            (int i = 0; i < 10; i += 1)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -486,20 +514,22 @@ namespace ClassLibrary1
     [Fact]
     public void ForStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            for (int i = 0; i < 10; i += 1
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        for (int i = 0; i < 10; i += 1
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -517,20 +547,22 @@ namespace ClassLibrary1
     [Fact]
     public void ForEachStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            foreach (int i in Enumerable.Empty<int>())
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        foreach (int i in Enumerable.Empty<int>())
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -538,21 +570,23 @@ namespace ClassLibrary1
     [Fact]
     public void ForEachStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            foreach
-                (int i in Enumerable.Empty<int>())
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        foreach
+                            (int i in Enumerable.Empty<int>())
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -570,21 +604,23 @@ namespace ClassLibrary1
     [Fact]
     public void ForEachStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            foreach (int i in Enumerable.Empty<int>()
-                )
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        foreach (int i in Enumerable.Empty<int>()
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -602,19 +638,21 @@ namespace ClassLibrary1
     [Fact]
     public void IfStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (true)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (true)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -622,20 +660,22 @@ namespace ClassLibrary1
     [Fact]
     public void IfStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if
-                (true)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if
+                            (true)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -653,20 +693,22 @@ namespace ClassLibrary1
     [Fact]
     public void IfStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (true
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (true
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -684,19 +726,21 @@ namespace ClassLibrary1
     [Fact]
     public void LockStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            lock (this)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        lock (this)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -704,20 +748,22 @@ namespace ClassLibrary1
     [Fact]
     public void LockStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            lock
-                (this)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        lock
+                            (this)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -735,20 +781,22 @@ namespace ClassLibrary1
     [Fact]
     public void LockStatementWithClosingParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            lock(this
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        lock(this
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -766,17 +814,19 @@ namespace ClassLibrary1
     [Fact]
     public void SizeOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public unsafe void DoSomething()
-        {
-            int size = sizeof(IntPtr);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public unsafe void DoSomething()
+                    {
+                        int size = sizeof(IntPtr);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -784,18 +834,20 @@ namespace ClassLibrary1
     [Fact]
     public void SizeOfExpressionWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public unsafe void DoSomething()
-        {
-            int size = sizeof
-                (IntPtr);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public unsafe void DoSomething()
+                    {
+                        int size = sizeof
+                            (IntPtr);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -813,18 +865,20 @@ namespace ClassLibrary1
     [Fact]
     public void SizeOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public unsafe void DoSomething()
-        {
-            int size = sizeof(IntPtr
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public unsafe void DoSomething()
+                    {
+                        int size = sizeof(IntPtr
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -842,21 +896,23 @@ namespace ClassLibrary1
     [Fact]
     public void SwitchStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch (int.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                default:
-                    break;
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch (int.MinValue)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -864,22 +920,24 @@ namespace ClassLibrary1
     [Fact]
     public void SwitchStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch
-                (int.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                default:
-                    break;
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch
+                            (int.MinValue)
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -897,22 +955,24 @@ namespace ClassLibrary1
     [Fact]
     public void SwitchStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch(int.MinValue
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                default:
-                    break;
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch(int.MinValue
+                            )
+                        {
+                            default:
+                                break;
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -930,17 +990,19 @@ namespace ClassLibrary1
     [Fact]
     public void TypeOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var type = typeof(Class1);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var type = typeof(Class1);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -948,18 +1010,20 @@ namespace ClassLibrary1
     [Fact]
     public void TypeOfExpressionWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var type = typeof
-                (Class1);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var type = typeof
+                            (Class1);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -977,18 +1041,20 @@ namespace ClassLibrary1
     [Fact]
     public void TypeOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var type = typeof(Class1
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var type = typeof(Class1
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1006,22 +1072,24 @@ namespace ClassLibrary1
     [Fact]
     public void UsingStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            using (var disposable = (IDisposable)null)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        using (var disposable = (IDisposable)null)
+                        {
+                        }
+                        using ((IDisposable)null)
+                        {
+                        }
+                    }
+                }
             }
-            using ((IDisposable)null)
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1029,24 +1097,26 @@ namespace ClassLibrary1
     [Fact]
     public void UsingStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            using
-                (var disposable = (IDisposable)null)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        using
+                            (var disposable = (IDisposable)null)
+                        {
+                        }
+                        using
+                            ((IDisposable)null)
+                        {
+                        }
+                    }
+                }
             }
-            using
-                ((IDisposable)null)
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1074,24 +1144,26 @@ namespace ClassLibrary1
     [Fact]
     public void UsingStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            using (var disposable = (IDisposable)null
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        using (var disposable = (IDisposable)null
+                            )
+                        {
+                        }
+                        using ((IDisposable)null
+                            )
+                        {
+                        }
+                    }
+                }
             }
-            using ((IDisposable)null
-                )
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1119,19 +1191,21 @@ namespace ClassLibrary1
     [Fact]
     public void WhileStatementWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            while (false)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        while (false)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1139,20 +1213,22 @@ namespace ClassLibrary1
     [Fact]
     public void WhileStatementWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            while
-                (false)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        while
+                            (false)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1170,20 +1246,22 @@ namespace ClassLibrary1
     [Fact]
     public void WhileStatementWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            while (false
-                )
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        while (false
+                            )
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1201,17 +1279,19 @@ namespace ClassLibrary1
     [Fact]
     public void NameOfExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            string name = nameof(Class1);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        string name = nameof(Class1);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1219,18 +1299,20 @@ namespace ClassLibrary1
     [Fact]
     public void NameOfExpressionWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            string name = nameof
-                (Class1);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        string name = nameof
+                            (Class1);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1248,18 +1330,20 @@ namespace ClassLibrary1
     [Fact]
     public void NameOfExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            string name = nameof(Class1
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        string name = nameof(Class1
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1277,19 +1361,21 @@ namespace ClassLibrary1
     [Fact]
     public void InvocationExpressionsWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = DateTime.Now.AddMinutes(5);
-            int min = Math.Min(1, 2);
-            string intName = nameof(Int32);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = DateTime.Now.AddMinutes(5);
+                        int min = Math.Min(1, 2);
+                        string intName = nameof(Int32);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1297,22 +1383,24 @@ namespace ClassLibrary1
     [Fact]
     public void InvocationExpressionsWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = DateTime.Now.AddMinutes
-                (5);
-            int min = Math.Min
-                (1, 2);
-            string intName = nameof
-                (Int32);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = DateTime.Now.AddMinutes
+                            (5);
+                        int min = Math.Min
+                            (1, 2);
+                        string intName = nameof
+                            (Int32);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1350,22 +1438,24 @@ namespace ClassLibrary1
     [Fact]
     public void InvocationExpressionsWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = DateTime.Now.AddMinutes(5
-                );
-            int min = Math.Min(1, 2
-                );
-            string intName = nameof(Int32
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = DateTime.Now.AddMinutes(5
+                            );
+                        int min = Math.Min(1, 2
+                            );
+                        string intName = nameof(Int32
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1403,18 +1493,20 @@ namespace ClassLibrary1
     [Fact]
     public void NewExpressionsWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = new DateTime(2000, 1, 1);
-            int min = new int();
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = new DateTime(2000, 1, 1);
+                        int min = new int();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1422,20 +1514,22 @@ namespace ClassLibrary1
     [Fact]
     public void NewExpressionsWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = new DateTime
-                (2000, 1, 1);
-            int min = new int
-                ();
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = new DateTime
+                            (2000, 1, 1);
+                        int min = new int
+                            ();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1463,20 +1557,22 @@ namespace ClassLibrary1
     [Fact]
     public void NewExpressionsWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = new DateTime(2000, 1, 1
-                );
-            string text = new string(new[] { 'a', 'b', 'c' }
-                );
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = new DateTime(2000, 1, 1
+                            );
+                        string text = new string(new[] { 'a', 'b', 'c' }
+                            );
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1504,18 +1600,20 @@ namespace ClassLibrary1
     [Fact]
     public void CastExpressionsWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = (DateTime?)null;
-            int min = (int)(new int());
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = (DateTime?)null;
+                        int min = (int)(new int());
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1523,20 +1621,22 @@ namespace ClassLibrary1
     [Fact]
     public void CastExpressionsWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = (DateTime?
-                )null;
-            int min = (int
-                )(new int());
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = (DateTime?
+                            )null;
+                        int min = (int
+                            )(new int());
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1564,19 +1664,21 @@ namespace ClassLibrary1
     [Fact]
     public void ConstructorDeclarationWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1()
-        {
-        }
-        public Class1(string name)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1()
+                    {
+                    }
+                    public Class1(string name)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1584,17 +1686,19 @@ namespace ClassLibrary1
     [Fact]
     public void ConstructorDeclarationWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1
-            ()
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1
+                        ()
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1612,21 +1716,23 @@ namespace ClassLibrary1
     [Fact]
     public void ConstructorDeclarationWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(
-            )
-        {
-        }
-        public Class1(string name
-            )
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(
+                        )
+                    {
+                    }
+                    public Class1(string name
+                        )
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1654,16 +1760,18 @@ namespace ClassLibrary1
     [Fact]
     public void DestructorDeclarationWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        ~Class1()
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    ~Class1()
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1671,17 +1779,19 @@ namespace ClassLibrary1
     [Fact]
     public void DestructorDeclarationWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        ~Class1
-            ()
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    ~Class1
+                        ()
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1699,17 +1809,19 @@ namespace ClassLibrary1
     [Fact]
     public void DestructorDeclarationWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        ~Class1(
-            )
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    ~Class1(
+                        )
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1727,19 +1839,21 @@ namespace ClassLibrary1
     [Fact]
     public void MethodDeclarationWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-        }
-        public void DoSomething(string name)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                    }
+                    public void DoSomething(string name)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1747,17 +1861,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodDeclarationWithOpenParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething
-            ()
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething
+                        ()
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1775,21 +1891,23 @@ namespace ClassLibrary1
     [Fact]
     public void MethodDeclarationWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(
-            )
-        {
-        }
-        public void DoSomething(string name
-            )
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(
+                        )
+                    {
+                    }
+                    public void DoSomething(string name
+                        )
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1817,18 +1935,20 @@ namespace ClassLibrary1
     [Fact]
     public void ParenthesizedLambdaExpressionWithParenthesisOnSameLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private Func<string, bool> _isValidFunc = (s) => true;
-        public void DoSomething()
-        {
-            Func<int, int, int> sumFunc = (a, b) => a + b;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private Func<string, bool> _isValidFunc = (s) => true;
+                    public void DoSomething()
+                    {
+                        Func<int, int, int> sumFunc = (a, b) => a + b;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1836,20 +1956,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParenthesizedLambdaExpressionWithCloseParenthesisOnNewLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private Func<bool> _isValidFunc = (
-            ) => true;
-        public void DoSomething()
-        {
-            Func<int, int, int> sumFunc = (a, b
-                ) => a + b;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private Func<bool> _isValidFunc = (
+                        ) => true;
+                    public void DoSomething()
+                    {
+                        Func<int, int, int> sumFunc = (a, b
+                            ) => a + b;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

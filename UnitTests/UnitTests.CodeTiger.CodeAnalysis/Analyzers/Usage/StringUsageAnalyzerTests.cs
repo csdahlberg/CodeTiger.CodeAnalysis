@@ -10,17 +10,19 @@ public class StringUsageAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void EmptyStringLiteralDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            string value = """";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        string value = "";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -28,18 +30,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithUnbracedLocalVariableDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            int x = 13;
-            string value = ""x"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        int x = 13;
+                        string value = "x";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -47,18 +51,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithBracedLocalVariableProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            int x = 13;
-            string value = ""{x}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        int x = 13;
+                        string value = "{x}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -76,18 +82,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithUnbracedFieldDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        int x = 13;
-        public void TestMethod()
-        {
-            string value = ""x"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    int x = 13;
+                    public void TestMethod()
+                    {
+                        string value = "x";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -95,18 +103,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithBracedFieldProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            int x = 13;
-            string value = ""{x}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        int x = 13;
+                        string value = "{x}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -124,17 +134,19 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithUnbracedParameterDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod(int x)
-        {
-            string value = ""x"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod(int x)
+                    {
+                        string value = "x";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -142,17 +154,19 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithBracedParameterProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod(int x)
-        {
-            string value = ""{x}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod(int x)
+                    {
+                        string value = "{x}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -170,17 +184,19 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithUnbracedNameofExpressionDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            string value = ""nameof(TestMethod)"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        string value = "nameof(TestMethod)";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -188,17 +204,19 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithBracedNameofExpressionProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void TestMethod()
-        {
-            string value = ""{nameof(TestMethod)}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void TestMethod()
+                    {
+                        string value = "{nameof(TestMethod)}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -216,18 +234,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithUnbracedMemberAccessExpressionDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public static int X;
-        public void TestMethod()
-        {
-            string value = ""TestClass.X"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public static int X;
+                    public void TestMethod()
+                    {
+                        string value = "TestClass.X";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -235,18 +255,20 @@ namespace ClassLibrary1
     [Fact]
     public void StringLiteralWithBracedMemberAccessExpressionProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public static int X;
-        public void TestMethod()
-        {
-            string value = ""{TestClass.X}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public static int X;
+                    public void TestMethod()
+                    {
+                        string value = "{TestClass.X}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

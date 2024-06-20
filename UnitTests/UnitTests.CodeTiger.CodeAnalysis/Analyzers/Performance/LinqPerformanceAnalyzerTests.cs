@@ -10,19 +10,21 @@ public class LinqPerformanceAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void WhereClauseDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public IEnumerable<Thing> GetThings(IEnumerable<Thing> things)
-        {
-            return things.Where(x => x != null);
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public IEnumerable<Thing> GetThings(IEnumerable<Thing> things)
+                    {
+                        return things.Where(x => x != null);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -30,19 +32,21 @@ namespace ClassLibrary1
     [Fact]
     public void WhereClauseFollowedByMethodWithPredicateDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public Thing GetThing(IEnumerable<Thing> things)
-        {
-            return things.Where(x => x != null).FirstOrDefault(x => x != null);
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public Thing GetThing(IEnumerable<Thing> things)
+                    {
+                        return things.Where(x => x != null).FirstOrDefault(x => x != null);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -50,19 +54,21 @@ namespace ClassLibrary1
     [Fact]
     public void WhereClauseFollowedByMethodWithoutPredicateProducesDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public Thing GetThing(IEnumerable<Thing> things)
-        {
-            return things.Where(x => x != null).Last();
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public Thing GetThing(IEnumerable<Thing> things)
+                    {
+                        return things.Where(x => x != null).Last();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

@@ -12,18 +12,20 @@ public class RequiredDocumentationAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void DocumentationCommentsForMethodsWithVoidReturnTypeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        /// <summary>Does something.</summary>
-        public void DoSomething() { }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    /// <summary>Does something.</summary>
+                    public void DoSomething() { }
 
-        /// <summary>Does something.</summary>
-        public async void DoSomethingAsync() { }
-    }
-}";
+                    /// <summary>Does something.</summary>
+                    public async void DoSomethingAsync() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -31,16 +33,18 @@ namespace ClassLibrary1
     [Fact]
     public void DocumentationCommentsForAsyncMethodWithTaskReturnTypeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        /// <summary>Does something.</summary>
-        public async Task DoSomethingAsync() { }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    /// <summary>Does something.</summary>
+                    public async Task DoSomethingAsync() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -48,21 +52,23 @@ namespace ClassLibrary1
     [Fact]
     public void DocumentationCommentsWithReturnsElementDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        /// <summary>Does something.</summary>
-        /// <returns>A flag.</returns>
-        public bool DoSomething() { return true; }
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    /// <summary>Does something.</summary>
+                    /// <returns>A flag.</returns>
+                    public bool DoSomething() { return true; }
 
-        /// <summary>Does something.</summary>
-        /// <returns>A flag.</returns>
-        public async Task<bool> DoSomethingAsync() { return true; }
-    }
-}";
+                    /// <summary>Does something.</summary>
+                    /// <returns>A flag.</returns>
+                    public async Task<bool> DoSomethingAsync() { return true; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -70,19 +76,21 @@ namespace ClassLibrary1
     [Fact]
     public void DocumentationCommentsWithoutReturnsElementProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        /// <summary>Does something.</summary>
-        public bool DoSomething() { return true; }
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    /// <summary>Does something.</summary>
+                    public bool DoSomething() { return true; }
 
-        /// <summary>Does something.</summary>
-        public async Task<bool> DoSomethingAsync() { return true; }
-    }
-}";
+                    /// <summary>Does something.</summary>
+                    public async Task<bool> DoSomethingAsync() { return true; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

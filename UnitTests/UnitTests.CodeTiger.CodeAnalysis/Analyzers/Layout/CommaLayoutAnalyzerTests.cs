@@ -10,24 +10,26 @@ public class CommaLayoutAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(int value)
-        {
-        }
-        public Class1(int first, int second)
-            : this(Add(first, second))
-        {
-        }
-        private static int Add(int first, int second)
-        {
-            return first + second;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(int value)
+                    {
+                    }
+                    public Class1(int first, int second)
+                        : this(Add(first, second))
+                    {
+                    }
+                    private static int Add(int first, int second)
+                    {
+                        return first + second;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -35,26 +37,28 @@ namespace ClassLibrary1
     [Fact]
     public void ParameterListsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public Class1(int value)
-        {
-        }
-        public Class1(int first
-            , int second)
-            : this(Add(first, second))
-        {
-        }
-        private static int Add(int first
-            , int second)
-        {
-            return first + second;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public Class1(int value)
+                    {
+                    }
+                    public Class1(int first
+                        , int second)
+                        : this(Add(first, second))
+                    {
+                    }
+                    private static int Add(int first
+                        , int second)
+                    {
+                        return first + second;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -82,19 +86,21 @@ namespace ClassLibrary1
     [Fact]
     public void ArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Globalization;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = new DateTime(2010, 1, 13);
-            string timeText = time.ToString(""D"", CultureInfo.InvariantCulture);
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Globalization;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = new DateTime(2010, 1, 13);
+                        string timeText = time.ToString("D", CultureInfo.InvariantCulture);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -102,21 +108,23 @@ namespace ClassLibrary1
     [Fact]
     public void ArgumentListsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Globalization;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var time = new DateTime(2010, 1
-                , 13);
-            string timeText = time.ToString(""D""
-                , CultureInfo.InvariantCulture);
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Globalization;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var time = new DateTime(2010, 1
+                            , 13);
+                        string timeText = time.ToString("D"
+                            , CultureInfo.InvariantCulture);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -144,14 +152,16 @@ namespace ClassLibrary1
     [Fact]
     public void TypeParameterListsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1<TFirst, TSecond,
-        TThird>
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1<TFirst, TSecond,
+                    TThird>
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -159,15 +169,17 @@ namespace ClassLibrary1
     [Fact]
     public void TypeParameterListsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1<TFirst
-        , TSecond
-        , TThird>
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1<TFirst
+                    , TSecond
+                    , TThird>
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -195,16 +207,18 @@ namespace ClassLibrary1
     [Fact]
     public void TypeParameterConstraintClausesWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1<TFirst, TSecond, TThird>
-        where TFirst : IList<string>, new()
-        where TThird : TFirst, TSecond
-    {
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
+            {
+                public class Class1<TFirst, TSecond, TThird>
+                    where TFirst : IList<string>, new()
+                    where TThird : TFirst, TSecond
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -212,18 +226,20 @@ namespace ClassLibrary1
     [Fact]
     public void TypeParameterConstraintClausesWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1<TFirst, TSecond, TThird>
-        where TFirst : IList<string>
-            , new()
-        where TThird : TFirst
-            , TSecond
-    {
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
+            {
+                public class Class1<TFirst, TSecond, TThird>
+                    where TFirst : IList<string>
+                        , new()
+                    where TThird : TFirst
+                        , TSecond
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -251,14 +267,16 @@ namespace ClassLibrary1
     [Fact]
     public void TypeArgumentListsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        Tuple<int, string, object> values = Tuple.Create<int, string, object>(1, """", null);
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    Tuple<int, string, object> values = Tuple.Create<int, string, object>(1, "", null);
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -266,17 +284,19 @@ namespace ClassLibrary1
     [Fact]
     public void TypeArgumentListsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        Tuple<int, string
-            , object> values = Tuple.Create<int
-            , string
-            , object>(1, """", null);
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    Tuple<int, string
+                        , object> values = Tuple.Create<int
+                        , string
+                        , object>(1, "", null);
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -314,16 +334,18 @@ namespace ClassLibrary1
     [Fact]
     public void EnumMemberDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1
-    {
-        FirstValue,
-        SecondValue,
-        ThirdValue,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1
+                {
+                    FirstValue,
+                    SecondValue,
+                    ThirdValue,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -331,18 +353,20 @@ namespace ClassLibrary1
     [Fact]
     public void EnumMemberDeclarationsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1
-    {
-        FirstValue
-        ,
-        SecondValue
-        , ThirdValue
-        ,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1
+                {
+                    FirstValue
+                    ,
+                    SecondValue
+                    , ThirdValue
+                    ,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -380,17 +404,19 @@ namespace ClassLibrary1
     [Fact]
     public void VariableDeclarationsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int x = 1, y = 2, z = 3;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        int x = 1, y = 2, z = 3;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -398,19 +424,21 @@ namespace ClassLibrary1
     [Fact]
     public void VariableDeclarationsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int x = 1
-                , y = 2
-                , z = 3;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        int x = 1
+                            , y = 2
+                            , z = 3;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -438,56 +466,58 @@ namespace ClassLibrary1
     [Fact]
     public void InitializerExpressionsWithCommasOnSameLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int[] numberArray = new[] { 1, 2, 3 };
-            numberArray = new[]
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
             {
-                1,
-                2,
-                3,
-            };
-            var numberList = new List<int> { 1, 2, 3 };
-            numberList = new List<int>
-            {
-                1,
-                2,
-                3,
-            };
-            var numberObject = new
-            {
-                One = 1,
-                Two = 2,
-                Three = 3,
-            };
-            var numberDictionary = new Dictionary<string, int>
-            {
-                { ""One"", 1 }, { ""Two"",2 },{ ""Three"",3 }
-            };
-            numberDictionary = new Dictionary<string, int>
-            {
+                public class Class1
                 {
-                    ""One"",
-                    1
-                },
-                {
-                    ""Two"",
-                    2
-                },
-                {
-                    ""Three"",
-                    3
-                },
-            };
-        }
-    }
-}";
+                    public void DoSomething()
+                    {
+                        int[] numberArray = new[] { 1, 2, 3 };
+                        numberArray = new[]
+                        {
+                            1,
+                            2,
+                            3,
+                        };
+                        var numberList = new List<int> { 1, 2, 3 };
+                        numberList = new List<int>
+                        {
+                            1,
+                            2,
+                            3,
+                        };
+                        var numberObject = new
+                        {
+                            One = 1,
+                            Two = 2,
+                            Three = 3,
+                        };
+                        var numberDictionary = new Dictionary<string, int>
+                        {
+                            { "One", 1 }, { "Two",2 },{ "Three",3 }
+                        };
+                        numberDictionary = new Dictionary<string, int>
+                        {
+                            {
+                                "One",
+                                1
+                            },
+                            {
+                                "Two",
+                                2
+                            },
+                            {
+                                "Three",
+                                3
+                            },
+                        };
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -495,70 +525,72 @@ namespace ClassLibrary1
     [Fact]
     public void InitializerExpressionsWithCommasOnNewLinesProduceDiagnostic()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            int[] numberArray = new[] { 1
-                , 2
-                ,3 };
-            numberArray = new[]
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
             {
-                1
-                , 2
-                ,3
-                ,
-            };
-            var numberList = new List<int> { 1
-                , 2
-                ,3 };
-            numberList = new List<int>
-            {
-                1
-                , 2
-                ,3
-                ,
-            };
-            var numberObject = new
-            {
-                One = 1
-                , Two = 2
-                ,Three = 3
-                ,
-            };
-            var numberDictionary = new Dictionary<string, int>
-            {
-                { ""One""
-                    , 1 }
-                , { ""Two""
-                    , 2 }
-                ,{ ""Three""
-                    , 3 }
-                ,
-            };
-            numberDictionary = new Dictionary<string, int>
-            {
+                public class Class1
                 {
-                    ""One""
-                    ,1
+                    public void DoSomething()
+                    {
+                        int[] numberArray = new[] { 1
+                            , 2
+                            ,3 };
+                        numberArray = new[]
+                        {
+                            1
+                            , 2
+                            ,3
+                            ,
+                        };
+                        var numberList = new List<int> { 1
+                            , 2
+                            ,3 };
+                        numberList = new List<int>
+                        {
+                            1
+                            , 2
+                            ,3
+                            ,
+                        };
+                        var numberObject = new
+                        {
+                            One = 1
+                            , Two = 2
+                            ,Three = 3
+                            ,
+                        };
+                        var numberDictionary = new Dictionary<string, int>
+                        {
+                            { "One"
+                                , 1 }
+                            , { "Two"
+                                , 2 }
+                            ,{ "Three"
+                                , 3 }
+                            ,
+                        };
+                        numberDictionary = new Dictionary<string, int>
+                        {
+                            {
+                                "One"
+                                ,1
+                            }
+                            ,{
+                                "Two"
+                                ,2
+                            }
+                            ,{
+                                "Three"
+                                ,3
+                            }
+                            ,
+                        };
+                    }
                 }
-                ,{
-                    ""Two""
-                    ,2
-                }
-                ,{
-                    ""Three""
-                    ,3
-                }
-                ,
-            };
-        }
-    }
-}"; 
+            }
+            """; 
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

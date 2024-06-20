@@ -12,8 +12,10 @@ public class SingleLineLayoutAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void NamespaceDeclarationOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1 { }";
+        string code = """
+            using System;
+            namespace ClassLibrary1 { }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -31,13 +33,15 @@ namespace ClassLibrary1 { }";
     [Fact]
     public void ClassDeclarationsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1 { }
-    [Obsolete]
-    public class Class2 { }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1 { }
+                [Obsolete]
+                public class Class2 { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -65,13 +69,15 @@ namespace ClassLibrary1
     [Fact]
     public void StructDeclarationsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public struct Struct1 { }
-    [Obsolete]
-    public struct Struct2 { }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public struct Struct1 { }
+                [Obsolete]
+                public struct Struct2 { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -99,13 +105,15 @@ namespace ClassLibrary1
     [Fact]
     public void InterfaceDeclarationsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IInterface1 { }
-    [Obsolete]
-    public interface IInterface2 { }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IInterface1 { }
+                [Obsolete]
+                public interface IInterface2 { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -133,13 +141,15 @@ namespace ClassLibrary1
     [Fact]
     public void EnumDeclarationsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1 { }
-    [Obsolete]
-    public enum Enum2 { }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1 { }
+                [Obsolete]
+                public enum Enum2 { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -167,16 +177,18 @@ namespace ClassLibrary1
     [Fact]
     public void AutoPropertyDeclarationsOnASingleLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name { get; set; }
-        [Obsolete]
-        public string Name2 { get; set; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name { get; set; }
+                    [Obsolete]
+                    public string Name2 { get; set; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -184,18 +196,20 @@ namespace ClassLibrary1
     [Fact]
     public void AutoPropertyDeclarationsWithDefaultValuesOnANewLineDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name { get; set; }
-            = ""Thing 1"";
-        [Obsolete]
-        public string Name2 { get; set; }
-            = ""Thing 2"";
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name { get; set; }
+                        = "Thing 1";
+                    [Obsolete]
+                    public string Name2 { get; set; }
+                        = "Thing 2";
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -203,18 +217,20 @@ namespace ClassLibrary1
     [Fact]
     public void ExpressionBodiedPropertyDeclarationOnMultipleLinesDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name
-            => Name2;
-        [Obsolete]
-        public string Name2 => Name3;
-        public string Name3 { get; set; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name
+                        => Name2;
+                    [Obsolete]
+                    public string Name2 => Name3;
+                    public string Name3 { get; set; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -222,33 +238,35 @@ namespace ClassLibrary1
     [Fact]
     public void AutoPropertyDeclarationsOnMultipleLinesProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name
-        {
-            get;
-            set;
-        }
-        public int Age
-        {
-            get; set;
-        }
-        [Obsolete]
-        public string Name2
-        {
-            get;
-            set;
-        }
-        [Obsolete]
-        public int Age2
-        {
-            get; set;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name
+                    {
+                        get;
+                        set;
+                    }
+                    public int Age
+                    {
+                        get; set;
+                    }
+                    [Obsolete]
+                    public string Name2
+                    {
+                        get;
+                        set;
+                    }
+                    [Obsolete]
+                    public int Age2
+                    {
+                        get; set;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -296,29 +314,31 @@ namespace ClassLibrary1
     [Fact]
     public void NonAutoPropertyDeclarationOnMultipleLinesDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name
-        {
-            get { return """"; }
-            set { }
-        }
-        [Obsolete]
-        public string Name2
-        {
-            get { return """"; }
-            set { }
-        }
-        public string Name3
-        {
-            get => Name2;
-            set => Name2 = value;
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name
+                    {
+                        get { return ""; }
+                        set { }
+                    }
+                    [Obsolete]
+                    public string Name2
+                    {
+                        get { return ""; }
+                        set { }
+                    }
+                    public string Name3
+                    {
+                        get => Name2;
+                        set => Name2 = value;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -326,17 +346,19 @@ namespace ClassLibrary1
     [Fact]
     public void NonAutoPropertyDeclarationOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name { get { return """"; } set { } }
-        [Obsolete]
-        public string Name2 { get { return """"; } set { } }
-        public string Name3 { get => Name2; set => Name2 = value; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string Name { get { return ""; } set { } }
+                    [Obsolete]
+                    public string Name2 { get { return ""; } set { } }
+                    public string Name3 { get => Name2; set => Name2 = value; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -374,25 +396,27 @@ namespace ClassLibrary1
     [Fact]
     public void TrivialAccessorsOnSingleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private string _name;
-        private EventHandler _testEvent;
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-        public event EventHandler TestEvent
-        {
-            add { _testEvent += value; }
-            remove { _testEvent -= value; }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private string _name;
+                    private EventHandler _testEvent;
+                    public string Name
+                    {
+                        get { return _name; }
+                        set { _name = value; }
+                    }
+                    public event EventHandler TestEvent
+                    {
+                        add { _testEvent += value; }
+                        remove { _testEvent -= value; }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -400,37 +424,39 @@ namespace ClassLibrary1
     [Fact]
     public void TrivialAccessorsOnMultipleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private string _name;
-        private EventHandler _testEvent;
-        public string Name
-        {
-            get
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                return _name;
+                public class Class1
+                {
+                    private string _name;
+                    private EventHandler _testEvent;
+                    public string Name
+                    {
+                        get
+                        {
+                            return _name;
+                        }
+                        set
+                        {
+                            _name = value;
+                        }
+                    }
+                    public event EventHandler TestEvent
+                    {
+                        add
+                        {
+                            _testEvent += value;
+                        }
+                        remove
+                        {
+                            _testEvent -= value;
+                        }
+                    }
+                }
             }
-            set
-            {
-                _name = value;
-            }
-        }
-        public event EventHandler TestEvent
-        {
-            add
-            {
-                _testEvent += value;
-            }
-            remove
-            {
-                _testEvent -= value;
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -478,51 +504,53 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialAccessorsOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private string _name;
-        private EventHandler _testEvent;
-        public string Name
-        {
-            get
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                if (DateTime.Now > DateTime.MinValue)
+                public class Class1
                 {
-                    return _name;
-                }
-                else
-                {
-                    return """";
-                }
-            }
-            set
-            {
-                if (value == null)
-                {
-                    throw new Exception();
-                }
+                    private string _name;
+                    private EventHandler _testEvent;
+                    public string Name
+                    {
+                        get
+                        {
+                            if (DateTime.Now > DateTime.MinValue)
+                            {
+                                return _name;
+                            }
+                            else
+                            {
+                                return "";
+                            }
+                        }
+                        set
+                        {
+                            if (value == null)
+                            {
+                                throw new Exception();
+                            }
 
-                _name = value;
+                            _name = value;
+                        }
+                    }
+                    public event EventHandler TestEvent
+                    {
+                        add
+                        {
+                            _name = "";
+                            _testEvent += value;
+                        }
+                        remove
+                        {
+                            _testEvent -= value;
+                            ToString();
+                        }
+                    }
+                }
             }
-        }
-        public event EventHandler TestEvent
-        {
-            add
-            {
-                _name = """";
-                _testEvent += value;
-            }
-            remove
-            {
-                _testEvent -= value;
-                ToString();
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -530,25 +558,27 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialAccessorsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private string _name;
-        private EventHandler _testEvent;
-        public string Name
-        {
-            get { DateTime.Now.ToString(); return """"; }
-            set { DateTime.Now.ToString(); _name = value; }
-        }
-        public event EventHandler TestEvent
-        {
-            add { _name = """"; _testEvent += value; }
-            remove { _testEvent -= value; ToString(); }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private string _name;
+                    private EventHandler _testEvent;
+                    public string Name
+                    {
+                        get { DateTime.Now.ToString(); return ""; }
+                        set { DateTime.Now.ToString(); _name = value; }
+                    }
+                    public event EventHandler TestEvent
+                    {
+                        add { _name = ""; _testEvent += value; }
+                        remove { _testEvent -= value; ToString(); }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -636,23 +666,25 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-        }
-        [Obsolete]
-        public void DoSomethingElse()
-        {
-        }
-        public bool IsEnabled() => true;
-        [Obsolete]
-        public bool IsDisabled() => false;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                    }
+                    [Obsolete]
+                    public void DoSomethingElse()
+                    {
+                    }
+                    public bool IsEnabled() => true;
+                    [Obsolete]
+                    public bool IsDisabled() => false;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -660,16 +692,18 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething() { }
-        [Obsolete]
-        public void DoSomethingElse() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething() { }
+                    [Obsolete]
+                    public void DoSomethingElse() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -697,23 +731,25 @@ namespace ClassLibrary1
     [Fact]
     public void TryStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                int.Parse(""blah"");
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                            int.Parse("blah");
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
             }
-            catch
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -721,17 +757,19 @@ namespace ClassLibrary1
     [Fact]
     public void TryStatementOnSingleLinesProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try { int.Parse(""blah""); } catch { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try { int.Parse("blah"); } catch { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -759,35 +797,37 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialCatchClausesOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(""ERROR!"");
-                throw;
-            }
-            try
-            {
-            }
-            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
-            {
-                if (ex.HResult != 0)
+                public class Class1
                 {
-                    throw new Exception(""Blah"", ex);
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("ERROR!");
+                            throw;
+                        }
+                        try
+                        {
+                        }
+                        catch (Exception ex) when(ex.Message?.Contains("SQL") == true)
+                        {
+                            if (ex.HResult != 0)
+                            {
+                                throw new Exception("Blah", ex);
+                            }
+                            throw;
+                        }
+                    }
                 }
-                throw;
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -795,24 +835,26 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialCatchClausesOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch (Exception) { Console.WriteLine("ERROR!"); throw; }
+                        try
+                        {
+                        }
+                        catch (Exception ex) when(ex.Message?.Contains("SQL") == true) { ToString(); return; }
+                    }
+                }
             }
-            catch (Exception) { Console.WriteLine(""ERROR!""); throw; }
-            try
-            {
-            }
-            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true) { DateTime.Now.ToString(); return; }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -852,7 +894,7 @@ namespace ClassLibrary1
                 Severity = DiagnosticSeverity.Warning,
                 Locations = new[]
                 {
-                    new DiagnosticResultLocation("Test0.cs", 15, 103)
+                    new DiagnosticResultLocation("Test0.cs", 15, 90)
                 }
             });
     }
@@ -860,26 +902,28 @@ namespace ClassLibrary1
     [Fact]
     public void CatchClausesBeginningOnNewLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        catch (Exception) { }
+                        try
+                        {
+                        }
+                        catch (Exception ex) when(ex.Message?.Contains("SQL") == true)
+                        {
+                        }
+                    }
+                }
             }
-            catch (Exception) { }
-            try
-            {
-            }
-            catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -887,24 +931,26 @@ namespace ClassLibrary1
     [Fact]
     public void CatchClausesNotBeginningOnNewLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            } catch (Exception) { }
-            try
-            {
-            } catch (Exception ex) when(ex.Message?.Contains(""SQL"") == true)
-            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        } catch (Exception) { }
+                        try
+                        {
+                        } catch (Exception ex) when(ex.Message?.Contains("SQL") == true)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -932,32 +978,34 @@ namespace ClassLibrary1
     [Fact]
     public void FinallyClausesOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            }
-            finally
-            {
-            }
-            try
-            {
-            }
-            finally
-            {
-                if (DateTime.Now > DateTime.MinValue)
+                public class Class1
                 {
-                    throw new Exception();
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        finally
+                        {
+                        }
+                        try
+                        {
+                        }
+                        finally
+                        {
+                            if (DateTime.Now > DateTime.MinValue)
+                            {
+                                throw new Exception();
+                            }
+                        }
+                    }
                 }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -965,24 +1013,26 @@ namespace ClassLibrary1
     [Fact]
     public void FinallyClausesOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        finally { }
+                        try
+                        {
+                        }
+                        finally { DateTime.Now.ToString(); }
+                    }
+                }
             }
-            finally { }
-            try
-            {
-            }
-            finally { DateTime.Now.ToString(); }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1010,22 +1060,24 @@ namespace ClassLibrary1
     [Fact]
     public void FinallyClauseBeginningOnNewLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        }
+                        finally
+                        {
+                        }
+                    }
+                }
             }
-            finally
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1033,21 +1085,23 @@ namespace ClassLibrary1
     [Fact]
     public void FinallyClauseNotBeginningOnNewLineProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            try
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            } finally
-            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        try
+                        {
+                        } finally
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1065,25 +1119,27 @@ namespace ClassLibrary1
     [Fact]
     public void IfStatementsOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                        }
+                        if (DateTime.Now < DateTime.MaxValue)
+                        {
+                        }
+                        else
+                        {
+                        }
+                    }
+                }
             }
-            if (DateTime.Now < DateTime.MaxValue)
-            {
-            }
-            else
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1091,18 +1147,20 @@ namespace ClassLibrary1
     [Fact]
     public void IfStatementsOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue) { }
-            if (DateTime.Now < DateTime.MaxValue) { } else { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue) { }
+                        if (DateTime.Now < DateTime.MaxValue) { } else { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1150,22 +1208,24 @@ namespace ClassLibrary1
     [Fact]
     public void ElseClausesOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                        }
+                        else
+                        {
+                        }
+                    }
+                }
             }
-            else
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1173,20 +1233,22 @@ namespace ClassLibrary1
     [Fact]
     public void ElseClausesOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                        }
+                        else { }
+                    }
+                }
             }
-            else { }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1204,22 +1266,24 @@ namespace ClassLibrary1
     [Fact]
     public void ElseClauseBeginningOnNewLineDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                        }
+                        else
+                        {
+                        }
+                    }
+                }
             }
-            else
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1227,21 +1291,23 @@ namespace ClassLibrary1
     [Fact]
     public void ElseClauseNotBeginningOnNewLineProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            } else
-            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                        } else
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1259,19 +1325,21 @@ namespace ClassLibrary1
     [Fact]
     public void ForStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            for (int i = 0; i < 1; i++)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        for (int i = 0; i < 1; i++)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1279,17 +1347,19 @@ namespace ClassLibrary1
     [Fact]
     public void ForStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            for (int i = 0; i < 1; i++) { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        for (int i = 0; i < 1; i++) { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1307,20 +1377,22 @@ namespace ClassLibrary1
     [Fact]
     public void ForEachStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            foreach (var thing in Enumerable.Empty<object>())
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        foreach (var thing in Enumerable.Empty<object>())
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1328,18 +1400,20 @@ namespace ClassLibrary1
     [Fact]
     public void ForEachStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            foreach (var thing in Enumerable.Empty<object>()) { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        foreach (var thing in Enumerable.Empty<object>()) { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1357,19 +1431,21 @@ namespace ClassLibrary1
     [Fact]
     public void SwitchStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch (""1"".ToString())
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch ("1".ToString())
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1377,17 +1453,19 @@ namespace ClassLibrary1
     [Fact]
     public void SwitchStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch (""1"".ToString()) { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch ("1".ToString()) { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1405,19 +1483,21 @@ namespace ClassLibrary1
     [Fact]
     public void WhileStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            while (DateTime.Now <= DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        while (DateTime.Now <= DateTime.MinValue)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1425,17 +1505,19 @@ namespace ClassLibrary1
     [Fact]
     public void WhileStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            while (DateTime.Now <= DateTime.MinValue) { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        while (DateTime.Now <= DateTime.MinValue) { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1453,20 +1535,22 @@ namespace ClassLibrary1
     [Fact]
     public void DoStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            do
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        do
+                        {
+                        }
+                        while (DateTime.Now <= DateTime.MinValue);
+                    }
+                }
             }
-            while (DateTime.Now <= DateTime.MinValue);
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1474,17 +1558,19 @@ namespace ClassLibrary1
     [Fact]
     public void DoStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            do { } while (DateTime.Now <= DateTime.MinValue);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        do { } while (DateTime.Now <= DateTime.MinValue);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1502,21 +1588,23 @@ namespace ClassLibrary1
     [Fact]
     public void NonEmptyUsingStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            using (var task = Task.FromResult(true))
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
             {
-                task.ToString();
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        using (var task = Task.FromResult(true))
+                        {
+                            task.ToString();
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1524,18 +1612,20 @@ namespace ClassLibrary1
     [Fact]
     public void NonEmptyUsingStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            using (var task = Task.FromResult(true)) { task.ToString(); }
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        using (var task = Task.FromResult(true)) { task.ToString(); }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1553,19 +1643,21 @@ namespace ClassLibrary1
     [Fact]
     public void FixedStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public unsafe void DoSomething()
-        {
-            fixed (char* text = ""Testing"")
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public unsafe void DoSomething()
+                    {
+                        fixed (char* text = "Testing")
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1573,17 +1665,19 @@ namespace ClassLibrary1
     [Fact]
     public void FixedStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public unsafe void DoSomething()
-        {
-            fixed (char* text = ""Testing"") { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public unsafe void DoSomething()
+                    {
+                        fixed (char* text = "Testing") { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1601,19 +1695,21 @@ namespace ClassLibrary1
     [Fact]
     public void LockStatementOnMultipleLinesDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            lock (this)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        lock (this)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1621,17 +1717,19 @@ namespace ClassLibrary1
     [Fact]
     public void LockStatementOnSingleLineProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            lock (this) { }
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        lock (this) { }
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1649,38 +1747,40 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialCaseClausesOnMultipleLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch (DateTime.Now.DayOfWeek)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                case DayOfWeek.Monday:
-                    break;
-                case DayOfWeek.Tuesday:
+                public class Class1
+                {
+                    public void DoSomething()
                     {
-                        return;
-                    }
-                case DayOfWeek.Wednesday:
-                    {
-                        ToString();
-                        return;
-                    }
-                default:
-                    {
-                        if (ReferenceEquals(this, this))
+                        switch (DateTime.Now.DayOfWeek)
                         {
-                            ToString();
+                            case DayOfWeek.Monday:
+                                break;
+                            case DayOfWeek.Tuesday:
+                                {
+                                    return;
+                                }
+                            case DayOfWeek.Wednesday:
+                                {
+                                    ToString();
+                                    return;
+                                }
+                            default:
+                                {
+                                    if (ReferenceEquals(this, this))
+                                    {
+                                        ToString();
+                                    }
+                                }
+                                break;
                         }
                     }
-                    break;
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1688,23 +1788,25 @@ namespace ClassLibrary1
     [Fact]
     public void NonTrivialCaseClausesOnSingleLinesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            switch (DateTime.Now.DayOfWeek)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                case DayOfWeek.Monday: break;
-                case DayOfWeek.Tuesday: { return; }
-                case DayOfWeek.Wednesday: { ToString(); return; }
-                default: { ToString(); } break;
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        switch (DateTime.Now.DayOfWeek)
+                        {
+                            case DayOfWeek.Monday: break;
+                            case DayOfWeek.Tuesday: { return; }
+                            case DayOfWeek.Wednesday: { ToString(); return; }
+                            default: { ToString(); } break;
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1762,29 +1864,31 @@ namespace ClassLibrary1
     [Fact]
     public void LinesWithMultipleStatementsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private Func<bool> _isEnabled = () => { DateTime.Now.ToString(); return true; };
-        public void DoSomething()
-        {
-            int x = 1; int y = 2;
-            { x += 1; y += 2; };
-            if (DateTime.Now > DateTime.MinValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                return;
-            } try
-            {
-                throw new Exception();
+                public class Class1
+                {
+                    private Func<bool> _isEnabled = () => { DateTime.Now.ToString(); return true; };
+                    public void DoSomething()
+                    {
+                        int x = 1; int y = 2;
+                        { x += 1; y += 2; };
+                        if (DateTime.Now > DateTime.MinValue)
+                        {
+                            return;
+                        } try
+                        {
+                            throw new Exception();
+                        }
+                        catch
+                        {
+                        }
+                    }
+                }
             }
-            catch
-            {
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1844,19 +1948,21 @@ namespace ClassLibrary1
     {
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable CT3531 // Lines should not exceed the maximum length of 115.
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var results = from s in Enumerable.Empty<string>() where s.Length > 10 group s by s.Length into sl select sl.Key;
-            var ordered = from l in results orderby l select l;
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var results = from s in Enumerable.Empty<string>() where s.Length > 10 group s by s.Length into sl select sl.Key;
+                        var ordered = from l in results orderby l select l;
+                    }
+                }
+            }
+            """;
 #pragma warning restore CT3531 // Lines should not exceed the maximum length of 115.
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 
@@ -1866,24 +1972,26 @@ namespace ClassLibrary1
     [Fact]
     public void LinqQueriesWithAllPartsOnDifferentLinesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var results = from s in Enumerable.Empty<string>()
-                          where s.Length > 10
-                          group s by s.Length into sl
-                          select sl.Key;
-            var ordered = from l in results
-                          orderby l
-                          select l;
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var results = from s in Enumerable.Empty<string>()
+                                      where s.Length > 10
+                                      group s by s.Length into sl
+                                      select sl.Key;
+                        var ordered = from l in results
+                                      orderby l
+                                      select l;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1891,27 +1999,29 @@ namespace ClassLibrary1
     [Fact]
     public void LinqQueriesWithSomePartsOnTheSameLineProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var results = from s in Enumerable.Empty<string>() where s.Length > 10
-                          group s by s.Length into sl
-                          select sl.Key;
-            results = from s in Enumerable.Empty<string>()
-                      where s.Length > 10
-                      group s by s.Length into sl select sl.Key;
-            var ordered = from l in results orderby l
-                          select l;
-            ordered = from l in results
-                      orderby l select l;
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var results = from s in Enumerable.Empty<string>() where s.Length > 10
+                                      group s by s.Length into sl
+                                      select sl.Key;
+                        results = from s in Enumerable.Empty<string>()
+                                  where s.Length > 10
+                                  group s by s.Length into sl select sl.Key;
+                        var ordered = from l in results orderby l
+                                      select l;
+                        ordered = from l in results
+                                  orderby l select l;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1959,19 +2069,21 @@ namespace ClassLibrary1
     [Fact]
     public void ParameterDeclarationsDefinedOnOneLineDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(string name,
-            int age, bool isVip)
-        {
-            Func<string, int, bool, string> x = (string n, int a,
-                bool i) => $""{n} {a} {i}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(string name,
+                        int age, bool isVip)
+                    {
+                        Func<string, int, bool, string> x = (string n, int a,
+                            bool i) => $"{n} {a} {i}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1979,24 +2091,26 @@ namespace ClassLibrary1
     [Fact]
     public void ParameterDeclarationsDefinedAcrossMultipleLinesPRoduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(string
-            name, int
-            age, bool
-            isVip)
-        {
-            Func<string, int, bool, string> x = (string
-                n, int
-                a,
-                bool
-                i) => $""{n} {a} {i}"";
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(string
+                        name, int
+                        age, bool
+                        isVip)
+                    {
+                        Func<string, int, bool, string> x = (string
+                            n, int
+                            a,
+                            bool
+                            i) => $"{n} {a} {i}";
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

@@ -10,10 +10,12 @@ public class BraceLayoutAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void NamespaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -21,11 +23,13 @@ namespace ClassLibrary1
     [Fact]
     public void NamespaceDeclarationsWithInvalidBraceLayoutProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1 {
-}
-namespace ClassLibrary2
-{ }";
+        string code = """
+            using System;
+            namespace ClassLibrary1 {
+            }
+            namespace ClassLibrary2
+            { }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -63,35 +67,37 @@ namespace ClassLibrary2
     [Fact]
     public void InitializerExpressionsWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private object _obj = new object { };
-        private object _anon = new { Name = """" };
-        private List<string> _list = new List<string> { """" };
-        public Dictionary<string, int> _dictionary = new Dictionary<string, int> { { """", 0 } };
-
-        public void DoSomething()
-        {
-            var obj = new object { };
-            var anon = new { Name = """" };
-            var list = new List<string>
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
             {
-                """"
-            };
-            var dictionary = new Dictionary<string, int>
-            {
+                public class Class1
                 {
-                    """",
-                    0
+                    private object _obj = new object { };
+                    private object _anon = new { Name = "" };
+                    private List<string> _list = new List<string> { "" };
+                    public Dictionary<string, int> _dictionary = new Dictionary<string, int> { { "", 0 } };
+
+                    public void DoSomething()
+                    {
+                        var obj = new object { };
+                        var anon = new { Name = "" };
+                        var list = new List<string>
+                        {
+                            ""
+                        };
+                        var dictionary = new Dictionary<string, int>
+                        {
+                            {
+                                "",
+                                0
+                            }
+                        };
+                    }
                 }
-            };
-        }
-    }
-}";
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -113,37 +119,39 @@ namespace ClassLibrary1
             };
         }
 
-        string code = @"using System;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private object _obj = new object {
-        };
-        private object _anon = new { Name = """"
-        };
-        private List<string> _list = new List<string> {
-            """" };
-        public Dictionary<string, int> _dictionary = new Dictionary<string, int> { {
-            """", 0 } };
-
-        public void DoSomething()
-        {
-            var obj = new object
-            { };
-            var anon = new
-            { Name = """" };
-            var list = new List<string>
+        string code = """
+            using System;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
             {
-                """" };
-            var dictionary = new Dictionary<string, int> {
-                { """",
-                    0
-                } };
-        }
-    }
-}";
+                public class Class1
+                {
+                    private object _obj = new object {
+                    };
+                    private object _anon = new { Name = ""
+                    };
+                    private List<string> _list = new List<string> {
+                        "" };
+                    public Dictionary<string, int> _dictionary = new Dictionary<string, int> { {
+                        "", 0 } };
+
+                    public void DoSomething()
+                    {
+                        var obj = new object
+                        { };
+                        var anon = new
+                        { Name = "" };
+                        var list = new List<string>
+                        {
+                            "" };
+                        var dictionary = new Dictionary<string, int> {
+                            { "",
+                                0
+                            } };
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             CreateResult(7, 42),
@@ -168,37 +176,39 @@ namespace ClassLibrary1
     [Fact]
     public void CodeBlocksWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (true)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-            }
-            else
-            {
-            }
-
-            {
-                int x = 1;
-                switch (x)
+                public class Class1
                 {
-                    case 1:
+                    public void DoSomething()
                     {
-                        break;
+                        if (true)
+                        {
+                        }
+                        else
+                        {
+                        }
+
+                        {
+                            int x = 1;
+                            switch (x)
+                            {
+                                case 1:
+                                {
+                                    break;
+                                }
+                            }
+                        }
+
+                        do
+                        {
+                        } while (DateTime.Now < DateTime.MinValue);
                     }
                 }
             }
-
-            do
-            {
-            } while (DateTime.Now < DateTime.MinValue);
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -220,40 +230,42 @@ namespace ClassLibrary1
             };
         }
 
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething() {
-            if (true) {
-            } else {
-            }
-
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
-                int x = 1;
-                switch (x) {
-                    case 1: {
-                        break;
+                public class Class1
+                {
+                    public void DoSomething() {
+                        if (true) {
+                        } else {
+                        }
+
+                        {
+                            int x = 1;
+                            switch (x) {
+                                case 1: {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    public void DoSomething2()
+                    { if (true)
+                        { }
+                        else
+                        { }
+
+                        {
+                            int x = 1;
+                            switch (x) { case 1:
+                                { break; } }
+                        }
                     }
                 }
             }
-        }
-
-        public void DoSomething2()
-        { if (true)
-            { }
-            else
-            { }
-
-            {
-                int x = 1;
-                switch (x) { case 1:
-                    { break; } }
-            }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             CreateResult(6, 35),
@@ -274,13 +286,15 @@ namespace ClassLibrary1
     [Fact]
     public void ClassDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -288,15 +302,17 @@ namespace ClassLibrary1
     [Fact]
     public void ClassDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1 {
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1 {
+                }
 
-    public class Class2
-    { }
-}";
+                public class Class2
+                { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -334,13 +350,15 @@ namespace ClassLibrary1
     [Fact]
     public void StructDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public struct Struct1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public struct Struct1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -348,15 +366,17 @@ namespace ClassLibrary1
     [Fact]
     public void StructDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public struct Struct1 {
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public struct Struct1 {
+                }
 
-    public struct Struct2
-    { }
-}";
+                public struct Struct2
+                { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -394,13 +414,15 @@ namespace ClassLibrary1
     [Fact]
     public void InterfaceDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IInterface1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IInterface1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -408,15 +430,17 @@ namespace ClassLibrary1
     [Fact]
     public void InterfaceDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IInterface1 {
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IInterface1 {
+                }
 
-    public interface IInterface2
-    { }
-}";
+                public interface IInterface2
+                { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -454,13 +478,15 @@ namespace ClassLibrary1
     [Fact]
     public void EnumDeclarationWithValidBraceLayoutDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -468,15 +494,17 @@ namespace ClassLibrary1
     [Fact]
     public void EnumDeclarationsWithInvalidBraceLayoutsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1 {
-    }
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1 {
+                }
 
-    public enum Enum2
-    { }
-}";
+                public enum Enum2
+                { }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -514,25 +542,27 @@ namespace ClassLibrary1
     [Fact]
     public void AccessorsWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string Name { get; set; }
-        public int Age
-        {
-            get { return 1; }
-        }
-        public event EventHandler OnSomething
-        {
-            add { }
-            remove
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class Class1
+                {
+                    public string Name { get; set; }
+                    public int Age
+                    {
+                        get { return 1; }
+                    }
+                    public event EventHandler OnSomething
+                    {
+                        add { }
+                        remove
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -554,25 +584,27 @@ namespace ClassLibrary1
             };
         }
 
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public string Name {
-            get; set; }
-        public int Age
-        { get { return 1;
-        } }
-        public event EventHandler OnSomething
-        {
-            add {
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public string Name {
+                        get; set; }
+                    public int Age
+                    { get { return 1;
+                    } }
+                    public event EventHandler OnSomething
+                    {
+                        add {
+                        }
+                        remove
+                        { }
+                    }
+                }
             }
-            remove
-            { }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             CreateResult(6, 28),
@@ -589,46 +621,48 @@ namespace ClassLibrary1
     [Fact]
     public void CodeBlocksWithBracesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (false)
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
             {
-            }
-            else if (true)
-            {
-            }
-            else
-            {
-            }
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (false)
+                        {
+                        }
+                        else if (true)
+                        {
+                        }
+                        else
+                        {
+                        }
 
-            for (int i = 0; i < DateTime.Now.Day; i += 1)
-            {
-            }
+                        for (int i = 0; i < DateTime.Now.Day; i += 1)
+                        {
+                        }
 
-            foreach (int i in Enumerable.Empty<int>())
-            {
-            }
+                        foreach (int i in Enumerable.Empty<int>())
+                        {
+                        }
 
-            while (false)
-            {
-            }
+                        while (false)
+                        {
+                        }
 
-            do
-            {
-            } while (false);
+                        do
+                        {
+                        } while (false);
 
-            using (var disposable = (IDisposable)null)
-            {
+                        using (var disposable = (IDisposable)null)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -636,39 +670,41 @@ namespace ClassLibrary1
     [Fact]
     public void CodeBlocksWithoutBracesProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Linq;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            if (false)
-                ;
-            else if (true)
-                ;
-            else
-                ;
+        string code = """
+            using System;
+            using System.Linq;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        if (false)
+                            ;
+                        else if (true)
+                            ;
+                        else
+                            ;
 
-            for (int i = 0; i < DateTime.Now.Day; i += 1)
-                ;
+                        for (int i = 0; i < DateTime.Now.Day; i += 1)
+                            ;
 
-            foreach (int i in Enumerable.Empty<int>())
-                ;
+                        foreach (int i in Enumerable.Empty<int>())
+                            ;
 
-            while (false)
-                ;
+                        while (false)
+                            ;
 
-            do
-                ;
-            while (false);
+                        do
+                            ;
+                        while (false);
 
-            using (var disposable = (IDisposable)null)
-                ;
-        }
-    }
-}";
+                        using (var disposable = (IDisposable)null)
+                            ;
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -756,52 +792,56 @@ namespace ClassLibrary1
     [Fact]
     public void MethodArgumentsWithValidBraceLayoutsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public async Task DoSomethingAsync()
-        {
-            Task.Run(() => { });
-            Task.Run(() =>
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
             {
-            });
-            await Task.Run(() => { }).ConfigureAwait(false);
-            await Task.Run(() =>
-            {
-            }).ConfigureAwait(false);
-            await DoSomethingAsync(new Thing { }).ConfigureAwait(false);
-            await DoSomethingAsync(new Thing
-            {
-            }).ConfigureAwait(false);
-        }
-        private Task DoSomethingAsync(Thing thing) => Task.CompletedTask;
-        private class Thing { }
-    }
-}";
+                public class Class1
+                {
+                    public async Task DoSomethingAsync()
+                    {
+                        Task.Run(() => { });
+                        Task.Run(() =>
+                        {
+                        });
+                        await Task.Run(() => { }).ConfigureAwait(false);
+                        await Task.Run(() =>
+                        {
+                        }).ConfigureAwait(false);
+                        await DoSomethingAsync(new Thing { }).ConfigureAwait(false);
+                        await DoSomethingAsync(new Thing
+                        {
+                        }).ConfigureAwait(false);
+                    }
+                    private Task DoSomethingAsync(Thing thing) => Task.CompletedTask;
+                    private class Thing { }
+                }
+            }
+            """;
         VerifyCSharpDiagnostic(code);
     }
 
     [Fact]
     public void MethodArgumentsWithInvalidBraceLayoutsProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public async Task DoSomethingAsync()
-        {
-            Task.Run(() => {
-            });
-            await Task.Run(() => {
-            }).ConfigureAwait(false);
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public async Task DoSomethingAsync()
+                    {
+                        Task.Run(() => {
+                        });
+                        await Task.Run(() => {
+                        }).ConfigureAwait(false);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

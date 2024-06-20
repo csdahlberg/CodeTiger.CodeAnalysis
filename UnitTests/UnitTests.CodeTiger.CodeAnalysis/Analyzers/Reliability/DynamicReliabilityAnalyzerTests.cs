@@ -10,14 +10,16 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void MethodWithDynamicReturnTypeProducesDiagnostic()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public dynamic GetValue() { return new ExpandoObject(); }
-    }
-}";
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public dynamic GetValue() { return new ExpandoObject(); }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -35,14 +37,16 @@ namespace ClassLibrary1
     [Fact]
     public void MethodWithDynamicParameterTypeProducesDiagnostic()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public void SetValue(dynamic value) { }
-    }
-}";
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public void SetValue(dynamic value) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -60,14 +64,16 @@ namespace ClassLibrary1
     [Fact]
     public void PropertyWithDynamicTypeProducesDiagnostic()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        public dynamic Value => new ExpandoObject();
-    }
-}";
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public dynamic Value => new ExpandoObject();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -85,14 +91,16 @@ namespace ClassLibrary1
     [Fact]
     public void FieldWithDynamicTypeProducesDiagnostic()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        private dynamic _value;
-    }
-}";
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private dynamic _value;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -110,21 +118,23 @@ namespace ClassLibrary1
     [Fact]
     public void MethodInheritedFromInterfaceWithDynamicReturnTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        dynamic GetValue();
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    dynamic GetValue();
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing : IThing
-    {
-        public dynamic GetValue() { return new ExpandoObject(); }
-    }
-}";
+                public class Thing : IThing
+                {
+                    public dynamic GetValue() { return new ExpandoObject(); }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -132,21 +142,23 @@ namespace ClassLibrary1
     [Fact]
     public void MethodInheritedFromBaseTypeWithDynamicReturnTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        public virtual dynamic GetValue() { return new ExpandoObject(); }
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual dynamic GetValue() { return new ExpandoObject(); }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing2 : Thing
-    {
-        public override dynamic GetValue() { return new ExpandoObject(); }
-    }
-}";
+                public class Thing2 : Thing
+                {
+                    public override dynamic GetValue() { return new ExpandoObject(); }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -154,21 +166,23 @@ namespace ClassLibrary1
     [Fact]
     public void MethodInheritedFromInterfaceWithDynamicParameterTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        void SetValue(dynamic value);
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    void SetValue(dynamic value);
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing : IThing
-    {
-        public void SetValue(dynamic value) { }
-    }
-}";
+                public class Thing : IThing
+                {
+                    public void SetValue(dynamic value) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -176,21 +190,23 @@ namespace ClassLibrary1
     [Fact]
     public void MethodInheritedFromBaseTypeWithDynamicParameterTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        public virtual void SetValue(dynamic value) { }
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual void SetValue(dynamic value) { }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing2 : Thing
-    {
-        public override void SetValue(dynamic value) { }
-    }
-}";
+                public class Thing2 : Thing
+                {
+                    public override void SetValue(dynamic value) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -198,21 +214,23 @@ namespace ClassLibrary1
     [Fact]
     public void PropertyInheritedFromInterfaceWithDynamicTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        dynamic Value { get; }
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    dynamic Value { get; }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing : IThing
-    {
-        public dynamic Value => new ExpandoObject();
-    }
-}";
+                public class Thing : IThing
+                {
+                    public dynamic Value => new ExpandoObject();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -220,21 +238,23 @@ namespace ClassLibrary1
     [Fact]
     public void PropertyInheritedFromBaseTypeWithDynamicTypeDoesNotProduceDiagnostics()
     {
-        string code = @"using System.Dynamic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-#pragma warning disable CT2010 // Dynamic should not be used
-        public virtual dynamic Value { get; }
-#pragma warning restore CT2010 // Dynamic should not be used
-    }
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual dynamic Value { get; }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
 
-    public class Thing2 : Thing
-    {
-        public override dynamic Value => new ExpandoObject();
-    }
-}";
+                public class Thing2 : Thing
+                {
+                    public override dynamic Value => new ExpandoObject();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }

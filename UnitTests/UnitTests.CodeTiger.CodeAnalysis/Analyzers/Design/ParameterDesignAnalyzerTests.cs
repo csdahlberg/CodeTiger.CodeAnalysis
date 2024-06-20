@@ -10,14 +10,16 @@ public class ParameterDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ExtensionMethodThatUsesTheThisParameterDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public static class StringExtensions
-    {
-        public static string WithAsterisk(this string original) { return original + ""*""; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public static class StringExtensions
+                {
+                    public static string WithAsterisk(this string original) { return original + "*"; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -25,14 +27,16 @@ namespace ClassLibrary1
     [Fact]
     public void ExtensionMethodThatDoesNotUseTheThisParameterProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public static class StringExtensions
-    {
-        public static string WithAsterisk(this string original) { return ""*""; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public static class StringExtensions
+                {
+                    public static string WithAsterisk(this string original) { return "*"; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

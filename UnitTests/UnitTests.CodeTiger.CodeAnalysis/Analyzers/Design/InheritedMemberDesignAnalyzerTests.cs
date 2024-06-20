@@ -10,31 +10,33 @@ public class InheritedMemberDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ClassesWithBaseClassAndWithStaticMethodDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public object GetValue() { return new object(); }
-        public Class1 Self { get { return this; } }
-    }
-    public class Class2 : Class1
-    {
-        public new int GetValue() { return 1; }
-        public new Class2 Self { get { return this; } }
-    }
-    public class Class3<T> : Class1 where T : IDisposable
-    {
-        public new T GetValue() { return default(T); }
-        public new Class3<T> Self { get { return this; } }
-    }
-    public class Class4 : Class3<IDisposable>
-    {
-        public new Task GetValue() { return default(Task); }
-        public new Class4 Self { get { return this; } }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public object GetValue() { return new object(); }
+                    public Class1 Self { get { return this; } }
+                }
+                public class Class2 : Class1
+                {
+                    public new int GetValue() { return 1; }
+                    public new Class2 Self { get { return this; } }
+                }
+                public class Class3<T> : Class1 where T : IDisposable
+                {
+                    public new T GetValue() { return default(T); }
+                    public new Class3<T> Self { get { return this; } }
+                }
+                public class Class4 : Class3<IDisposable>
+                {
+                    public new Task GetValue() { return default(Task); }
+                    public new Class4 Self { get { return this; } }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -42,30 +44,32 @@ namespace ClassLibrary1
     [Fact]
     public void ClassesWithHiddenBaseMethodsProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public int GetValue() { return 1; }
-        public Class1 Self { get { return this; } }
-    }
-    public class Class2 : Class1
-    {
-        public new int GetValue() { return 2; }
-        public new string Self { get { return ""blah""; } }
-    }
-    public class Class3<T> : Class1 where T : IDisposable
-    {
-        public new int GetValue() { return 3; }
-        public new string Self { get { return ""blah""; } }
-    }
-    public class Class4 : Class3<IDisposable>
-    {
-        public new IDisposable GetValue() { return default(IDisposable); }
-        public new Class4 Self { get { return this; } }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public int GetValue() { return 1; }
+                    public Class1 Self { get { return this; } }
+                }
+                public class Class2 : Class1
+                {
+                    public new int GetValue() { return 2; }
+                    public new string Self { get { return "blah"; } }
+                }
+                public class Class3<T> : Class1 where T : IDisposable
+                {
+                    public new int GetValue() { return 3; }
+                    public new string Self { get { return "blah"; } }
+                }
+                public class Class4 : Class3<IDisposable>
+                {
+                    public new IDisposable GetValue() { return default(IDisposable); }
+                    public new Class4 Self { get { return this; } }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -121,27 +125,29 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersThatMatchDefaultValuesOfBaseInterfaceDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"");
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
-        public virtual void SetValue(bool flag, string str = default) { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(bool flag, string str = default) { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(bool flag, int i = 0, string str = default, string str2 = "*");
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(bool flag, int i = 0, string str = default, string str2 = "*") { }
+                    public virtual void SetValue(bool flag, string str = default) { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(bool flag, string str = default) { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(bool flag, int i = 0, string str = default, string str2 = "*") { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -149,26 +155,28 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithDefaultValuesProduceDiagnosticsWhenBaseInterfaceDoesNotHaveDefaultValues()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(bool flag, int i, string str);
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(bool flag = true, int i = 1, string str = """") { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(bool flag = false, int i = 0, string str = default) { }
-    }
-    public abstract class OtherThingClass : IThing
-    {
-        public abstract void SetValue(bool flag = true, int i = 1, string str = """");
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(bool flag, int i, string str);
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(bool flag = true, int i = 1, string str = "") { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(bool flag = false, int i = 0, string str = default) { }
+                }
+                public abstract class OtherThingClass : IThing
+                {
+                    public abstract void SetValue(bool flag = true, int i = 1, string str = "");
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -239,26 +247,28 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithoutDefaultValuesProduceDiagnosticsWhenBaseInterfaceHasDefaultValues()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(bool flag = true, int i = -1, string str = """");
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(bool flag, int i, string str) { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(bool flag, int i, string str) { }
-    }
-    public abstract class OtherThingClass : IThing
-    {
-        public abstract void SetValue(bool flag, int i, string str);
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(bool flag = true, int i = -1, string str = "");
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(bool flag, int i, string str) { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(bool flag, int i, string str) { }
+                }
+                public abstract class OtherThingClass : IThing
+                {
+                    public abstract void SetValue(bool flag, int i, string str);
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -329,26 +339,28 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithDefaultValuesThatDoNotMatchBaseInterfaceProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(bool flag = true, int i = -1, string str = """");
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(bool flag = false, int i = 1, string str = null) { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(bool flag = false, int i = int.MaxValue, string str = null) { }
-    }
-    public abstract class OtherThingClass : IThing
-    {
-        public abstract void SetValue(bool flag = false, int i = 4, string str = ""foo"");
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(bool flag = true, int i = -1, string str = "");
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(bool flag = false, int i = 1, string str = null) { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(bool flag = false, int i = int.MaxValue, string str = null) { }
+                }
+                public abstract class OtherThingClass : IThing
+                {
+                    public abstract void SetValue(bool flag = false, int i = 4, string str = "foo");
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -419,20 +431,24 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersThatMatchDefaultValuesOfBaseTypeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class ThingClass
-    {
-        public abstract void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"");
-        public virtual void SetValue(bool flag, string str = default) { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(bool flag, int i = 0, string str = default, string str2 = ""*"") { }
-        public override void SetValue(bool flag, string str = default) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class ThingClass
+                {
+                    public abstract void SetValue(bool flag, int i = 0, string str = default, string str2 = "*");
+                    public virtual void SetValue(bool flag, string str = default) { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(bool flag, int i = 0, string str = default, string str2 = "*")
+                    {
+                    }
+                    public override void SetValue(bool flag, string str = default) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -440,20 +456,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithDefaultValuesProduceDiagnosticsWhenBaseTypeDoesNotHaveDefaultValues()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class ThingClass
-    {
-        public abstract void SetValue(bool flag, int i, string str);
-        public virtual void SetValue(bool flag, string str) { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(bool flag = true, int i = 0, string str = default) { }
-        public override void SetValue(bool flag = false, string str = """") { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class ThingClass
+                {
+                    public abstract void SetValue(bool flag, int i, string str);
+                    public virtual void SetValue(bool flag, string str) { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(bool flag = true, int i = 0, string str = default) { }
+                    public override void SetValue(bool flag = false, string str = "") { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -496,20 +514,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithoutDefaultValuesProduceDiagnosticsWhenBaseTypeHasDefaultValues()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class ThingClass
-    {
-        public abstract void SetValue(bool flag = true, int i = 0, string str = default);
-        public virtual void SetValue(bool flag = false, string str = """") { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(bool flag, int i, string str) { }
-        public override void SetValue(bool flag, string str) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class ThingClass
+                {
+                    public abstract void SetValue(bool flag = true, int i = 0, string str = default);
+                    public virtual void SetValue(bool flag = false, string str = "") { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(bool flag, int i, string str) { }
+                    public override void SetValue(bool flag, string str) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -552,20 +572,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithDefaultValuesThatDoNotMatchBaseTypeProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class ThingClass
-    {
-        public abstract void SetValue(bool flag = true, int i = 0, string str = default);
-        public virtual void SetValue(bool flag = false, string str = ""foo"") { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(bool flag = false, int i = 1, string str = """") { }
-        public override void SetValue(bool flag = true, string str = default) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class ThingClass
+                {
+                    public abstract void SetValue(bool flag = true, int i = 0, string str = default);
+                    public virtual void SetValue(bool flag = false, string str = "foo") { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(bool flag = false, int i = 1, string str = "") { }
+                    public override void SetValue(bool flag = true, string str = default) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -608,25 +630,27 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithParamsKeywordThatMatchBaseInterfaceDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(params int[] values);
-        void SetValue(string[] values);
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(params int[] values) { }
-        public virtual void SetValue(string[] values) { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(params int[] values) { }
-        public void SetValue(string[] values) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(params int[] values);
+                    void SetValue(string[] values);
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(params int[] values) { }
+                    public virtual void SetValue(string[] values) { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(params int[] values) { }
+                    public void SetValue(string[] values) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -634,25 +658,27 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithParamsKeywordThatDoesNotMatchBaseInterfaceProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IThing
-    {
-        void SetValue(params int[] values);
-        void SetValue(string[] values);
-    }
-    public class ThingClass : IThing
-    {
-        public void SetValue(int[] values) { }
-        public virtual void SetValue(params string[] values) { }
-    }
-    public struct ThingStruct : IThing
-    {
-        public void SetValue(int[] values) { }
-        public void SetValue(params string[] values) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+                    void SetValue(params int[] values);
+                    void SetValue(string[] values);
+                }
+                public class ThingClass : IThing
+                {
+                    public void SetValue(int[] values) { }
+                    public virtual void SetValue(params string[] values) { }
+                }
+                public struct ThingStruct : IThing
+                {
+                    public void SetValue(int[] values) { }
+                    public void SetValue(params string[] values) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -688,20 +714,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithParamsKeywordThatMatchBaseTypeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class ThingClass
-    {
-        public virtual void SetValue(params int[] values) { }
-        public virtual void SetValue(string[] values) { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(params int[] values) { }
-        public override void SetValue(string[] values) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class ThingClass
+                {
+                    public virtual void SetValue(params int[] values) { }
+                    public virtual void SetValue(string[] values) { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(params int[] values) { }
+                    public override void SetValue(string[] values) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -709,20 +737,22 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithParamsKeywordThatDoesNotMatchBaseTypeProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class ThingClass
-    {
-        public virtual void SetValue(params int[] values) { }
-        public virtual void SetValue(string[] values) { }
-    }
-    public class ThingClass2 : ThingClass
-    {
-        public override void SetValue(int[] values) { }
-        public override void SetValue(params string[] values) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class ThingClass
+                {
+                    public virtual void SetValue(params int[] values) { }
+                    public virtual void SetValue(string[] values) { }
+                }
+                public class ThingClass2 : ThingClass
+                {
+                    public override void SetValue(int[] values) { }
+                    public override void SetValue(params string[] values) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

@@ -10,19 +10,21 @@ public class SymbolNamingAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void TypesWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class ClassType
-    {
-    }
-    public struct StructType
-    {
-    }
-    public enum EnumType
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class ClassType
+                {
+                }
+                public struct StructType
+                {
+                }
+                public enum EnumType
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -30,19 +32,21 @@ namespace ClassLibrary1
     [Fact]
     public void TypesWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class classType
-    {
-    }
-    public struct IStructType
-    {
-    }
-    public enum ENUMTYPE
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class classType
+                {
+                }
+                public struct IStructType
+                {
+                }
+                public enum ENUMTYPE
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -80,16 +84,18 @@ namespace ClassLibrary1
     [Fact]
     public void ConstFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public const int One = 1;
-        protected const int Two = 2;
-        private const int Three = 3;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public const int One = 1;
+                    protected const int Two = 2;
+                    private const int Three = 3;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -97,16 +103,18 @@ namespace ClassLibrary1
     [Fact]
     public void ConstFieldsWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public const int one = 1;
-        protected const int _two = 2;
-        private const int THREE = 3;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public const int one = 1;
+                    protected const int _two = 2;
+                    private const int THREE = 3;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -144,17 +152,19 @@ namespace ClassLibrary1
     [Fact]
     public void PrivateFieldsWithUnderscorePrefixedCamelCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private int _one = 1;
-        private readonly int _two = 2;
-        private static int _three = 3;
-        private static readonly int _four = 4;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private int _one = 1;
+                    private readonly int _two = 2;
+                    private static int _three = 3;
+                    private static readonly int _four = 4;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -162,16 +172,18 @@ namespace ClassLibrary1
     [Fact]
     public void PrivateFieldsWithNonUnderscorePrefixedCamelCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        private int one = 1;
-        private readonly int Two = 2;
-        private static int THREE = 3;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    private int one = 1;
+                    private readonly int Two = 2;
+                    private static int THREE = 3;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -209,17 +221,19 @@ namespace ClassLibrary1
     [Fact]
     public void EventFieldsWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public event Action One;
-        protected event Action Two;
-        internal event Action Three;
-        private event Action Four;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public event Action One;
+                    protected event Action Two;
+                    internal event Action Three;
+                    private event Action Four;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -227,16 +241,18 @@ namespace ClassLibrary1
     [Fact]
     public void EventFieldsWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public event Action one;
-        protected event Action _two;
-        private event Action THREE;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public event Action one;
+                    protected event Action _two;
+                    private event Action THREE;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -274,17 +290,19 @@ namespace ClassLibrary1
     [Fact]
     public void DelegatesWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public delegate void One();
-        protected delegate int Two(string x);
-        internal delegate string Three(int x);
-        private delegate object Four();
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public delegate void One();
+                    protected delegate int Two(string x);
+                    internal delegate string Three(int x);
+                    private delegate object Four();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -292,17 +310,19 @@ namespace ClassLibrary1
     [Fact]
     public void DelegatesWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public delegate void one();
-        protected delegate int TWO(string x);
-        internal delegate string _three(int x);
-        private delegate object _FOUR();
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public delegate void one();
+                    protected delegate int TWO(string x);
+                    internal delegate string _three(int x);
+                    private delegate object _FOUR();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -350,21 +370,23 @@ namespace ClassLibrary1
     [Fact]
     public void PropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public object One { get; set; }
-        protected bool Two => true;
-        internal int Three
-        {
-            get { return 3; }
-            set { }
-        }
-        private object Four => One;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public object One { get; set; }
+                    protected bool Two => true;
+                    internal int Three
+                    {
+                        get { return 3; }
+                        set { }
+                    }
+                    private object Four => One;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -372,21 +394,23 @@ namespace ClassLibrary1
     [Fact]
     public void PropertiesWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public object one { get; set; }
-        protected bool _two => true;
-        internal int _Three
-        {
-            get { return 3; }
-            set { }
-        }
-        private object FOUR => one;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public object one { get; set; }
+                    protected bool _two => true;
+                    internal int _Three
+                    {
+                        get { return 3; }
+                        set { }
+                    }
+                    private object FOUR => one;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -435,15 +459,17 @@ namespace ClassLibrary1
     [Fact]
     public void RecordPropertiesWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public record Class1(
-        object One,
-        bool Two,
-        int Three,
-        object Four);
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public record Class1(
+                    object One,
+                    bool Two,
+                    int Three,
+                    object Four);
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -451,15 +477,17 @@ namespace ClassLibrary1
     [Fact]
     public void RecordPropertiesWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public record Class1(
-        object one,
-        bool _two,
-        int _Three,
-        object FOUR);
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public record Class1(
+                    object one,
+                    bool _two,
+                    int _Three,
+                    object FOUR);
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -508,15 +536,17 @@ namespace ClassLibrary1
     [Fact]
     public void PropertiesWithNamesPrefixedWithGetOrSetProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public string GetName { get; }
-        private string SetName { get; set; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public string GetName { get; }
+                    private string SetName { get; set; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -544,17 +574,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void One() { }
-        protected bool Two() => true;
-        internal int Three() { return 3; }
-        private object Four(int a) { return a; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void One() { }
+                    protected bool Two() => true;
+                    internal int Three() { return 3; }
+                    private object Four(int a) { return a; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -562,17 +594,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void one() { }
-        protected bool _two() => true;
-        internal int _Three() { return 3; }
-        private object FOUR(int a) { return a; }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void one() { }
+                    protected bool _two() => true;
+                    internal int _Three() { return 3; }
+                    private object FOUR(int a) { return a; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -620,16 +654,18 @@ namespace ClassLibrary1
     [Fact]
     public void EnumerationMembersWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1
-    {
-        One,
-        Two = 2,
-        Three = 1 + 2,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1
+                {
+                    One,
+                    Two = 2,
+                    Three = 1 + 2,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -637,16 +673,18 @@ namespace ClassLibrary1
     [Fact]
     public void EnumerationMembersWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public enum Enum1
-    {
-        one,
-        _two = 2,
-        THREE = 1 + 2,
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public enum Enum1
+                {
+                    one,
+                    _two = 2,
+                    THREE = 1 + 2,
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -684,39 +722,41 @@ namespace ClassLibrary1
     [Fact]
     public void VariablesWithCamelCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var objectVariable = new object();
-            int intVariable1 = 13, intVariable2 = 36;
-            intVariable1 = objectVariable == null ? 12 : intVariable2;
-        }
-        
-        public static string GetString(int number)
-        {
-            return number.ToString();
-        }
-    }
-    
-    public static class Class2
-    {
-        public static void DoSomething()
-        {
-            var objectVariable = new object();
-            int intVariable1 = 13, intVariable2 = 26;
-            intVariable1 = objectVariable == null ? 12 : 14;
-        }
-        
-        public static string GetString(int number)
-        {
-            return number.ToString();
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var objectVariable = new object();
+                        int intVariable1 = 13, intVariable2 = 36;
+                        intVariable1 = objectVariable == null ? 12 : intVariable2;
+                    }
+                    
+                    public static string GetString(int number)
+                    {
+                        return number.ToString();
+                    }
+                }
+                
+                public static class Class2
+                {
+                    public static void DoSomething()
+                    {
+                        var objectVariable = new object();
+                        int intVariable1 = 13, intVariable2 = 26;
+                        intVariable1 = objectVariable == null ? 12 : 14;
+                    }
+                    
+                    public static string GetString(int number)
+                    {
+                        return number.ToString();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -724,34 +764,36 @@ namespace ClassLibrary1
     [Fact]
     public void VariablesWithNonCamellCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var _objectVariable = new object();
-            int IntVariable1 = 13, _intVariable2 = 36;
-            IntVariable1 = _objectVariable == null ? 12 : _intVariable2;
-        }
-    }
-    
-    public static class Class2
-    {
-        public static void DoSomething()
-        {
-            var _objectVariable = new object();
-            int IntVariable1 = 13, _IntVariable2 = 26;
-            IntVariable1 = _objectVariable == null ? 12 : 14;
-        }
-        
-        public static string GetString(int number)
-        {
-            return number.ToString();
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var _objectVariable = new object();
+                        int IntVariable1 = 13, _intVariable2 = 36;
+                        IntVariable1 = _objectVariable == null ? 12 : _intVariable2;
+                    }
+                }
+                
+                public static class Class2
+                {
+                    public static void DoSomething()
+                    {
+                        var _objectVariable = new object();
+                        int IntVariable1 = 13, _IntVariable2 = 26;
+                        IntVariable1 = _objectVariable == null ? 12 : 14;
+                    }
+                    
+                    public static string GetString(int number)
+                    {
+                        return number.ToString();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -819,19 +861,21 @@ namespace ClassLibrary1
     [Fact]
     public void VariablesWithHungarianPrefixesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var oVariable = new object();
-            int nVariable = 13, iVariable = 36;
-            string strVariable = oVariable == null ? 12.ToString() : iVariable.ToString();
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var oVariable = new object();
+                        int nVariable = 13, iVariable = 36;
+                        string strVariable = oVariable == null ? 12.ToString() : iVariable.ToString();
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -879,16 +923,18 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithHungarianPrefixesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(object oVariable, int nVariable, string strVariable)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(object oVariable, int nVariable, string strVariable)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -926,16 +972,18 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithCamelCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(string firstName, int age)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(string firstName, int age)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -943,16 +991,18 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(string FirstName, int Age)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(string FirstName, int Age)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -980,19 +1030,21 @@ namespace ClassLibrary1
     [Fact]
     public void ParametersWithDiscardNamesWhereAllowedDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections.Concurrent;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething()
-        {
-            var dictionary = new ConcurrentDictionary<int, string>();
-            dictionary.GetOrAdd(0, _ => ""0"");
-        }
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections.Concurrent;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething()
+                    {
+                        var dictionary = new ConcurrentDictionary<int, string>();
+                        dictionary.GetOrAdd(0, _ => "0");
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1000,16 +1052,18 @@ namespace ClassLibrary1
     [Fact]
     public void ParameterWithDiscardNamesWhereNotAllowedProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public void DoSomething(string _)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public void DoSomething(string _)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1027,16 +1081,18 @@ namespace ClassLibrary1
     [Fact]
     public void FieldsWithHungarianPrefixesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        static object _oVariable = new object();
-        int nVariable = 13;
-        string strVariable = _oVariable == null ? 12.ToString() : _oVariable.ToString();
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    static object _oVariable = new object();
+                    int nVariable = 13;
+                    string strVariable = _oVariable == null ? 12.ToString() : _oVariable.ToString();
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1074,13 +1130,15 @@ namespace ClassLibrary1
     [Fact]
     public void InterfaceWithPascalCasedNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface IInterface1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface IInterface1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1088,22 +1146,24 @@ namespace ClassLibrary1
     [Fact]
     public void InterfacesWithNonPascalCasedNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public interface interface1
-    {
-    }
-    public interface _Interface2
-    {
-    }
-    public interface INTERFACE3
-    {
-    }
-    public interface Interface4
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public interface interface1
+                {
+                }
+                public interface _Interface2
+                {
+                }
+                public interface INTERFACE3
+                {
+                }
+                public interface Interface4
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1151,22 +1211,24 @@ namespace ClassLibrary1
     [Fact]
     public void PropertiesWithNamesNotPrefixedWithContainingTypeNameDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public object One { get; set; }
-        protected bool Two => true;
-        internal int Three
-        {
-            get { return 3; }
-            set { }
-        }
-        private object Four => One;
-    }
-    public class Run { public string RunnerId { get; set; } }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public object One { get; set; }
+                    protected bool Two => true;
+                    internal int Three
+                    {
+                        get { return 3; }
+                        set { }
+                    }
+                    private object Four => One;
+                }
+                public class Run { public string RunnerId { get; set; } }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1174,21 +1236,23 @@ namespace ClassLibrary1
     [Fact]
     public void PropertiesWithNamesPrefixedWithContainingTypeNameProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1
-    {
-        public object Class1One { get; set; }
-        protected bool Class1Two => true;
-        internal int Class1Three
-        {
-            get { return 3; }
-            set { }
-        }
-        private object Class1FOUR => Class1One;
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    public object Class1One { get; set; }
+                    protected bool Class1Two => true;
+                    internal int Class1Three
+                    {
+                        get { return 3; }
+                        set { }
+                    }
+                    private object Class1FOUR => Class1One;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1236,17 +1300,19 @@ namespace ClassLibrary1
     [Fact]
     public void GenericTypeParametersWithValidNamesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1<T, TFactory>
-    {
-        public TOut DoSomething<TIn, TOut>(TIn input)
-        {
-            return default(TOut);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1<T, TFactory>
+                {
+                    public TOut DoSomething<TIn, TOut>(TIn input)
+                    {
+                        return default(TOut);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1254,17 +1320,19 @@ namespace ClassLibrary1
     [Fact]
     public void GenericTypeParametersWithInvalidNamesProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Class1<t, TFac>
-    {
-        public Tout DoSomething<TInType, Tout>(TInType input)
-        {
-            return default(Tout);
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Class1<t, TFac>
+                {
+                    public Tout DoSomething<TInType, Tout>(TInType input)
+                    {
+                        return default(Tout);
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1312,13 +1380,15 @@ namespace ClassLibrary1
     [Fact]
     public void TypesWithNamesPrefixedWithAbstractProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class AbstractClass1
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class AbstractClass1
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1336,16 +1406,18 @@ namespace ClassLibrary1
     [Fact]
     public void TypesWithNamesPrefixedOrSuffixedWithBaseProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class BaseClass1
-    {
-    }
-    public class Class1Base
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class BaseClass1
+                {
+                }
+                public class Class1Base
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1373,13 +1445,15 @@ namespace ClassLibrary1
     [Fact]
     public void TypesThatEndInLowercaseBaseDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class Database
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class Database
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1387,16 +1461,18 @@ namespace ClassLibrary1
     [Fact]
     public void AttributeTypesWithNamesSuffixedWithAttributeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstAttribute : Attribute
-    {
-    }
-    public class SecondAttribute : FirstAttribute
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstAttribute : Attribute
+                {
+                }
+                public class SecondAttribute : FirstAttribute
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1404,16 +1480,18 @@ namespace ClassLibrary1
     [Fact]
     public void AttributeTypesWithNamesNotSuffixedWithAttributeProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstAttr : Attribute
-    {
-    }
-    public class SecondAttr : FirstAttr
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstAttr : Attribute
+                {
+                }
+                public class SecondAttr : FirstAttr
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1441,16 +1519,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonAttributeTypesWithNamesNotSuffixedWithAttributeDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstThing
-    {
-    }
-    public class SecondThing : FirstThing
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstThing
+                {
+                }
+                public class SecondThing : FirstThing
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1458,16 +1538,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonAttributeTypesWithNamesSuffixedWithAttributeProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstAttribute
-    {
-    }
-    public class SecondAttribute : FirstAttribute
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstAttribute
+                {
+                }
+                public class SecondAttribute : FirstAttribute
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1495,16 +1577,18 @@ namespace ClassLibrary1
     [Fact]
     public void ExceptionTypesWithNamesSuffixedWithExceptionDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstException : Exception
-    {
-    }
-    public class SecondException : FirstException
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstException : Exception
+                {
+                }
+                public class SecondException : FirstException
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1512,16 +1596,18 @@ namespace ClassLibrary1
     [Fact]
     public void ExceptionTypesWithNamesNotSuffixedWithExceptionProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstAttr : Exception
-    {
-    }
-    public class SecondAttr : FirstAttr
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstAttr : Exception
+                {
+                }
+                public class SecondAttr : FirstAttr
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1549,16 +1635,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonExceptionTypesWithNamesNotSuffixedWithExceptionDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstThing
-    {
-    }
-    public class SecondThing : FirstThing
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstThing
+                {
+                }
+                public class SecondThing : FirstThing
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1566,16 +1654,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonExceptionTypesWithNamesSuffixedWithExceptionProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstException
-    {
-    }
-    public class SecondException : FirstException
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstException
+                {
+                }
+                public class SecondException : FirstException
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1603,16 +1693,18 @@ namespace ClassLibrary1
     [Fact]
     public void EventArgsTypesWithNamesSuffixedWithEventArgsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstEventArgs : EventArgs
-    {
-    }
-    public class SecondEventArgs : FirstEventArgs
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstEventArgs : EventArgs
+                {
+                }
+                public class SecondEventArgs : FirstEventArgs
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1620,16 +1712,18 @@ namespace ClassLibrary1
     [Fact]
     public void EventArgsTypesWithNamesNotSuffixedWithEventArgsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstArgs : EventArgs
-    {
-    }
-    public class SecondArgs : FirstArgs
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstArgs : EventArgs
+                {
+                }
+                public class SecondArgs : FirstArgs
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1657,16 +1751,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonEventArgsTypesWithNamesNotSuffixedWithEventArgsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstThing
-    {
-    }
-    public class SecondThing : FirstThing
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstThing
+                {
+                }
+                public class SecondThing : FirstThing
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1674,16 +1770,18 @@ namespace ClassLibrary1
     [Fact]
     public void NonEventArgsTypesWithNamesSuffixedWithEventArgsProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FirstEventArgs
-    {
-    }
-    public class SecondEventArgs : FirstEventArgs
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FirstEventArgs
+                {
+                }
+                public class SecondEventArgs : FirstEventArgs
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1711,18 +1809,20 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsReturningATaskWithNamesSuffixedWithAsyncDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public Task<bool> DoSomethingAsync() { return Task.FromResult(true); }
-        protected async Task DoSomething2Async() { }
-        private async void DoSomething3Async() { }
-        private T DoSomething4Async<T>(T original) where T : Task { return original; }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public Task<bool> DoSomethingAsync() { return Task.FromResult(true); }
+                    protected async Task DoSomething2Async() { }
+                    private async void DoSomething3Async() { }
+                    private T DoSomething4Async<T>(T original) where T : Task { return original; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1730,17 +1830,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsReturningATaskWithNamesNotSuffixedWithAsyncProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public Task DoSomething() { return Task.FromResult(true); }
-        protected async Task DoSomething2() { }
-        private async void DoSomething3() { }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public Task DoSomething() { return Task.FromResult(true); }
+                    protected async Task DoSomething2() { }
+                    private async void DoSomething3() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1768,17 +1870,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsNotReturningATaskWithNamesNotSuffixedWithAsyncDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public bool DoSomething() { return true; }
-        protected bool DoSomething2() { return true; }
-        private void DoSomething3() { }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public bool DoSomething() { return true; }
+                    protected bool DoSomething2() { return true; }
+                    private void DoSomething3() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -1786,17 +1890,19 @@ namespace ClassLibrary1
     [Fact]
     public void MethodsNotReturningATaskWithNamesSuffixedWithAsyncProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Threading.Tasks;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public bool DoSomethingAsync() { return true; }
-        protected bool DoSomething2Async() { return true; }
-        private void DoSomething3Async() { }
-    }
-}";
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public bool DoSomethingAsync() { return true; }
+                    protected bool DoSomething2Async() { return true; }
+                    private void DoSomething3Async() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1824,12 +1930,14 @@ namespace ClassLibrary1
     [Fact]
     public void ClassWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
     {
-        string code = @"namespace Test
-{
-    public class Test
-    {
-    }
-}";
+        string code = """
+            namespace Test
+            {
+                public class Test
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1847,12 +1955,14 @@ namespace ClassLibrary1
     [Fact]
     public void StructWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
     {
-        string code = @"namespace Test
-{
-    public struct Test
-    {
-    }
-}";
+        string code = """
+            namespace Test
+            {
+                public struct Test
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1870,12 +1980,14 @@ namespace ClassLibrary1
     [Fact]
     public void EnumWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
     {
-        string code = @"namespace Test
-{
-    public enum Test
-    {
-    }
-}";
+        string code = """
+            namespace Test
+            {
+                public enum Test
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -1893,12 +2005,14 @@ namespace ClassLibrary1
     [Fact]
     public void InterfaceWithNameThatEqualsContainingNamespaceNameProducesDiagnostics()
     {
-        string code = @"namespace ITest
-{
-    public interface ITest
-    {
-    }
-}";
+        string code = """
+            namespace ITest
+            {
+                public interface ITest
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

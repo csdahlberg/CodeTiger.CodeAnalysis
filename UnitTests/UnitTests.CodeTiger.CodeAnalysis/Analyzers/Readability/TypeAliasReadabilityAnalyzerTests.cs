@@ -11,16 +11,18 @@ public class TypeAliasReadabilityAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void BuiltInTypeAliasesDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void DoSomething(int firstValue, int secondValue)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void DoSomething(int firstValue, int secondValue)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
     }
@@ -28,17 +30,20 @@ namespace ClassLibrary1
     [Fact]
     public void DotNetTypeNamesInDocumentationCommentsDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    /// <summary>Does something with <see cref=""Int32""/> or <see cref=""Nullable{Int32}""/> values.</summary>
-    public class TestClass
-    {
-        public void DoSomething(int firstValue, int secondValue)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                /// <summary>Does something with <see cref="Int32"/> or <see cref="Nullable{Int32}"/> values.
+                /// </summary>
+                public class TestClass
+                {
+                    public void DoSomething(int firstValue, int secondValue)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
     }
@@ -46,16 +51,18 @@ namespace ClassLibrary1
     [Fact]
     public void ComparisonsWithLiteralOnLeftProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void DoSomething(Int32 firstValue, Int32 secondValue)
-        {
-        }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void DoSomething(Int32 firstValue, Int32 secondValue)
+                    {
+                    }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

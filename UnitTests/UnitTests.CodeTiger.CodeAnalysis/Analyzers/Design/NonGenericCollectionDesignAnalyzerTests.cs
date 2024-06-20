@@ -10,18 +10,20 @@ public class NonGenericCollectionDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void GenericCollectionsAndPrivateNonGenericStatelessMembersDoNotProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        private List<object> _values = new List<object>();
-        private IList<object> GenericValues => _values;
-        private IList NonGenericValues => _values;
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private List<object> _values = new List<object>();
+                    private IList<object> GenericValues => _values;
+                    private IList NonGenericValues => _values;
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -29,18 +31,20 @@ namespace ClassLibrary1
     [Fact]
     public void NonGenericCollectionsProduceDiagnostics()
     {
-        string code = @"using System;
-using System.Collections;
-using System.Collections.Generic;
-namespace ClassLibrary1
-{
-    public class Thing
-    {
-        private IList _values = new ArrayList();
-        public IList NonGenericValues => _values;
-        public ICollection NonGenericCollection { get; set; }
-    }
-}";
+        string code = """
+            using System;
+            using System.Collections;
+            using System.Collections.Generic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private IList _values = new ArrayList();
+                    public IList NonGenericValues => _values;
+                    public ICollection NonGenericCollection { get; set; }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

@@ -10,14 +10,16 @@ public class AttributeDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void AttributeWithAttributeUsageAttributeDoesNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    [AttributeUsage(AttributeTargets.Assembly)]
-    public class FooAttribute : Attribute
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                [AttributeUsage(AttributeTargets.Assembly)]
+                public class FooAttribute : Attribute
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -25,13 +27,15 @@ namespace ClassLibrary1
     [Fact]
     public void AttributeWithoutAttributeUsageAttributeProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class FooAttribute : Attribute
-    {
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public class FooAttribute : Attribute
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

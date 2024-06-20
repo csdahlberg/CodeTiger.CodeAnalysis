@@ -11,24 +11,26 @@ public class ComparisonReadabilityAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void ComparisonsWithLiteralOnRightDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
-        {
-            if (charValue <= 'C'
-                || boolValue == true
-                || boolValue != false
-                || stringValue == null
-                || stringValue != """"
-                || intValue > 1)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class TestClass
+                {
+                    public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
+                    {
+                        if (charValue <= 'C'
+                            || boolValue == true
+                            || boolValue != false
+                            || stringValue == null
+                            || stringValue != ""
+                            || intValue > 1)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
     }
@@ -36,24 +38,26 @@ namespace ClassLibrary1
     [Fact]
     public void ComparisonsWithLiteralOnLeftProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
-        {
-            if ('C' >= charValue
-                || true == boolValue
-                || false != boolValue
-                || null == stringValue
-                || """" != stringValue
-                || 1 < intValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class TestClass
+                {
+                    public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
+                    {
+                        if ('C' >= charValue
+                            || true == boolValue
+                            || false != boolValue
+                            || null == stringValue
+                            || "" != stringValue
+                            || 1 < intValue)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -121,28 +125,30 @@ namespace ClassLibrary1
     [Fact]
     public void ComparisonsWithConstantOnRightDoesNotProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        const char charConstant = 'C';
-        const bool boolConstant = true;
-        const string stringConstant = """";
-        const int intConstant = 1;
-        public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
-        {
-            if (charValue <= charConstant
-                || boolValue == boolConstant
-                || boolValue != boolConstant
-                || stringValue == stringConstant
-                || stringValue != stringConstant
-                || intValue > intConstant)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class TestClass
+                {
+                    const char charConstant = 'C';
+                    const bool boolConstant = true;
+                    const string stringConstant = "";
+                    const int intConstant = 1;
+                    public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
+                    {
+                        if (charValue <= charConstant
+                            || boolValue == boolConstant
+                            || boolValue != boolConstant
+                            || stringValue == stringConstant
+                            || stringValue != stringConstant
+                            || intValue > intConstant)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(Tuple.Create("TestFile.cs", code));
     }
@@ -150,28 +156,30 @@ namespace ClassLibrary1
     [Fact]
     public void ComparisonsWithConstantOnLeftProduceDiagnostics()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        const char charConstant = 'C';
-        const bool boolConstant = true;
-        const string stringConstant = """";
-        const int intConstant = 1;
-        public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
-        {
-            if (charConstant >= charValue
-                || boolConstant == boolValue
-                || boolConstant != boolValue
-                || stringConstant == stringValue
-                || stringConstant != stringValue
-                || intConstant < intValue)
+        string code = """
+            using System;
+            namespace ClassLibrary1
             {
+                public class TestClass
+                {
+                    const char charConstant = 'C';
+                    const bool boolConstant = true;
+                    const string stringConstant = "";
+                    const int intConstant = 1;
+                    public void DoSomething(char charValue, bool boolValue, string stringValue, int intValue)
+                    {
+                        if (charConstant >= charValue
+                            || boolConstant == boolValue
+                            || boolConstant != boolValue
+                            || stringConstant == stringValue
+                            || stringConstant != stringValue
+                            || intConstant < intValue)
+                        {
+                        }
+                    }
+                }
             }
-        }
-    }
-}";
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

@@ -10,13 +10,15 @@ public class BlankLineAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void FileThatDoesNotStartWithBlankLineDoesNotProduceDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-    }
-}
-";
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -24,14 +26,16 @@ public class BlankLineAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void FileThatStartsWithBlankLineProducesDiagnostic()
     {
-        string code = @"
-namespace ClassLibrary1
-{
-    public class TestClass
-    {
-    }
-}
-";
+        string code = """
+
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -49,13 +53,15 @@ namespace ClassLibrary1
     [Fact]
     public void FileThatEndsWithBlankLineDoesNotProduceDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-    }
-}
-";
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -63,12 +69,14 @@ namespace ClassLibrary1
     [Fact]
     public void FileThatDoesNotEndWithBlankLineProducesDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-    }
-}";
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
@@ -86,16 +94,18 @@ namespace ClassLibrary1
     [Fact]
     public void CodeThatDoesNotHaveConsecutiveBlankLinesDoesNotProduceDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public void DoSomething()
-        {
-        }
-    }
-}
-";
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public void DoSomething()
+                    {
+                    }
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -103,25 +113,27 @@ namespace ClassLibrary1
     [Fact]
     public void CodeThatHasConsecutiveBlankLinesInStringLiteralsDoesNotProduceDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public const string StringField = @""
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public const string StringField = @"
 
 
-"";
+            ";
 
-        public void DoSomething()
-        {
-            string stringVariable = @""
+                    public void DoSomething()
+                    {
+                        string stringVariable = @"
 
 
-"";
-        }
-    }
-}
-";
+            ";
+                    }
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -159,23 +171,25 @@ namespace ClassLibrary1
     [Fact]
     public void CodeThatHasConsecutiveBlankLinesProducesDiagnostic()
     {
-        string code = @"namespace ClassLibrary1
-{
-    public class TestClass
-    {
-        public string Name { get; set; }
+        string code = """
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public string Name { get; set; }
 
 
-        public void DoSomething()
-        {
-            int i = 1;
+                    public void DoSomething()
+                    {
+                        int i = 1;
 
 
-            return;
-        }
-    }
-}
-";
+                        return;
+                    }
+                }
+            }
+
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult

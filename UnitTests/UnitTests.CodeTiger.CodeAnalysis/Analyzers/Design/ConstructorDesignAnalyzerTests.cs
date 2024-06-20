@@ -10,16 +10,18 @@ public class ConstructorDesignAnalyzerTests : DiagnosticVerifier
     [Fact]
     public void NonPublicConstructorsDoNotProduceDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class Thing
-    {
-        internal Thing() { }
-        protected Thing(bool flag) : this(flag.ToString()) { }
-        private Thing(string value) { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class Thing
+                {
+                    internal Thing() { }
+                    protected Thing(bool flag) : this(flag.ToString()) { }
+                    private Thing(string value) { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code);
     }
@@ -27,14 +29,16 @@ namespace ClassLibrary1
     [Fact]
     public void PublicConstructorProducesDiagnostic()
     {
-        string code = @"using System;
-namespace ClassLibrary1
-{
-    public abstract class Thing
-    {
-        public Thing() { }
-    }
-}";
+        string code = """
+            using System;
+            namespace ClassLibrary1
+            {
+                public abstract class Thing
+                {
+                    public Thing() { }
+                }
+            }
+            """;
 
         VerifyCSharpDiagnostic(code,
             new DiagnosticResult
