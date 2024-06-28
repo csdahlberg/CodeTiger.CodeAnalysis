@@ -7,7 +7,7 @@
     <Description>Contains unit tests for the CodeTiger.CodeAnalysis project.</Description>
     <Company>CodeTiger</Company>
     <Product>CodeTiger Code Analysis</Product>
-    <Copyright>Copyright © 2015 Chris Dahlberg</Copyright>
+    <Copyright>Copyright © 2015-$([System.DateTime]::Now.ToString('yyyy')) Chris Dahlberg</Copyright>
     <AssemblyVersion>0.0.1</AssemblyVersion>
     <FileVersion>0.0.1.0</FileVersion>
     <InformationalVersion>0.0.1-unofficial</InformationalVersion>

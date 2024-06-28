@@ -17,7 +17,7 @@
 
 While not intended to be an exact replacement for StyleCop, many of the individual diagnostics are similar to StyleCop rules.</Description>
     
-    <Copyright>Copyright 2015 © Chris Dahlberg</Copyright>
+    <Copyright>Copyright 2015-$([System.DateTime]::Now.ToString('yyyy')) © Chris Dahlberg</Copyright>
     <Title>CodeTiger Code Analysis</Title>
     <DevelopmentDependency>true</DevelopmentDependency>
     <PackageProjectUrl>https://github.com/csdahlberg/CodeTiger.CodeAnalysis</PackageProjectUrl>
