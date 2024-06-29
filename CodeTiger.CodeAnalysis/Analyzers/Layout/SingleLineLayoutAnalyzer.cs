@@ -223,7 +223,7 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
         var node = (BaseTypeDeclarationSyntax)context.Node;
 
         var firstNonAttributeToken = node.ChildNodesAndTokens()
-            .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+            .SkipWhile(x => x.IsKind(SyntaxKind.AttributeList))
             .FirstOrDefault();
         if (firstNonAttributeToken == null)
         {
@@ -250,7 +250,7 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
         }
 
         var firstNonAttributeToken = node.ChildNodesAndTokens()
-            .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+            .SkipWhile(x => x.IsKind(SyntaxKind.AttributeList))
             .FirstOrDefault();
         if (firstNonAttributeToken == null)
         {
@@ -320,7 +320,7 @@ public class SingleLineLayoutAnalyzer : DiagnosticAnalyzer
         }
 
         var firstNonAttributeToken = node.ChildNodesAndTokens()
-            .SkipWhile(x => x.Kind() == SyntaxKind.AttributeList)
+            .SkipWhile(x => x.IsKind(SyntaxKind.AttributeList))
             .FirstOrDefault();
         if (firstNonAttributeToken == null)
         {

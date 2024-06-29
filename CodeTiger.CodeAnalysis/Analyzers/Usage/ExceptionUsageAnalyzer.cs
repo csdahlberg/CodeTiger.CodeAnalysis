@@ -126,7 +126,7 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
 
         while (catchExpression != null)
         {
-            if (catchExpression.Kind() == SyntaxKind.CatchClause)
+            if (catchExpression.IsKind(SyntaxKind.CatchClause))
             {
                 return ((CatchClauseSyntax)catchExpression).Declaration?.Identifier;
             }
@@ -160,7 +160,7 @@ public class ExceptionUsageAnalyzer : DiagnosticAnalyzer
             {
                 var declaringReferenceNode = declaringReference.GetSyntax(context.CancellationToken);
 
-                if (declaringReferenceNode.Kind() != SyntaxKind.VariableDeclarator)
+                if (!declaringReferenceNode.IsKind(SyntaxKind.VariableDeclarator))
                 {
                     continue;
                 }

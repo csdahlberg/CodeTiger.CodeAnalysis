@@ -100,7 +100,7 @@ public class BraceLayoutAnalyzer : DiagnosticAnalyzer
         {
             AnalyzeBraces(node.GetLocation().GetLineSpan(), node.Initializer.OpenBraceToken,
                 node.Initializer.CloseBraceToken, context,
-                isForArgument: node.Parent?.Kind() == SyntaxKind.Argument);
+                isForArgument: node.Parent.IsKind(SyntaxKind.Argument));
         }
     }
 
@@ -149,7 +149,7 @@ public class BraceLayoutAnalyzer : DiagnosticAnalyzer
                 break;
         }
 
-        bool isForDoStatement = node.Parent?.Kind() == SyntaxKind.DoStatement;
+        bool isForDoStatement = node.Parent.IsKind(SyntaxKind.DoStatement);
         bool isForArgument = node.Parent is ArgumentSyntax || node.Parent?.Parent is ArgumentSyntax;
 
         AnalyzeBraces(nodeLinePositionSpan, node.OpenBraceToken, node.CloseBraceToken, context,
@@ -318,8 +318,8 @@ public class BraceLayoutAnalyzer : DiagnosticAnalyzer
             }
 
             if (!SyntaxFacts.IsTrivia(previousToken.Kind())
-                && previousToken.Kind() != SyntaxKind.SemicolonToken
-                && previousToken.Kind() != SyntaxKind.ColonToken)
+                && !previousToken.IsKind(SyntaxKind.SemicolonToken)
+                && !previousToken.IsKind(SyntaxKind.ColonToken))
             {
                 return false;
             }
@@ -343,8 +343,8 @@ public class BraceLayoutAnalyzer : DiagnosticAnalyzer
                 return true;
             }
 
-            if (!SyntaxFacts.IsTrivia(nextToken.Kind()) && nextToken.Kind() != SyntaxKind.SemicolonToken
-                && nextToken.Kind() != SyntaxKind.CommaToken && nextToken.Kind() != SyntaxKind.CloseParenToken)
+            if (!SyntaxFacts.IsTrivia(nextToken.Kind()) && !nextToken.IsKind(SyntaxKind.SemicolonToken)
+                && !nextToken.IsKind(SyntaxKind.CommaToken) && !nextToken.IsKind(SyntaxKind.CloseParenToken))
             {
                 return false;
             }

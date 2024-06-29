@@ -41,7 +41,7 @@ public class UnsafeReliabilityAnalyzer : DiagnosticAnalyzer
     {
         var root = context.Tree.GetRoot(context.CancellationToken);
 
-        foreach (var unsafeToken in root.DescendantTokens().Where(x => x.Kind() == SyntaxKind.UnsafeKeyword))
+        foreach (var unsafeToken in root.DescendantTokens().Where(x => x.IsKind(SyntaxKind.UnsafeKeyword)))
         {
             context.ReportDiagnostic(Diagnostic.Create(UnsafeCodeShouldNotBeUsedDescriptor,
                 unsafeToken.GetLocation()));

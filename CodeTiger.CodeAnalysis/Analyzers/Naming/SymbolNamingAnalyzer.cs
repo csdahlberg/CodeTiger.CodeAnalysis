@@ -233,7 +233,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
     private static void AnalyzeFieldName(SyntaxNodeAnalysisContext context)
     {
         var fieldDeclarationNode = (FieldDeclarationSyntax)context.Node;
-        if (fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.ConstKeyword))
+        if (fieldDeclarationNode.Modifiers.Any(x => x.IsKind(SyntaxKind.ConstKeyword)))
         {
             foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
             {
@@ -245,7 +245,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
                 }
             }
         }
-        else if (fieldDeclarationNode.Modifiers.Any(x => x.Kind() == SyntaxKind.PrivateKeyword))
+        else if (fieldDeclarationNode.Modifiers.Any(x => x.IsKind(SyntaxKind.PrivateKeyword)))
         {
             foreach (var fieldDeclaration in fieldDeclarationNode.Declaration.Variables)
             {
@@ -714,7 +714,7 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
         SyntaxToken typeIdentifier)
     {
         var containingNode = context.Node.Parent;
-        if (containingNode?.Kind() == SyntaxKind.NamespaceDeclaration)
+        if (containingNode.IsKind(SyntaxKind.NamespaceDeclaration))
         {
             var containingNamespaceDeclarationNode = (NamespaceDeclarationSyntax?)context.Node.Parent;
             if (string.Equals(typeIdentifier.ValueText,

@@ -86,7 +86,7 @@ public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var node in root.ChildNodes())
         {
-            if (node.Kind() == SyntaxKind.UsingDirective)
+            if (node.IsKind(SyntaxKind.UsingDirective))
             {
                 if (wasNamespaceEncountered)
                 {
@@ -95,7 +95,7 @@ public class UsingDirectiveOrderAnalyzer : DiagnosticAnalyzer
                         UsingDirectivesShouldBeBeforeNamespaceDeclarationsDescriptor, node.GetLocation()));
                 }
             }
-            else if (node.Kind() == SyntaxKind.NamespaceDeclaration)
+            else if (node.IsKind(SyntaxKind.NamespaceDeclaration))
             {
                 foreach (var nestedUsingDirective in node.DescendantNodes().OfType<UsingDirectiveSyntax>())
                 {

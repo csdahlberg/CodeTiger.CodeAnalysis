@@ -64,13 +64,13 @@ public class DynamicReliabilityAnalyzer : DiagnosticAnalyzer
         }
 
         // For parameters, try to get the containing method or property
-        while ((parentNode.Kind() == SyntaxKind.Parameter || parentNode.Kind() == SyntaxKind.ParameterList)
+        while ((parentNode.IsKind(SyntaxKind.Parameter) || parentNode.IsKind(SyntaxKind.ParameterList))
             && parentNode.Parent is not null)
         {
             parentNode = parentNode.Parent;
         }
 
-        if (parentNode.Kind() == SyntaxKind.MethodDeclaration)
+        if (parentNode.IsKind(SyntaxKind.MethodDeclaration))
         {
             var parentMethodNode = (MethodDeclarationSyntax)parentNode;
             var parentMethod = context.SemanticModel
@@ -86,7 +86,7 @@ public class DynamicReliabilityAnalyzer : DiagnosticAnalyzer
                 return true;
             }
         }
-        else if (parentNode.Kind() == SyntaxKind.PropertyDeclaration)
+        else if (parentNode.IsKind(SyntaxKind.PropertyDeclaration))
         {
             var parentPropertyNode = (PropertyDeclarationSyntax)parentNode;
             var parentProperty = context.SemanticModel

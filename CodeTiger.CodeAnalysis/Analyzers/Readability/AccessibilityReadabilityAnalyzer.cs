@@ -138,7 +138,7 @@ public class AccessibilityReadabilityAnalyzer : DiagnosticAnalyzer
 
     private static bool IsStaticConstructor(SyntaxNode node, SyntaxTokenList modifiers)
     {
-        return node.Kind() == SyntaxKind.ConstructorDeclaration
-            && modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword);
+        return node.IsKind(SyntaxKind.ConstructorDeclaration)
+            && modifiers.Any(x => x.IsKind(SyntaxKind.StaticKeyword));
     }
 }

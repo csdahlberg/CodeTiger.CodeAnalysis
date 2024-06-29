@@ -68,7 +68,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
     {
         var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-        if (!methodDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.NewKeyword))
+        if (!methodDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.NewKeyword)))
         {
             return;
         }
@@ -129,7 +129,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
     {
         var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-        if (!propertyDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.NewKeyword))
+        if (!propertyDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.NewKeyword)))
         {
             return;
         }
@@ -179,7 +179,7 @@ public class InheritedMemberDesignAnalyzer : DiagnosticAnalyzer
     {
         var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
-        if (!fieldDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.NewKeyword))
+        if (!fieldDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.NewKeyword)))
         {
             return;
         }

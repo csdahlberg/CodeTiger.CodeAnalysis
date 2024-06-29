@@ -157,7 +157,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
             return false;
         }
 
-        if (context.Node.Kind() == SyntaxKind.MethodDeclaration)
+        if (context.Node.IsKind(SyntaxKind.MethodDeclaration))
         {
             var taskType = context.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
             var returnType = context.SemanticModel.GetSymbolInfo(returnTypeNode, context.CancellationToken)

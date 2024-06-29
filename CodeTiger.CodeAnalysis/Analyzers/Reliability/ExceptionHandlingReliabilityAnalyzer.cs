@@ -44,7 +44,7 @@ public class ExceptionHandlingReliabilityAnalyzer : DiagnosticAnalyzer
         foreach (var catchClause in context.CodeBlock.DescendantNodes().OfType<CatchClauseSyntax>())
         {
             if (!catchClause.Block.DescendantNodesAndSelf()
-                .Any(x => x.Kind() != SyntaxKind.EmptyStatement && x.Kind() != SyntaxKind.Block))
+                .Any(x => !x.IsKind(SyntaxKind.EmptyStatement) && !x.IsKind(SyntaxKind.Block)))
             {
                 context.ReportDiagnostic(Diagnostic.Create(EmptyCatchBlocksShouldNotBeUsedDescriptor,
                     catchClause.CatchKeyword.GetLocation()));

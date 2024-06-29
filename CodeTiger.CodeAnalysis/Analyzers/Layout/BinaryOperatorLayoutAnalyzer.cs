@@ -183,14 +183,14 @@ public class BinaryOperatorLayoutAnalyzer : DiagnosticAnalyzer
         var nextToken = token.GetNextToken();
         while (nextToken != default(SyntaxToken))
         {
-            if (nextToken.Kind() == SyntaxKind.OpenBraceToken)
+            if (nextToken.IsKind(SyntaxKind.OpenBraceToken))
             {
                 return true;
             }
 
             if (!SyntaxFacts.IsTrivia(nextToken.Kind()))
             {
-                return nextToken.Kind() == SyntaxKind.OpenBraceToken;
+                return nextToken.IsKind(SyntaxKind.OpenBraceToken);
             }
 
             nextToken = nextToken.GetNextToken();

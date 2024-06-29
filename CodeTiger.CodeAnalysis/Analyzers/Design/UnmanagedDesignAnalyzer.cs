@@ -96,12 +96,12 @@ public class UnmanagedDesignAnalyzer : DiagnosticAnalyzer
             case SyntaxKind.FieldDeclaration:
                 {
                     var fieldDeclaration = (BaseFieldDeclarationSyntax)memberDeclaration;
-                    return !fieldDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword);
+                    return !fieldDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.StaticKeyword));
                 }
             case SyntaxKind.PropertyDeclaration:
                 {
                     var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
-                    return !propertyDeclaration.Modifiers.Any(x => x.Kind() == SyntaxKind.StaticKeyword)
+                    return !propertyDeclaration.Modifiers.Any(x => x.IsKind(SyntaxKind.StaticKeyword))
                         && propertyDeclaration.ExpressionBody == null
                         && propertyDeclaration.AccessorList?.Accessors.All(x => x.Body == null) == true;
                 }

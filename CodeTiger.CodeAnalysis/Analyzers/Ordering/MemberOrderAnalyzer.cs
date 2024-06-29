@@ -221,7 +221,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var field in node.Members.OfType<FieldDeclarationSyntax>())
         {
-            if (field.Modifiers.Any(t => t.Kind() == SyntaxKind.ConstKeyword))
+            if (field.Modifiers.Any(t => t.IsKind(SyntaxKind.ConstKeyword)))
             {
                 if (wasNonConstFieldEncountered)
                 {
@@ -244,7 +244,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var field in node.Members.OfType<FieldDeclarationSyntax>())
         {
-            if (field.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+            if (field.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword)))
             {
                 if (wasInstanceFieldEncountered)
                 {
@@ -252,7 +252,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
                         StaticFieldsShouldBeBeforeInstanceFieldsDescriptor, field.GetIdentifierLocation()));
                 }
             }
-            else if (!field.Modifiers.Any(t => t.Kind() == SyntaxKind.ConstKeyword))
+            else if (!field.Modifiers.Any(t => t.IsKind(SyntaxKind.ConstKeyword)))
             {
                 wasInstanceFieldEncountered = true;
             }
@@ -267,9 +267,9 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var field in node.Members.OfType<FieldDeclarationSyntax>())
         {
-            bool isFieldStatic = field.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword);
+            bool isFieldStatic = field.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword));
 
-            if (field.Modifiers.Any(t => t.Kind() == SyntaxKind.ReadOnlyKeyword))
+            if (field.Modifiers.Any(t => t.IsKind(SyntaxKind.ReadOnlyKeyword)))
             {
                 if (isFieldStatic && wasStaticMutableFieldEncountered)
                 {
@@ -284,7 +284,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
                         "instance"));
                 }
             }
-            else if (!field.Modifiers.Any(t => t.Kind() == SyntaxKind.ConstKeyword))
+            else if (!field.Modifiers.Any(t => t.IsKind(SyntaxKind.ConstKeyword)))
             {
                 if (isFieldStatic)
                 {
@@ -306,9 +306,9 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var field in node.Members.OfType<FieldDeclarationSyntax>())
         {
-            bool isFieldStatic = field.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword);
+            bool isFieldStatic = field.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword));
 
-            if (!field.Modifiers.Any(t => t.Kind() == SyntaxKind.VolatileKeyword))
+            if (!field.Modifiers.Any(t => t.IsKind(SyntaxKind.VolatileKeyword)))
             {
                 if (isFieldStatic && wasStaticVolatileFieldEncountered)
                 {
@@ -323,7 +323,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
                         "instance"));
                 }
             }
-            else if (!field.Modifiers.Any(t => t.Kind() == SyntaxKind.ConstKeyword))
+            else if (!field.Modifiers.Any(t => t.IsKind(SyntaxKind.ConstKeyword)))
             {
                 if (isFieldStatic)
                 {
@@ -344,7 +344,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var property in node.Members.OfType<PropertyDeclarationSyntax>())
         {
-            if (property.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+            if (property.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword)))
             {
                 if (isInstancePropertyEncountered)
                 {
@@ -367,7 +367,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var constructor in node.Members.OfType<ConstructorDeclarationSyntax>())
         {
-            if (constructor.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+            if (constructor.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword)))
             {
                 if (isInstanceConstructorEncountered)
                 {
@@ -400,7 +400,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
                     continue;
             }
 
-            if (!method.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+            if (!method.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword)))
             {
                 if (isStaticMethodEncountered)
                 {
@@ -422,7 +422,7 @@ public class MemberOrderAnalyzer : DiagnosticAnalyzer
 
         foreach (var classDeclaration in node.Members.OfType<ClassDeclarationSyntax>())
         {
-            if (classDeclaration.Modifiers.Any(t => t.Kind() == SyntaxKind.StaticKeyword))
+            if (classDeclaration.Modifiers.Any(t => t.IsKind(SyntaxKind.StaticKeyword)))
             {
                 if (isInstanceClassEncountered)
                 {

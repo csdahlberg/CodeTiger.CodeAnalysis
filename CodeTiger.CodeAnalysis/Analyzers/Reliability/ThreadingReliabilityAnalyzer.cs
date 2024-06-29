@@ -121,13 +121,13 @@ public class ThreadingReliabilityAnalyzer : DiagnosticAnalyzer
 
     private static bool IsPubliclyAccessible(SemanticModelAnalysisContext context, SyntaxNode node)
     {
-        if (node.Kind() == SyntaxKind.ThisExpression || node.Kind() == SyntaxKind.BaseExpression)
+        if (node.IsKind(SyntaxKind.ThisExpression) || node.IsKind(SyntaxKind.BaseExpression))
         {
             return true;
         }
 
-        if (node.Kind() == SyntaxKind.SimpleMemberAccessExpression
-            || node.Kind() == SyntaxKind.PointerMemberAccessExpression)
+        if (node.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+            || node.IsKind(SyntaxKind.PointerMemberAccessExpression))
         {
             var memberAccessExpression = (MemberAccessExpressionSyntax)node;
 
