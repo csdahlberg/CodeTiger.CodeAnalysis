@@ -25,6 +25,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
     <file src="Build\Release\roslyn2.6\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn2.6\cs\CodeTiger.CodeAnalysis.dll" />
     <file src="Build\Release\roslyn3.8\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn3.8\cs\CodeTiger.CodeAnalysis.dll" />
     <file src="Build\Release\roslyn4.0\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn4.0\cs\CodeTiger.CodeAnalysis.dll" />
+    <file src="Build\Release\roslyn4.4\CodeTiger.CodeAnalysis.dll" target="analyzers\dotnet\roslyn4.4\cs\CodeTiger.CodeAnalysis.dll" />
     <file src="CodeTiger.CodeAnalysis\tools\install.ps1" target="tools\install.ps1" />
     <file src="CodeTiger.CodeAnalysis\tools\uninstall.ps1" target="tools\uninstall.ps1" />
     <file src="CodeTiger.png" target="CodeTiger.png" />

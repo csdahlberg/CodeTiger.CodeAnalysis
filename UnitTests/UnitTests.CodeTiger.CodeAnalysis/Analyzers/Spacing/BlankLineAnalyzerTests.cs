@@ -126,6 +126,36 @@ namespace ClassLibrary1
         VerifyCSharpDiagnostic(code);
     }
 
+#if ROSLYN4_4_OR_HIGHER
+    [Fact]
+    public void CodeThatHasConsecutiveBlankLinesInRawStringDoesNotProduceDiagnostic()
+    {
+        string code = """"
+            namespace ClassLibrary1
+            {
+                public class TestClass
+                {
+                    public const string StringField = """
+
+
+                    """;
+
+                    public void DoSomething()
+                    {
+                        string stringVariable = """
+
+
+                        """;
+                    }
+                }
+            }
+
+            """";
+
+        VerifyCSharpDiagnostic(code);
+    }
+#endif
+
     [Fact]
     public void CodeThatHasConsecutiveBlankLinesProducesDiagnostic()
     {

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- Default to the highest supported version of Roslyn for the best IDE experience. -->
-    <RoslynVersion Condition="'$(RoslynVersion)'==''">4.0</RoslynVersion>
+    <RoslynVersion Condition="'$(RoslynVersion)'==''">4.4</RoslynVersion>
     <BaseIntermediateOutputPath>$(ProjectDir)obj\roslyn$(RoslynVersion)\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
@@ -22,6 +22,12 @@
   <PropertyGroup Condition="'$(RoslynVersion)'=='4.0'">
     <RoslynPackageVersion>4.0.1</RoslynPackageVersion>
     <DefineConstants>$(DefineConstants);ROSLYN4_0;ROSLYN4_0_OR_HIGHER;ROSLYN3_8_OR_HIGHER;ROSLYN2_6_OR_HIGHER</DefineConstants>
+  </PropertyGroup>
+
+  <!-- Visual Studio 2022 17.4 / C# 11.0 -->
+  <PropertyGroup Condition="'$(RoslynVersion)'=='4.4'">
+    <RoslynPackageVersion>4.4.0</RoslynPackageVersion>
+    <DefineConstants>$(DefineConstants);ROSLYN4_4;ROSLYN4_4_OR_HIGHER;ROSLYN4_0_OR_HIGHER;ROSLYN3_8_OR_HIGHER;ROSLYN2_6_OR_HIGHER</DefineConstants>
   </PropertyGroup>
 
 </Project>

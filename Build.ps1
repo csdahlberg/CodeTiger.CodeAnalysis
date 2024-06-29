@@ -76,7 +76,7 @@ if ($SkipDebug) {
     $configurations = @("Debug", "Release")
 }
 
-$roslynVersions = @("2.6", "3.8", "4.0")
+$roslynVersions = @("2.6", "3.8", "4.0", "4.4")
 $roslynVersions | Foreach-Object {
     $roslynVersion = $_
     $configurations | Foreach-Object {
@@ -130,18 +130,22 @@ $roslynVersions | Foreach-Object {
             }
         }
     }
+}
 
-    if (-not $SkipTests) {
-        Write-Host ""
-        Write-Host "Building CodeTiger.CodeAnalysis.SelfTests.sln for the $configuration configuration for Roslyn $roslynVersion..." -ForegroundColor Cyan
+if (-not $SkipTests) {
 
-        $selfTestSlnPath = [IO.Path]::Combine($PSScriptRoot, "SelfTests", "CodeTiger.CodeAnalysis.SelfTests.sln")
+    # Run self-testing with the latest supported version of Roslyn so that newer language features can be used
+    $roslynVersion = "4.4"
 
-        & dotnet @("build", $selfTestSlnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
-        
-        if ($LASTEXITCODE -ne 0) {
-            throw "Building CodeTiger.CodeAnalysis.SelfTests.sln failed."
-        }
+    Write-Host ""
+    Write-Host "Building CodeTiger.CodeAnalysis.SelfTests.sln for the $configuration configuration for Roslyn $roslynVersion..." -ForegroundColor Cyan
+
+    $selfTestSlnPath = [IO.Path]::Combine($PSScriptRoot, "SelfTests", "CodeTiger.CodeAnalysis.SelfTests.sln")
+
+    & dotnet @("build", $selfTestSlnPath, "--verbosity", "$Verbosity", "--configuration", "$configuration", "/p:RoslynVersion=$roslynVersion")
+    
+    if ($LASTEXITCODE -ne 0) {
+        throw "Building CodeTiger.CodeAnalysis.SelfTests.sln failed."
     }
 }
 

@@ -109,6 +109,12 @@ public class BlankLineAnalyzer : DiagnosticAnalyzer
             case SyntaxKind.InterpolatedStringTextToken:
             case SyntaxKind.InterpolatedStringToken:
             case SyntaxKind.StringLiteralToken:
+#if ROSLYN4_4_OR_HIGHER
+            case SyntaxKind.MultiLineRawStringLiteralToken:
+            case SyntaxKind.SingleLineRawStringLiteralToken:
+            case SyntaxKind.Utf8MultiLineRawStringLiteralToken:
+            case SyntaxKind.Utf8SingleLineRawStringLiteralToken:
+#endif
                 return true;
             default:
                 return false;
