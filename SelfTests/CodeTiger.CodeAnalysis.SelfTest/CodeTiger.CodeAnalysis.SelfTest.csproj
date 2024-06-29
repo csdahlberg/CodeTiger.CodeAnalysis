@@ -5,7 +5,7 @@
     <TargetFramework Condition="'$(RoslynVersion)'!='2.6'">netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <DocumentationFile>bin\$(Configuration)\roslyn$(RoslynVersion)\$(TargetFramework)\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
+    <DocumentationFile>bin\$(Configuration)\roslyn$(RoslynVersion)\CodeTiger.CodeAnalysis.SelfTest.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

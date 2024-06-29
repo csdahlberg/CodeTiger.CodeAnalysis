@@ -4,6 +4,9 @@
     <!-- Default to the highest supported version of Roslyn for the best IDE experience. -->
     <RoslynVersion Condition="'$(RoslynVersion)'==''">4.4</RoslynVersion>
     <BaseIntermediateOutputPath>$(ProjectDir)obj\roslyn$(RoslynVersion)\</BaseIntermediateOutputPath>
+
+    <!-- Disable appending things like 'netstandard2.0' to output paths -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <!-- Visual Studio 2017 15.5 / C# 7.2 -->
