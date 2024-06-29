@@ -105,7 +105,7 @@ $roslynVersions | Foreach-Object {
             if (-not $SkipTests) {
                 Write-Host ""
                 Write-Host "Running unit tests for CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
-                $testDllPath = [IO.Path]::Combine($PSScriptRoot, "Build", $configuration, "roslyn$roslynVersion", "net7.0", "UnitTests.CodeTiger.CodeAnalysis.dll")
+                $testDllPath = [IO.Path]::Combine($PSScriptRoot, "Build", $configuration, "roslyn$roslynVersion", "UnitTests.CodeTiger.CodeAnalysis.dll")
                 & $vstestPath @($testDllPath, "/Parallel", "/Logger:Console;Verbosity=$verbosity")
                 
                 if ($LASTEXITCODE -ne 0)
@@ -134,6 +134,7 @@ $roslynVersions | Foreach-Object {
 
 if (-not $SkipTests) {
 
+    $configuration = 'Release'
     # Run self-testing with the latest supported version of Roslyn so that newer language features can be used
     $roslynVersion = "4.4"
 
