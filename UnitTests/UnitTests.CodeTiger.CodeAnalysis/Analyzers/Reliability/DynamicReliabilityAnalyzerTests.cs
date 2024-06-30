@@ -35,6 +35,33 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
+    public void MethodWithArrayOfDynamicReturnTypeProducesDiagnostic()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public dynamic[] GetValue() { return new[] { new ExpandoObject() }; }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2010",
+                Message = "Dynamic should not be used",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 6, 16)
+                }
+            });
+    }
+
+    [Fact]
     public void MethodWithDynamicParameterTypeProducesDiagnostic()
     {
         string code = """
@@ -44,6 +71,33 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
                 public class Thing
                 {
                     public void SetValue(dynamic value) { }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2010",
+                Message = "Dynamic should not be used",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 6, 30)
+                }
+            });
+    }
+
+    [Fact]
+    public void MethodWithArrayOfDynamicParameterTypeProducesDiagnostic()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public void SetValue(dynamic[] value) { }
                 }
             }
             """;
@@ -89,6 +143,33 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
+    public void PropertyWithArrayOfDynamicTypeProducesDiagnostic()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    public dynamic[] Value => new[] { new ExpandoObject() };
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2010",
+                Message = "Dynamic should not be used",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 6, 16)
+                }
+            });
+    }
+
+    [Fact]
     public void FieldWithDynamicTypeProducesDiagnostic()
     {
         string code = """
@@ -98,6 +179,33 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
                 public class Thing
                 {
                     private dynamic _value;
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code,
+            new DiagnosticResult
+            {
+                Id = "CT2010",
+                Message = "Dynamic should not be used",
+                Severity = DiagnosticSeverity.Warning,
+                Locations = new[]
+                {
+                    new DiagnosticResultLocation("Test0.cs", 6, 17)
+                }
+            });
+    }
+
+    [Fact]
+    public void FieldWithArrayOfDynamicTypeProducesDiagnostic()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+                    private dynamic[] _value;
                 }
             }
             """;
@@ -140,6 +248,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
+    public void MethodInheritedFromInterfaceWithArrayOfDynamicReturnTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    dynamic[] GetValue();
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing : IThing
+                {
+                    public dynamic[] GetValue() { return new[] { new ExpandoObject() }; }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
     public void MethodInheritedFromBaseTypeWithDynamicReturnTypeDoesNotProduceDiagnostics()
     {
         string code = """
@@ -156,6 +288,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
                 public class Thing2 : Thing
                 {
                     public override dynamic GetValue() { return new ExpandoObject(); }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void MethodInheritedFromBaseTypeWithArrayOfDynamicReturnTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual dynamic[] GetValue() { return new[] { new ExpandoObject() }; }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing2 : Thing
+                {
+                    public override dynamic[] GetValue() { return new[] { new ExpandoObject() }; }
                 }
             }
             """;
@@ -188,6 +344,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
+    public void MethodInheritedFromInterfaceWithArrayOfDynamicParameterTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    void SetValue(dynamic[] value);
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing : IThing
+                {
+                    public void SetValue(dynamic[] value) { }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
     public void MethodInheritedFromBaseTypeWithDynamicParameterTypeDoesNotProduceDiagnostics()
     {
         string code = """
@@ -204,6 +384,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
                 public class Thing2 : Thing
                 {
                     public override void SetValue(dynamic value) { }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void MethodInheritedFromBaseTypeWithArrayOfDynamicParameterTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual void SetValue(dynamic[] value) { }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing2 : Thing
+                {
+                    public override void SetValue(dynamic[] value) { }
                 }
             }
             """;
@@ -236,6 +440,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
+    public void PropertyInheritedFromInterfaceWithArrayOfDynamicTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public interface IThing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    dynamic[] Value { get; }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing : IThing
+                {
+                    public dynamic[] Value => new[] { new ExpandoObject() };
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
     public void PropertyInheritedFromBaseTypeWithDynamicTypeDoesNotProduceDiagnostics()
     {
         string code = """
@@ -252,6 +480,30 @@ public class DynamicReliabilityAnalyzerTests : DiagnosticVerifier
                 public class Thing2 : Thing
                 {
                     public override dynamic Value => new ExpandoObject();
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
+    public void PropertyInheritedFromBaseTypeWithArrayOfDynamicTypeDoesNotProduceDiagnostics()
+    {
+        string code = """
+            using System.Dynamic;
+            namespace ClassLibrary1
+            {
+                public class Thing
+                {
+            #pragma warning disable CT2010 // Dynamic should not be used
+                    public virtual dynamic[] Value { get; }
+            #pragma warning restore CT2010 // Dynamic should not be used
+                }
+
+                public class Thing2 : Thing
+                {
+                    public override dynamic[] Value => new[] { new ExpandoObject() };
                 }
             }
             """;

@@ -64,8 +64,10 @@ public class DynamicReliabilityAnalyzer : DiagnosticAnalyzer
         }
 
         // For parameters, try to get the containing method or property
-        while ((parentNode.IsKind(SyntaxKind.Parameter) || parentNode.IsKind(SyntaxKind.ParameterList))
-            && parentNode.Parent is not null)
+        while (parentNode.Parent is not null
+            && (parentNode.IsKind(SyntaxKind.Parameter)
+                || parentNode.IsKind(SyntaxKind.ParameterList)
+                || parentNode.IsKind(SyntaxKind.ArrayType)))
         {
             parentNode = parentNode.Parent;
         }
