@@ -77,6 +77,7 @@ if ($SkipDebug) {
 }
 
 $roslynVersions = @("2.6", "3.8", "4.0", "4.4")
+$latestRoslynVersion = $roslynVersions[-1]
 $roslynVersions | Foreach-Object {
     $roslynVersion = $_
     $configurations | Foreach-Object {
@@ -87,7 +88,7 @@ $roslynVersions | Foreach-Object {
 
         $slnPath = [IO.Path]::Combine($PSScriptRoot, "CodeTiger.CodeAnalysis.sln")
 
-        if (-not $SkipVsix) {
+        if ($roslynVersion -eq $latestRoslynVersion -and -not $SkipVsix) {
 
             if ($CleanBeforeBuilding) {
                 Write-Host "Cleaning CodeTiger.CodeAnalysis.sln..." -ForegroundColor Cyan
