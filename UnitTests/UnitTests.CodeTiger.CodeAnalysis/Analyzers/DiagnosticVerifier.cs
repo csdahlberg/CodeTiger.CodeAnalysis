@@ -297,17 +297,15 @@ public abstract class DiagnosticVerifier
         {
             string diagnosticsOutput = actualResults.Any()
                 ? FormatDiagnostics(analyzer, actualResults.ToArray())
-                : "    NONE.";
+                : "NONE.";
 
-            Assert.True(false,
-                string.Format("Mismatch between number of diagnostics returned, expected \"{0}\" actual \"{1}"
-                + """
-                "
+            Assert.Fail(
+                $"""
+                Mismatch between number of diagnostics returned, expected {expectedCount}, actual {actualCount}
 
                 Diagnostics:
-                {2}
-
-                """, expectedCount, actualCount, diagnosticsOutput));
+                    {diagnosticsOutput}
+                """);
         }
 
         for (int i = 0; i < expectedResults.Length; i++)
@@ -319,14 +317,13 @@ public abstract class DiagnosticVerifier
             {
                 if (actual.Location != Location.None)
                 {
-                    Assert.True(false,
-                        string.Format("""
-                            Expected:
+                    Assert.Fail(
+                        $"""
+                        Expected:
                             A project diagnostic with No location
-                            Actual:
-                            {0}
-                            """,
-                        FormatDiagnostics(analyzer, actual)));
+                        Actual:
+                            {FormatDiagnostics(analyzer, actual)}
+                        """);
                 }
             }
             else
@@ -336,15 +333,14 @@ public abstract class DiagnosticVerifier
 
                 if (additionalLocations.Length != expected.Locations.Length - 1)
                 {
-                    Assert.True(false,
-                        string.Format(
-                            """
-                            Expected {0} additional locations but got {1} for Diagnostic:
-                                {2}
+                    expectedCount = expected.Locations.Length - 1;
+                    actualCount = additionalLocations.Length;
 
-                            """,
-                            expected.Locations.Length - 1, additionalLocations.Length,
-                            FormatDiagnostics(analyzer, actual)));
+                    Assert.Fail(
+                        $"""
+                        Expected {expectedCount} additional locations but got {actualCount} for Diagnostic:
+                            {FormatDiagnostics(analyzer, actual)}
+                        """);
                 }
 
                 for (int j = 0; j < additionalLocations.Length; ++j)
@@ -356,48 +352,35 @@ public abstract class DiagnosticVerifier
 
             if (actual.Id != expected.Id)
             {
-                Assert.True(false,
-                    string.Format(
-                        """
-                        Expected diagnostic id to be "{0}" was "{1}"
+                Assert.Fail(
+                    $"""
+                    Expected diagnostic id to be "{expected.Id}" was "{actual.Id}"
 
-                        Diagnostic:
-                            {2}
-
-                        """,
-                        expected.Id, actual.Id, FormatDiagnostics(analyzer, actual)));
+                    Diagnostic:
+                        {FormatDiagnostics(analyzer, actual)}
+                    """);
             }
 
             if (actual.Severity != expected.Severity)
             {
-                Assert.True(false,
-                    string.Format("""
-                        Expected diagnostic severity to be "{0}" was "{1}"
+                Assert.Fail(
+                    $"""
+                    Expected diagnostic severity to be "{expected.Severity}" was "{actual.Severity}"
 
-                        Diagnostic:
-                        """
-                        + """
-
-                            {2}
-
-                        """, expected.Severity, actual.Severity,
-                        FormatDiagnostics(analyzer, actual)));
+                    Diagnostic:
+                        {FormatDiagnostics(analyzer, actual)}
+                    """);
             }
 
             if (actual.GetMessage() != expected.Message)
             {
-                Assert.True(false,
-                    string.Format("""
-                        Expected diagnostic message to be "{0}" was "{1}"
+                Assert.Fail(
+                    $"""
+                    Expected diagnostic message to be "{expected.Message}" was "{actual.GetMessage()}"
 
-                        Diagnostic:
-                        """
-                    + """
-
-                        {2}
-
-                    """, expected.Message, actual.GetMessage(),
-                    FormatDiagnostics(analyzer, actual)));
+                    Diagnostic:
+                        {FormatDiagnostics(analyzer, actual)}
+                    """);
             }
         }
     }
@@ -415,57 +398,52 @@ public abstract class DiagnosticVerifier
     {
         var actualSpan = actual.GetLineSpan();
 
-        Assert.True(actualSpan.Path == expected.Path
-            || (actualSpan.Path?.Contains("Test0.") == true && expected.Path?.Contains("Test.") == true),
-            string.Format("""
-                Expected diagnostic to be in file "{0}" was actually in file "{1}"
+        bool isSpanCorrect = actualSpan.Path == expected.Path
+            || (actualSpan.Path?.Contains("Test0.") == true && expected.Path?.Contains("Test.") == true);
 
+        Assert.True(isSpanCorrect,
+            $"""
+            Expected diagnostic to be in file "{expected.Path}" was actually in file "{actualSpan.Path}"
 
-                """
-                + """
-                Diagnostic:
-                    {2}
-
-                """, expected.Path, actualSpan.Path,
-                FormatDiagnostics(analyzer, diagnostic)));
+            Diagnostic:
+                {FormatDiagnostics(analyzer, diagnostic)}
+            """);
 
         var actualLinePosition = actualSpan.StartLinePosition;
 
         // Only check line position if there is an actual line in the real diagnostic
         if (actualLinePosition.Line > 0)
         {
-            if (actualLinePosition.Line + 1 != expected.Line)
+            int expectedLine = expected.Line;
+            int actualLine = actualLinePosition.Line + 1;
+
+            if (actualLine != expectedLine)
             {
-                Assert.True(false,
-                    string.Format("""
-                        Expected diagnostic to be on line "{0}" was actually on line "{1}"
+                Assert.Fail(
+                    $"""
+                    Expected diagnostic to be on line {expectedLine} was actually on line {actualLine}
 
-                        """
-                        + """
-
-                        Diagnostic:
-                            {2}
-
-                        """, expected.Line, actualLinePosition.Line + 1,
-                        FormatDiagnostics(analyzer, diagnostic)));
+                    Diagnostic:
+                        {FormatDiagnostics(analyzer, diagnostic)}
+                    """);
             }
         }
 
         // Only check column position if there is an actual column position in the real diagnostic
         if (actualLinePosition.Character > 0)
         {
-            if (actualLinePosition.Character + 1 != expected.Column)
+            int expectedColumn = expected.Column;
+            int actualColumn = actualLinePosition.Character + 1;
+
+            if (actualColumn != expectedColumn)
             {
-                Assert.True(false,
-                    string.Format("Expected diagnostic to start at column \"{0}\" was actually at column "
-                        + """
-                        "{1}"
+                Assert.Fail(
+                    $"""
+                    Expected diagnostic to start at column {expectedColumn} was actually at column {actualColumn}
 
-                        Diagnostic:
-                            {2}
-
-                        """, expected.Column,
-                        actualLinePosition.Character + 1, FormatDiagnostics(analyzer, diagnostic)));
+                    Diagnostic:
+                        {FormatDiagnostics(analyzer, diagnostic)}
+                    """);
             }
         }
     }
@@ -498,11 +476,8 @@ public abstract class DiagnosticVerifier
                     else
                     {
                         Assert.True(location.IsInSource,
-                            $"Test base does not currently handle diagnostics in metadata locations."
-                            + """
-                             Diagnostic in metadata: {diagnostics[i]}
-
-                            """);
+                            "Test base does not currently handle diagnostics in metadata locations. Diagnostic: "
+                            + diagnostics[i]);
 
                         var sourceTree = location.SourceTree;
                         string resultMethodName = sourceTree is null || sourceTree.FilePath.EndsWith(".cs") == true
