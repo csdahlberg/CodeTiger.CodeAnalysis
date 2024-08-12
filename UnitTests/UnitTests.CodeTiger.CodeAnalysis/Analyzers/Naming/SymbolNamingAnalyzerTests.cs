@@ -1041,6 +1041,9 @@ public class SymbolNamingAnalyzerTests : DiagnosticVerifier
                     {
                         var dictionary = new ConcurrentDictionary<int, string>();
                         dictionary.GetOrAdd(0, _ => "0");
+                        dictionary.GetOrAdd(0, (_) => "0");
+                        Action<object> action = _ => { };
+                        Func<string, bool> func = (_) => true;
                     }
                 }
             }
@@ -1050,7 +1053,7 @@ public class SymbolNamingAnalyzerTests : DiagnosticVerifier
     }
 
     [Fact]
-    public void ParameterWithDiscardNamesWhereNotAllowedProduceDiagnostics()
+    public void ParametersWithDiscardNamesWhereNotAllowedProduceDiagnostics()
     {
         string code = """
             using System;

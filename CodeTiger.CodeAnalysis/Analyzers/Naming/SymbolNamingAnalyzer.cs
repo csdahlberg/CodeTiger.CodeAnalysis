@@ -515,6 +515,9 @@ public class SymbolNamingAnalyzer : DiagnosticAnalyzer
                 case SyntaxKind.ParenthesizedLambdaExpression:
                 case SyntaxKind.SimpleLambdaExpression:
                     return "_".Equals(parameterNode.Identifier.ValueText, StringComparison.OrdinalIgnoreCase);
+                case SyntaxKind.ParameterList:
+                    return parameterNode.Parent.Parent?.IsKind(SyntaxKind.ParenthesizedLambdaExpression) == true
+                        && "_".Equals(parameterNode.Identifier.ValueText, StringComparison.OrdinalIgnoreCase);
                 default:
                     return false;
             }
