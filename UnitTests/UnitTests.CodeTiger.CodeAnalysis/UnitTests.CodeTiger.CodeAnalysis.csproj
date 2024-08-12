@@ -40,7 +40,7 @@
   <!-- Explicitly include references to known-vulnerable .NET Standard packages that this project does not use. -->
   <ItemGroup>
     <PackageReference Include="System.Net.Http" Version="4.3.0" NoWarn="NU1903" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" NoWarn="NU1903" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" NoWarn="NU1903" />
   </ItemGroup>
 
   <ItemGroup>
