@@ -79,7 +79,7 @@ While not intended to be an exact replacement for StyleCop, many of the individu
 
   <!-- Disable warnings for known-vulnerable NuGet packages that this project does not use. -->
   <ItemGroup Condition="'$(RoslynVersion)'=='2.6'">
-    <PackageReference Include="System.Net.Http" Version="4.3.0" NoWarn="NU1903" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" NoWarn="NU1903" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" NoWarn="NU1903" />
   </ItemGroup>
 
