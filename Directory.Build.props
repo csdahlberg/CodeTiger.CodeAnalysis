@@ -11,19 +11,19 @@
 
   <!-- Visual Studio 2017 15.5 / C# 7.2 -->
   <PropertyGroup Condition="'$(RoslynVersion)'=='2.6'">
-    <RoslynPackageVersion>2.6.1</RoslynPackageVersion>
+    <RoslynPackageVersion>4.4.0</RoslynPackageVersion>
     <DefineConstants>$(DefineConstants);ROSLYN2_6;ROSLYN2_6_OR_HIGHER</DefineConstants>
   </PropertyGroup>
 
   <!-- Visual Studio 2019 16.8 / C# 9.0 -->
   <PropertyGroup Condition="'$(RoslynVersion)'=='3.8'">
-    <RoslynPackageVersion>3.8.0</RoslynPackageVersion>
+    <RoslynPackageVersion>4.4.0</RoslynPackageVersion>
     <DefineConstants>$(DefineConstants);ROSLYN3_8;ROSLYN3_8_OR_HIGHER;ROSLYN2_6_OR_HIGHER</DefineConstants>
   </PropertyGroup>
 
   <!-- Visual Studio 2022 17.0 / C# 10.0 -->
   <PropertyGroup Condition="'$(RoslynVersion)'=='4.0'">
-    <RoslynPackageVersion>4.0.1</RoslynPackageVersion>
+    <RoslynPackageVersion>4.4.0</RoslynPackageVersion>
     <DefineConstants>$(DefineConstants);ROSLYN4_0;ROSLYN4_0_OR_HIGHER;ROSLYN3_8_OR_HIGHER;ROSLYN2_6_OR_HIGHER</DefineConstants>
   </PropertyGroup>
 
