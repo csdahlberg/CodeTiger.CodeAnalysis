@@ -186,7 +186,8 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
             var documentation = XDocument.Parse(documentationXml);
 
             return documentation.Root.Elements().Any()
-                && !documentation.Root.Elements("param").Any();
+                && !documentation.Root.Elements("param").Any()
+                && !documentation.Root.Elements("inheritdoc").Any();
         }
         catch (XmlException)
         {
@@ -203,7 +204,7 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
         {
             string? documentationXml = symbol?.GetDocumentationCommentXml(null, true, context.CancellationToken);
 
-            // If the documentation does not exists, ignore it for this diagnostic.
+            // If the documentation does not exist, ignore it for this diagnostic.
             if (string.IsNullOrWhiteSpace(documentationXml))
             {
                 return false;
@@ -212,7 +213,8 @@ public class RequiredDocumentationAnalyzer : DiagnosticAnalyzer
             var documentation = XDocument.Parse(documentationXml);
 
             return documentation.Root.Elements().Any()
-                && !documentation.Root.Elements("returns").Any();
+                && !documentation.Root.Elements("returns").Any()
+                && !documentation.Root.Elements("inheritdoc").Any();
         }
         catch (XmlException)
         {

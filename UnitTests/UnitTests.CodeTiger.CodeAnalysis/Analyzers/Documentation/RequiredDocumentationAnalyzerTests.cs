@@ -10,6 +10,43 @@ public class RequiredDocumentationAnalyzerTests : DiagnosticVerifier
     protected override DocumentationMode DocumentationMode => DocumentationMode.Diagnose;
 
     [Fact]
+    public void InheritedDocumentationCommentsDoNotProduceDiagnostics()
+    {
+        string code = """
+            using System;
+            using System.Threading.Tasks;
+            namespace ClassLibrary1
+            {
+                public class Class1
+                {
+                    /// <inheritdoc/>
+                    public void DoSomething() { }
+
+                    /// <inheritdoc/>
+                    public void DoSomething(bool flag) { }
+
+                    /// <inheritdoc/>
+                    public bool TryDoSomething() { return false; }
+
+                    /// <inheritdoc/>
+                    public bool TryDoSomething(bool flag) { return false; }
+
+                    /// <inheritdoc/>
+                    public async Task DoSomethingAsync() { }
+
+                    /// <inheritdoc/>
+                    public async Task DoSomethingAsync(bool flag) { }
+
+                    /// <inheritdoc/>
+                    public async Task<bool> TryDoSomethingAsync(bool flag) { return false; }
+                }
+            }
+            """;
+
+        VerifyCSharpDiagnostic(code);
+    }
+
+    [Fact]
     public void DocumentationCommentsForMethodsWithVoidReturnTypeDoNotProduceDiagnostics()
     {
         string code = """
