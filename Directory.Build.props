@@ -13,6 +13,7 @@
   <PropertyGroup Condition="'$(RoslynVersion)'=='2.6'">
     <RoslynPackageVersion>2.6.1</RoslynPackageVersion>
     <DefineConstants>$(DefineConstants);ROSLYN2_6;ROSLYN2_6_OR_HIGHER</DefineConstants>
+    <CheckNotRecommendedTargetFramework>false</CheckNotRecommendedTargetFramework>
   </PropertyGroup>
 
   <!-- Visual Studio 2019 16.8 / C# 9.0 -->
