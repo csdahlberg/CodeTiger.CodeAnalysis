@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections;
+using System.Diagnostics.CodeAnalysis;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace CodeTiger.CodeAnalysis.CSharp;
@@ -250,6 +252,25 @@ internal static class SyntaxKindExtensions
                 return "await";
             default:
                 return kind.ToString();
+        }
+    }
+
+    public static bool IsCommentTrivia(this SyntaxKind kind)
+    {
+        switch (kind)
+        {
+            case SyntaxKind.DocumentationCommentExteriorTrivia:
+            case SyntaxKind.EndOfDocumentationCommentToken:
+            case SyntaxKind.MultiLineCommentTrivia:
+            case SyntaxKind.MultiLineDocumentationCommentTrivia:
+            case SyntaxKind.SingleLineCommentTrivia:
+            case SyntaxKind.SingleLineDocumentationCommentTrivia:
+            case SyntaxKind.XmlComment:
+            case SyntaxKind.XmlCommentEndToken:
+            case SyntaxKind.XmlCommentStartToken:
+                return true;
+            default:
+                return false;
         }
     }
 }

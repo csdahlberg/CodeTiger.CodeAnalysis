@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
+using CodeTiger.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -44,7 +45,9 @@ public class ExceptionHandlingReliabilityAnalyzer : DiagnosticAnalyzer
         foreach (var catchClause in context.CodeBlock.DescendantNodes().OfType<CatchClauseSyntax>())
         {
             if (!catchClause.Block.DescendantNodesAndSelf()
-                .Any(x => !x.IsKind(SyntaxKind.EmptyStatement) && !x.IsKind(SyntaxKind.Block)))
+                .Any(x => !x.IsKind(SyntaxKind.EmptyStatement) && !x.IsKind(SyntaxKind.Block))
+                && !catchClause.Block.OpenBraceToken.TrailingTrivia.Any(x => x.Kind().IsCommentTrivia())
+                && !catchClause.Block.CloseBraceToken.LeadingTrivia.Any(x => x.Kind().IsCommentTrivia()))
             {
                 context.ReportDiagnostic(Diagnostic.Create(EmptyCatchBlocksShouldNotBeUsedDescriptor,
                     catchClause.CatchKeyword.GetLocation()));
